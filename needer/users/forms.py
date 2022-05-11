@@ -121,6 +121,7 @@ class  SocialCustomForm(SocialSignupForm):
         Returns:
             Obj: User
         """
+        
         adapter = get_adapter(request)
         user = adapter.save_user(request, self.sociallogin, form=self)
         user.tipo_documento = self.cleaned_data["tipo_documento"]

@@ -4,6 +4,10 @@ from django.contrib.auth.models import AbstractUser, Group
 # Create your models here.
 
 class User(AbstractUser):
+    
+    groups = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name="Groups")
+    
+    # Datos personales de facturacion.
     class TipoDocumento(models.TextChoices):
         CEDULA = 'CC', 'Cedula de ciudadania'
         CEDULA_EX = 'CE', 'Cedula de extranjeria'
@@ -15,7 +19,7 @@ class User(AbstractUser):
     # TODO departamento
     # TODO NUMERO DE CELULAR
     direccion_facturacion = models.CharField(verbose_name='Direccion', max_length=120, null = True, blank= True)
-    groups = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name="Groups")
+    
         
         
         

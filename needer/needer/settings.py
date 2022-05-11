@@ -98,6 +98,7 @@ WSGI_APPLICATION = 'needer.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# TODO Djongo - Al fin vamos a manejar Mongo?
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
