@@ -10,7 +10,7 @@
 
 ## Authors 👥
 
-[@Sarsu12](https://github.com/Sarsu12/)
+[@JuanTrujilloDev](https://github.com/JuanTrujilloDev/)
 
 [@AnderssonIbarra](https://github.com/AnderssonIbarra)
 
