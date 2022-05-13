@@ -138,3 +138,4 @@ pyvenv.cfg
 # VSCODE
 
 .vscode/
+*/.vscode/
