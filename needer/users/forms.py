@@ -4,11 +4,13 @@ from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from allauth.account.forms import SignupForm as SignupForm
 from allauth.socialaccount.adapter import get_adapter
 from django import forms
-from .models import User
+from .models import User, Pais
 from django.db.models import Q
 from django.contrib.auth.models import Group
 import re
 from .extras import numeros
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 
 class  SocialCustomForm(SocialSignupForm):
     """ SOCIAL CUSTOM FORM
@@ -32,16 +34,20 @@ class  SocialCustomForm(SocialSignupForm):
     last_name = forms.CharField(max_length=30, label="Apellidos", required=True)
     password1 = forms.CharField(max_length=30,label=("Contrasena"), widget=forms.PasswordInput, required=True)
     password2 = forms.CharField(max_length=30, label=("Confirma tu contrasena"), widget=forms.PasswordInput, required=True)
-    tipo_documento = forms.ChoiceField(choices = User.TipoDocumento.choices)
+    groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), blank=False, required=True)
     num_documento = forms.CharField(max_length=10, label="Numero de documento")
+    pais = forms.ModelChoiceField(queryset=Pais.objects.all().order_by("nombre"))
     via = forms.CharField(max_length=10, label="Via")
     numero1 = forms.CharField(max_length=10, label="#")
     numero2 = forms.CharField(max_length=10, label="-", validators=[numeros]) 
-    groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), blank=False, required=True)
+    zip = forms.CharField(max_length=9, label="Zip Code", validators=[numeros])
+    captcha = ReCaptchaField(widget=ReCaptchaV3, label="")
+   
     
+    # TODO PAIS ANADIR DATALIST EN FRONT
     # TODO NUMERO DE CELULAR
-    # TODO CIUDAD Y DEPARTAMENTO CON AJAX VIEW
-    # TODO CAPTCHA 
+    
+    # TODO CAPTCHA EN FRONT
     
     def __init__(self, *args, **kwargs):
         # Haciendo que el correo que se trae del API no se pueda tocar en el FORM!
@@ -83,17 +89,8 @@ class  SocialCustomForm(SocialSignupForm):
         # TODO POSIBLEMENTE AGREGAR ERROR PARA DAR PISTA A CADA TIPO DE DOCUMENTO
         # EJ: ERROR EN EL NUMERO DE CEDULA EL FORMATO ES (12345678 o 1234567890)
         
-        if (self.cleaned_data["tipo_documento"] == "CC"):
-            match = re.match("[0-9]{8,10}", self.cleaned_data["num_documento"])
-            
-        elif (self.cleaned_data["tipo_documento"] == "CE"):
-            match = re.match("[0-9]{6}", self.cleaned_data["num_documento"])
-            
-        elif (self.cleaned_data["tipo_documento"] == "PA"):
-            match = re.match("[A-Za-z]{2}[0-9]{6}", self.cleaned_data["num_documento"])
-            
-        else:
-            raise forms.ValidationError("Error en el tipo de documento.")
+        match = re.match("[0-9]{8,10}", self.cleaned_data["num_documento"])
+        
         
         if match:
             # Me genera ruido el numero de doc repetido
@@ -124,10 +121,10 @@ class  SocialCustomForm(SocialSignupForm):
         
         adapter = get_adapter(request)
         user = adapter.save_user(request, self.sociallogin, form=self)
-        user.tipo_documento = self.cleaned_data["tipo_documento"]
         user.num_documento = self.cleaned_data["num_documento"]
-        user.direccion_facturacion = "{} # {} - {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"])
+        user.direccion_facturacion = "{} # {} - {}, {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"], self.cleaned_data["zip"])
         user.groups = self.cleaned_data["groups"]
+        user.pais = self.cleaned_data["pais"]
         user.save()
         self.custom_signup(request, user)
         return user
@@ -135,7 +132,6 @@ class  SocialCustomForm(SocialSignupForm):
         
     def signup(self, request, user):
         user.set_password(self.user, self.cleaned_data["password1"])
-        user.tipo_documento = self.cleaned_data["tipo_documento"]
         user.save()
         
         
@@ -159,17 +155,20 @@ class  SignupCustomForm(SignupForm):
     last_name = forms.CharField(max_length=30, label="Apellidos", required=True)
     password1 = forms.CharField(max_length=30,label=("Contrasena"), widget=forms.PasswordInput, required=True)
     password2 = forms.CharField(max_length=30, label=("Confirma tu contrasena"), widget=forms.PasswordInput, required=True)
-    tipo_documento = forms.ChoiceField(choices = User.TipoDocumento.choices)
+    groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), label="Tipo de Usuario", blank=False, required=True)
+    pais = forms.ModelChoiceField(queryset=Pais.objects.all().order_by("nombre"))
     num_documento = forms.CharField(max_length=10, label="Numero de documento")
     via = forms.CharField(max_length=10, label="Via")
     numero1 = forms.CharField(max_length=10, label="#")
     numero2 = forms.CharField(max_length=10, label="-", validators=[numeros]) 
-    groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), label="Tipo de Usuario", blank=False, required=True)
+    zip = forms.CharField(max_length=9, label="Zip Code", validators=[numeros])
+    captcha = ReCaptchaField(widget=ReCaptchaV3, label="")
+   
     
-    # TODO CIUDAD Y DEPARTAMENTO CON AJAX VIEW
+    # TODO PAIS ANADIR DATALIST EN FRONT
     # TODO NUMERO DE CELULAR
     
-    # TODO CAPTCHA 
+    # TODO CAPTCHA EN FRONT
     
 
     #taken from https://github.com/pennersr/django-allauth/blob/master/allauth/account/forms.py
@@ -209,17 +208,7 @@ class  SignupCustomForm(SignupForm):
         # TODO POSIBLEMENTE AGREGAR ERROR PARA DAR PISTA A CADA TIPO DE DOCUMENTO
         # EJ: ERROR EN EL NUMERO DE CEDULA EL FORMATO ES (12345678 o 1234567890)
         
-        if (self.cleaned_data["tipo_documento"] == "CC"):
-            match = re.match("[0-9]{8,10}", self.cleaned_data["num_documento"])
-            
-        elif (self.cleaned_data["tipo_documento"] == "CE"):
-            match = re.match("[0-9]{6}", self.cleaned_data["num_documento"])
-            
-        elif (self.cleaned_data["tipo_documento"] == "PA"):
-            match = re.match("[A-Za-z]{2}[0-9]{6}", self.cleaned_data["num_documento"])
-            
-        else:
-            raise forms.ValidationError("Error en el tipo de documento.")
+        match = re.match("[0-9]{8,10}", self.cleaned_data["num_documento"])
         
         if match:
             # Me genera ruido el numero de doc repetido
@@ -248,10 +237,10 @@ class  SignupCustomForm(SignupForm):
             OBJ: User
         """
         user = super(SignupCustomForm, self).save(request)
-        user.tipo_documento = self.cleaned_data["tipo_documento"]
         user.num_documento = self.cleaned_data["num_documento"]
-        user.direccion_facturacion = "{} # {} - {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"])
+        user.direccion_facturacion = "{} # {} - {}, {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"], self.cleaned_data["zip"])
         user.groups = self.cleaned_data["groups"]
+        user.pais = self.cleaned_data["pais"]
         user.save()
         return user
         
