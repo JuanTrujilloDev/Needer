@@ -20,6 +20,7 @@
 
 * 0.0
   * Project initialization.
+  * User Signup and Login.
 
 ## License 💯
 
