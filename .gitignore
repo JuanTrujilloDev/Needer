@@ -128,9 +128,12 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Scripts
+# VENV
 
 Scripts/
+include/
+Lib/
+pyvenv.cfg
 
 # VSCODE
 
