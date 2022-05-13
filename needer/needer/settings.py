@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'captcha',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -154,7 +155,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Captcha:
 
+RECAPTCHA_PRIVATE_KEY = os.environ["RE_CAPTCHA_SECRET"]
+RECAPTCHA_PUBLIC_KEY = os.environ["RE_CAPTCHA_PUBLIC"]
 
 # ALLAUTH SETTINGS:
 
