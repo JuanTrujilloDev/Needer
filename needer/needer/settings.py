@@ -162,6 +162,9 @@ RECAPTCHA_PUBLIC_KEY = os.environ["RE_CAPTCHA_PUBLIC"]
 
 # ALLAUTH SETTINGS:
 
+
+SOCIALACCOUNT_FORMS = {'signup': 'users.forms.SocialCustomForm'}
+
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -182,8 +185,9 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_UNIQUE = True
 ACCOUNT_USERNAME_REQUIRED = False
 SOCIALACCOUNT_AUTO_SIGNUP = False
+SOCIALACCOUNT_LOGIN_ON_GET = True
 
-LANGUAGE_CODE = 'es'
+LANGUAGE_CODE = 'en'
 
 
 # Email Backend
