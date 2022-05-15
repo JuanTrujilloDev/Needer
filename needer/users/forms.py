@@ -12,6 +12,9 @@ from .extras import numeros
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
 
+
+
+
 class  SocialCustomForm(SocialSignupForm):
     """ SOCIAL CUSTOM FORM
 
@@ -37,10 +40,10 @@ class  SocialCustomForm(SocialSignupForm):
     groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), blank=False, required=True)
     num_documento = forms.CharField(max_length=10, label="Numero de documento")
     pais = forms.ModelChoiceField(queryset=Pais.objects.all().order_by("nombre"))
-    via = forms.CharField(max_length=10, label="Via")
+    """     via = forms.CharField(max_length=10, label="Via")
     numero1 = forms.CharField(max_length=10, label="#")
     numero2 = forms.CharField(max_length=10, label="-", validators=[numeros]) 
-    zip = forms.CharField(max_length=9, label="Zip Code", validators=[numeros])
+    zip = forms.CharField(max_length=9, label="Zip Code", validators=[numeros]) """
     captcha = ReCaptchaField(widget=ReCaptchaV3, label="")
    
     
@@ -122,7 +125,7 @@ class  SocialCustomForm(SocialSignupForm):
         adapter = get_adapter(request)
         user = adapter.save_user(request, self.sociallogin, form=self)
         user.num_documento = self.cleaned_data["num_documento"]
-        user.direccion_facturacion = "{} # {} - {}, {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"], self.cleaned_data["zip"])
+        #user.direccion_facturacion = "{} # {} - {}, {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"], self.cleaned_data["zip"])
         user.groups = self.cleaned_data["groups"]
         user.pais = self.cleaned_data["pais"]
         user.save()
@@ -158,10 +161,10 @@ class  SignupCustomForm(SignupForm):
     groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), label="Tipo de Usuario", blank=False, required=True)
     pais = forms.ModelChoiceField(queryset=Pais.objects.all().order_by("nombre"))
     num_documento = forms.CharField(max_length=10, label="Numero de documento")
-    via = forms.CharField(max_length=10, label="Via")
+    """     via = forms.CharField(max_length=10, label="Via")
     numero1 = forms.CharField(max_length=10, label="#")
     numero2 = forms.CharField(max_length=10, label="-", validators=[numeros]) 
-    zip = forms.CharField(max_length=9, label="Zip Code", validators=[numeros])
+    zip = forms.CharField(max_length=9, label="Zip Code", validators=[numeros]) """
     captcha = ReCaptchaField(widget=ReCaptchaV3, label="")
    
     
@@ -238,7 +241,7 @@ class  SignupCustomForm(SignupForm):
         """
         user = super(SignupCustomForm, self).save(request)
         user.num_documento = self.cleaned_data["num_documento"]
-        user.direccion_facturacion = "{} # {} - {}, {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"], self.cleaned_data["zip"])
+        #user.direccion_facturacion = "{} # {} - {}, {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"], self.cleaned_data["zip"])
         user.groups = self.cleaned_data["groups"]
         user.pais = self.cleaned_data["pais"]
         user.save()
