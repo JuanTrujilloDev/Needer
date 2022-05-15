@@ -11,7 +11,6 @@
 
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}
-  <input value=""placeholder="Pais" type="text" name="pais" list="id_pais">
   <datalist name="pais"  id="id_pais">
       {% for data in pais %}
           <option value="{{data}}"></option>
