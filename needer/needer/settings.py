@@ -80,7 +80,7 @@ ROOT_URLCONF = 'needer.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -162,6 +162,9 @@ RECAPTCHA_PUBLIC_KEY = os.environ["RE_CAPTCHA_PUBLIC"]
 
 # ALLAUTH SETTINGS:
 
+
+SOCIALACCOUNT_FORMS = {'signup': 'users.forms.SocialCustomForm'}
+
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -183,7 +186,9 @@ ACCOUNT_EMAIL_UNIQUE = True
 ACCOUNT_USERNAME_REQUIRED = False
 SOCIALACCOUNT_AUTO_SIGNUP = False
 
+SOCIALACCOUNT_ADAPTER = "users.adapter.SocialAccountAdapter"
 LANGUAGE_CODE = 'es'
+
 
 
 # Email Backend

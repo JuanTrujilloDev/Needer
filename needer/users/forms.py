@@ -12,6 +12,9 @@ from .extras import numeros
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
 
+
+
+
 class  SocialCustomForm(SocialSignupForm):
     """ SOCIAL CUSTOM FORM
 
@@ -36,11 +39,11 @@ class  SocialCustomForm(SocialSignupForm):
     password2 = forms.CharField(max_length=30, label=("Confirma tu contrasena"), widget=forms.PasswordInput, required=True)
     groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), blank=False, required=True)
     num_documento = forms.CharField(max_length=10, label="Numero de documento")
-    pais = forms.ModelChoiceField(queryset=Pais.objects.all().order_by("nombre"))
-    via = forms.CharField(max_length=10, label="Via")
+    pais = forms.CharField(max_length=50)
+    """     via = forms.CharField(max_length=10, label="Via")
     numero1 = forms.CharField(max_length=10, label="#")
     numero2 = forms.CharField(max_length=10, label="-", validators=[numeros]) 
-    zip = forms.CharField(max_length=9, label="Zip Code", validators=[numeros])
+    zip = forms.CharField(max_length=9, label="Zip Code", validators=[numeros]) """
     captcha = ReCaptchaField(widget=ReCaptchaV3, label="")
    
     
@@ -52,6 +55,7 @@ class  SocialCustomForm(SocialSignupForm):
     def __init__(self, *args, **kwargs):
         # Haciendo que el correo que se trae del API no se pueda tocar en el FORM!
         super(SocialCustomForm, self).__init__(*args, **kwargs)
+        self.fields['pais'].widget.attrs['list'] = 'id_pais'
         self.fields['email'].widget.attrs['readonly'] = True
         
     
@@ -101,6 +105,17 @@ class  SocialCustomForm(SocialSignupForm):
                 raise forms.ValidationError("Ya hay un usuario registrado con este numero de documento!")   
         else:
             raise forms.ValidationError("Error en el numero de documento.")
+        
+        
+    def clean_pais(self):
+        
+        pais = self.cleaned_data['pais']
+        try:
+            paises = Pais.objects.get(nombre = pais)
+        except:
+            raise forms.ValidationError('El pais no se encuentra en la lista')
+
+        return paises
             
         
     
@@ -122,7 +137,7 @@ class  SocialCustomForm(SocialSignupForm):
         adapter = get_adapter(request)
         user = adapter.save_user(request, self.sociallogin, form=self)
         user.num_documento = self.cleaned_data["num_documento"]
-        user.direccion_facturacion = "{} # {} - {}, {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"], self.cleaned_data["zip"])
+        #user.direccion_facturacion = "{} # {} - {}, {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"], self.cleaned_data["zip"])
         user.groups = self.cleaned_data["groups"]
         user.pais = self.cleaned_data["pais"]
         user.save()
@@ -156,13 +171,13 @@ class  SignupCustomForm(SignupForm):
     password1 = forms.CharField(max_length=30,label=("Contrasena"), widget=forms.PasswordInput, required=True)
     password2 = forms.CharField(max_length=30, label=("Confirma tu contrasena"), widget=forms.PasswordInput, required=True)
     groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), label="Tipo de Usuario", blank=False, required=True)
-    pais = forms.ModelChoiceField(queryset=Pais.objects.all().order_by("nombre"))
-    num_documento = forms.CharField(max_length=10, label="Numero de documento")
-    via = forms.CharField(max_length=10, label="Via")
+    pais = forms.CharField(max_length=50, required=True)
+    num_documento = forms.CharField(max_length=10, label="Numero de documento", required=True)
+    """     via = forms.CharField(max_length=10, label="Via")
     numero1 = forms.CharField(max_length=10, label="#")
     numero2 = forms.CharField(max_length=10, label="-", validators=[numeros]) 
-    zip = forms.CharField(max_length=9, label="Zip Code", validators=[numeros])
-    captcha = ReCaptchaField(widget=ReCaptchaV3, label="")
+    zip = forms.CharField(max_length=9, label="Zip Code", validators=[numeros]) """
+    captcha = ReCaptchaField(widget=ReCaptchaV3, label="", required=True)
    
     
     # TODO PAIS ANADIR DATALIST EN FRONT
@@ -170,6 +185,10 @@ class  SignupCustomForm(SignupForm):
     
     # TODO CAPTCHA EN FRONT
     
+    def __init__(self, *args, **kwargs):
+        # Haciendo que el correo que se trae del API no se pueda tocar en el FORM!
+        super(SignupCustomForm, self).__init__(*args, **kwargs)
+        self.fields['pais'].widget.attrs['list'] = 'id_pais'
 
     #taken from https://github.com/pennersr/django-allauth/blob/master/allauth/account/forms.py
 
@@ -219,7 +238,17 @@ class  SignupCustomForm(SignupForm):
                 raise forms.ValidationError("Ya hay un usuario registrado con este numero de documento!")   
         else:
             raise forms.ValidationError("Error en el numero de documento.")
-            
+        
+        
+    def clean_pais(self):
+        
+        pais = self.cleaned_data['pais']
+        try:
+            paises = Pais.objects.get(nombre = pais)
+        except:
+            raise forms.ValidationError('El pais no se encuentra en la lista')
+
+        return paises
         
     
     def save(self, request= None):
@@ -238,7 +267,7 @@ class  SignupCustomForm(SignupForm):
         """
         user = super(SignupCustomForm, self).save(request)
         user.num_documento = self.cleaned_data["num_documento"]
-        user.direccion_facturacion = "{} # {} - {}, {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"], self.cleaned_data["zip"])
+        #user.direccion_facturacion = "{} # {} - {}, {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"], self.cleaned_data["zip"])
         user.groups = self.cleaned_data["groups"]
         user.pais = self.cleaned_data["pais"]
         user.save()
