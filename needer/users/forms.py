@@ -46,11 +46,9 @@ class  SocialCustomForm(SocialSignupForm):
     zip = forms.CharField(max_length=9, label="Zip Code", validators=[numeros]) """
     captcha = ReCaptchaField(widget=ReCaptchaV3, label="")
    
-    
-    # TODO PAIS ANADIR DATALIST EN FRONT
+    # TODO Username | Nickname
     # TODO NUMERO DE CELULAR
     
-    # TODO CAPTCHA EN FRONT
     
     def __init__(self, *args, **kwargs):
         # Haciendo que el correo que se trae del API no se pueda tocar en el FORM!
@@ -180,10 +178,8 @@ class  SignupCustomForm(SignupForm):
     captcha = ReCaptchaField(widget=ReCaptchaV3, label="", required=True)
    
     
-    # TODO PAIS ANADIR DATALIST EN FRONT
     # TODO NUMERO DE CELULAR
-    
-    # TODO CAPTCHA EN FRONT
+    # TODO Username | Nickname
     
     def __init__(self, *args, **kwargs):
         # Haciendo que el correo que se trae del API no se pueda tocar en el FORM!

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock css %}
+
+{% block content %}
+
+{% include 'main/nav.html' %}
+<!--Hero-->
+<section class="hero py-sm-5 py-lg-0">
+<div class="col-lg-12 container-fluid">
+    
+    <div class="row flex-lg-row-reverse align-items-center g-5 ms-lg-3">
+        <!--Imagen derecha-->
+      <div class="imagen-derecha col-lg-7 col-sm-8 mx-0 pe-0 text-end justify-content-end">
+        <img src="{% static 'img/Amigos-celulares1.png' %}" class="d-block ms-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+      </div>
+
+    <!--Texto izquierda-->
+      <div class="col-lg-5 text-iz">
+        <h1 class="display-5 fw-bold lh-1 mb-5">Lorem Ipsum</h1>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing
+            elit. Praesent molestie lacus nibh, ac aliquet lectus
+            tincidunt non.</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start ">
+            <form class="form-hero d-inline-flex d-sm-row w-100" role="search">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend div-span-hero">
+                  <span class="btn bg-white span-hero"><i class="bi bi-search"></i></span>
+                </div>
+                <input type="text" class="form-control form-hero-input" placeholder='Prueba con algun nombre o nickname.. ' aria-label="" aria-describedby="basic-addon1">
+                <div class="input-group-append">
+                  <button class="btn btn-secondary btn-buscar-hero" type="button">Buscar</button>
+                </div>
+              </div>
+               
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--TODO Caracteristicas APP-->
+<section class="caracteristicas">
+<div>
+  <h1>Hola</h1>
+</div>
+</section>
+
+{% endblock content%}
