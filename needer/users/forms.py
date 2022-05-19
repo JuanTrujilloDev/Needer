@@ -11,7 +11,6 @@ import re
 from .extras import numeros
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
-from django.core.validators import EMPTY_VALUES
 
 
 
