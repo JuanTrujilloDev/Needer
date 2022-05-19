@@ -184,6 +184,12 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+# Redirects
+
+LOGOUT_REDIRECT_URL = 'home-view'
+
+# Account options
+
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_AUTHENTICATION_METHOD = "email"

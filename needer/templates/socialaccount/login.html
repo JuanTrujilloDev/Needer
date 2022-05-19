@@ -32,7 +32,16 @@
 {% block script %}
 <script>
 
-document.body.onload = function(){
+function resolveAfter1Seconds(x) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(x);
+    }, 500);
+  });
+}
+
+ document.body.onload = async function(){
+  await resolveAfter1Seconds(1)
   document.forms['social-login'].submit();
 }
 
