@@ -7,6 +7,8 @@
         <title>{{title}}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block extra_head %}
+        {% endblock %}
         <!--Style sheets-->
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
@@ -30,6 +32,7 @@
 
         <!-- Scripts -->
         <script src="{% static 'js/bootstrap.bundle.min.js' %}" async defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         {% block script %}
 
         {% endblock script%}

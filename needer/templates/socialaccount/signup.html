@@ -1,31 +1,144 @@
-{% extends "socialaccount/base.html" %}
-
+{% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
-{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock css %}
 
 {% block content %}
-    <h1>{% trans "Sign Up" %}</h1>
 
-<p>{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}You are about to use your {{provider_name}} account to login to
-{{site_name}}. As a final step, please complete the following form:{% endblocktrans %}</p>
+<section class="registro row">
 
-<form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
-  {% csrf_token %}
-  
+    <div class="col-lg-6 col-sm-12 imagen-izquierda">
+      
+    </div>
+    
+    
+    
+    
+    <div class="col-md-6 col-sm-12 formulario-derecha py-3 d-flex align-items-center">
+        
+        
+    
+    <form class="signup container" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+        <h1 class="fw-bolder">Accede a Needer:</h1>
 
-  <datalist name="pais"  id="id_pais">
-      {% for data in pais %}
-          <option value="{{data}}"></option>
-      {% endfor %}
-  </datalist>
-  {{ form.as_p}}
+        <p>{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}You are about to use your {{provider_name}} account to login to
+        {{site_name}}. As a final step, please complete the following form:{% endblocktrans %}</p>
+        {% csrf_token %}
+        <datalist name="pais"  id="id_pais">
+            {% for data in pais %}
+                <option value="{{data}}"></option>
+            {% endfor %}
+        </datalist>
+        
 
+                {% if form.error %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
 
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
-</form>
+        <div class="form-group mb-3">  
+            {{form.email.errors}}
+
+            <label class="" for="id_email">Email:</label>
+            {{form.email}}
+            <small id="emailHelp" class="form-text text-muted">Nunca compartiremos tu email con otras empresas.</small>
+          </div>
+        
+          <div class="form-group mb-3">  
+            <div class="row">
+              {{form.password1.errors}}
+              <div class="col-lg-6 col-sm-12">
+            <label class="" for="id_password_1">Contrasena:</label>
+            <input type="password" class="form-control" id="id_password_1" name="password1" required autocomplete="password" placeholder="Contrasena">
+            </div>
+        
+          <div class="col-lg-6 col-sm-12">
+            {{form.password2.errors}}
+            <label class="" for="id_password_2">Repite tu Contrasena:</label>
+            <input type="password" class="form-control" id="id_password_2" name="password2" required autocomplete="password" placeholder="Confirmar contrasena">
+          </div>  
+        
+          </div>
+          </div>
+        
+        
+        
+          <div class="form-group mb-3">  
+            {{form.username.errors}}
+            <label class="" for="id_username">Usuario:</label>
+            <input type="text" class="form-control" id="id_username" name="username" required autocomplete="username">
+          </div>
+        
+          <div class="form-group mb-3">  
+            {{form.groups.errors}}
+            <label class="" for="id_groups">Tipo de usuario:</label>
+            {{form.groups}}
+            <small id="groupHelp" class="form-text text-muted">Selecciona consumidor si deseas comprar contenido de tus famosos favoritos.</small>
+                  <br>
+                  <small id="groupHelp" class="form-text text-muted">Selecciona creador de contenido si deseas vender tu contenido.</small>
+          </div>
+        
+        
+        
+          <div class="form-group mb-3 nombres"> 
+              {{form.first_name.errors}} 
+            <label class="" for="id_first_name">Nombres:</label>
+            <input type="text" class="form-control" id="id_first_name" name="first_name" required autocomplete="first_name">
+          </div>
+        
+          <div class="form-group mb-3 apellidos">  
+            {{form.last_name.errors}} 
+            <label class="" for="id_last_name">Apellidos:</label>
+            <input type="text" class="form-control" id="id_last_name" name="last_name" required autocomplete="last_name">
+          </div>
+        
+          
+          <div class="form-group mb-3 documento">  
+            <div class="row">
+        
+              <div class="col-lg-6 col-sm-12">
+                {{form.pais.errors}}
+            <label class="" for="id_pais">Pais:</label>
+            <input type="text" class="form-control pais" id="id_pais" name="pais" required list="id_pais">
+            </div>
+        
+          <div class="col-lg-6 col-sm-12">
+            {{form.num_documento.errors}}
+            <label class="" for="id_num_documento">Numero de documento:</label>
+            <input class="form-control" type="text" name="num_documento" maxlength="10" required id="id_num_documento">
+            <small id="emailHelp" class="form-text text-muted">Tu numero de identificacion solo sera consultado por nosotros para validar tu informacion.</small>
+          </div>  
+        
+          </div>
+          </div>
+        
+          <!--TODO TELEFONO-->
+      
+        {{form.captcha}}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button class="btn btn-primary form-control" type="submit">{% trans "Sign Up" %}</button>
+      </form>
+    </section>
+
+    </div>
 
 {% endblock %}
+
+{% block script %}
+<script src="{% static 'js/signup.js' %}"></script>
+{% endblock script %}

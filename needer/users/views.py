@@ -24,6 +24,8 @@ class UserSignupView(SignupView):
         context["pais"] = Pais.objects.all()
         return context
 
+    
+
 
 
 # TODO En el login agregar el captcha.
