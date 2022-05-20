@@ -1,5 +1,3 @@
-
-from email.policy import default
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from allauth.account.forms import SignupForm as SignupForm
 from allauth.socialaccount.adapter import get_adapter

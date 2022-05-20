@@ -1,0 +1,16 @@
+.nav-titulo{
+    font-weight: bold;
+    color:#5C28FF;
+    font-size: 1.5rem;
+}
+
+.form-hero-input{
+    border-radius: 0px 0px 0px 0px;
+    border-left: 0px solid;
+}
+
+.form-hero-input:focus{
+    outline: none !important;
+    border:none!important;
+    box-shadow: none!important;
+}
