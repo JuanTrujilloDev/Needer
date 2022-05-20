@@ -287,7 +287,6 @@ class  SignupCustomForm(SignupForm):
             if pais == "":
                 self.add_error('pais', _("Este campo es obligatorio")) 
 
-            
         return cleaned_data
 
 
