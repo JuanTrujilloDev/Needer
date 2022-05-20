@@ -1,5 +1,7 @@
 
+from cgi import print_arguments
 from email.policy import default
+from tokenize import group
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from allauth.account.forms import SignupForm as SignupForm
 from allauth.socialaccount.adapter import get_adapter
@@ -289,7 +291,6 @@ class  SignupCustomForm(SignupForm):
             if pais == "":
                 self.add_error('pais', _("Este campo es obligatorio")) 
 
-            
         return cleaned_data
 
 

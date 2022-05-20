@@ -15,11 +15,11 @@ jQuery(document).ready(function($){
             $('.apellidos').show();
             $('.documento').show();
             $('#id_num_documento').prop('required', true)
-            $('#id_num_documento').val('')
+            /* $('#id_num_documento').val('') */
             $('#id_first_name').prop('required', true)
             $('#id_last_name').prop('required', true)
             $('.pais').prop('required', true)
-            $('.pais').val('')
+            /* $('.pais').val('') */
     }else{
         $('#id_num_documento').prop('required', false)
         $('#id_first_name').prop('required', false)
@@ -38,8 +38,11 @@ jQuery(document).ready(function($){
             $('#id_last_name').prop('required', false)
             $('.pais').prop('required', false)
             $('.nombres').hide();
+            $('#id_first_name').val('')
             $('.apellidos').hide();
+            $('#id_last_name').val('')
             $('.documento').hide();
+            $('#id_num_documento').val('')
         }
     
         else if ($('#id_groups').val() == "2"){
@@ -47,11 +50,11 @@ jQuery(document).ready(function($){
                 $('.apellidos').show();
                 $('.documento').show();
                 $('#id_num_documento').prop('required', true)
-                $('#id_num_documento').val('')
+                /* $('#id_num_documento').val('') */
                 $('#id_first_name').prop('required', true)
                 $('#id_last_name').prop('required', true)
                 $('.pais').prop('required', true)
-                $('.pais').val('')
+               /*  $('.pais').val('') */
         }else{
             $('#id_num_documento').prop('required', false)
         $('#id_first_name').prop('required', false)
@@ -87,11 +90,11 @@ jQuery(document).ready(function($){
             $('.apellidos').show();
             $('.documento').show();
             $('#id_num_documento').prop('required', true)
-            $('#id_num_documento').val('')
+           /*  $('#id_num_documento').val('') */
             $('#id_first_name').prop('required', true)
             $('#id_last_name').prop('required', true)
             $('.pais').prop('required', true)
-            $('.pais').val('')
+            /* $('.pais').val('') */
            
         }
 
