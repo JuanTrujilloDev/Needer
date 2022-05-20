@@ -83,14 +83,7 @@
   <div class="form-group mb-3">  
     {{form.groups.errors}}
     <label class="" for="id_groups">Tipo de usuario:</label>
-    <select class="form-control" name="groups" required="" id="id_groups">
-      <option value="" selected="">---------</option>
-    
-      <option value="1" >Consumidor</option>
-    
-      <option value="2">Creador de Contenido</option>
-    
-    </select>
+    {{form.groups}}
     <small id="groupHelp" class="form-text text-muted">Selecciona consumidor si deseas comprar contenido de tus famosos favoritos.</small>
           <br>
           <small id="groupHelp" class="form-text text-muted">Selecciona creador de contenido si deseas vender tu contenido.</small>
