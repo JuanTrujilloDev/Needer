@@ -1,11 +1,19 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% load i18n %}
-
-
+{% block headtitle %} Needer - Oauth Error {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/continue.css' %}">
+{% endblock css %}
 
 {% block content %}
-<h1>{% trans "Verify Your E-mail Address" %}</h1>
+{% include 'main/nav.html' %}
+<section class="continue bg-primary container-fluid d-flex align-items-center justify-content-center text-center">
+  <div class="container  inner-continue">
+  
+
+
+    <h1>{% trans "Verify Your E-mail Address" %}</h1>
 
 {% url 'account_email' as email_url %}
 
@@ -20,4 +28,10 @@ contact us if you do not receive it within a few minutes.{% endblocktrans %}</p>
 <p>{% blocktrans %}<strong>Note:</strong> you can still <a href="{{ email_url }}">change your e-mail address</a>.{% endblocktrans %}</p>
 
 
+
+
+
+</div>
+</section>
 {% endblock %}
+

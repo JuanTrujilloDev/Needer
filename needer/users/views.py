@@ -2,6 +2,8 @@ from multiprocessing import get_context
 from allauth.socialaccount.views import SignupView as SocialSignupView
 from allauth.account.views import SignupView
 
+
+
 from .models import Pais
 from .forms import SocialCustomForm, SignupCustomForm
 
@@ -23,6 +25,9 @@ class UserSignupView(SignupView):
         context = super().get_context_data(**kwargs)
         context["pais"] = Pais.objects.all()
         return context
+
+
+
 
     
 
