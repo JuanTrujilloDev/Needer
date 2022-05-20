@@ -151,7 +151,7 @@ class  SocialCustomForm(SocialSignupForm):
         value = grupo.name == "Consumidor"
 
         if value:
-            return self.cleaned_data['num_documento']
+            return None
         
 
         match = re.match("[0-9]{6,10}", self.cleaned_data["num_documento"])
@@ -254,6 +254,9 @@ class  SignupCustomForm(SignupForm):
         # Haciendo que el correo que se trae del API no se pueda tocar en el FORM!
         super(SignupCustomForm, self).__init__(*args, **kwargs)
         self.fields['pais'].widget.attrs['list'] = 'id_pais'
+        self.fields['email'].widget.attrs['readonly'] = True
+        self.fields['email'].widget.attrs['class'] = "form-control"
+        self.fields['groups'].widget.attrs['class'] = "form-control"
 
     #taken from https://github.com/pennersr/django-allauth/blob/master/allauth/account/forms.py
 
@@ -351,7 +354,7 @@ class  SignupCustomForm(SignupForm):
         # TODO POSIBLEMENTE AGREGAR ERROR PARA DAR PISTA A CADA TIPO DE DOCUMENTO
         # EJ: ERROR EN EL NUMERO DE CEDULA EL FORMATO ES (12345678 o 1234567890)
         if self.cleaned_data.get('groups') == Group.objects.get(name = 'Consumidor'):
-            return self.cleaned_data["num_documento"]
+            return None
 
 
         match = re.match("[0-9]{6,10}", self.cleaned_data["num_documento"])
