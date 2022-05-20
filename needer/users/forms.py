@@ -32,35 +32,92 @@ class  SocialCustomForm(SocialSignupForm):
         OBJ: El usuario creado por el metodo save()
     """
     
-    
-    first_name = forms.CharField(max_length=30, label="Nombres", required=True)
-    last_name = forms.CharField(max_length=30, label="Apellidos", required=True)
+ 
+    first_name = forms.CharField(max_length=30, label="Nombres", required=False)
+    last_name = forms.CharField(max_length=30, label="Apellidos", required=False)
     password1 = forms.CharField(max_length=30,label=("Contrasena"), widget=forms.PasswordInput, required=True)
     password2 = forms.CharField(max_length=30, label=("Confirma tu contrasena"), widget=forms.PasswordInput, required=True)
-    groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), blank=False, required=True)
-    num_documento = forms.CharField(max_length=10, label="Numero de documento")
-    pais = forms.CharField(max_length=50)
+    groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), label="Tipo de Usuario", blank=False, required=True)
+    pais = forms.CharField(max_length=50, required=False)
+    num_documento = forms.CharField(max_length=10, label="Numero de documento", required=False)
     """     via = forms.CharField(max_length=10, label="Via")
     numero1 = forms.CharField(max_length=10, label="#")
     numero2 = forms.CharField(max_length=10, label="-", validators=[numeros]) 
     zip = forms.CharField(max_length=9, label="Zip Code", validators=[numeros]) """
-    captcha = ReCaptchaField(widget=ReCaptchaV3, label="")
+    captcha = ReCaptchaField(widget=ReCaptchaV3, label="", required=True)
    
-    
-    # TODO PAIS ANADIR DATALIST EN FRONT
+   
+   
     # TODO NUMERO DE CELULAR
     
-    # TODO CAPTCHA EN FRONT
     
     def __init__(self, *args, **kwargs):
         # Haciendo que el correo que se trae del API no se pueda tocar en el FORM!
         super(SocialCustomForm, self).__init__(*args, **kwargs)
         self.fields['pais'].widget.attrs['list'] = 'id_pais'
         self.fields['email'].widget.attrs['readonly'] = True
+        self.fields['email'].widget.attrs['class'] = "form-control"
+        self.fields['groups'].widget.attrs['class'] = "form-control"
         
     
 
+    # Validar si el usuario es Creador de contenido requerir los campos desde el back.
+    def clean(self):
+        """
+        Validate the form input
+        """
+        cleaned_data = super().clean()
+        groups = cleaned_data['groups']
+
+        if groups.name == "Consumidor":
+            return cleaned_data
+
+        if groups.name == "Creador de Contenido":
+            first_name = cleaned_data.get('first_name')
+            last_name = cleaned_data.get('last_name')
+            num_documento = cleaned_data.get('num_documento')
+            pais = cleaned_data.get('pais')
+
+            if first_name == "":
+                self.add_error('first_name', _("Este campo es obligatorio")) 
+
+            if last_name == "":
+                self.add_error('last_name', _("Este campo es obligatorio")) 
+
+            if num_documento == "":
+                self.add_error('num_documento', _("Este campo es obligatorio")) 
+
+            if pais == "":
+                self.add_error('pais', _("Este campo es obligatorio")) 
+
+            
+        return cleaned_data
+
     #taken from https://github.com/pennersr/django-allauth/blob/master/allauth/account/forms.py
+
+    def clean_username(self):
+        """
+        Se limpia el usuario para cumplir con el formato
+
+        5 a 10 Caracteres
+        Solo Letras [A-Za-z numeros o ._]
+        """
+        username = self.cleaned_data['username']
+
+        match = re.match('^(?=.{5,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$', username)
+
+        if match:
+            try:
+                persona = User.objects.get(username=username)
+            except:
+                return username
+
+            if persona:
+                raise forms.ValidationError('El nombre de usuario ya se encuentra registrado, intenta con otro.')
+
+        raise forms.ValidationError('El usuario no cumple con el formato.')
+
+
 
     def clean_password2(self):
         """clean_password2
@@ -92,8 +149,14 @@ class  SocialCustomForm(SocialSignupForm):
         """
         # TODO POSIBLEMENTE AGREGAR ERROR PARA DAR PISTA A CADA TIPO DE DOCUMENTO
         # EJ: ERROR EN EL NUMERO DE CEDULA EL FORMATO ES (12345678 o 1234567890)
+        grupo = self.cleaned_data['groups']
+        value = grupo.name == "Consumidor"
+
+        if value:
+            return self.cleaned_data['num_documento']
         
-        match = re.match("[0-9]{8,10}", self.cleaned_data["num_documento"])
+
+        match = re.match("[0-9]{6,10}", self.cleaned_data["num_documento"])
         
         
         if match:
@@ -108,7 +171,13 @@ class  SocialCustomForm(SocialSignupForm):
         
         
     def clean_pais(self):
+        grupo = self.cleaned_data['groups']
+        value = grupo.name == "Consumidor"
+
+        if value:
+            return Pais.objects.get(nombre = "United States of America")
         
+
         pais = self.cleaned_data['pais']
         try:
             paises = Pais.objects.get(nombre = pais)
@@ -166,13 +235,13 @@ class  SignupCustomForm(SignupForm):
         OBJ: La instancia guardada del usuario y la redireccion.
     """
     
-    first_name = forms.CharField(max_length=30, label="Nombres", required=True)
-    last_name = forms.CharField(max_length=30, label="Apellidos", required=True)
+    first_name = forms.CharField(max_length=30, label="Nombres", required=False)
+    last_name = forms.CharField(max_length=30, label="Apellidos", required=False)
     password1 = forms.CharField(max_length=30,label=("Contrasena"), widget=forms.PasswordInput, required=True)
     password2 = forms.CharField(max_length=30, label=("Confirma tu contrasena"), widget=forms.PasswordInput, required=True)
-    groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), label="Tipo de Usuario", blank=False, required=True)
-    pais = forms.CharField(max_length=50, required=True)
-    num_documento = forms.CharField(max_length=10, label="Numero de documento", required=True)
+    groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), label="Tipo de Usuario", blank=False, required=False)
+    pais = forms.CharField(max_length=50, required=False)
+    num_documento = forms.CharField(max_length=10, label="Numero de documento", required=False)
     """     via = forms.CharField(max_length=10, label="Via")
     numero1 = forms.CharField(max_length=10, label="#")
     numero2 = forms.CharField(max_length=10, label="-", validators=[numeros]) 
@@ -180,10 +249,8 @@ class  SignupCustomForm(SignupForm):
     captcha = ReCaptchaField(widget=ReCaptchaV3, label="", required=True)
    
     
-    # TODO PAIS ANADIR DATALIST EN FRONT
     # TODO NUMERO DE CELULAR
-    
-    # TODO CAPTCHA EN FRONT
+    # TODO Username | Nickname
     
     def __init__(self, *args, **kwargs):
         # Haciendo que el correo que se trae del API no se pueda tocar en el FORM!
@@ -191,6 +258,65 @@ class  SignupCustomForm(SignupForm):
         self.fields['pais'].widget.attrs['list'] = 'id_pais'
 
     #taken from https://github.com/pennersr/django-allauth/blob/master/allauth/account/forms.py
+
+
+    # Validar si el usuario es Creador de contenido requerir los campos desde el back.
+    def clean(self):
+        """
+        Validate the form input
+        """
+        cleaned_data = super().clean()
+        groups = cleaned_data['groups']
+
+        if groups.name == "Consumidor":
+            return cleaned_data
+
+        if groups.name == "Creador de Contenido":
+            first_name = cleaned_data.get('first_name')
+            last_name = cleaned_data.get('last_name')
+            num_documento = cleaned_data.get('num_documento')
+            pais = cleaned_data.get('pais')
+
+            if first_name == "":
+                self.add_error('first_name', _("Este campo es obligatorio")) 
+
+            if last_name == "":
+                self.add_error('last_name', _("Este campo es obligatorio")) 
+
+            if num_documento == "":
+                self.add_error('num_documento', _("Este campo es obligatorio")) 
+
+            if pais == "":
+                self.add_error('pais', _("Este campo es obligatorio")) 
+
+            
+        return cleaned_data
+
+
+
+        
+
+    def clean_username(self):
+        """
+        Se limpia el usuario para cumplir con el formato
+
+        5 a 10 Caracteres
+        Solo Letras [A-Za-z numeros o ._]
+        """
+        username = self.cleaned_data['username']
+
+        match = re.match('^(?=.{5,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$', username)
+
+        if match:
+            try:
+                persona = User.objects.get(username=username)
+            except:
+                return username
+
+            if persona:
+                raise forms.ValidationError('El nombre de usuario ya se encuentra registrado, intenta con otro.')
+
+        raise forms.ValidationError('El usuario no cumple con el formato.')
 
     def clean_password2(self):
         
@@ -211,6 +337,7 @@ class  SignupCustomForm(SignupForm):
             if (self.cleaned_data["password1"] != self.cleaned_data["password2"]):
                 raise forms.ValidationError("Ambas contrasenas deben coincidir.")
         return self.cleaned_data["password2"]
+
     
     def clean_num_documento(self):
         """clean_num_documento
@@ -226,8 +353,12 @@ class  SignupCustomForm(SignupForm):
         """
         # TODO POSIBLEMENTE AGREGAR ERROR PARA DAR PISTA A CADA TIPO DE DOCUMENTO
         # EJ: ERROR EN EL NUMERO DE CEDULA EL FORMATO ES (12345678 o 1234567890)
+        if self.cleaned_data.get('groups') == Group.objects.get(name = 'Consumidor'):
+            return self.cleaned_data["num_documento"]
+
+
+        match = re.match("[0-9]{6,10}", self.cleaned_data["num_documento"])
         
-        match = re.match("[0-9]{8,10}", self.cleaned_data["num_documento"])
         
         if match:
             # Me genera ruido el numero de doc repetido
@@ -242,6 +373,10 @@ class  SignupCustomForm(SignupForm):
         
     def clean_pais(self):
         
+
+        if self.cleaned_data.get('groups') == Group.objects.get(name = 'Consumidor'):
+            return Pais.objects.get(nombre="United States of America")
+
         pais = self.cleaned_data['pais']
         try:
             paises = Pais.objects.get(nombre = pais)

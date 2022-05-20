@@ -1,46 +1,81 @@
-{% extends "account/base.html" %}
-
+{% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 {% load account socialaccount %}
+{% block headtitle %} Needer - Login {% endblock %}
 
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock css %}
 
 {% block content %}
+<section class="login-view container-fluid d-flex justify-content-center align-items-center bg-primary py-2">
 
-<h1>{% trans "Sign In" %}</h1>
+<div class="container row justify-content-center">
 
-{% get_providers as socialaccount_providers %}
 
-{% if socialaccount_providers %}
-<p>{% blocktrans with site.name as site_name %}Please sign in with one
-of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
 
-<div class="socialaccount_ballot">
+<div class="col-lg-6 col-md-10 bg-white p-5 rounded">
 
-  <ul class="socialaccount_providers">
-    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-  </ul>
+  <h1 class="fw-bold text-center mb-2 pb-3"> <img src="{% static 'img/Needer_logo.svg' %}" class="img-fluid logo-login">
+     &nbsp;{% trans "Sign In" %} en Needer
+    </h1>
 
-  <div class="login-or">{% trans 'or' %}</div>
+
+  <form class="login pt-3" method="POST" action="{% url 'account_login' %}">
+  
+    {% csrf_token %}
+    <div class="form-group mb-3">
+    <label for="id_login">Correo electrónico:</label>
+    <input class="form-control" type="email" name="login" placeholder="Correo electrónico" autocomplete="email" required="" id="id_login">
+    </div>
+
+    <div class="form-group mb-2">
+    <label for="id_password">Contraseña:</label>
+    <input class="form-control" type="password" name="password" placeholder="Contraseña" autocomplete="current-password" required="" id="id_password">
+    </div>
+
+    <div class="form-check my-3">
+    <label class="form-check-label" for="id_remember">Recordarme</label>
+    <input class="form-check-input" type="checkbox" name="remember" id="id_remember">
+    </div>
+
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+
+    <div class="form-group">
+    <button class="primaryAction btn btn-primary btn-lg form-control fw-bold" type="submit">{% trans "Sign In" %}</button>
+    </div>
+
+    <div class="d-flex my-3 justify-content-between ayudas">
+    <a class="button secondaryAction " href="{% url 'account_reset_password' %}">¿Tienes problemas con iniciar sesión?</a>
+    <a class=" " href="{% url 'account_signup' %}">Unete</a>
+    </div>
+
+    {% get_providers as socialaccount_providers %}
+
+
+
+    <h5 class="login-divisor"><span>O</span></h5>
+  
+  
+    <div class="socialaccount_ballot social-login">
+  
+      <a title="Google" class="socialaccount_provider google form-control btn btn-lg fw-bold text-muted" href="/accounts/google/login/?process=login">
+        <img class="google-img" src="{% static 'img/Google.svg' %}"> &nbsp; Inicia sesion con google
+      </a>
+    </div>
+
+  </form>
+
+
+  
+
+
+
+
 
 </div>
-
-{% include "socialaccount/snippets/login_extra.html" %}
-
-{% else %}
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
-{% endif %}
-
-<form class="login" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
-</form>
-
+</section>
 {% endblock %}

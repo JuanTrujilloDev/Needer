@@ -1,26 +1,150 @@
-{% extends "account/base.html" %}
-
+{% extends "base.html" %}
+{% load static %}
 {% load i18n %}
-
-{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block headtitle %} Needer - Registro {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock css %}
 
 {% block content %}
-<h1>{% trans "Sign Up" %}</h1>
+<section class="registro row">
 
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+<div class="col-md-6 col-sm-12 imagen-izquierda container-fluid">
+ 
 
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+  
+</div>
+
+
+
+
+<div class="col-md-6 col-sm-12 formulario-derecha py-3 d-flex align-items-center">
+  
+
+  <form class="container signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}
+  <h1>Accede a Needer:</h1>
+
+  <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+  
   <datalist name="pais"  id="id_pais">
       {% for data in pais %}
           <option value="{{data}}"></option>
       {% endfor %}
   </datalist>
-  {{ form.as_p }}
+
+  {% if form.error %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+  
+  <div class="form-group mb-3">  
+    {{form.email.errors}}
+    <label class="" for="id_email">Email:</label>
+    <input type="email" class="form-control" id="id_email" name="email" required autocomplete="email">
+    <small id="emailHelp" class="form-text text-muted">Nunca compartiremos tu email con otras empresas.</small>
+  </div>
+
+  <div class="form-group mb-3">  
+    <div class="row">
+      {{form.password1.errors}}
+      <div class="col-lg-6 col-sm-12">
+    <label class="" for="id_password_1">Contrasena:</label>
+    <input type="password" class="form-control" id="id_password_1" name="password1" required autocomplete="password" placeholder="Contrasena">
+    </div>
+
+  <div class="col-lg-6 col-sm-12">
+    {{form.password2.errors}}
+    <label class="" for="id_password_2">Repite tu Contrasena:</label>
+    <input type="password" class="form-control" id="id_password_2" name="password2" required autocomplete="new-password" placeholder="Confirmar contrasena">
+  </div>  
+
+  </div>
+  </div>
+
+
+
+  <div class="form-group mb-3">  
+    {{form.username.errors}}
+    <label class="" for="id_username">Usuario:</label>
+    <input type="text" class="form-control" id="id_username" name="username" required autocomplete="username">
+  </div>
+
+  <div class="form-group mb-3">  
+    {{form.groups.errors}}
+    <label class="" for="id_groups">Tipo de usuario:</label>
+    <select class="form-control" name="groups" required="" id="id_groups">
+      <option value="" selected="">---------</option>
+    
+      <option value="1" >Consumidor</option>
+    
+      <option value="2">Creador de Contenido</option>
+    
+    </select>
+    <small id="groupHelp" class="form-text text-muted">Selecciona consumidor si deseas comprar contenido de tus famosos favoritos.</small>
+          <br>
+          <small id="groupHelp" class="form-text text-muted">Selecciona creador de contenido si deseas vender tu contenido.</small>
+  </div>
+
+
+
+  <div class="form-group mb-3 nombres">  
+    {{form.first_name.errors}}
+    <label class="" for="id_first_name">Nombres:</label>
+    <input type="text" class="form-control" id="id_first_name" name="first_name" autocomplete="first_name">
+  </div>
+
+  <div class="form-group mb-3 apellidos">  
+    {{form.last_name.errors}}
+    <label class="" for="id_last_name">Apellidos:</label>
+    <input type="text" class="form-control" id="id_last_name" name="last_name" autocomplete="last_name">
+  </div>
+
+  
+  <div class="form-group mb-3 documento">  
+    <div class="row">
+
+      <div class="col-lg-6 col-sm-12">
+        {{form.pais.errors}}
+    <label class="" for="id_pais">Pais:</label>
+    <input type="text" class="form-control pais" id="id_pais" name="pais" list="id_pais">
+    </div>
+
+  <div class="col-lg-6 col-sm-12">
+    {{form.num_documento.errors}}
+    <label class="" for="id_num_documento">Numero de documento:</label>
+    <input class="form-control" type="text" name="num_documento" maxlength="10" id="id_num_documento">
+    <small id="emailHelp" class="form-text text-muted">Tu numero de identificacion solo sera consultado por nosotros para validar tu informacion.</small>
+  </div>  
+
+  </div>
+  </div>
+  {{form.captcha}}
+  <!--TODO TELEFONO-->
+
+  
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
+  <button class="btn btn-primary form-control" type="submit">{% trans "Sign Up" %}</button>
 </form>
 
+</div>
+
+</section>
+
 {% endblock %}
+
+{% block script %}
+<script src="{% static 'js/signup.js' %}"></script>
+{% endblock script %}

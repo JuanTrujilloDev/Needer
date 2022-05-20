@@ -23,6 +23,12 @@ class UserSignupView(SignupView):
         context = super().get_context_data(**kwargs)
         context["pais"] = Pais.objects.all()
         return context
+
+    
+
+
+
+# TODO En el login agregar el captcha.
     
 
     

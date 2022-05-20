@@ -1,11 +1,25 @@
-{% extends "socialaccount/base.html" %}
-
+{% extends "base.html" %}
+{% load static %}
 {% load i18n %}
-
-{% block head_title %}{% trans "Social Network Login Failure" %}{% endblock %}
+{% block headtitle %} Needer - Oauth Error {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/continue.css' %}">
+{% endblock css %}
 
 {% block content %}
-<h1>{% trans "Social Network Login Failure" %}</h1>
+<section class="continue bg-primary container-fluid d-flex align-items-center justify-content-center text-center">
+  <div class="container  inner-continue">
+  <img class="img-fluid" src="{% static 'img/Needer_Logo_Blanco.svg' %}">
 
-<p>{% trans "An error occurred while attempting to login via your social network account." %}</p>
+
+<h1>Error de inicio de sesión con red social</h1>
+
+<p>Ocurrio un error mientras intentabas iniciar sesion a traves de tu cuenta de google, por favor vuelve a intentarlo.</p>
+
+<a class="btn btn-lg text-white border-white" href="{% url 'account_login' %}">Volver al login</a>
+
+
+
+</div>
+</section>
 {% endblock %}

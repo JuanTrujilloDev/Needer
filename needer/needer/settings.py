@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'needer',
     'users',
+    'main'
     
 ]
 
@@ -150,6 +151,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -179,11 +184,17 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+# Redirects
+
+LOGOUT_REDIRECT_URL = 'home-view'
+
+# Account options
+
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_UNIQUE = True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
 SOCIALACCOUNT_AUTO_SIGNUP = False
 
 SOCIALACCOUNT_ADAPTER = "users.adapter.SocialAccountAdapter"
