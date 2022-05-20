@@ -1,5 +1,7 @@
+from tkinter import Widget
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from allauth.account.forms import SignupForm as SignupForm
+from allauth.account.forms import ResetPasswordForm
 from allauth.socialaccount.adapter import get_adapter
 from django import forms
 from .models import User, Pais
@@ -10,6 +12,10 @@ from .extras import numeros
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
 
+
+
+class CustomResetPasswordForm(ResetPasswordForm):
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
 
 
 

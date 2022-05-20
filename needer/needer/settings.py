@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'needer',
     'users',
-    'main'
+    'main',
     
 ]
 
