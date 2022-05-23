@@ -165,6 +165,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 RECAPTCHA_PRIVATE_KEY = os.environ["RE_CAPTCHA_SECRET"]
 RECAPTCHA_PUBLIC_KEY = os.environ["RE_CAPTCHA_PUBLIC"]
 
+# MEDIA FILES
+
+MEDIA_ROOT =  BASE_DIR / "media"
+MEDIA_URL = "media/"
+DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'PNG': ".png"}
+
+
+
+
+
 # ALLAUTH SETTINGS:
 
 
@@ -206,9 +216,9 @@ LANGUAGE_CODE = 'es'
 # Email Backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     
-
+# TODO ARREGLAR EL SMTP
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.zoho.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = os.environ['GMAIL_USER']
 EMAIL_HOST_PASSWORD = os.environ['GMAIL_PASSWORD'] 

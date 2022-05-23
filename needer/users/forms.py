@@ -107,12 +107,14 @@ class  SocialCustomForm(SocialSignupForm):
         Solo Letras [A-Za-z numeros o ._]
         """
         username = self.cleaned_data['username']
+        
+        # Regex para nombre de usuario 
 
-        match = re.match('^(?=.{5,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$', username)
+        match = re.match('^[A-Za-z][A-Za-z0-9]{0,10}$', username)
 
         if match:
             try:
-                persona = User.objects.get(username=username)
+                persona = User.objects.get(username__iexact=username)
             except:
                 return username
 
@@ -141,6 +143,7 @@ class  SocialCustomForm(SocialSignupForm):
                 raise forms.ValidationError("Ambas contrasenas deben coincidir.")
         return self.cleaned_data["password2"]
     
+
     def clean_num_documento(self):
         """clean_num_documento
 
@@ -307,15 +310,16 @@ class  SignupCustomForm(SignupForm):
         Se limpia el usuario para cumplir con el formato
 
         5 a 10 Caracteres
-        Solo Letras [A-Za-z numeros o ._]
+        Solo Letras [A-Za-z numeros]
         """
         username = self.cleaned_data['username']
 
-        match = re.match('^(?=.{5,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$', username)
+        # Regex para Username
+        match = re.match('^[A-Za-z][A-Za-z0-9]{0,10}$', username)
 
         if match:
             try:
-                persona = User.objects.get(username=username)
+                persona = User.objects.get(username__iexact=username)
             except:
                 return username
 
@@ -418,6 +422,27 @@ class  SignupCustomForm(SignupForm):
     def signup(self, request, user):
         user.set_password(self.user, self.cleaned_data["password1"])
         user.save()
+
+
+
+
+    
+
+    # TODO AGREGAR FORM UPDATECREADOR
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # TODO AGREGAR FORM UPDATECONSUMIDOR
     
         
         

@@ -14,6 +14,7 @@ urlpatterns = [
     path('password/set', page_not_found, {'exception': Exception('Not Found')}, name="account_set_password"),
     path('logout/', LogoutView.as_view(), name="account_logout"),
     path('password/reset/', PasswordResetView.as_view(form_class = CustomResetPasswordForm), name="account_reset_password"),
+    path('profile/', updateAccountViewResolver, name='account_profile'),
     path('', include('allauth.urls')),
     
 ]
