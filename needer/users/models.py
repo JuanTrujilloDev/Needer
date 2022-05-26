@@ -99,7 +99,7 @@ class User(AbstractUser):
     genero = models.CharField(max_length=7, choices = GeneroChoices.choices, default=GeneroChoices.OTRO)
     fecha_nacimiento = models.DateField(verbose_name="Fecha nacimiento", blank=True, null=True)
     tipo_celebridad = models.ManyToManyField(TipoCelebridad, blank = True)
-    foto = ResizedImageField(size=[500,300], quality=100, upload_to = 'account', null=True, blank=True, default='media/account/default.png')
+    foto = ResizedImageField(size=[500,300], quality=100, upload_to = 'account', null=True, default='media/account/default.png')
 
 
     

@@ -202,7 +202,7 @@ class  SocialCustomForm(SocialSignupForm):
 
         first_name = self.cleaned_data['first_name']
 
-        match = re.match('^[A-Z][a-zA-Z]+$', first_name)
+        match = re.match('^[A-Z][a-zA-Z]', first_name)
 
         if match:
             return first_name
@@ -214,7 +214,7 @@ class  SocialCustomForm(SocialSignupForm):
 
         last_name = self.cleaned_data['last_name']
 
-        match = re.match('^[A-Z][a-zA-Z]+$', last_name)
+        match = re.match('^[A-Z][a-zA-Z]', last_name)
 
         if match:
             return last_name
@@ -510,9 +510,16 @@ class UpdateCreadorForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         instance = kwargs.get('instance', None)
         kwargs.update(initial={
-            'pais':instance.pais.nombre,
-            'fecha_nacimiento': instance.fecha_nacimiento.strftime("%Y-%m-%d")
+            'pais':instance.pais.nombre
+           
         })
+
+        if instance.fecha_nacimiento:
+             kwargs.update(initial={
+            'fecha_nacimiento': instance.fecha_nacimiento.strftime("%Y-%m-%d")
+           
+            })
+                
         super(UpdateCreadorForm, self).__init__(*args, **kwargs)
         self.fields['pais'].widget.attrs['list'] = "id_pais"
 
@@ -530,7 +537,7 @@ class UpdateCreadorForm(forms.ModelForm):
 
         first_name = self.cleaned_data['first_name']
 
-        match = re.match('^[A-Z][a-zA-Z]+$', first_name)
+        match = re.match('^[A-Z][a-zA-Z]', first_name)
 
         if match:
             return first_name
@@ -542,7 +549,7 @@ class UpdateCreadorForm(forms.ModelForm):
 
         last_name = self.cleaned_data['last_name']
 
-        match = re.match('^[A-Z][a-zA-Z]+$', last_name)
+        match = re.match('^[A-Z][a-zA-Z]', last_name)
 
         if match:
             return last_name
