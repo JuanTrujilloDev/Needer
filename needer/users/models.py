@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group
 from django_resized import ResizedImageField
+import os
+from django.conf import settings
 
 # Create your models here.
 
@@ -46,6 +48,11 @@ class TipoCelebridad(models.Model):
         return self.nombre
 
 
+def user_directory_path_profile(instance, filename):
+    profile_picture_name = 'account/{0}/profile/profile.jpg'.format(instance.username)
+    full_path = os.path.join(settings.MEDIA_ROOT, profile_picture_name)
+    if os.path.exists(full_path):os.remove(full_path)
+    return profile_picture_name
 
 class User(AbstractUser):
     """
@@ -99,7 +106,7 @@ class User(AbstractUser):
     genero = models.CharField(max_length=7, choices = GeneroChoices.choices, default=GeneroChoices.OTRO)
     fecha_nacimiento = models.DateField(verbose_name="Fecha nacimiento", blank=True, null=True)
     tipo_celebridad = models.ManyToManyField(TipoCelebridad, blank = True)
-    foto = ResizedImageField(size=[500,500], upload_to = 'account/',  blank=True)
+    foto = ResizedImageField(size=[500,500], upload_to = user_directory_path_profile,  blank=True)
 
 
     
