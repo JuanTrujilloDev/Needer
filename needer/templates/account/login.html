@@ -25,7 +25,22 @@
   <form class="login pt-3" method="POST" action="{% url 'account_login' %}">
   
     {% csrf_token %}
+    {% if form.errors %}
+      {% for field in form %}
+          {% for error in field.errors %}
+              <div class="alert alert-danger">
+                  <strong>{{ error|escape }}</strong>
+              </div>
+          {% endfor %}
+      {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+  {% endif %}
     <div class="form-group mb-3">
+    {{form.email.errors}}
     <label for="id_login">Correo electrónico:</label>
     <input class="form-control" type="email" name="login" placeholder="Correo electrónico" autocomplete="email" required="" id="id_login">
     </div>

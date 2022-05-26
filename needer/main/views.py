@@ -11,3 +11,5 @@ class HomeView (TemplateView):
         context['title'] = 'Needer | Home'
 
         return context
+
+    # TODO Los usuarios autenticados se les renvia al feed

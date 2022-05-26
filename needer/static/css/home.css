@@ -22,6 +22,20 @@
     .li-registro{
         background-color: #5C28FF;
     }
+
+    .li-registro:hover .btn-registro {
+        background-color: #3131B3!important;
+    }
+
+    .btn-registro:hover .li-registro{
+        background-color: #3131B3!important;
+    }
+
+
+    .li-registro:hover {
+        background-color: #3131B3!important;
+    }
+
     .btn-primary{
         border: none;
     }

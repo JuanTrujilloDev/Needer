@@ -1,1 +1,96 @@
-Consumidor
+{% extends 'main/consumidor/content-consumidor.html' %}
+{% load static %}
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/update-creador.css' %}">
+{% endblock css %}
+
+{% block inner-content %}
+    <!--INNER CONTENT-->
+
+    <div class="container py-4">
+        <h1 class="text-primary">Ajustes</h1>
+        <div class="d-flex justify-content-start border-bottom mb-3 pre-ajustes">
+            <a class="me-4 mb-0 fw-bolder text-muted active" href="{% url 'account_profile' %}"><h2 class="mb-0">Perfil</h2></a>
+            <a class="me-4 mb-0 fw-bolder text-muted" href="#"><h2 class="mb-0">Método de pago</h2></a>
+            <a class="me-5 mb-0 fw-bolder text-muted" href="{% url 'account_change_password' %}"><h2 class="mb-0">Actualizar Contrasena</h2></a>
+        </div>
+
+
+        <form class="" method="POST" action="{% url 'account_profile' %}" enctype="multipart/form-data">
+   
+            {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+
+            {% csrf_token %}
+
+
+            <div class="form-group row mb-3">
+
+
+                <form method="POST" action="{% url 'account_profile' %}">
+                 <p><strong class="text-danger">{{ form.username.errors.as_text }}</strong> </p>
+                       <h4 class="text-muted fw-bold"> {{form.username.label}} </h4>
+                       <div class="col-md-8">{{form.username}}</div> 
+                       <button type="submit" class="col-md-4 btn btn-primary">Cambiar usuario</button>
+            </div>
+
+            <div class="form-group row">
+                      <h4 class="text-muted fw-bold"> Correo Principal: </h4>
+                      <div class="col-md-8"><input class="form-control" disabled value="{{request.user.email}}" placeholder="{{request.user.email}}"></div> 
+                      <a href="{% url 'account_email' %}" class="col-md-4 btn btn-primary">Administrar correos</a>
+           </div>
+                </form>
+
+
+
+
+
+                <div class="row my-4 d-flex align-items-center">
+
+                   
+                    <div class="row my-3">
+                        <h4 class="text-muted fw-bold">Redes asociadas</h4>
+                        {% for social in socials %}
+                        <div class="row px-4 my-3">
+                            <div class="col-md-2 col-sm-2 text-center"><img src="{% static 'img/Google.svg' %}" height="100px"></div>
+                            <div class="col-md-8 col-sm-10 row d-flex align-content-center">
+                                <h5 class="fw-bold">{{social.provider|title}}</h5>
+                                <p class="mb-0">La cuenta se encuentra vinculada a traves de {{social.provider|title}}</p>
+                                <p class="fw-bold text-muted"><small>{{social.extra_data.email}}</small></p>
+                            </div>
+                            <div class="col-md-2 col-sm-12 text-center d-flex align-items-center justify-content-center">
+                             <a href="{% url 'socialaccount_connections' %}"> <h1 class="text-secondary"><i class="bi bi-x-circle-fill"></i></h1>  </a>
+                            </div>
+                            
+                         </div>
+                        {% endfor %}
+                        <a href="{% url 'socialaccount_connections' %}" class="btn btn-lg btn-secondary rounded-pill">
+                            <h1 class="fw-bold">Administrar cuentas</h1>
+                        </a>
+                    </div>
+            </div>
+
+
+
+
+    </div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,71 @@
+body, html {
+    height:100%;
+    overflow: hidden;
+}
+
+/*
+ * Off Canvas sidebar at medium breakpoint
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 992px) {
+
+  .sidebar-offcanvas {
+    display: none;
+  }
+
+  .navbar .right-elements{
+    display: none;
+  }
+  
+}
+
+/*
+ * Off Canvas wider at sm breakpoint
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 34em) {
+    .sidebar-offcanvas {
+        display: none;
+      }
+
+      .navbar .right-elements{
+        display: none;
+      }
+}
+
+@media screen and (min-width: 992px){
+  .navbar-collapse .collapse-elements{
+    display: none;
+  }
+}
+
+
+.navbar{
+    box-shadow: 0 1.5px 0px 0 rgba(0,0,0,.2)!important;
+}
+
+
+
+.navbar .notificacion{
+  font-size: 2rem!important;
+}
+
+.navbar .profile-img{
+  height: 50px;
+  width: 50px;
+  border: 2px solid #d1d1d1;
+}
+
+.collapse-elements{
+  height: 100vh!important;
+}
+
+.collapse .show{
+  display: flex;
+  align-items: center;
+}
+
+ .show .nav-link:focus{
+  color: #5C28FF;
+}
+

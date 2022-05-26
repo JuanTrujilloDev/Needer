@@ -7,10 +7,12 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 from django.http import HttpResponseNotFound
+from allauth.socialaccount.models import SocialAccount
 
 
 from .models import Pais
-from .forms import SocialCustomForm, SignupCustomForm
+from .forms import (SocialCustomForm, SignupCustomForm, UpdateCreadorForm,
+                    UpdateConsumidorForm)
 
 
 
@@ -69,13 +71,22 @@ class UpdateConsumidorView(UpdateView):
     Returns: User Instance Updated
     """
 
-    # TODO AGREGAR EL FORM Y VALIDAR CAMPOS
+    
     model = User
-    fields = ['email', 'username']
+    form_class = UpdateConsumidorForm
     template_name = 'account/consumidor/update-consumidor.html'
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.id)
+
+    def get_success_url(self) -> str:
+        return reverse('account_profile')
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        context['socials'] = SocialAccount.objects.filter(user = self.get_object())
+
+        return context
 
 
 class UpdateCreadorView(UpdateView):
@@ -91,11 +102,23 @@ class UpdateCreadorView(UpdateView):
     """
     # TODO AGREGAR EL FORM Y VALIDAR CAMPOS
     model = User
-    fields = ['first_name', 'last_name', 'num_documento', 'pais', 'username', 'email']
+    form_class = UpdateCreadorForm
     template_name = 'account/creador/update-creador.html'
+
+    def get_success_url(self) -> str:
+        return reverse('account_profile')
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.id)
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        context['pais'] = Pais.objects.all().order_by('nombre')
+        context['socials'] = SocialAccount.objects.filter(user = self.get_object())
+
+        return context
+
+
 
 
 def updateAccountViewResolver(request):

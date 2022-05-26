@@ -1,1 +1,182 @@
-Creador
+{% extends 'main/creador/content-creador.html' %}
+{% load static %}
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/update-creador.css' %}">
+{% endblock css %}
+
+{% block inner-content %}
+    <!--INNER CONTENT-->
+
+    <div class="container py-4">
+
+        <!--Titulo y links-->
+        <h1 class="text-primary mb-3 fw-bold">Ajustes</h1>
+        <div class="d-flex justify-content-start border-bottom mb-3 pre-ajustes">
+            <a class="me-4 mb-0 fw-bolder text-muted active" href="{% url 'account_profile' %}"><h3 class="mb-0">Perfil</h3></a>
+            <a class="me-4 mb-0 fw-bolder text-muted" href="#"><h3 class="mb-0">Datos Bancarios</h3></a>
+            <a class="me-5 mb-0 fw-bolder text-muted" href="{% url 'account_change_password' %}"><h3 class="mb-0">Actualizar Contrasena</h3></a>
+        </div>
+
+        <!--Formulario-->
+
+        <form class="d-flex justify-content-center row" id="form-update" method="POST" action="{% url 'account_profile' %}" enctype="multipart/form-data">
+            <datalist id="id_pais" name="pais">
+                {% for data in pais %}
+                <option value="{{data}}"></option>
+
+                {% endfor %}
+
+            </datalist>
+            {% csrf_token %}
+
+            
+            {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+            
+        <p><strong class="text-danger">{{ form.foto.errors.as_text }}</strong> </p>   
+            <button onclick="openImageField()" class="btn rounded-circle overflow-hidden update-imagen" style="background-image: url({{request.user.foto.url}});">
+
+            </button>
+            <div class="inputs my-3">
+               <p><strong class="text-danger">{{ form.biografia.errors.as_text }}</strong> </p>
+                <h4 class="text-muted fw-bold"> {{form.biografia.label}} </h4>
+                {{form.biografia}}
+
+                <div class="row ">
+                    <div class="col-lg-6">
+                        <p><strong class="text-danger">{{ form.first_name.errors.as_text }}</strong> </p>
+                       <h4 class="text-muted fw-bold"> {{form.first_name.label}} </h4>
+                        {{form.first_name}}
+                    </div>
+                    <div class="col-lg-6">
+                        <p><strong class="text-danger">{{ form.last_name.errors.as_text }}</strong> </p>
+                        <h4 class="text-muted fw-bold"> {{form.last_name.label}} </h4>
+                        {{form.last_name}}
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <div class="col-lg-6">
+                        <p><strong class="text-danger">{{ form.username.errors.as_text }}</strong> </p>
+                       <h4 class="text-muted fw-bold"> {{form.username.label}} </h4>
+                        {{form.username}}
+                    </div>
+                    <div class="col-lg-6">
+                        <p><strong class="text-danger">{{ form.pais.errors.as_text }}</strong> </p>
+                        <h4 class="text-muted fw-bold"> {{form.pais.label}} </h4>
+                        {{form.pais}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p><strong class="text-danger">{{ form.fecha_nacimiento.errors.as_text }}</strong> </p>
+                       <h4 class="text-muted fw-bold"> {{form.fecha_nacimiento.label}} </h4>
+                        {{form.fecha_nacimiento}}
+                    </div>
+                    <div class="col-lg-6">
+                        <p><strong class="text-danger">{{ form.genero.errors.as_text }}</strong> </p>
+                        <h4 class="text-muted fw-bold"> {{form.genero.label}} </h4>
+                        {{form.genero}}
+                    </div>
+                </div>
+
+
+                    <p><strong class="text-danger">{{ form.tipo_celebridad.errors.as_text }}</strong> </p>
+                   <h4 class="text-muted fw-bold"> {{form.tipo_celebridad.label}} </h4>
+                    {{form.tipo_celebridad}}
+
+            <div class="d-none">
+            {{form.foto}}
+            </div>
+
+            </div>
+            
+            <button id="enviar-update" class="btn btn-primary rounded-pill" type="submit">Actualizar informacion</button>
+        </form>
+    
+
+
+        
+
+    <!--EMAILS-->
+    <h1 class="mt-4 mb-3 fw-bold">Datos de acceso</h1>
+
+    <div class="row my-4 d-flex align-items-center">
+
+            <h4 class="text-muted fw-bold">Email Principal</h4>
+            <div class=" col-md-8 mb-3">
+                <!--Email principal-->
+            <input type="email" class="form-control" value="{{request.user.email}}" placeholder="{{request.user.email}}" readonly>
+
+            </div>
+            <div class="col-md-4 mb-3">
+
+            <a href="{% url 'account_email' %}" class="btn btn-primary rounded-pill w-100 px-5">Administrar correos</a>
+            
+            </div>
+
+            <!--Social connections-->
+            <div class="row my-3">
+                <h4 class="text-muted fw-bold">Redes asociadas</h4>
+                {% for social in socials %}
+                <div class="row px-4 my-3">
+                    <div class="col-md-2 col-sm-4 text-center"><img src="{% static 'img/Google.svg' %}" height="100px"></div>
+                    <div class="col-md-8 col-sm-8 row d-flex align-content-center">
+                        <h5 class="fw-bold">{{social.provider|title}}</h5>
+                        <p class="mb-0">La cuenta se encuentra vinculada a traves de {{social.provider|title}}</p>
+                        <p class="fw-bold text-muted"><small>{{social.extra_data.email}}</small></p>
+                    </div>
+                    <div class="col-md-2 col-sm-12 text-center d-flex align-items-center justify-content-center">
+                        <a href="{% url 'socialaccount_connections' %}"> <h1 class="text-secondary"><i class="bi bi-info-circle-fill"></i></h1>  </a>
+                    </div>
+                    
+                 </div>
+                {% endfor %}
+                <a href="{% url 'socialaccount_connections' %}" class="btn btn-lg btn-secondary rounded-pill">
+                    <h1 class="fw-bold">Administrar cuentas</h1>
+                </a>
+            </div>
+
+
+            <!--Recuperar Password-->
+
+           
+    </div>
+
+
+
+    </div>
+
+
+
+
+{% endblock %}
+
+
+
+{% block script %}
+
+<script>
+    function openImageField(){
+        document.getElementById("id_foto").click();
+    
+    }
+
+</script>
+
+{% endblock script %}
