@@ -523,9 +523,14 @@ class UpdateCreadorForm(forms.ModelForm):
                 
         super(UpdateCreadorForm, self).__init__(*args, **kwargs)
         self.fields['pais'].widget.attrs['list'] = "id_pais"
+        self.fields['biografia'].widget.attrs['wrap'] = 'hard'
+        
 
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
+        self.fields['first_name'].widget.attrs['class'] = 'form-control form-control-lg'
+        self.fields['last_name'].widget.attrs['class'] = 'form-control form-control-lg'
         
 
         
@@ -621,6 +626,16 @@ class UpdateCreadorForm(forms.ModelForm):
 
         
         return self.cleaned_data['fecha_nacimiento']
+
+
+    def clean_tipo_celebridad(self):
+
+        categorias = self.cleaned_data['tipo_celebridad']
+
+        if len(categorias) > 3:
+            raise forms.ValidationError("No puedes escoger mas de 3 categorias, selecciona las que mas se ajusten a tu perfil.")
+
+        return categorias
 
 
 

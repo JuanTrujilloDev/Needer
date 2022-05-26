@@ -27,8 +27,9 @@
       
       
       <div class="collapse navbar-collapse overflow-auto" id="navbarText">
-        <ul class="navbar-nav ms-lg-auto me-lg-5 mb-lg-0 align-items-center collapse-elements ">
+        <ul class="navbar-nav ms-lg-auto me-lg-5 mb-lg-0 align-items-center collapse-elements py-5">
          <li class="nav-item">
+          {% with url_name=request.resolver_match.url_name %}
            <a class="nav-link" href="#"><h3 class="fw-bold"><i class="bi bi-house me-2"></i>Home</h3></a>
            </li>
            <li class="nav-item">
@@ -48,14 +49,16 @@
          </li>
          
          <li class="nav-item">
-           <a class="nav-link active fw-bold" href="{% url 'account_profile' %}"><h3 class="fw-bold"><i class="bi bi-gear me-2"></i>Ajustes</h3></a>
+           <a class="nav-link {% if url_name == 'account_profile' or url_name == 'account_change_password' or url_name == 'socialaccount_connections' or url_name == 'account_email'%} active  {% endif %}
+            fw-bold" href="{% url 'account_profile' %}"><h3 class="fw-bold"><i class="bi bi-gear me-2"></i>Ajustes</h3></a>
          </li>
-
+         {% endwith %}
          <hr class="bg-primary">
          <div class="pb-5 text-center">
          <li class="nav-item"><h4><a class="nav-link text-muted fst-italic" href="#">Dona a Needer</h4></a></li>
          <li class="nav-item"><h4><a class="nav-link text-muted fst-italic" href="#">Informacion</h4></a></li>
          <li class="nav-item"><h4><a class="nav-link text-muted fst-italic" href="{% url 'account_logout' %}">Cerrar Sesion</h4></a></li>
+         
        </div>
        </ul>
 

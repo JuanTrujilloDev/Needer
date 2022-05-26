@@ -23,6 +23,14 @@
 
 
   <form class="login pt-3" method="POST" action="{% url 'account_login' %}">
+
+    {% if messages %}
+    <ul class="messages list-unstyled">
+        {% for message in messages %}
+      <div {% if message.tags %} class="alert alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+        {% endfor %}
+    </ul>
+    {% endif %}
   
     {% csrf_token %}
     {% if form.errors %}

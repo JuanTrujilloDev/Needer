@@ -1,6 +1,6 @@
-from multiprocessing import get_context
-from allauth.socialaccount.views import SignupView as SocialSignupView
-from allauth.account.views import SignupView
+from allauth.socialaccount.views import SignupView as SocialSignupView, ConnectionsView
+from allauth.account.views import (SignupView, PasswordChangeView, EmailView,
+                                   AccountInactiveView)
 from django.views.generic import UpdateView
 from .models import User
 from django.urls import reverse
@@ -8,6 +8,10 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 from django.http import HttpResponseNotFound
 from allauth.socialaccount.models import SocialAccount
+from django.http import Http404
+from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 from .models import Pais
@@ -57,9 +61,12 @@ class UserSignupView(SignupView):
 
 
 
+
+
+
 # User UPDATE VIEWS
 
-class UpdateConsumidorView(UpdateView):
+class UpdateConsumidorView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     """
     UpdateConsumidor
 
@@ -71,7 +78,7 @@ class UpdateConsumidorView(UpdateView):
     Returns: User Instance Updated
     """
 
-    
+    success_message = 'Perfil actualizado satisfactoriamente!'
     model = User
     form_class = UpdateConsumidorForm
     template_name = 'account/consumidor/update-consumidor.html'
@@ -89,7 +96,7 @@ class UpdateConsumidorView(UpdateView):
         return context
 
 
-class UpdateCreadorView(UpdateView):
+class UpdateCreadorView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     """
     UpdateCreador
 
@@ -101,6 +108,7 @@ class UpdateCreadorView(UpdateView):
     Returns: User Instance Updated
     """
     # TODO AGREGAR EL FORM Y VALIDAR CAMPOS
+    success_message = 'Perfil actualizado satisfactoriamente!'
     model = User
     form_class = UpdateCreadorForm
     template_name = 'account/creador/update-creador.html'
@@ -155,14 +163,109 @@ def updateAccountViewResolver(request):
 
 
 
+class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
 
+    def get_context_data(self, **kwargs):
+        context = super(PasswordChangeView, self).get_context_data(**kwargs)
+        if self.request.user.groups.name == "Consumidor":
+            context['base_template'] = 'main/consumidor/content-consumidor.html'
+        elif self.request.user.groups.name == "Creador de Contenido":
+            context['base_template'] = 'main/creador/content-creador.html'
+        else:
+            raise Http404
+
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+
+        if request.user.is_authenticated:
+
+            if not self.request.user.is_active:
+
+                return redirect(reverse('account_inactive'))
+            
+            return super(CustomPasswordChangeView, self).dispatch(request, *args, **kwargs)
+
+            
+
+        return redirect(reverse('account_login'))
+
+
+class CustomEmailChangeView(LoginRequiredMixin, EmailView):
+
+    def get_context_data(self, **kwargs):
+        context = super(CustomEmailChangeView, self).get_context_data(**kwargs)
+        if self.request.user.groups.name == "Consumidor":
+            context['base_template'] = 'main/consumidor/content-consumidor.html'
+        elif self.request.user.groups.name == "Creador de Contenido":
+            context['base_template'] = 'main/creador/content-creador.html'
+        else:
+            raise Http404
+
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+
+        if request.user.is_authenticated:
+
+            if not self.request.user.is_active:
+
+                return redirect(reverse('account_inactive'))
+            
+            return super(CustomEmailChangeView, self).dispatch(request, *args, **kwargs)
+
+            
+
+        return redirect(reverse('account_login'))
+
+
+
+class CustomConnectionsView(LoginRequiredMixin, ConnectionsView):
+
+    def get_context_data(self, **kwargs):
+        context = super(CustomConnectionsView, self).get_context_data(**kwargs)
+        if self.request.user.groups.name == "Consumidor":
+            context['base_template'] = 'main/consumidor/content-consumidor.html'
+        elif self.request.user.groups.name == "Creador de Contenido":
+            context['base_template'] = 'main/creador/content-creador.html'
+        else:
+            raise Http404
+
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+
+        if request.user.is_authenticated:
+
+            if not self.request.user.is_active:
+
+                return redirect(reverse('account_inactive'))
+            
+            return super(CustomConnectionsView, self).dispatch(request, *args, **kwargs)
+
+            
+
+        return redirect(reverse('account_login'))
+
+
+
+
+
+# ACCOUNT INACTIVE VIEW
+class CustomInactiveView(AccountInactiveView):
+
+    def dispatch(self, request, *args, **kwargs):
+
+        if request.user.is_authenticated:
+
+            if not request.user.is_active:
+
+                return super(CustomInactiveView, self).dispatch(request, *args, **kwargs)
+
+            return redirect(reverse('account_email'))
+
+        return redirect(reverse('account_login'))
 
 
     
-
-
-
-# TODO En el login agregar el captcha.
-    
-
     

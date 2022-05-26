@@ -23,7 +23,7 @@
 
 .inputs #id_biografia{
     resize: none;
-    height: 150px;
+    height: 150px!important;
 }
 
 .inputs p{

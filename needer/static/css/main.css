@@ -34,5 +34,30 @@ h1, h2, h3, h4, h5, h6{
     color:#5C28FF!important;
 }
 
+.google{
+    color:#dd4b39;
+}
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: black #ffffff;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #ffffff;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: black;
+    border-radius: 10px;
+    border: 3px solid #ffffff;
+  }
 
 

@@ -1,8 +1,14 @@
 from allauth.account.signals import user_signed_up
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, m2m_changed
 from django.dispatch import receiver
 from .models import User
 from django.utils.text import slugify
+from django.core.exceptions import ValidationError
+
+
+
+
+
 
 @receiver(user_signed_up)
 def user_signed(request, user, **kwargs):
@@ -46,6 +52,8 @@ def user_update(sender, instance, **kwargs):
         else:
             instance.foto = ""
             instance.slug = None
+
+
 
 
 

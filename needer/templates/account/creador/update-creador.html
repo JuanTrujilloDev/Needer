@@ -14,9 +14,13 @@
         <!--Titulo y links-->
         <h1 class="text-primary mb-3 fw-bold">Ajustes</h1>
         <div class="d-flex justify-content-start border-bottom mb-3 pre-ajustes">
-            <a class="me-4 mb-0 fw-bolder text-muted active" href="{% url 'account_profile' %}"><h3 class="mb-0">Perfil</h3></a>
-            <a class="me-4 mb-0 fw-bolder text-muted" href="#"><h3 class="mb-0">Datos Bancarios</h3></a>
-            <a class="me-5 mb-0 fw-bolder text-muted" href="{% url 'account_change_password' %}"><h3 class="mb-0">Actualizar Contrasena</h3></a>
+            {% with url_name=request.resolver_match.url_name %}
+            <a class="me-4 mb-0 fw-bolder text-muted 
+            {% if url_name == 'account_profile' %}active {% endif %}" href="{% url 'account_profile' %}"><h2 class="mb-0">Perfil</h2></a>
+            <a class="me-4 mb-0 fw-bolder text-muted" href="#"><h2 class="mb-0">Método de pago</h2></a>
+            <a class="me-5 mb-0 fw-bolder text-muted
+            {% if url_name == 'account_change_password' %}active {% endif %}" href="{% url 'account_change_password' %}"><h2 class="mb-0">Actualizar Contrasena</h2></a>
+            {% endwith %}
         </div>
 
         <!--Formulario-->
@@ -30,6 +34,14 @@
 
             </datalist>
             {% csrf_token %}
+
+            {% if messages %}
+        <ul class="messages list-unstyled">
+            {% for message in messages %}
+          <div {% if message.tags %} class="alert alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+            {% endfor %}
+        </ul>
+        {% endif %}
 
             
             {% if form.errors %}
@@ -58,22 +70,41 @@
             {% endif %}
             </a>
             <div class="inputs my-3">
-               <p><strong class="text-danger">{{ form.biografia.errors.as_text }}</strong> </p>
-                <h4 class="text-muted fw-bold"> {{form.biografia.label}} </h4>
-                {{form.biografia}}
+                <h1 class="mt-4 mb-3 fw-bold">Datos personales</h1>
 
-                <div class="row ">
-                    <div class="col-lg-6">
-                        <p><strong class="text-danger">{{ form.first_name.errors.as_text }}</strong> </p>
-                       <h4 class="text-muted fw-bold"> {{form.first_name.label}} </h4>
-                        {{form.first_name}}
-                    </div>
-                    <div class="col-lg-6">
-                        <p><strong class="text-danger">{{ form.last_name.errors.as_text }}</strong> </p>
-                        <h4 class="text-muted fw-bold"> {{form.last_name.label}} </h4>
-                        {{form.last_name}}
-                    </div>
+            <div class="row">
+               
+
+                <div class="col-lg-6 align-items-center">
+                        
+                            <p><strong class="text-danger">{{ form.first_name.errors.as_text }}</strong> </p>
+                           <h4 class="text-muted fw-bold"> {{form.first_name.label}} </h4>
+                            {{form.first_name}}
+                        
+                        
+                            <p><strong class="text-danger">{{ form.last_name.errors.as_text }}</strong> </p>
+                            <h4 class="text-muted fw-bold"> {{form.last_name.label}} </h4>
+                            {{form.last_name}}
+                        
+
+
                 </div>
+
+
+                <div class="col-lg-6">
+
+                    <p><strong class="text-danger">{{ form.biografia.errors.as_text }}</strong> </p>
+                    <h4 class="text-muted fw-bold"> {{form.biografia.label}} </h4>
+    
+                    {{form.biografia}}
+
+                </div>
+
+
+            </div>
+
+
+              
 
                 <div class="row ">
                     <div class="col-lg-6">
@@ -106,9 +137,12 @@
                    <h4 class="text-muted fw-bold"> {{form.tipo_celebridad.label}} </h4>
                     {{form.tipo_celebridad}}
 
-           <div class="d-none">
-            {{form.foto}}
-           </div>
+           
+                    <p><strong class="text-danger">{{ form.foto.errors.as_text }}</strong> </p>
+                   <h4 class="text-muted fw-bold"> {{form.foto.label}} </h4>
+                   {{form.foto}}
+            
+
 
 
             </div>
@@ -178,6 +212,7 @@
 <script type="text/javascript">
    $('#boton-imagen').click(function(){
     $(this).parent().find('#id_foto').click();
+    $(this).parent().find('#id_foto').focus();
 });
 
 </script>

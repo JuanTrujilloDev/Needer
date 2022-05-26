@@ -37,7 +37,8 @@
       
       
       <div class="collapse navbar-collapse overflow-auto" id="navbarText">
-         <ul class="navbar-nav ms-lg-auto me-lg-5 mb-lg-0 align-items-center collapse-elements ">
+         <ul class="navbar-nav ms-lg-auto me-lg-5 mb-lg-0 align-items-center collapse-elements py-5">
+          {% with url_name=request.resolver_match.url_name %}
           <li class="nav-item">
             <a class="nav-link" href="#"><h3 class="fw-bold"><i class="bi bi-person-circle me-2"></i>Mi Perfil</h3></a>
             </li>
@@ -57,8 +58,10 @@
             <a class="nav-link fw-bold" href="#"><h3 class="fw-bold"><i class="bi bi-bar-chart-line me-2"></i>Estadisticas</h3></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active fw-bold" href="{% url 'account_profile' %}"><h3 class="fw-bold"><i class="bi bi-gear me-2"></i>Ajustes</h3></a>
+            <a class="nav-link {% if url_name == 'account_profile' or url_name == 'account_change_password' or url_name == 'socialaccount_connections' or url_name == 'account_email'%} active  {% endif %}
+             fw-bold" href="{% url 'account_profile' %}"><h3 class="fw-bold"><i class="bi bi-gear me-2"></i>Ajustes</h3></a>
           </li>
+          {% endwith %}
 
           <hr class="bg-primary">
           <div class="pb-5 text-center">

@@ -33,6 +33,14 @@
     {% endfor %}
 </datalist>
 
+{% if messages %}
+<ul class="messages list-unstyled">
+    {% for message in messages %}
+  <div {% if message.tags %} class="alert alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+    {% endfor %}
+</ul>
+{% endif %}
+
 
     {% if form.errors %}
     {% for field in form %}
