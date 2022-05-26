@@ -197,12 +197,12 @@ class  SocialCustomForm(SocialSignupForm):
         return paises
 
 
-       # clean_first name
+      # clean_first name
     def clean_first_name(self):
 
         first_name = self.cleaned_data['first_name']
 
-        match = re.match('^[A-Z][a-zA-Z]', first_name)
+        match = re.match('^[A-Z][a-zA-Z ]+$', first_name)
 
         if match:
             return first_name
@@ -214,7 +214,7 @@ class  SocialCustomForm(SocialSignupForm):
 
         last_name = self.cleaned_data['last_name']
 
-        match = re.match('^[A-Z][a-zA-Z]', last_name)
+        match = re.match('^[A-Z][a-zA-Z ]+$', last_name)
 
         if match:
             return last_name
@@ -339,7 +339,7 @@ class  SignupCustomForm(SignupForm):
 
         first_name = self.cleaned_data['first_name']
 
-        match = re.match('^[A-Z][a-zA-Z]', first_name)
+        match = re.match('^[A-Z][a-zA-Z ]+$', first_name)
 
         if match:
             return first_name
@@ -351,7 +351,7 @@ class  SignupCustomForm(SignupForm):
 
         last_name = self.cleaned_data['last_name']
 
-        match = re.match('^[A-Z][a-zA-Z]', last_name)
+        match = re.match('^[A-Z][a-zA-Z ]+$', last_name)
 
         if match:
             return last_name
@@ -516,7 +516,8 @@ class UpdateCreadorForm(forms.ModelForm):
 
         if instance.fecha_nacimiento:
              kwargs.update(initial={
-            'fecha_nacimiento': instance.fecha_nacimiento.strftime("%Y-%m-%d")
+            'fecha_nacimiento': instance.fecha_nacimiento.strftime("%Y-%m-%d"),
+            'pais':instance.pais.nombre
            
             })
                 
@@ -537,7 +538,7 @@ class UpdateCreadorForm(forms.ModelForm):
 
         first_name = self.cleaned_data['first_name']
 
-        match = re.match('^[A-Z][a-zA-Z]', first_name)
+        match = re.match('^[A-Z][a-zA-Z ]+$', first_name)
 
         if match:
             return first_name
@@ -549,7 +550,7 @@ class UpdateCreadorForm(forms.ModelForm):
 
         last_name = self.cleaned_data['last_name']
 
-        match = re.match('^[A-Z][a-zA-Z]', last_name)
+        match = re.match('^[A-Z][a-zA-Z ]+$', last_name)
 
         if match:
             return last_name

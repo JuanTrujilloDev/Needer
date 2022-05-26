@@ -17,8 +17,15 @@
           <div class="d-md-none right-elements  d-lg-flex float-end justify-content-end col-6">
             <a class="nav-link fw-bolder notificacion me-4" href="#"><i class="bi bi-bell"></i></a>
             <a class="nav-link  me-5" href="#">
+              {% if request.user.foto %}
               <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{request.user.foto.url}}"
               data-holder-rendered="true">
+
+              {% else %}
+              <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"
+              data-holder-rendered="true">
+
+              {% endif %}
             </a>
           </div>
 

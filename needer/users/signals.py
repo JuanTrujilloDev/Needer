@@ -19,7 +19,7 @@ def user_signed(request, user, **kwargs):
         user.slug = slugify(user.username)
 
     else:
-        user.foto = None
+        user.foto = ""
         user.slug = None
 
     user.save()
@@ -44,7 +44,7 @@ def user_update(sender, instance, **kwargs):
             instance.slug = slugify(instance.username)
 
         else:
-            instance.foto = None
+            instance.foto = ""
             instance.slug = None
 
 

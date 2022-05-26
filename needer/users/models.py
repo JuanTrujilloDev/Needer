@@ -85,7 +85,7 @@ class User(AbstractUser):
     # TODO NUMERO DE CELULAR
     direccion_facturacion = models.CharField(verbose_name='Direccion', max_length=120, null = True, blank= True)
     slug = models.SlugField(verbose_name="Slug", null = True, blank=True, unique=True)
-    biografia = models.CharField(max_length=60, verbose_name="Bio", blank=True)
+    biografia = models.TextField(max_length=120, verbose_name="Bio", blank=True)
 
     # TODO Telefono
 
@@ -99,7 +99,7 @@ class User(AbstractUser):
     genero = models.CharField(max_length=7, choices = GeneroChoices.choices, default=GeneroChoices.OTRO)
     fecha_nacimiento = models.DateField(verbose_name="Fecha nacimiento", blank=True, null=True)
     tipo_celebridad = models.ManyToManyField(TipoCelebridad, blank = True)
-    foto = ResizedImageField(size=[500,300], quality=100, upload_to = 'account', null=True, default='media/account/default.png')
+    foto = ResizedImageField(size=[500,500], upload_to = 'account/',  blank=True)
 
 
     
