@@ -495,7 +495,8 @@ class UpdateCreadorForm(forms.ModelForm):
     pais = forms.CharField(max_length=30, required=True)
     foto = forms.ImageField(required=False)
     fecha_nacimiento = forms.DateField(widget= forms.DateInput(attrs={'type': 'date'}), required=True)
-    biografia = forms.CharField(required=False, max_length=150, widget=forms.Textarea(attrs={'rows':4, 'cols':'5'}))
+    biografia = forms.CharField(required=False, max_length=150, widget=forms.Textarea(attrs={'rows':4, 'cols':'5', 'placeholder':'Maximo 150 caracteres',
+    'onKeyUp':"maximo(this,150);", 'onKeyDown':"maximo(this,150);"}))
 
     # TODO tipo_celebridad a CHECKBOXSELECTMULTIPLE
 
@@ -507,6 +508,7 @@ class UpdateCreadorForm(forms.ModelForm):
                  'genero', 'tipo_celebridad', 'foto', 'biografia']
 
 
+    #Constructor permite modificar los campos 
     def __init__(self, *args, **kwargs):
         instance = kwargs.get('instance', None)
         kwargs.update(initial={
@@ -564,7 +566,9 @@ class UpdateCreadorForm(forms.ModelForm):
 
     
     def clean_pais(self):
-        
+        """En caso de que el usuario sea tipo consumidor se le asigna un pais predeterminado
+        en este caso es United States of America, pero si es creador de contendio si se le
+        permite especificar un pais""" 
 
         if self.cleaned_data.get('groups') == Group.objects.get(name = 'Consumidor'):
             return Pais.objects.get(nombre="United States of America")
@@ -627,7 +631,7 @@ class UpdateCreadorForm(forms.ModelForm):
         
         return self.cleaned_data['fecha_nacimiento']
 
-
+    #Funcion para validar la cantidad de categorias que puede eleguir 
     def clean_tipo_celebridad(self):
 
         categorias = self.cleaned_data['tipo_celebridad']
