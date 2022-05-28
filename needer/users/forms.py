@@ -12,6 +12,8 @@ from .extras import numeros
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
 from datetime import date
+from django.forms import URLField
+from django.core.exceptions import ValidationError
 
 
 
@@ -505,7 +507,7 @@ class UpdateCreadorForm(forms.ModelForm):
         # Model class
         model = User
         fields = ['first_name', 'last_name', 'pais', 'username', 'fecha_nacimiento', 
-                 'genero', 'tipo_celebridad', 'foto', 'biografia']
+                 'genero', 'tipo_celebridad', 'foto', 'biografia', 'link']
 
 
     #Constructor permite modificar los campos 
@@ -533,11 +535,21 @@ class UpdateCreadorForm(forms.ModelForm):
 
         self.fields['first_name'].widget.attrs['class'] = 'form-control form-control-lg'
         self.fields['last_name'].widget.attrs['class'] = 'form-control form-control-lg'
+        self.fields['link'].widget.attrs['class'] = 'form-control form-control-lg'
         
 
         
 
+    def clean_link(self):
 
+        link = self.cleaned_data['link']
+        url_form_field = URLField()
+        try:
+            url = url_form_field.clean(link)
+        except ValidationError:
+            raise forms.ValidationError('Ingrese un link valido')
+        return link
+        
     # clean methods
 
     # clean_first name

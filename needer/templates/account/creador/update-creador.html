@@ -137,7 +137,10 @@
                    <h4 class="text-muted fw-bold"> {{form.tipo_celebridad.label}} </h4>
                     {{form.tipo_celebridad}}
 
-           
+                    <p><strong class="text-danger">{{ form.link.errors.as_text }}</strong> </p>
+                    <h4 class="text-muted fw-bold"> {{form.link.label}} </h4>
+                     {{form.link}}
+
                     <p><strong class="text-danger">{{ form.foto.errors.as_text }}</strong> </p>
                    <h4 class="text-muted fw-bold"> {{form.foto.label}} </h4>
                    {{form.foto}}
