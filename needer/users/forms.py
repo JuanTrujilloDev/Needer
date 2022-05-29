@@ -4,7 +4,7 @@ from allauth.account.forms import SignupForm as SignupForm
 from allauth.account.forms import ResetPasswordForm
 from allauth.socialaccount.adapter import get_adapter
 from django import forms
-from .models import User, Pais
+from .models import TipoCelebridad, User, Pais
 from django.db.models import Q
 from django.contrib.auth.models import Group
 import re
@@ -494,11 +494,12 @@ class  SignupCustomForm(SignupForm):
 class UpdateCreadorForm(forms.ModelForm):
 
     # Fields
-    pais = forms.CharField(max_length=30, required=True)
+    pais = forms.CharField(max_length=30, required=True, widget= forms.TextInput(attrs={'placeholder':'Ingresa tu pais de residencia'}))
     foto = forms.ImageField(required=False)
     fecha_nacimiento = forms.DateField(widget= forms.DateInput(attrs={'type': 'date'}), required=True)
-    biografia = forms.CharField(required=False, max_length=150, widget=forms.Textarea(attrs={'rows':4, 'cols':'5', 'placeholder':'Maximo 150 caracteres',
+    biografia = forms.CharField(required=False, max_length=150, widget=forms.Textarea(attrs={'rows':4, 'cols':'5', 'placeholder':'Cuentale a tu publico de ti... (Maximo 150 caracteres)',
     'onKeyUp':"maximo(this,150);", 'onKeyDown':"maximo(this,150);"}))
+    tipo_celebridad = forms.ModelMultipleChoiceField(queryset = TipoCelebridad.objects.all(), required = True, widget= forms.CheckboxSelectMultiple())
 
     # TODO tipo_celebridad a CHECKBOXSELECTMULTIPLE
 
@@ -532,10 +533,12 @@ class UpdateCreadorForm(forms.ModelForm):
 
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
-
+        self.fields['first_name'].widget.attrs['placeholder'] = 'Ingresa tu nombre'
         self.fields['first_name'].widget.attrs['class'] = 'form-control form-control-lg'
         self.fields['last_name'].widget.attrs['class'] = 'form-control form-control-lg'
+        self.fields['last_name'].widget.attrs['placeholder'] = 'Ingresa tu apellido'
         self.fields['link'].widget.attrs['class'] = 'form-control form-control-lg'
+        self.fields['tipo_celebridad'].widget.attrs['class'] = 'form-check'
         
 
         
@@ -544,10 +547,12 @@ class UpdateCreadorForm(forms.ModelForm):
 
         link = self.cleaned_data['link']
         url_form_field = URLField()
-        try:
-            url = url_form_field.clean(link)
-        except ValidationError:
-            raise forms.ValidationError('Ingrese un link valido')
+        # Se le agrega el if para que no valide si el link va vacio
+        if link:
+            try:
+                url = url_form_field.clean(link)
+            except ValidationError:
+                raise forms.ValidationError('Ingrese un link valido')
         return link
         
     # clean methods

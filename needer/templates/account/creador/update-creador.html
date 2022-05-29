@@ -25,7 +25,7 @@
 
         <!--Formulario-->
 
-        <form class="d-flex justify-content-center row" id="form-update" method="POST" action="{% url 'account_profile' %}" enctype="multipart/form-data">
+        <form class="rounded-5 mx-2 bg-white shadow rounded my-5 py-3 px-2 d-flex justify-content-center row" id="form-update" method="POST" action="{% url 'account_profile' %}" enctype="multipart/form-data">
             <datalist id="id_pais" name="pais">
                 {% for data in pais %}
                 <option value="{{data}}"></option>
@@ -58,7 +58,7 @@
                 </div>
             {% endfor %}
         {% endif %}
-         
+        
         <p><strong class="text-danger">{{ form.foto.errors.as_text }}</strong> </p>   
             {% if request.user.foto %}
             <a id="boton-imagen" class="btn rounded-circle overflow-hidden update-imagen" style="background-image: url({{request.user.foto.url}});"> </a>
@@ -134,7 +134,7 @@
 
 
                     <p><strong class="text-danger">{{ form.tipo_celebridad.errors.as_text }}</strong> </p>
-                   <h4 class="text-muted fw-bold"> {{form.tipo_celebridad.label}} </h4>
+                   <h4 class="text-muted fw-bold"> {{form.tipo_celebridad.label}} (Selecciona maximo 3)</h4>
                     {{form.tipo_celebridad}}
 
                     <p><strong class="text-danger">{{ form.link.errors.as_text }}</strong> </p>
@@ -150,7 +150,7 @@
 
             </div>
             
-            <button id="enviar-update" class="btn btn-primary rounded-pill" type="submit">Actualizar informacion</button>
+            <button id="enviar-update" class="fw-bold btn btn-primary rounded-pill col-6" type="submit">Actualizar</button>
         </form>
     
 
@@ -158,10 +158,10 @@
         
 
     <!--EMAILS-->
-    <h1 class="mt-4 mb-3 fw-bold">Datos de acceso</h1>
+    
 
-    <div class="row my-4 d-flex align-items-center">
-
+    <div class="row d-flex align-items-center justify-content-center mx-2 bg-light rounded rounded-5 my-5 py-3 px-2 bg-white shadow">
+        <h1 class="mt-4 mb-3 fw-bold">Datos de acceso</h1>
             <h4 class="text-muted fw-bold">Email Principal</h4>
             <div class=" col-md-8 mb-3">
                 <!--Email principal-->
@@ -223,5 +223,21 @@ function maximo(campo,limite){
     campo.value=campo.value.substring(0,limite);
      }
     }
+
+
+
+$('#id_tipo_celebridad').ready(function(){
+
+$('input:checkbox').addClass('form-check-input me-2');
+$('div.form-check label').addClass('form-check-label fw-bold text-muted')
+
+
+});
+
+
+
+
+
+
 </script>
 {% endblock script %}

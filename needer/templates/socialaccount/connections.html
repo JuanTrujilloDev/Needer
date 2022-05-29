@@ -14,7 +14,7 @@
 
 {% block inner-content %}
     <!--INNER CONTENT-->
-    <div class="container py-4">
+    <div class="container py-4 ">
 
     
         <h1 class="text-primary">Ajustes</h1>
@@ -28,8 +28,8 @@
             {% endwith %}
         </div>
 
-
-    <h1>{% trans "Account Connections" %}</h1>
+    <div class="container-fluid mx-2 bg-light rounded rounded-5 my-5 py-3 px-4 bg-white shadow">
+    <h1 class="fw-bold">{% trans "Account Connections" %}</h1>
 
     {% if form.accounts %}
     <p>{% blocktrans %}You can sign in to your account using any of the following third party accounts:{% endblocktrans %}</p>
@@ -74,7 +74,7 @@
     </ul>
     
     {% include "socialaccount/snippets/login_extra.html" %}
-    
+    </div>
     </div>
 
 

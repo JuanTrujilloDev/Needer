@@ -22,8 +22,8 @@
         </div>
 
 
-        <form class="" method="POST" action="{% url 'account_profile' %}" enctype="multipart/form-data">
-
+        <form class="rounded-5 mx-2 bg-white shadow rounded my-5 py-5 px-2 d-flex justify-content-center row" method="POST" action="{% url 'account_profile' %}" enctype="multipart/form-data">
+        <h1 class="fw-bold">Datos de acceso</h1>
             {% if messages %}
         <ul class="messages list-unstyled">
             {% for message in messages %}
@@ -54,16 +54,16 @@
             <div class="form-group row mb-3">
 
 
-                <form method="POST" action="{% url 'account_profile' %}">
+
                  <p><strong class="text-danger">{{ form.username.errors.as_text }}</strong> </p>
                        <h4 class="text-muted fw-bold"> {{form.username.label}} </h4>
-                       <div class="col-md-8">{{form.username}}</div> 
+                       <div class="col-md-8 mb-sm-3 mb-3 mb-md-0">{{form.username}}</div> 
                        <button type="submit" class="col-md-4 btn btn-primary">Cambiar usuario</button>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row d-flex align-items-center">
                       <h4 class="text-muted fw-bold"> Correo Principal: </h4>
-                      <div class="col-md-8"><input class="form-control" disabled value="{{request.user.email}}" placeholder="{{request.user.email}}"></div> 
+                      <div class="col-md-8 mb-sm-3  mb-3 mb-xs-3 mb-md-0"><input class="form-control" disabled value="{{request.user.email}}" placeholder="{{request.user.email}}"></div> 
                       <a href="{% url 'account_email' %}" class="col-md-4 btn btn-primary">Administrar correos</a>
            </div>
                 </form>
@@ -72,11 +72,11 @@
 
 
 
-                <div class="row my-4 d-flex align-items-center">
+                <div class="row d-flex align-items-center rounded-5 mx-2 bg-white shadow rounded my-5 py-5 px-2 justify-content-center ">
 
                    
-                    <div class="row my-3">
-                        <h4 class="text-muted fw-bold">Redes asociadas</h4>
+                    <div class="row">
+                        <h2 class="text-muted fw-bold">Redes asociadas</h2>
                         {% for social in socials %}
                         <div class="row px-4 my-3">
                             <div class="col-md-2 col-sm-2 text-center"><img src="{% static 'img/Google.svg' %}" height="100px"></div>
