@@ -98,6 +98,7 @@
     
                     {{form.biografia}}
 
+
                 </div>
 
 
@@ -219,12 +220,20 @@
 });
 
 function maximo(campo,limite){
-    if(campo.value.length>=limite){
+    var campo = campo.value.split("\n").join("");
+    if(campo.length>=limite){
     campo.value=campo.value.substring(0,limite);
      }
     }
 
 
+    function cancelar() {
+        var key = event.keyCode;
+    
+        if (key === 13) {
+            event.preventDefault();
+        }
+    }
 
 $('#id_tipo_celebridad').ready(function(){
 

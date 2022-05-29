@@ -93,7 +93,7 @@ class User(AbstractUser):
     # TODO NUMERO DE CELULAR
     direccion_facturacion = models.CharField(verbose_name='Direccion', max_length=120, null = True, blank= True)
     slug = models.SlugField(verbose_name="Slug", null = True, blank=True, unique=True)
-    biografia = models.TextField(max_length=120, verbose_name="Bio", blank=True)
+    biografia = models.TextField(max_length=200, verbose_name="Bio", blank=True)
 
     # TODO Telefono
 

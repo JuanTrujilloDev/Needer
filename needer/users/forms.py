@@ -497,8 +497,8 @@ class UpdateCreadorForm(forms.ModelForm):
     pais = forms.CharField(max_length=30, required=True, widget= forms.TextInput(attrs={'placeholder':'Ingresa tu pais de residencia'}))
     foto = forms.ImageField(required=False)
     fecha_nacimiento = forms.DateField(widget= forms.DateInput(attrs={'type': 'date'}), required=True)
-    biografia = forms.CharField(required=False, max_length=150, widget=forms.Textarea(attrs={'rows':4, 'cols':'5', 'placeholder':'Cuentale a tu publico de ti... (Maximo 150 caracteres)',
-    'onKeyUp':"maximo(this,150);", 'onKeyDown':"maximo(this,150);"}))
+    biografia = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder':'Cuentale a tu publico de ti... (Maximo 150 caracteres)',
+    'onKeyUp':"maximo(this,150);", 'onKeyDown':"maximo(this,150);", 'onkeypress':"cancelar();"}))
     tipo_celebridad = forms.ModelMultipleChoiceField(queryset = TipoCelebridad.objects.all(), required = True, widget= forms.CheckboxSelectMultiple())
 
     # TODO tipo_celebridad a CHECKBOXSELECTMULTIPLE
@@ -528,7 +528,7 @@ class UpdateCreadorForm(forms.ModelForm):
                 
         super(UpdateCreadorForm, self).__init__(*args, **kwargs)
         self.fields['pais'].widget.attrs['list'] = "id_pais"
-        self.fields['biografia'].widget.attrs['wrap'] = 'hard'
+        #self.fields['biografia'].widget.attrs['wrap'] = 'hard'
         
 
         for visible in self.visible_fields():
@@ -541,11 +541,16 @@ class UpdateCreadorForm(forms.ModelForm):
         self.fields['tipo_celebridad'].widget.attrs['class'] = 'form-check'
         
 
-        
+    def clean_biografia(self):
+        #Eliminando los saltos de linea porque me cagan
+        a = self.cleaned_data['biografia']
+        _ = " ".join(a.split()[::])
+        return _
 
     def clean_link(self):
 
         link = self.cleaned_data['link']
+
         url_form_field = URLField()
         # Se le agrega el if para que no valide si el link va vacio
         if link:
