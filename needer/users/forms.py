@@ -545,6 +545,9 @@ class UpdateCreadorForm(forms.ModelForm):
         #Eliminando los saltos de linea porque me cagan
         a = self.cleaned_data['biografia']
         _ = " ".join(a.split()[::])
+        print(len(_))
+        if len(_) > 150:
+            raise forms.ValidationError('El maximo de caracteres es de 150')
         return _
 
     def clean_link(self):

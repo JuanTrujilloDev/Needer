@@ -219,12 +219,11 @@
     $(this).parent().find('#id_foto').focus();
 });
 
-function maximo(campo,limite){
-    var campo = campo.value.split("\n").join("");
-    if(campo.length>=limite){
-    campo.value=campo.value.substring(0,limite);
-     }
-    }
+    function maximo(campo,limite){
+        if(campo.value.length>=limite){
+        campo.value=campo.value.substring(0,limite);
+        }
+    };
 
 
     function cancelar() {
@@ -233,7 +232,7 @@ function maximo(campo,limite){
         if (key === 13) {
             event.preventDefault();
         }
-    }
+    };
 
 $('#id_tipo_celebridad').ready(function(){
 
