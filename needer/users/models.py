@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser, Group
 from django_resized import ResizedImageField
 import os
 from django.conf import settings
+from django.urls import reverse
 
 # Create your models here.
 
@@ -112,6 +113,11 @@ class User(AbstractUser):
 
     # TODO REVISAR DE DOCUMENTACION
     cartera = models.DecimalField(max_digits=19,decimal_places=2, default=0, null=True, blank=True)
+
+
+
+    def get_absolute_url(self):
+        return reverse('perfil-creador', kwargs={'slug': self.slug})
 
 
     
