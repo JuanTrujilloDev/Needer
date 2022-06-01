@@ -22,8 +22,6 @@ urlpatterns = [
     path('', include('allauth.urls')),
 
 
-    # TODO URLS UNICAS PARA CREADORES DE CONTENIDO:
-    
-    # path('creador/<str:slug>/', DetailCreador.as_view(), name='detalle-creador')
+
     
 ]

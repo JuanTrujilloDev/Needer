@@ -85,6 +85,7 @@ class User(AbstractUser):
     
     """
     
+   
     groups = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name="Groups")
     
     # Datos personales de facturacion.
@@ -117,7 +118,7 @@ class User(AbstractUser):
 
 
     def get_absolute_url(self):
-        return reverse('perfil-creador', kwargs={'slug': self.slug})
+        return reverse('detalle-creador', kwargs={'slug': self.slug})
 
 
     

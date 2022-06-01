@@ -5,6 +5,13 @@ from .views import *
 
 urlpatterns = [
 
+    # CREADOR DE CONTENIDO DETAIL
+    
+    path('creador/<str:slug>/', DetailCreador.as_view(), name='detalle-creador'),
+
+
+
+
     # path('publicacion/<int:pk>', DetallePublicacion.as_view(), name='detalle-publicacion'),
 
 

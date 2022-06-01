@@ -1,9 +1,9 @@
 from django.apps import AppConfig
 
 
-class PublicacionesConfig(AppConfig):
+class SocialConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'publicaciones'
+    name = 'social'
 
     def ready(self):
-        import publicaciones.signals
+        import social.signals

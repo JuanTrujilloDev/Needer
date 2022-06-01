@@ -40,7 +40,7 @@
          <ul class="navbar-nav ms-lg-auto me-lg-5 mb-lg-0 align-items-center collapse-elements py-5">
           {% with url_name=request.resolver_match.url_name %}
           <li class="nav-item">
-            <a class="nav-link" href="#"><h3 class="fw-bold"><i class="bi bi-person-circle me-2"></i>Mi Perfil</h3></a>
+            <a class="nav-link {% if url_name == 'detalle-creador'%} active  {% endif %}" href="{{request.user.get_absolute_url}}"><h3 class="fw-bold"><i class="bi bi-person-circle me-2"></i>Mi Perfil</h3></a>
             </li>
           <li class="nav-item">
             <a class="nav-link fw-bold" href="#"><h3 class="fw-bold"><i class="bi bi-archive me-2"></i>Inventario</h3></a>

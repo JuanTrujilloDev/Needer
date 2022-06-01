@@ -11,7 +11,7 @@
   <ul class="nav flex-column sticky-top pl-0 pt-5 mt-3 h-100 navegacion-sidebar">
     <ul class="upper-items nav nav flex-column">
       {% with url_name=request.resolver_match.url_name %}
-      <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-person-circle me-2"></i>Mi Perfil</h5></a></li>
+      <li class="nav-item"><a class="nav-link {% if url_name == 'detalle-creador'%} active  {% endif %}" href="{{request.user.get_absolute_url}}"><h5><i class="bi bi-person-circle me-2"></i>Mi Perfil</h5></a></li>
       <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-archive me-2"></i>Inventario</h5></a></li>
       <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-chat-left-text me-2"></i>Mensajes</h5></a></li>
       <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-wallet2 me-2"></i>Pagos</h5></a></li>

@@ -22,7 +22,7 @@ def valid_file_extention(value):
 
 
 class Publicacion(models.Model):
-    usuario = models.ForeignKey(User, on_delete= models.CASCADE, verbose_name='Autor')
+    user = models.ForeignKey(User, on_delete= models.CASCADE, verbose_name='Autor')
     
     # Obligatorio como en reddit.
     titulo = models.CharField(verbose_name='Titulo', max_length=250, blank=False, null=False)

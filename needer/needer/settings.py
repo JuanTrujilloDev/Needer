@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'needer',
     'users',
     'main',
-    'publicaciones',
+    'social',
     
 ]
 

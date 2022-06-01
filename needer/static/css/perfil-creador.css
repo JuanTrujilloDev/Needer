@@ -1,0 +1,10 @@
+.update-imagen{
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+    border: 4px solid #dbdbdb;
+}
+
+.update-imagen:hover{
+    border: 4px solid #D1D1FF;
+}

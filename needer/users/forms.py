@@ -86,18 +86,29 @@ class  SocialCustomForm(SocialSignupForm):
             pais = cleaned_data.get('pais')
 
             if first_name == "":
-                self.add_error('first_name', _("Este campo es obligatorio")) 
+                self.add_error('first_name', ("Este campo es obligatorio")) 
+            else:
+                match = re.match('^[A-Z][a-zA-Z ]+$', first_name)
+
+                if match:
+                    pass
+                else:
+                    self.add_error('first_name', ('Formato Invalido. El nombre debe contener solo letras y empezar por mayuscula.'))
 
             if last_name == "":
-                self.add_error('last_name', _("Este campo es obligatorio")) 
+                self.add_error('last_name', ("Este campo es obligatorio")) 
+            else:
+                if match:
+                    pass
+                else:
+                    self.add_error('last_name', ('Formato Invalido. El apellido debe contener solo letras y empezar por mayuscula.'))
 
             if num_documento == "":
-                self.add_error('num_documento', _("Este campo es obligatorio")) 
+                self.add_error('num_documento', ("Este campo es obligatorio")) 
 
             if pais == "":
-                self.add_error('pais', _("Este campo es obligatorio")) 
+                self.add_error('pais', ("Este campo es obligatorio")) 
 
-            
         return cleaned_data
 
     #taken from https://github.com/pennersr/django-allauth/blob/master/allauth/account/forms.py
@@ -198,33 +209,6 @@ class  SocialCustomForm(SocialSignupForm):
 
         return paises
 
-
-      # clean_first name
-    def clean_first_name(self):
-
-        first_name = self.cleaned_data['first_name']
-
-        match = re.match('^[A-Z][a-zA-Z ]+$', first_name)
-
-        if match:
-            return first_name
-        
-        raise forms.ValidationError('Formato Invalido. El nombre debe contener solo letras y empezar por mayuscula.')
-
-    # clean_last name
-    def clean_last_name(self):
-
-        last_name = self.cleaned_data['last_name']
-
-        match = re.match('^[A-Z][a-zA-Z ]+$', last_name)
-
-        if match:
-            return last_name
-        
-        raise forms.ValidationError('Formato Invalido. El apellido debe contener solo letras y empezar por mayuscula.')
-
-
-    # TODO clean_last_name
             
         
     
@@ -320,45 +304,36 @@ class  SignupCustomForm(SignupForm):
             pais = cleaned_data.get('pais')
 
             if first_name == "":
-                self.add_error('first_name', _("Este campo es obligatorio")) 
+                self.add_error('first_name', ("Este campo es obligatorio")) 
+            else:
+                match = re.match('^[A-Z][a-zA-Z ]+$', first_name)
+
+                if match:
+                    pass
+                else:
+                    self.add_error('first_name', ('Formato Invalido. El nombre debe contener solo letras y empezar por mayuscula.'))
 
             if last_name == "":
-                self.add_error('last_name', _("Este campo es obligatorio")) 
+                self.add_error('last_name', ("Este campo es obligatorio")) 
+            else:
+                if match:
+                    pass
+                else:
+                    self.add_error('last_name', ('Formato Invalido. El apellido debe contener solo letras y empezar por mayuscula.'))
 
             if num_documento == "":
-                self.add_error('num_documento', _("Este campo es obligatorio")) 
+                self.add_error('num_documento', ("Este campo es obligatorio")) 
 
             if pais == "":
-                self.add_error('pais', _("Este campo es obligatorio")) 
+                self.add_error('pais', ("Este campo es obligatorio")) 
 
         return cleaned_data
 
 
 
 
-    # clean_first name
-    def clean_first_name(self):
 
-        first_name = self.cleaned_data['first_name']
 
-        match = re.match('^[A-Z][a-zA-Z ]+$', first_name)
-
-        if match:
-            return first_name
-        
-        raise forms.ValidationError('Formato Invalido. El nombre debe contener solo letras y empezar por mayuscula.')
-
-    # clean_last name
-    def clean_last_name(self):
-
-        last_name = self.cleaned_data['last_name']
-
-        match = re.match('^[A-Z][a-zA-Z ]+$', last_name)
-
-        if match:
-            return last_name
-        
-        raise forms.ValidationError('Formato Invalido. El apellido debe contener solo letras y empezar por mayuscula.')
 
         
 
@@ -494,6 +469,8 @@ class  SignupCustomForm(SignupForm):
 class UpdateCreadorForm(forms.ModelForm):
 
     # Fields
+    first_name = forms.CharField(max_length=25, required=True, widget= forms.TextInput(attrs={'placeholder':'Ingresa tus nombres'}))
+    last_name = forms.CharField(max_length=25, required=True, widget= forms.TextInput(attrs={'placeholder':'Ingresa tus apellidos'}))
     pais = forms.CharField(max_length=30, required=True, widget= forms.TextInput(attrs={'placeholder':'Ingresa tu pais de residencia'}))
     foto = forms.ImageField(required=False)
     fecha_nacimiento = forms.DateField(widget= forms.DateInput(attrs={'type': 'date'}), required=True)
@@ -545,7 +522,7 @@ class UpdateCreadorForm(forms.ModelForm):
         #Eliminando los saltos de linea porque me cagan
         a = self.cleaned_data['biografia']
         _ = " ".join(a.split()[::])
-        print(len(_))
+
         if len(_) > 150:
             raise forms.ValidationError('El maximo de caracteres es de 150')
         return _
@@ -569,25 +546,25 @@ class UpdateCreadorForm(forms.ModelForm):
     def clean_first_name(self):
 
         first_name = self.cleaned_data['first_name']
-
         match = re.match('^[A-Z][a-zA-Z ]+$', first_name)
 
         if match:
             return first_name
-        
+            
         raise forms.ValidationError('Formato Invalido. El nombre debe contener solo letras y empezar por mayuscula.')
 
     # clean_last name
     def clean_last_name(self):
 
         last_name = self.cleaned_data['last_name']
-
         match = re.match('^[A-Z][a-zA-Z ]+$', last_name)
 
         if match:
             return last_name
+            
+        raise forms.ValidationError('Formato Invalido. El nombre debe contener solo letras y empezar por mayuscula.')
         
-        raise forms.ValidationError('Formato Invalido. El apellido debe contener solo letras y empezar por mayuscula.')
+
 
     
     def clean_pais(self):
@@ -632,6 +609,7 @@ class UpdateCreadorForm(forms.ModelForm):
 
 
         raise forms.ValidationError('El usuario no cumple con el formato (Solo letras o numeros y debe empezar por letra).')
+
 
 
     def clean_fecha_nacimiento(self):
