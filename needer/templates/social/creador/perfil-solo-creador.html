@@ -15,11 +15,11 @@
     <div class="seccion-arriba w-100 row mx-0">
         <div class="col-lg-3 col-md-4 text-center mb-0 mb-sm-3 px-0 mx-0 align-items-center">
             {% if object.foto %}
-            <a href="{{object.get_absolute_url}}" class="col-12 btn rounded-circle overflow-hidden update-imagen img-fluid" style="background-image: url({{object.foto.url}});"> </a>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="col-12 btn rounded-circle overflow-hidden update-imagen img-fluid" style="background-image: url({{object.foto.url}}); object-fit: cover;"> </button>
             
             {% else %}
 
-            <a href="{% static 'img/default-profile.png' %}"  class="col-12 btn rounded-circle overflow-hidden update-imagen img-fluid" style="background-image: url('{% static 'img/default-profile.png' %}');"> </a>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"   class="col-12 btn rounded-circle overflow-hidden update-imagen img-fluid" style="background-image: url('{% static 'img/default-profile.png' %}');"> </button>
             
             {% endif %}
 
@@ -38,7 +38,7 @@
             {% endif %}
             
             <h3 class="text-muted"><i class="bi bi-geo-alt"></i> {{object.pais}}</h3>
-            <h3 class="text-muted mb-0">Needer.com.co/UsuarioNeeder</h3>
+            <h3 class="text-muted mb-0">needer.com.co/{{object.slug}}</h3>
             
             </div>
             
@@ -47,7 +47,7 @@
 
         <div class="col-md-2 d-flex align-items-end container g-2 justify-content-center">
             <div class="w-100 col-12 d-table-cell align-bottom row g-2 text-lg-start text-sm-center text-center"> 
-                <h3 class="py-2 text-primary"><i class="bi bi-gear"></i></h3>
+                <h3 class="py-2 text-primary"><a href="{% url 'account_profile' %}"><i class="bi bi-gear"></i></a></h3>
             </div>
            
           
@@ -73,5 +73,7 @@
 
 </div>
 
+
+{% include 'social/creador/foto-perfil-modal.html' %}
 
 {% endblock inner-content %}
