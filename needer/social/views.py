@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.contrib.auth import logout
 from .models import Publicacion
+from django.http import HttpResponseNotFound
 
 
 
@@ -38,7 +39,19 @@ class DetailCreador(LoginRequiredMixin, DetailView):
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
             if self.request.user.is_active:
-                return super().dispatch(request, *args, **kwargs)
+                # Si el usuario es consumidor o es el dueno del perfil
+                if self.request.user.groups.name == 'Consumidor' or self.request.user == self.get_object():
+                    return super().dispatch(request, *args, **kwargs)
+
+                # Si es creador de contenido pero no es el dueno del perfil
+                elif self.request.user.groups.name == 'Creador de Contenido':
+                    # Lo redirige a su perfil
+                    return redirect(self.request.user.get_absolute_url())
+                
+                # Si no es ninguno que lo redirija a ERROR
+                else:
+                    return HttpResponseNotFound('Page not found.')
+
             else:
                 logout(self.request)
                 return redirect(reverse('account_inactive'))
@@ -52,4 +65,4 @@ class DetailCreador(LoginRequiredMixin, DetailView):
 
 class CrearPublicacionView(CreateView):
     model = Publicacion
-    
+
