@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import DetailView, TemplateView
+from django.views.generic import DetailView, CreateView
 from users.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
@@ -50,4 +50,6 @@ class DetailCreador(LoginRequiredMixin, DetailView):
 
 # CRUD PUBLICACIONES
 
-
+class CrearPublicacionView(CreateView):
+    model = Publicacion
+    

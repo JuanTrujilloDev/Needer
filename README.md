@@ -16,11 +16,16 @@
 
 [@JuanSPuentes](https://github.com/Sarsu12/)
 
+[@PITZONIA](https://github.com/PITZ0NIA)
+
+[@Santiagocp-oss](https://github.com/Santiagocp-oss)
+
 ## Version History ⌛️
 
 * 0.0
   * Project initialization.
   * User Signup and Login.
+  * Publications.
 
 ## License 💯
 
