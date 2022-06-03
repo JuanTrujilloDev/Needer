@@ -134,6 +134,8 @@ Scripts/
 include/
 Lib/
 pyvenv.cfg
+bin/
+lib/
 
 # VSCODE
 

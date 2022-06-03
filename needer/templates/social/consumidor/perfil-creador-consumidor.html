@@ -62,11 +62,13 @@
     <!--Menu-->
     <div class="my-4 d-flex justify-content-start border-bottom mb-3 pre-ajustes">
         {% with url_name=request.resolver_match.url_name %}
+
         <a class="me-4 mb-0 fw-bolder text-muted text-decoration-none
         {% if url_name == 'detalle-creador' %}active {% endif %}" href="{{object.get_absolute_url}}"><h2 class="mb-0">Perfil</h2></a>
         <a class="me-4 mb-0 fw-bolder text-muted text-decoration-none" href="#"><h2 class="mb-0">Galeria</h2></a>
         <a class="me-5 mb-0 fw-bolder text-muted text-decoration-none
         {% if url_name == 'account_change_password' %}active {% endif %}" href="{% url 'account_change_password' %}"><h2 class="mb-0">Marketplace</h2></a>
+
         {% endwith %}
     </div>
 

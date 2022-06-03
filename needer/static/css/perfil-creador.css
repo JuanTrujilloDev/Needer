@@ -8,3 +8,61 @@
 .update-imagen:hover{
     border: 4px solid #D1D1FF;
 }
+
+.update-imagen:focus{
+    border: 4px solid #D1D1FF;
+}
+
+.new-post-button:hover{
+    border:none;
+
+}
+
+.categorias-badges:hover{
+    color: #A3A3FF;
+    transform: translateY(-1px);
+
+}
+
+.categorias-badges{
+    text-decoration: none;
+}
+
+.icono-seguidores:hover{
+    color: red;
+    cursor: pointer;
+}
+
+.icono-dinero:hover{
+    color:green;
+    cursor: pointer;
+}
+
+.profile-img{
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border: 2px solid #d1d1d1;
+  }
+
+  .profile-img-public{
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border: 2px solid #d1d1d1;
+  }
+
+
+  .divbib{
+      position: static;
+      height: 100%;
+  }
+
+  @media screen and (min-width:992px) {
+    .divbib{ 
+        position: sticky !important;  
+        top:0 ;    
+        height: 100%;
+    }
+    
+}
