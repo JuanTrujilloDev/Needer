@@ -59,14 +59,12 @@
     <div class="mb-4 px-0 container-fluid my-4 d-flex justify-content-lg-start justify-content-md-start justify-content-sm-center justify-content-center border-bottom mb-3 pre-ajustes">
         {% with url_name=request.resolver_match.url_name %}
 
-        <h5 class="mb-0 mx-0 ms-0 me-3 text-md-start text-center text-sm-center mx-0 text-lg-start">  <a class="nav-link mx-0 mb-0 fw-bolder text-muted 
-            {% if url_name == 'detalle-creador' %}active {% endif %}" href="{{object.get_absolute_url}}">Perfil</a></h5>
-        
-        <h5 class="mb-0 mx-3 text-md-start text-center text-sm-center mx-0 text-lg-start">  <a class="nav-link mx-0 text-center mb-0 fw-bolder text-muted" href="#">Galeria</a></h5>
-        
-        <h5 class="mb-0 ms-3 me-0 text-md-start text-center text-sm-center mx-0 text-lg-start"> <a class="nav-link mx-0 text-center mb-0 fw-bolder text-muted
-        {% if url_name == 'account_change_password' %}active {% endif %}" href="{% url 'account_change_password' %}">Tienda</a></h5>
-        
+        <a class="me-4 mb-0 fw-bolder text-muted border-0 text-decoration-none 
+        {% if url_name == 'detalle-creador' %}active {% endif %}" href="{{object.get_absolute_url}}"><h2 class="mb-0">Perfil</h2></a>
+        <a class="me-4 mb-0 fw-bolder text-muted text-decoration-none" href="#"><h2 class="mb-0">Galeria</h2></a>
+        <a class="me-5 mb-0 fw-bolder text-muted border-0 text-decoration-none
+        {% if url_name == 'account_change_password' %}active {% endif %}" href="{% url 'account_change_password' %}"><h2 class="mb-0">Marketplace</h2></a>
+
         {% endwith %}
     </div>
 

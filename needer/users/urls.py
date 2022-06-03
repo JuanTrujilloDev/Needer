@@ -17,7 +17,7 @@ urlpatterns = [
     path('email/', CustomEmailChangeView.as_view(), name="account_email"),
     path('password/reset/', PasswordResetView.as_view(form_class = CustomResetPasswordForm), name="account_reset_password"),
     path('password/change/', CustomPasswordChangeView.as_view(), name="account_change_password"),
-    path('inactive', CustomInactiveView.as_view(), name="account_inactive"),
+    path('inactive/', CustomInactiveView.as_view(), name="account_inactive"),
     path('profile/', updateAccountViewResolver, name='account_profile'),
     path('', include('allauth.urls')),
 

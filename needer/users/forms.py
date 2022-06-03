@@ -639,8 +639,8 @@ class UpdateCreadorForm(forms.ModelForm):
 
         categorias = self.cleaned_data['tipo_celebridad']
 
-        if len(categorias) > 3:
-            raise forms.ValidationError("No puedes escoger mas de 3 categorias, selecciona las que mas se ajusten a tu perfil.")
+        if len(categorias) > 5:
+            raise forms.ValidationError("No puedes escoger mas de 5 categorias, selecciona las que mas se ajusten a tu perfil.")
 
         return categorias
 
