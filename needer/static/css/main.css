@@ -26,12 +26,21 @@ h1, h2, h3, h4, h5, h6{
 
 }
 
+.btn-terciary{
+    background-color: #A3A3FF!important;
+
+}
+
 .bg-terciary{
     background-color: #A3A3FF;
 }
 
 .text-primary{
     color:#5C28FF!important;
+}
+
+.text-secondary{
+  color: #3131B3!important;
 }
 
 .google{

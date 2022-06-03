@@ -8,7 +8,7 @@
 
 {% block inner-content %}
 
-<div class="container-fluid my-3 py-4">
+<div class="container my-3 py-4">
     
 
     <!--Datos personales-->
@@ -28,17 +28,17 @@
             <div class="w-100 col-12 d-table-cell align-bottom row g-2  text-break text-lg-start text-md-start text-sm-center text-center"> 
             
             {% if object.first_name or object.last_name %}
-            <h1 class="text-primary fw-bold mb-0 mb-sm-2 mw-100">{{object.first_name}} {{object.last_name}}
-            </h1>
+            <h2 class="text-primary fw-bold mb-0 mb-sm-2 mw-100">{{object.first_name}} {{object.last_name}}
+            </h2    >
             <h3 class="text-muted">@ {{object.username}}</h3>
 
             {% else %}
-            <h1 class="text-primary fw-bold mb-0 mb-sm-2 mw-100">{{object.username}}
-            </h1>
+            <h2 class="text-primary fw-bold mb-0 mb-sm-2 mw-100">{{object.username}}
+            </h2>
             {% endif %}
             
-            <h3 class="text-muted"><i class="bi bi-geo-alt"></i> {{object.pais}}</h3>
-            <h3 class="text-muted mb-0">needer.com.co/{{object.slug}}</h3>
+            <h4 class="text-muted"><i class="bi bi-geo-alt"></i> {{object.pais}}</h4>
+            <h4 class="text-muted mb-0">needer.com.co/{{object.slug}}</h4>
             
             </div>
             
@@ -56,22 +56,122 @@
     </div>
 
 
-    <div class="my-4 d-flex justify-content-start border-bottom mb-3 pre-ajustes">
+    <div class="mb-4 px-0 container-fluid my-4 d-flex justify-content-lg-start justify-content-md-start justify-content-sm-center justify-content-center border-bottom mb-3 pre-ajustes">
         {% with url_name=request.resolver_match.url_name %}
-        <a class="me-4 mb-0 fw-bolder text-muted 
-        {% if url_name == 'detalle-creador' %}active {% endif %}" href="{{object.get_absolute_url}}"><h2 class="mb-0">Perfil</h2></a>
-        <a class="me-4 mb-0 fw-bolder text-muted" href="#"><h2 class="mb-0">Galeria</h2></a>
-        <a class="me-5 mb-0 fw-bolder text-muted
-        {% if url_name == 'account_change_password' %}active {% endif %}" href="{% url 'account_change_password' %}"><h2 class="mb-0">Marketplace</h2></a>
+
+        
+        <h5 class="mb-0 mx-0 ms-0 me-3 text-md-start text-center text-sm-center mx-0 text-lg-start">  <a class="nav-link mx-0 mb-0 fw-bolder text-muted 
+            {% if url_name == 'detalle-creador' %}active {% endif %}" href="{{object.get_absolute_url}}">Perfil</a></h5>
+        
+        
+        
+
+        
+        <h5 class="mb-0 mx-3 text-md-start text-center text-sm-center mx-0 text-lg-start">  <a class="nav-link mx-0 text-center mb-0 fw-bolder text-muted" href="#">Galeria</a></h5>
+        
+
+        
+        <h5 class="mb-0 ms-3 me-0 text-md-start text-center text-sm-center mx-0 text-lg-start"> <a class="nav-link mx-0 text-center mb-0 fw-bolder text-muted
+        {% if url_name == 'account_change_password' %}active {% endif %}" href="{% url 'account_change_password' %}">Tienda</a></h5>
+        
+
+
         {% endwith %}
     </div>
 
+
+ <div class="my-4 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
+ 
+ 
+ 
+    <!--Bibliografria-->
+    <div class="row container-fluid py-4 col-sm-12 col-lg-4 rounded shadow bg-white mb-5 mb-sm-5 mb-lg-0 mb-md-5">
+
+
+        <!--Bibliografia-->
+            <h3 class="text-primary">Bibliografía</h3>
+            <p class="text-muted text-break">{{object.biografia}}</p>
+            
+            <!--link-->
+            {% if object.link %}
+            <a href="#" class="text-secondary fst-italic fw-light"><i class="bi bi-link-45deg"></i>{{object.link}}</a>
+            {% endif %}
+
+        <!--Tipo de celebridad-->
+        <div class="container-fluid justify-content-between my-3 ">
+           {% for tipo in object.tipo_celebridad.all %}
+            <a href="#" class="categorias-badges btn-primary px-2 mb-2 mx-2 badge rounded-pill col text-center text-decoration-none">{{tipo.nombre}}</a>
+           {% endfor %}
+        </div>
+
+        <!--RAngo del creador-->
+        <div class="row container-fluid my-3">
+            <h3 class="text-primary">Interacciones</h3> 
+
+
+            <div class="row d-flex justify-content-around align-items-center">
+                <div class="col-6 text-center align-items-center d-flex row icono-dinero">   
+                    <h4><i class="bi bi-coin fw-bold"></i></h4> 
+                    <h5 class="fw-bold">213456</h5>
+                    <h6 class="text-muted">Ventas</h6>
+                    
+                </div>
+                <div class="col-6 text-center align-items-center d-flex row icono-seguidores">
+                    <h4><i class="bi bi-heart fw-bold"></i></h4> 
+                    <h5 class="fw-bold">7534</h5>
+                    <h6 class="text-muted">Seguidores</h6>    
+                </div>  
+            </div>
+        </div>
+    </div>
     
+     <!-- Contenido a la derecha UWU -->
+        <div class="d-flex justify-content-center row container-fluid col-sm-12 col-lg-8 mb-sm-5 mb-5 mb-lg-0 px-0">
 
 
 
+            <!--TODOS LOS DIVS DENTRO DEL CONTENIDO DERECHA DEBEN IR CON PX-0 Y CONTAINER FLUID-->
+             <!--Esto crea publicación-->
+            <div class="row container-fluid px-0 bg-white rounded shadow py-3 d-flex" style="height:200px">
+                <!--BOTON FOTO-->
+                    <div class="col-3 text-center">
+                    {% if request.user.foto %}
+                    <button type="button" width="100%;" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn rounded-circle overflow-hidden img-fluid" style="background-image: url({{object.foto.url}}); object-fit: cover;"> </button>
 
+                    {% else %}
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="col-12 btn rounded-circle overflow-hidden img-fluid" style="background-image: url({% static 'img/default-profile.png'%}); object-fit: cover;"> </button>
+                    {% endif %}
+                    </div>
+                    <!--INPUT-->
+                    <div class="col-9">
+                        <button class="text-primary border-0  form-control btn btn-lg new-post-button">En qué estás pensando?</button>
+                    </div>
+
+                    <hr class="px-5">
+
+                    <div class="container-fluid col-12 justify-content-between d-flex">
+                        <button class="btn btn-sm border-0 bg-outline text-muted"><h4><i class="bi bi-camera-fill"></i></h4></button>
+                        <button class="btn btn-sm border-0 bg-outline text-muted"><h4><i class="bi bi-music-note-beamed"></i></h4></button>
+                        <button class="btn btn-sm border-0 bg-outline text-muted"><h4><i class="bi bi-camera-reels-fill"></i></h4></button>
+                    </div>
+            </div>
+
+
+
+        
+        <!--END CONTENIDO DERECHA-->
+        </div>
+
+
+
+ </div>
+    
 </div>
+
+
+
+
+
 
 
 {% include 'social/creador/foto-perfil-modal.html' %}
