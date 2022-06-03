@@ -42,6 +42,11 @@ body, html {
 
 .navbar{
     box-shadow: 0 1.5px 0px 0 rgba(0,0,0,.2)!important;
+    background-color: #5C28FF!important;
+}
+
+.navbar h3{
+  color:white;
 }
 
 
