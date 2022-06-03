@@ -4,10 +4,13 @@ import os
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+from datetime import datetime
 
 # Create your models here.
 def postDirectory(instance, filename):
-    profile_picture_name = 'publicacion/{0}/%Y/%m/%d/{1}'.format(instance.username, filename)
+    _date = datetime.now()
+    # Se guarda en /publicacion/usuario/anio/mes/dia
+    profile_picture_name = 'publicacion/{0}/{2.year}/{2.month}/{2.day}/{1}'.format(instance.user.username, filename, _date)
     full_path = os.path.join(settings.MEDIA_ROOT, profile_picture_name)
     return profile_picture_name
 
@@ -18,7 +21,7 @@ def valid_file_extention(value):
     ext = os.path.splitext(value.name)[1]
     valid_extentions = ['.jpg', '.png', '.gif', '.jpeg', '.mp3', '.mp4', '.wav', '.m4a', '.mov', '.avi', 'mkv', 'webm']
     if not ext.lower() in valid_extentions:
-        raise ValidationError('El formato del archivo no es soportado, por favor utiliza cualquiera de los formatos permitidos.')
+        raise ValidationError('El formato del archivo no es soportado, por favor utiliza cualquiera de los formatos permitidos. \n{0}'.format(valid_extentions))
 
 
 class Publicacion(models.Model):
@@ -28,7 +31,7 @@ class Publicacion(models.Model):
     titulo = models.CharField(verbose_name='Titulo', max_length=250, blank=False, null=False)
 
     descripcion = models.CharField(verbose_name='Descripcion', max_length=150, blank=True)
-    archivo = models.FileField(upload_to = postDirectory, blank=True, null=True)
+    archivo = models.FileField(upload_to = postDirectory, blank=True, null=True, validators=[valid_file_extention])
     fecha_creacion = models.DateTimeField(verbose_name='Fecha Publicacion', auto_now_add=True, auto_now=False)
     fecha_actualizacion = models.DateTimeField(verbose_name='Fecha Actualizacion', auto_now_add=True)
 

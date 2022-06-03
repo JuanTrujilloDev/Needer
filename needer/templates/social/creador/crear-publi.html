@@ -1,0 +1,6 @@
+
+<form method = "POST" action="{% url 'crear-publicacion'%}" enctype="multipart/form-data">
+ {% csrf_token %}
+{{form}}
+<button type="submit"></button>
+</form>

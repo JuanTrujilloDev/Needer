@@ -7,19 +7,19 @@ urlpatterns = [
 
     # CREADOR DE CONTENIDO DETAIL
     
-    path('creador/<str:slug>/', DetailCreador.as_view(), name='detalle-creador'),
+    path('<str:slug>/', DetailCreador.as_view(), name='detalle-creador'),
 
 
 
 
-    # path('publicacion/<int:pk>', DetallePublicacion.as_view(), name='detalle-publicacion'),
+    path('<str:user_slug>/publicacion/<int:pk>', DetallePublicacionView.as_view(), name='detalle-publicacion'),
 
 
     # VISTAS PARA SOLO EL CREADOR DE CONTENIDO:
 
-    # path('publicacion/create', CreatePublicacion.as_view(), name='crear-publicacion'),
-    # path('publicacion/<int:pk>/update', UpdatePublicacion.as_view(), name='update-publicacion'),
-    # path('publicacion/<int:pk>/delete', DeletePublicacion.as_view(), name='update-publicacion'),
+    path('publicacion/create', CrearPublicacionView.as_view(), name='crear-publicacion'),
+    # path('<str:user_slug>/publicacion/<int:pk>/update', UpdatePublicacion.as_view(), name='update-publicacion'),
+    # path('<str:user_slug>/publicacion/<int:pk>/delete', DeletePublicacion.as_view(), name='update-publicacion'),
     
 
 
