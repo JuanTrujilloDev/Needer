@@ -66,7 +66,7 @@ class DetailCreador(LoginRequiredMixin, DetailView):
 class CrearPublicacionView(LoginRequiredMixin, CreateView):
     model = Publicacion
     template_name = 'social/creador/crear-publi.html'
-    fields = ['titulo', 'archivo', 'descripcion']
+    fields = ['descripcion', 'archivo']
 
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:

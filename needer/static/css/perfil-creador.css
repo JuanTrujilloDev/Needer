@@ -15,7 +15,12 @@
 
 .new-post-button:hover{
     border:none;
+    background-color: #dbdbdb;
 
+}
+
+.new-post-button{
+    background-color: #f0f2f5;
 }
 
 .categorias-badges:hover{
@@ -49,11 +54,11 @@
     height: 60px;
     width: 60px;
     object-fit: cover;
-    border: 2px solid #d1d1d1;
   }
 
 
   .divbib{
+      display: none;
       position: static;
       height: 100%;
   }
@@ -63,6 +68,7 @@
         position: sticky !important;  
         top:0 ;    
         height: 100%;
+        display: flex;
     }
     
 }

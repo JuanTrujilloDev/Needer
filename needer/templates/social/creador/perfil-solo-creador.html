@@ -13,6 +13,8 @@
 
     <!--Datos personales-->
     <div class="seccion-arriba w-100 row mx-0">
+
+        <!--FOTO-->
         <div class="col-lg-3 col-md-4 text-center mb-0 mb-sm-3 px-0 mx-0 align-items-center">
             {% if object.foto %}
             <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="col-12 btn rounded-circle overflow-hidden update-imagen img-fluid" style="background-image: url({{object.foto.url}}); object-fit: cover;"> </button>
@@ -24,6 +26,10 @@
             {% endif %}
 
         </div>
+
+        
+
+        <!--Texto Informacion-->
         <div class="col-lg-7 col-md-6 d-flex align-items-center container g-2 justify-content-center">
             <div class="w-100 col-12 d-table-cell align-bottom row g-2  text-break text-lg-start text-md-start text-sm-center text-center"> 
             
@@ -45,6 +51,8 @@
             
         </div>
 
+
+        <!--Ajustes-->
         <div class="col-md-2 d-flex align-items-end container g-2 justify-content-center">
             <div class="w-100 col-12 d-table-cell align-bottom row g-2 text-lg-start text-sm-center text-center"> 
                 <h3 class="py-2 text-primary"><a href="{% url 'account_profile' %}"><i class="bi bi-gear"></i></a></h3>
@@ -56,6 +64,8 @@
     </div>
 
 
+
+    <!--Navegacion secundaria-->
     <div class="mb-4 px-0 container-fluid my-4 d-flex justify-content-lg-start justify-content-md-start justify-content-sm-center justify-content-center border-bottom mb-3 pre-ajustes">
         {% with url_name=request.resolver_match.url_name %}
 
@@ -69,56 +79,70 @@
     </div>
 
 
- <div class="my-4 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
+
+
+<!--Contenido interno-->
+<div class="my-4 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
  
     <!--Bibliografria-->
     <div class="row py-4 col-sm-12 col-lg-4 rounded shadow bg-white mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 divbib">
 
-        <!--Bibliografia-->
-            <h3 class="text-primary">Bibliografía</h3>
-            <p class="text-muted text-break">{{object.biografia}}</p>
-            
-            <!--link-->
-            {% if object.link %}
-            <a href="#" class="text-secondary fst-italic fw-light"><i class="bi bi-link-45deg"></i>{{object.link}}</a>
-            {% endif %}
+            <!--Bibliografia-->
+                <h3 class="text-primary">Bibliografía</h3>
+                <p class="text-muted text-break">{{object.biografia}}</p>
+                
+                <!--link-->
+                {% if object.link %}
+                <a href="{{object.link}}" class="text-secondary fst-italic fw-light text-decoration-none"><i class="bi bi-link-45deg"></i>{{object.link}}</a>
+                {% endif %}
 
-        <!--Tipo de celebridad-->
-        <div class="container-fluid justify-content-between my-3 ">
-           {% for tipo in object.tipo_celebridad.all %}
-            <a href="#" class="categorias-badges btn-secondary px-2 mb-2 mx-2 badge rounded-pill col text-center text-decoration-none">{{tipo.nombre}}</a>
-           {% endfor %}
-        </div>
-
-        <!--Rango del creador-->
-        <div class="container-fluid my-3">
-            <h3 class="text-primary">Interacciones</h3> 
-
-            <div class="row d-flex justify-content-center align-items-center mt-4">
-                <div class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-dinero">   
-                    <h4><i class="bi bi-coin fw-bold"></i></h4> 
-                    <h5 class="fw-bold">213456</h5>
-                    <h6 class="text-muted">Ventas</h6>
-                </div>
-
-                <div class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-seguidores">
-                    <h4><i class="bi bi-person-hearts"></i></h4> 
-                    <h5 class="fw-bold">7534</h5>
-                    <h6 class="text-muted">Seguidores</h6>    
-                </div>  
+            <!--Tipo de celebridad-->
+            <div class="container-fluid justify-content-between my-3 ">
+            {% for tipo in object.tipo_celebridad.all %}
+                <a href="#" class="categorias-badges btn-secondary px-2 mb-2 mx-2 badge rounded-pill col text-center text-decoration-none">{{tipo.nombre}}</a>
+            {% endfor %}
             </div>
-        </div>
+
+            <!--Rango del creador-->
+            <div class="container-fluid my-3">
+                <h3 class="text-primary">Interacciones</h3> 
+
+                <div class="row d-flex justify-content-center align-items-center mt-4">
+                    <div class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-dinero">   
+                        <h4><i class="bi bi-coin fw-bold"></i></h4> 
+                        <h5 class="fw-bold">213456</h5>
+                        <h6 class="text-muted">Ventas</h6>
+                    </div>
+
+                    <div class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-seguidores">
+                        <h4><i class="bi bi-person-hearts"></i></h4> 
+                        <h5 class="fw-bold">7534</h5>
+                        <h6 class="text-muted">Seguidores</h6>    
+                    </div>  
+                </div>
+            </div>
+
+
     </div>
+
+
+
+
+
     
      <!-- Contenido a la derecha UWU -->
         <div class="d-flex justify-content-center row container-fluid col-sm-12 col-lg-8 mb-sm-5 mb-5 mb-lg-0 px-0">
 
             <!--TODOS LOS DIVS DENTRO DEL CONTENIDO DERECHA DEBEN IR CON PX-0 Y CONTAINER FLUID-->
+
+
+
+
              <!--Esto crea publicación-->
-                <div class="row container-fluid px-0 bg-white rounded shadow py-4 d-flex justify-content-center" style="height:auto;">
+                <div class="row container-fluid px-0 bg-white rounded shadow py-4 d-flex justify-content-center align-items-center" style="height:auto;">
                     <!--BOTON FOTO-->
-                        <div class="text-center col-md-3 col-sm-12">
-                            <a href="#">
+                        <div class="text-center col-md-2 col-sm-12 col-lg-2 mb-0 mb-sm-3 mb-lg-0 mb-md-0 d-flex justify-content-center">
+                            <a href="{% url 'crear-publicacion' %}" class="text-center">
                             {% if request.user.foto %}
                             
                             <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{request.user.foto.url}}"
@@ -132,45 +156,51 @@
                             </a>
                         </div>
                         <!--INPUT-->
-                        <div class="col-md-9 col-sm-12">
-                            <button class="text-primary border-0  form-control btn btn-lg new-post-button">En qué estás pensando?</button>
+                        <div class="col-md-9 col-sm-10 col-lg-9 d-flex">
+                            <a href="{% url 'crear-publicacion' %}" class=" text-muted text-start border-0  form-control btn btn-lg new-post-button align-middle">
+                                <h5 class="">En qué estás pensando?</h5></a>
                         </div>
 
-                        <hr class="px-5 my-3" style="width: 95%;">
-
-                        <div class="container-fluid col-12 justify-content-around d-flex">
-                            <button class="btn btn-sm border-0 bg-outline text-muted"><h4><i class="bi bi-camera-fill"></i></h4></button>
-                            <button class="btn btn-sm border-0 bg-outline text-muted"><h4><i class="bi bi-music-note-beamed"></i></h4></button>
-                            <button class="btn btn-sm border-0 bg-outline text-muted"><h4><i class="bi bi-camera-reels-fill"></i></h4></button>
+                        <div class="container-fluid col-md-1 col-lg-1 col-sm-2 justify-content-center d-flex text-cente align-middle">
+                            <a href="{% url 'crear-publicacion' %}" class="btn btn-sm border-0 bg-outline text-muted d-flex align-items-center"><h3 class="fw-bold text-dark "><i class="bi bi-upload"></i></h3></a>
                         </div>
                 </div>
+
+
+
+
+
 
                 <!--Publicaciones con mas LIKES!-->
                 <div class="col-12 text-center rounded shadow mt-4">
-                    <div class="text-primary mt-3">
-                       
-                    </div>
-                    <h2 class="fw-bold text-secondary fw-bold">Publicaciones con más likes!</h2>
 
-                    <div class="row py-3 border-bottom align-items-center justify-content-around text-muted d-flex">
-                        <img class="rounded-circle img-fluid profile-img-public col-md-4 col-sm-6" alt="profile" src="{% static 'img/default-profile.png' %}" data-holder-rendered="true">
-                        <h3 class="col-md-6 col-sm-6 text-break text-center fw-bold">Texto de la publicación</h3>
-                        <h3 class="col-md-2 col-sm-12 my-sm-3 fw-bold">3487  <i class="bi bi-hearts text-danger    "></i></h3>
+                    <h2 class="fw-bold text-secondary fw-bold mt-3">Publicaciones con más likes!</h2>
+
+                    <div class="row py-3 border-bottom align-items-center justify-content-around d-flex">
+                        <img class="img-fluid profile-img-public col-md-4 col-sm-4" alt="profile" src="{% static 'img/default-profile.png' %}" data-holder-rendered="true">
+                        <h4 class="col-md-6 col-sm-8 text-break text-center fw-bold">Texto de la publicación</h4>
+                        <h3 class="col-md-2 col-sm-12 my-sm-3 fw-bold">3487  <i class="bi bi-hearts text-terciary"></i></h3>
                     </div>
 
-                    <div class="row py-3 border-bottom align-items-center justify-content-around text-muted d-flex">
-                        <img class="rounded-circle img-fluid profile-img-public col-md-4 col-sm-6" alt="profile" src="{% static 'img/default-profile.png' %}" data-holder-rendered="true">
-                        <h3 class="col-md-6 col-sm-6 text-break text-center fw-bold">Texto de la publicación</h3>
-                        <h3 class="col-md-2 col-sm-12 my-sm-3 fw-bold">3487  <i class="bi bi-hearts text-danger    "></i></h3>
+                    <div class="row py-3 border-bottom align-items-center justify-content-around d-flex">
+                        <img class="img-fluid profile-img-public col-md-4 col-sm-4" alt="profile" src="{% static 'img/default-profile.png' %}" data-holder-rendered="true">
+                        <h4 class="col-md-6 col-sm-8 text-break text-center fw-bold">Texto de la publicación</h4>
+                        <h3 class="col-md-2 col-sm-12 my-sm-3 fw-bold">3487  <i class="bi bi-hearts text-terciary"></i></h3>
                     </div>
 
-                    <div class="row py-3 border-bottom align-items-center justify-content-around text-muted d-flex">
-                        <img class="rounded-circle img-fluid profile-img-public col-md-4 col-sm-6" alt="profile" src="{% static 'img/default-profile.png' %}" data-holder-rendered="true">
-                        <h3 class="col-md-6 col-sm-6 text-break text-center fw-bold">Texto de la publicación</h3>
-                        <h3 class="col-md-2 col-sm-12 my-sm-3 fw-bold">3487  <i class="bi bi-hearts text-danger    "></i></h3>
+                    <div class="row py-3 align-items-center justify-content-around d-flex">
+                        <img class="img-fluid profile-img-public col-md-4 col-sm-4" alt="profile" src="{% static 'img/default-profile.png' %}" data-holder-rendered="true">
+                        <h4 class="col-md-6 col-sm-8 text-break text-center fw-bold">Texto de la publicación</h4>
+                        <h3 class="col-md-2 col-sm-12 my-sm-3 fw-bold">3487  <i class="bi bi-hearts text-terciary"></i></h3>
                     </div>
 
                 </div>
+
+
+
+
+
+
 
         <!--END CONTENIDO DERECHA-->
         </div>
