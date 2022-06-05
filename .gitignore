@@ -136,6 +136,9 @@ Lib/
 pyvenv.cfg
 bin/
 lib/
+.DS_Store
+../.DS_Store/
+.DS_Store/
 
 # VSCODE
 

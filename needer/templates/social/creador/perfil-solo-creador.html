@@ -141,7 +141,7 @@
              <!--Esto crea publicación-->
                 <div class="row container-fluid px-0 bg-white rounded shadow py-4 d-flex justify-content-center align-items-center" style="height:auto;">
                     <!--BOTON FOTO-->
-                        <div class="text-center col-md-2 col-sm-12 col-lg-2 mb-0 mb-sm-3 mb-lg-0 mb-md-0 d-flex justify-content-center">
+                        <div class="text-center col-md-2 col-sm-12 col-lg-2 mb-0 mb-sm-5 mb-lg-0 mb-md-0 d-flex justify-content-center">
                             <a href="{% url 'crear-publicacion' %}" class="text-center">
                             {% if request.user.foto %}
                             
@@ -196,7 +196,61 @@
 
                 </div>
 
+                <!--Publicaciones-->
+                <div class="row container-fluid px-0 bg-white rounded shadow py-4 d-flex justify-content-around align-items-center mt-4" style="height:auto;">
+                    
+                    <!--Botón Foto Publicaciones y Apodo-->
+                    <div class="text-center col-9 mb-0 mb-sm-3 mb-lg-0 mb-md-0 d-flex justify-content-start align-items-center">
+                        <a href="{% url 'crear-publicacion' %}" class="text-center">
+                        {% if request.user.foto %}
+                        
+                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{request.user.foto.url}}"
+                        data-holder-rendered="true">
+        
+                        {% else %}
+                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"
+                        data-holder-rendered="true">
+                    
+                        {% endif %}
+                        </a>
 
+                        
+                        <!--APODO-->
+                        <h5 class="text-terciary text-center fw-bold mb-0 mb-sm-2 mw-100">@{{object.username}}</h5>
+                        
+
+                    </div>
+
+                    <!--Editar de la Publicacion-->
+                    <div class="text-center col-3 mb-0 mb-sm-3 mb-lg-0 mb-md-0 d-flex justify-content-end align-items-center">
+                    <a class="btn text-primary col-4 text-end"><i class="bi bi-pencil-square border-none"></i></a>
+                    </div>
+
+                    <!--Fecha de la Publicacion-->
+                    <div class="row d-flex justify-content-start align-items-center px-0">
+                    <h6 class="text-muted text-start col-4">Days/Hour/Seconds</h6>
+                   
+                    </div>
+
+                    <!--Descripción de la Publicación-->
+                    <div class="row container-fluid px-0 bg-white py-4 d-flex justify-content-around align-items-center" style="height:auto;">
+                        <p class="text-muted">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur incidunt, aliquid labore quia vitae a ad error eius explicabo minus sint enim nesciunt blanditiis itaque deleniti omnis qui aliquam unde.</p>
+                    </div>
+    
+                     <!--Imagen de la Publicación-->   
+                    <div class="container-fluid d-flex justify-content-center">
+                        <img class="img-fluid pub-img rounded" alt="profile" src="{% static 'img/prueba.jpeg'%}" data-holder-rendered="true">
+                    </div>
+
+                    <!--Botones de la Publicación--> 
+                    <div class="col-lg-12 row mt-2">
+                        <button class="btn text-primary col-6"><i class="bi bi-heart"></i> Like </button>
+                        <button class="btn text-primary col-6"><i class="bi bi-chat-left"></i> Chat </button>
+                    </div>
+
+                </div>
+
+                
 
 
 
