@@ -59,14 +59,14 @@
 
     </div>
 
-    <!--Menu-->
-    <div class="my-4 d-flex justify-content-start border-bottom mb-3 pre-ajustes">
+    <!--Navegacion secundaria-->
+    <div class="mb-4 px-0 container-fluid my-4 d-flex justify-content-lg-start justify-content-md-start justify-content-sm-center justify-content-center border-bottom mb-3 pre-ajustes">
         {% with url_name=request.resolver_match.url_name %}
 
-        <a class="me-4 mb-0 fw-bolder text-muted text-decoration-none
+        <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none  text-center
         {% if url_name == 'detalle-creador' %}active {% endif %}" href="{{object.get_absolute_url}}"><h2 class="mb-0">Perfil</h2></a>
-        <a class="me-4 mb-0 fw-bolder text-muted text-decoration-none" href="#"><h2 class="mb-0">Galeria</h2></a>
-        <a class="me-5 mb-0 fw-bolder text-muted text-decoration-none
+        <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted text-decoration-none text-center" href="#"><h2 class="mb-0">Galeria</h2></a>
+        <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none text-center
         {% if url_name == 'account_change_password' %}active {% endif %}" href="{% url 'account_change_password' %}"><h2 class="mb-0">Marketplace</h2></a>
 
         {% endwith %}
@@ -76,7 +76,7 @@
 <div class="my-4 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
  
     <!--Bibliografria-->
-    <div class="row py-4 col-sm-12 col-lg-4 rounded shadow bg-white mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 divbib">
+    <div class="row py-4 col-sm-12 col-lg-5 rounded shadow bg-white mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 divbib">
 
             <!--Bibliografia-->
                 <h3 class="text-primary">Bibliografía</h3>
@@ -122,55 +122,94 @@
 
     
      <!-- Contenido a la derecha UWU -->
-        <div class="d-flex justify-content-center row container-fluid col-sm-12 col-lg-8 mb-sm-5 mb-5 mb-lg-0 px-0">
+     <div class="d-flex justify-content-center row container-fluid col-sm-12 col-lg-7 mb-sm-5 mb-5 mb-lg-0 px-0">
 
-            <!--TODOS LOS DIVS DENTRO DEL CONTENIDO DERECHA DEBEN IR CON PX-0 Y CONTAINER FLUID-->
+        <!--TODOS LOS DIVS DENTRO DEL CONTENIDO DERECHA DEBEN IR CON PX-0 Y CONTAINER FLUID-->
+
+            <!--Publicaciones con mas LIKES!-->
+            <div class="col-12 text-center rounded shadow mt-4">
+
+                <h2 class="fw-bold text-secondary fw-bold mt-3">Publicaciones con más likes!</h2>
+
+                <div class="row py-3 border-bottom align-items-center justify-content-around d-flex">
+                    <img class="img-fluid profile-img-public col-md-4 col-sm-4" alt="profile" src="{% static 'img/default-profile.png' %}" data-holder-rendered="true">
+                    <h4 class="col-md-6 col-sm-8 text-break text-center fw-bold">Texto de la publicación</h4>
+                    <h3 class="col-md-2 col-sm-12 my-sm-3 fw-bold">3487  <i class="bi bi-hearts text-terciary"></i></h3>
+                </div>
+
+                <div class="row py-3 border-bottom align-items-center justify-content-around d-flex">
+                    <img class="img-fluid profile-img-public col-md-4 col-sm-4" alt="profile" src="{% static 'img/default-profile.png' %}" data-holder-rendered="true">
+                    <h4 class="col-md-6 col-sm-8 text-break text-center fw-bold">Texto de la publicación</h4>
+                    <h3 class="col-md-2 col-sm-12 my-sm-3 fw-bold">3487  <i class="bi bi-hearts text-terciary"></i></h3>
+                </div>
+
+                <div class="row py-3 align-items-center justify-content-around d-flex">
+                    <img class="img-fluid profile-img-public col-md-4 col-sm-4" alt="profile" src="{% static 'img/default-profile.png' %}" data-holder-rendered="true">
+                    <h4 class="col-md-6 col-sm-8 text-break text-center fw-bold">Texto de la publicación</h4>
+                    <h3 class="col-md-2 col-sm-12 my-sm-3 fw-bold">3487  <i class="bi bi-hearts text-terciary"></i></h3>
+                </div>
+
+            </div>
 
 
 
-                <!--Publicaciones con mas LIKES!-->
-                <div class="col-12 text-center rounded shadow mt-4">
 
-                    <h2 class="fw-bold text-secondary fw-bold mt-3">Publicaciones con más likes!</h2>
+            <!--Publicacion-->
+            <div class="row container-fluid px-0 bg-white rounded shadow py-4 d-flex justify-content-around align-items-center my-4" style="height:auto;">
+                <div class="col-12 d-flex align-items-center justify-content-start">
+                        <div class="col-lg-2 col-md-2   col-3 justify-content-center d-flex pe-0">
+                        <a href="{{object.get_absolute_url}}" class="text-center">
+                            {% if object.foto %}
+                            
+                            <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{object.foto.url}}"
+                            data-holder-rendered="true">
+            
+                            {% else %}
+                            <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"
+                            data-holder-rendered="true">
+                        
+                            {% endif %}
+                        </a>
+                        </div>
 
-                    <div class="row py-3 border-bottom align-items-center justify-content-around d-flex">
-                        <img class="img-fluid profile-img-public col-md-4 col-sm-4" alt="profile" src="{% static 'img/default-profile.png' %}" data-holder-rendered="true">
-                        <h4 class="col-md-6 col-sm-8 text-break text-center fw-bold">Texto de la publicación</h4>
-                        <h3 class="col-md-2 col-sm-12 my-sm-3 fw-bold">3487  <i class="bi bi-hearts text-terciary"></i></h3>
+                    <!--Autor y Hora-->
+                    <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1">
+                    <h5 class="text-secondary fw-bold mb-0 mb-sm-2 mw-100 my-0">{{object.username}}</h5>
+                    <h6 class="my-0 text-muted">@{{object.username}} - Days/Hour/Seconds</h6>
                     </div>
 
-                    <div class="row py-3 border-bottom align-items-center justify-content-around d-flex">
-                        <img class="img-fluid profile-img-public col-md-4 col-sm-4" alt="profile" src="{% static 'img/default-profile.png' %}" data-holder-rendered="true">
-                        <h4 class="col-md-6 col-sm-8 text-break text-center fw-bold">Texto de la publicación</h4>
-                        <h3 class="col-md-2 col-sm-12 my-sm-3 fw-bold">3487  <i class="bi bi-hearts text-terciary"></i></h3>
+                    <div class="col d-flex align-items-center justify-content-end">
+                        <a class="btn text-primary text-end"><i class="bi bi-pencil-square border-none"></i></a>
                     </div>
-
-                    <div class="row py-3 align-items-center justify-content-around d-flex">
-                        <img class="img-fluid profile-img-public col-md-4 col-sm-4" alt="profile" src="{% static 'img/default-profile.png' %}" data-holder-rendered="true">
-                        <h4 class="col-md-6 col-sm-8 text-break text-center fw-bold">Texto de la publicación</h4>
-                        <h3 class="col-md-2 col-sm-12 my-sm-3 fw-bold">3487  <i class="bi bi-hearts text-terciary"></i></h3>
-                    </div>
-
+                    
                 </div>
 
 
 
+                <!--Contenido de la Publicación-->
+                <div class="row container-fluid px-0 bg-white py-4 d-flex justify-content-around align-items-center" style="height:auto;">
+                    <p class="text-muted">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur incidunt, aliquid labore quia vitae a ad error eius explicabo minus sint enim nesciunt blanditiis itaque deleniti omnis qui aliquam unde.</p>
+                    <img class="img-fluid pub-img rounded" alt="profile" src="{% static 'img/download (1).jpg' %}" data-holder-rendered="true">
+                </div>
+
+                <!--Botones de la Publicación--> 
+                <div class="col-lg-12 row mt-4">
+                    <button class="btn text-primary col-6"><i class="bi bi-heart"></i> Like </button>
+                    <button class="btn text-primary col-6"><i class="bi bi-chat-left"></i> Comentar </button>
+                </div>
+
+            </div>
+
+            
 
 
 
 
-        <!--END CONTENIDO DERECHA-->
-        </div>
+
+    <!--END CONTENIDO DERECHA-->
+    </div>
 
  </div>
-
-
-    
-
-    
-
-
-
 
 </div>
 

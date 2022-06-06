@@ -73,11 +73,14 @@
     
 }
 
+
+
+
  /* Publicación */
 
  .pub-img{
-    max-height: 540px;
+    max-height: 510px;
     max-width: 100%;
-    object-fit: fill;
+    object-fit: cover;
 
  }
