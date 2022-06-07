@@ -27,18 +27,15 @@ def valid_file_extention(value):
 class Publicacion(models.Model):
     user = models.ForeignKey(User, on_delete= models.CASCADE, verbose_name='Autor')
     
-    descripcion = models.CharField(verbose_name='Descripcion', max_length=280, blank=True)
+    descripcion = models.TextField(verbose_name='Descripcion', max_length=280, blank=True)
     archivo = models.FileField(upload_to = postDirectory, blank=True, null=True, validators=[valid_file_extention])
     fecha_creacion = models.DateTimeField(verbose_name='Fecha Publicacion', auto_now_add=True, auto_now=False)
-    fecha_actualizacion = models.DateTimeField(verbose_name='Fecha Actualizacion', auto_now_add=True)
+    fecha_actualizacion = models.DateTimeField(verbose_name='Fecha Actualizacion',  auto_now=True)
 
 
-
-    def __str__(self):
-        return self.titulo
 
     def get_absolute_url(self):
-        return reverse('detalle-publicacion', kwargs={'pk': self.pk})
+        return reverse('detalle-publicacion', kwargs={'pk': self.pk, 'user_slug': self.user.slug})
     
 
 
