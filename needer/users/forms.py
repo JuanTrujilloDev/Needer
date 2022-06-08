@@ -484,7 +484,7 @@ class UpdateCreadorForm(forms.ModelForm):
     class Meta:
         # Model class
         model = User
-        fields = ['first_name', 'last_name', 'pais', 'username', 'fecha_nacimiento', 
+        fields = ['first_name', 'last_name', 'pais', 'username', 'apodo', 'fecha_nacimiento', 
                  'genero', 'tipo_celebridad', 'foto', 'biografia', 'link']
 
 
@@ -514,7 +514,6 @@ class UpdateCreadorForm(forms.ModelForm):
         self.fields['first_name'].widget.attrs['class'] = 'form-control form-control-lg'
         self.fields['last_name'].widget.attrs['class'] = 'form-control form-control-lg'
         self.fields['last_name'].widget.attrs['placeholder'] = 'Ingresa tu apellido'
-        self.fields['link'].widget.attrs['class'] = 'form-control form-control-lg'
         self.fields['tipo_celebridad'].widget.attrs['class'] = 'form-check'
         
 
@@ -609,6 +608,24 @@ class UpdateCreadorForm(forms.ModelForm):
 
 
         raise forms.ValidationError('El usuario no cumple con el formato (Solo letras o numeros y debe empezar por letra).')
+
+    def clean_apodo(self):
+        """
+        Se limpia el usuario para cumplir con el formato
+
+        5 a 10 Caracteres
+        Solo Letras [A-Za-z numeros]
+        """
+        apodo = self.cleaned_data['apodo']
+
+        # Regex para Username
+        match = re.match('^[A-Za-z][A-Za-z0-9 ]{4,25}$', apodo)
+
+        if match:
+                return apodo
+
+
+        raise forms.ValidationError('El apodo no cumple con el formato (Solo letras, numeros o espacio y debe empezar por letra) minimo 4 caracteres y maximo 25 caracteres.')
 
 
 

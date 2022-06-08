@@ -225,7 +225,8 @@ Needer | {{object.username}}
 
                         <!--Autor y Hora-->
                         <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1">
-                        <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none"><h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">{{publicacion.user.username}}</h5></a> 
+                        <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none"><h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                            {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}</h5></a> 
                         <p class="my-0 text-muted">@{{publicacion.user.username}} · {{publicacion.fecha_creacion|fecha_exacta}}</p>
                         {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
                         </div>

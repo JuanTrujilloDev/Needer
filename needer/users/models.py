@@ -85,7 +85,7 @@ class User(AbstractUser):
     
     """
     
-   
+    
     groups = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name="Groups")
     
     # Datos personales de facturacion.
@@ -105,7 +105,7 @@ class User(AbstractUser):
         MUJER = 'Mujer', 'Mujer',
         OTRO = 'Otro', "Otro"
 
-
+    apodo = models.CharField(max_length=25, blank=True, null=True)
     genero = models.CharField(max_length=7, choices = GeneroChoices.choices, default=GeneroChoices.OTRO)
     fecha_nacimiento = models.DateField(verbose_name="Fecha nacimiento", blank=True, null=True)
     tipo_celebridad = models.ManyToManyField(TipoCelebridad, blank = True)
