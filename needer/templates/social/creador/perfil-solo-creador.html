@@ -244,7 +244,7 @@ Needer | {{object.username}}
                         
                         {% if publicacion.descripcion %}
                         
-                        <p class="text-muted">{{publicacion.descripcion}}</p>
+                        <div class="text-muted mw-100 text-break">{{publicacion.descripcion|safe}}</div>
 
                         {% endif %}
                         

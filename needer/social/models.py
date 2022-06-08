@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from datetime import datetime
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 def postDirectory(instance, filename):
@@ -27,7 +28,7 @@ def valid_file_extention(value):
 class Publicacion(models.Model):
     user = models.ForeignKey(User, on_delete= models.CASCADE, verbose_name='Autor')
     
-    descripcion = models.TextField(verbose_name='Descripcion', max_length=280, blank=True)
+    descripcion = RichTextField(verbose_name='Descripcion', max_length=280, blank=True)
     archivo = models.FileField(upload_to = postDirectory, blank=True, null=True, validators=[valid_file_extention])
     fecha_creacion = models.DateTimeField(verbose_name='Fecha Publicacion', auto_now_add=True, auto_now=False)
     fecha_actualizacion = models.DateTimeField(verbose_name='Fecha Actualizacion',  auto_now=True)
