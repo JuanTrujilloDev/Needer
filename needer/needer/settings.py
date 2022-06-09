@@ -240,17 +240,6 @@ EMAIL_HOST_PASSWORD = os.environ['GMAIL_PASSWORD']
 EMAIL_USE_SSL = False
 
 
-<<<<<<< HEAD
-# CKEDITOR SETTINGS
-CKEDITOR_CONFIGS = {
-    'default': {
-        'extraPlugins': 'wordcount',
-    }
-}
-CKEDITOR_UPLOAD_PATH = "uploads/"
-=======
-# TINYMCE
-
 
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
@@ -262,4 +251,3 @@ TINYMCE_DEFAULT_CONFIG = {
     "bold italic backcolor emoticons| link | alignleft aligncenter "
     "outdent indent"
 }
->>>>>>> 04031b32be810a94b27e3d227dbb7ada770ce54f
