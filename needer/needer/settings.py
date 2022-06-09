@@ -153,10 +153,17 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    
-]
+if DEBUG:
+   STATIC_ROOT = BASE_DIR / "static"
+
+else:
+     STATICFILES_DIRS = [
+        BASE_DIR / "static",
+        
+    ]
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -232,8 +239,6 @@ EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = os.environ['GMAIL_USER']
 EMAIL_HOST_PASSWORD = os.environ['GMAIL_PASSWORD'] 
 EMAIL_USE_SSL = False
 
-
-# TINYMCE
 
 
 TINYMCE_DEFAULT_CONFIG = {

@@ -28,6 +28,7 @@ def valid_file_extention(value):
 class Publicacion(models.Model):
     user = models.ForeignKey(User, on_delete= models.CASCADE, verbose_name='Autor')
     
+
     descripcion = HTMLField(verbose_name='Descripcion', max_length=280, blank=True)
     archivo = models.FileField(upload_to = postDirectory, blank=True, null=True, validators=[valid_file_extention])
     fecha_creacion = models.DateTimeField(verbose_name='Fecha Publicacion', auto_now_add=True, auto_now=False)
