@@ -1,0 +1,23 @@
+.publicacion:hover{
+    outline: 1px solid #5C28FF;
+}
+
+.publicacion .like:hover{
+    border: none;
+    background-color: #efefef;
+}
+
+.publicacion .like{
+    border: none;
+}
+
+.editar-pub-btn{
+    border: none;
+}
+
+.editar-pub-btn:hover{
+    border: none;
+    background-color: #efefef;
+}
+
+

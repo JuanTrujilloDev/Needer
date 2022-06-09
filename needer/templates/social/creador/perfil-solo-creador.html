@@ -4,6 +4,7 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/perfil-creador.css'%} ">
+<link rel="stylesheet" href="{% static 'css/publicacion.css'%} ">
 {% endblock css %}
 
 {% block headtitle %}
@@ -12,7 +13,7 @@ Needer | {{object.username}}
 
 {% block inner-content %}
 
-<div class="container my-3 py-4">
+<div class="container py-4">
     
 
     <!--Datos personales-->
@@ -135,7 +136,7 @@ Needer | {{object.username}}
 
     
      <!-- Contenido a la derecha UWU -->
-        <div class="d-flex justify-content-center row container-fluid col-sm-12 col-lg-7 mb-sm-5 mb-5 mb-lg-0 px-0">
+        <div class="d-flex justify-content-center row container-fluid col-sm-12 col-lg-7 px-0">
 
             <!--TODOS LOS DIVS DENTRO DEL CONTENIDO DERECHA DEBEN IR CON PX-0 Y CONTAINER FLUID-->
 
@@ -206,8 +207,8 @@ Needer | {{object.username}}
                 <!--Publicacion-->
 
                 {% for publicacion in publicaciones %}
-                <div class="row container-fluid px-0 bg-white rounded shadow py-4 d-flex justify-content-around align-items-center my-4" style="height:auto;">
-                    <div class="col-12 d-flex align-items-center justify-content-start">
+                <div class="row container-fluid px-0 bg-white rounded shadow d-flex justify-content-around align-items-center mt-4 publicacion" onclick="window.open('{{publicacion.get_absolute_url}}')"  style="height:auto; cursor: pointer;">
+                    <div class="col-12 d-flex align-items-center justify-content-start pt-4">
                             <div class="col-lg-2 col-md-2   col-3 justify-content-center d-flex pe-0">
                             <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
                                 {% if object.foto %}
@@ -225,14 +226,18 @@ Needer | {{object.username}}
 
                         <!--Autor y Hora-->
                         <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1">
-                        <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none"><h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
-                            {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}</h5></a> 
+                        <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                        <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none text-secondary">
+                       
+                            {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}
+                        </a> 
+                        </h5>
                         <p class="my-0 text-muted">@{{publicacion.user.username}} · {{publicacion.fecha_creacion|fecha_exacta}}</p>
                         {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
                         </div>
 
                         <div class="col d-flex align-items-center justify-content-end">
-                            <a class="btn text-primary text-end"><i class="bi bi-pencil-square border-none"></i></a>
+                            <a class="btn text-primary text-end editar-pub-btn"><i class="bi bi-pencil-square border-none"></i></a>
                         </div>
                         
                     </div>
@@ -240,11 +245,14 @@ Needer | {{object.username}}
 
 
                     <!--Contenido de la Publicación-->
-                    <a href="{{publicacion.get_absolute_url}}" class="text-decoration-none row container-fluid px-0 bg-white py-4 d-flex justify-content-around align-items-center" style="height:auto;">
+                    <div class="text-decoration-none row container-fluid px-0 bg-white py-4 mw-100" style="height:auto;">
+
                         
                         {% if publicacion.descripcion %}
                         
-                        <p class="text-muted">{{publicacion.descripcion}}</p>
+                        <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-4">
+                            {{publicacion.descripcion|safe}}
+                        </div>
 
                         {% endif %}
                         
@@ -253,13 +261,17 @@ Needer | {{object.username}}
                         <img class="img-fluid pub-img rounded" alt="profile" src="{{publicacion.archivo.url}}" data-holder-rendered="true">
                         
                         {% endif %}
-                    </a>
 
-                    <!--Botones de la Publicación--> 
-                    <a href="{{publicacion.get_absolute_url}}" class="col-lg-12 row mt-4 text-decoration-none ">
-                        <button class="btn text-primary col-6"><i class="bi bi-heart"></i> Like </button>
-                        <button class="btn text-primary col-6"><i class="bi bi-chat-left"></i> Comentar </button>
-                    </a>
+                            <!--Botones de la Publicación--> 
+                        <a href="{{publicacion.get_absolute_url}}" class="col-lg-12 row mt-4 text-decoration-none px-4">
+                            <button class="btn text-primary col-6 like"><i class="bi bi-heart"></i> Like </button>
+                            <button class="btn text-primary col-6 like"><i class="bi bi-chat-left"></i> Comentar </button>
+                        </a>
+
+
+                    </div>
+
+                   
 
                 </div>
 
@@ -281,3 +293,7 @@ Needer | {{object.username}}
 {% include 'social/creador/foto-perfil-modal.html' %}
 
 {% endblock inner-content %}
+
+{% block script %}
+
+{% endblock script %}

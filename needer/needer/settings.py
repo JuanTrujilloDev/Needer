@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'tinymce',
     'needer',
     'users',
     'main',
@@ -230,3 +231,18 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = os.environ['GMAIL_USER']
 EMAIL_HOST_PASSWORD = os.environ['GMAIL_PASSWORD'] 
 EMAIL_USE_SSL = False
+
+
+# TINYMCE
+
+
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "silver",
+    "menubar": False,
+    "plugins": "advlist,autolink,lists,link,image,charmap,print,preview,anchor,"
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,noneditable,media,table,paste,"
+    "emoticons,code,help,wordcount code",
+    "toolbar": "undo redo | formatselect | "
+    "bold italic backcolor emoticons| link | alignleft aligncenter "
+    "outdent indent"
+}
