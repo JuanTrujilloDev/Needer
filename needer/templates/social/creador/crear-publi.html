@@ -1,7 +1,25 @@
+{% extends 'main/creador/content-creador.html' %}
+{% load static %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/perfil-creador.css'%} ">
+{{form.media}}
+{% endblock css %}
+
+{% block headtitle %}
+Needer | Crear Publicacion {{object.username}}
+{% endblock headtitle %}
+
+
+<div class="container my-3 py-4">
+{% block inner-content %}
 <form method = "POST" action="{% url 'crear-publicacion'%}" enctype="multipart/form-data">
  {% csrf_token %}
  {{form.media}}
 {{form.as_p}}
 <button type="submit"></button>
 </form>
+
+</div>
+
+{% endblock %}
