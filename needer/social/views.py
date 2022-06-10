@@ -6,6 +6,7 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.auth import logout
 from .models import Publicacion
 from django.http import HttpResponseNotFound
+from .forms import CrearPublicacionForm
 
 
 
@@ -66,7 +67,7 @@ class DetailCreador(LoginRequiredMixin, DetailView):
 class CrearPublicacionView(LoginRequiredMixin, CreateView):
     model = Publicacion
     template_name = 'social/creador/crear-publi.html'
-    fields = ['descripcion', 'archivo']
+    form_class = CrearPublicacionForm
 
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:

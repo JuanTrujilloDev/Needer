@@ -20,4 +20,13 @@
     background-color: #efefef;
 }
 
+ /* Publicación */
+
+ .pub-img{
+    max-height: 510px;
+    max-width: 100%;
+    object-fit: cover;
+
+ }
+
 
