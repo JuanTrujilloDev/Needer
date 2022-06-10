@@ -69,6 +69,11 @@ def file_compression(value):
     #TODO Documentar
     
     '''
+
+    # Si el archivo va vacio
+    if value == None:
+        return value
+
     content = value.file.content_type.split('/')[0]
 
     # Si el archivo es imagen
@@ -81,17 +86,17 @@ def file_compression(value):
             return value
 
 
-        im = Image.open(value)
+        im = Image.open(value.path)
 
         output = BytesIO()
 
         # Comprimiendo la imagen
-        im.save(output, quality=80)
+        im.save(output, quality=80, format='JPEG')
         output.seek(9)
 
 
 
-        return im
+        return im.save()
 
     # Si el archivo es video no hace nada debido a que no
     # se puede comprimir
@@ -106,6 +111,7 @@ def file_compression(value):
 
         value.name = value.name.split('.')[0] + str(uuid.uuid1()) + '.mp3'
         return value
+
 
         
 

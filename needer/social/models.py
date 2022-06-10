@@ -28,10 +28,21 @@ class Publicacion(models.Model):
 
 
     def save(self, *args, **kwargs):
-        
-        self.archivo = file_compression(self.archivo)
+        if self.archivo.file.content_type.split('/')[0] == 'image':
+            return super().save(*args, **kwargs)
+            file_compression(self.archivo)
 
-        return super().save(*args, **kwargs)
+        else:
+            file_compression(self.archivo)
+            return super().save(*args, **kwargs)
+
+
+    def delete(self, using=None, keep_parents=False):
+        self.archivo.storage.delete(self.archivo.name)
+        super().delete()
+
+
+        
 
         
     

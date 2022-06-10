@@ -617,16 +617,20 @@ class UpdateCreadorForm(forms.ModelForm):
         Solo Letras [A-Za-z numeros]
         """
         apodo = self.cleaned_data['apodo']
+        
+        if apodo:
+            
 
-        # Regex para Username
-        match = re.match('^[A-Za-z][A-Za-z0-9 ]{4,25}$', apodo)
+            # Regex para Username
+            match = re.match('^[A-Za-z][A-Za-z0-9 ]{4,25}$', apodo)
 
-        if match:
-                return apodo
+            if match:
+                    return apodo
 
 
-        raise forms.ValidationError('El apodo no cumple con el formato (Solo letras, numeros o espacio y debe empezar por letra) minimo 4 caracteres y maximo 25 caracteres.')
-
+            raise forms.ValidationError('El apodo no cumple con el formato (Solo letras, numeros o espacio y debe empezar por letra) minimo 4 caracteres y maximo 25 caracteres.')
+        
+        return apodo
 
 
     def clean_fecha_nacimiento(self):
