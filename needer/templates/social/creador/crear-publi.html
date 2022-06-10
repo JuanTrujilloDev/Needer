@@ -16,10 +16,14 @@ Needer | Crear Publicacion {{object.username}}
 <form method = "POST" action="{% url 'crear-publicacion'%}" enctype="multipart/form-data">
  {% csrf_token %}
  {{form.media}}
-{{form.as_p}}
+ {{form.as_p}}
 <button type="submit"></button>
 </form>
 
 </div>
 
 {% endblock %}
+
+
+{% block script %}
+{% endblock script %}

@@ -1,9 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group
 from django_resized import ResizedImageField
-import os
-from django.conf import settings
 from django.urls import reverse
+from .utils import *
 
 # Create your models here.
 
@@ -49,11 +48,7 @@ class TipoCelebridad(models.Model):
         return self.nombre
 
 
-def user_directory_path_profile(instance, filename):
-    profile_picture_name = 'account/{0}/profile/profile.jpg'.format(instance.username)
-    full_path = os.path.join(settings.MEDIA_ROOT, profile_picture_name)
-    if os.path.exists(full_path): os.remove(full_path)
-    return profile_picture_name
+
 
 class User(AbstractUser):
     """

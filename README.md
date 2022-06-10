@@ -16,7 +16,7 @@
 
 [@JuanSPuentes](https://github.com/Sarsu12/)
 
-[@PITZONIA](https://github.com/PITZ0NIA)
+[@ThomasP360](https://github.com/ThomasP360)
 
 [@Santiagocp-oss](https://github.com/Santiagocp-oss)
 
@@ -33,4 +33,8 @@ This project is licensed under the **Creative Commons Zero v1.0 Universal** Lice
 
 ## Acknowledgments ❤️
 
-Inspiration, code snippets, etc.
+Thanks to all the modules who made our life easier:
+
+* tinymce
+* python-dotenv
+* django-recaptcha

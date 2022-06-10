@@ -31,5 +31,8 @@ def editado(publicacion):
         return None
 
 
+# TODO TEMPLATETAG PARA EL TIPO DE ARCHIVO
+
+
 register.filter('editado', editado)
 register.filter('fecha_exacta', fecha_exacta)
