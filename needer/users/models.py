@@ -100,7 +100,7 @@ class User(AbstractUser):
         MUJER = 'Mujer', 'Mujer',
         OTRO = 'Otro', "Otro"
 
-    apodo = models.CharField(max_length=25, blank=True, null=True)
+    apodo = models.CharField(max_length=25, blank=True, default='')
     genero = models.CharField(max_length=7, choices = GeneroChoices.choices, default=GeneroChoices.OTRO)
     fecha_nacimiento = models.DateField(verbose_name="Fecha nacimiento", blank=True, null=True)
     tipo_celebridad = models.ManyToManyField(TipoCelebridad, blank = True)
@@ -114,6 +114,11 @@ class User(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('detalle-creador', kwargs={'slug': self.slug})
+
+
+    def delete(self, using=None, keep_parents=False):
+        self.foto.storage.delete(self.foto.name)
+        super().delete()
 
 
     
