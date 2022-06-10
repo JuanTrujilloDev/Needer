@@ -31,7 +31,7 @@ def valid_file_extention(value):
 
     # Se valida que las extensiones sean correctas.
     ext = os.path.splitext(value.name)[1]
-    valid_extentions = ['.jpg', '.png', '.gif', '.jpeg', '.mp3', '.mp4', '.wav', '.m4a', '.mov', '.avi', 'mkv', 'webm']
+    valid_extentions = ['.jpg', '.png', '.gif', '.jpeg', '.mp3', '.mp4', '.wav', '.m4a', '.mov', '.avi', '.mkv', '.webm']
 
 
     # Se valida el tipo de contenido
@@ -96,7 +96,7 @@ def file_compression(value):
     # Si el archivo es video no hace nada debido a que no
     # se puede comprimir
     elif content == 'video':
-        value = value.name.split('.')[0] + str(uuid.uuid1()) + '.mp4'
+        value.name = value.name.split('.')[0] + str(uuid.uuid1()) + '.mp4'
         return value
 
     
@@ -104,7 +104,7 @@ def file_compression(value):
     # Si el archivo es audio:
     elif content == 'audio':
 
-        value = value.name.split('.')[0] + str(uuid.uuid1()) + '.mp3'
+        value.name = value.name.split('.')[0] + str(uuid.uuid1()) + '.mp3'
         return value
 
         
