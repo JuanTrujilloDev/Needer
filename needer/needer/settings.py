@@ -243,6 +243,8 @@ EMAIL_USE_SSL = False
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
     "menubar": False,
+    "resize":False,
+    "height": 500,
     "plugins": "advlist,autolink,lists,link,image,charmap,print,preview,anchor,"
     "searchreplace,visualblocks,code,fullscreen,insertdatetime,noneditable,media,table,paste,"
     "emoticons,code,help,wordcount code",

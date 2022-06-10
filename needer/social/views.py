@@ -7,6 +7,7 @@ from django.contrib.auth import logout
 from .models import Publicacion
 from django.http import HttpResponseNotFound
 from .forms import CrearPublicacionForm
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 
@@ -64,10 +65,11 @@ class DetailCreador(LoginRequiredMixin, DetailView):
 
 # CRUD PUBLICACIONES
 
-class CrearPublicacionView(LoginRequiredMixin, CreateView):
+class CrearPublicacionView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Publicacion
     template_name = 'social/creador/crear-publi.html'
     form_class = CrearPublicacionForm
+    success_message = 'La publicacion fue creada satisfactoriamente!'
 
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:

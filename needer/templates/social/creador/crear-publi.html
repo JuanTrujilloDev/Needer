@@ -10,14 +10,48 @@ Needer | Crear Publicacion {{object.username}}
 {% endblock headtitle %}
 
 
-<div class="container my-3 py-4">
+
 {% block inner-content %}
-<form method = "POST" action="{% url 'crear-publicacion'%}" enctype="multipart/form-data">
- {% csrf_token %}
- {{form.media}}
- {{form.as_p}}
-<button type="submit"></button>
-</form>
+<div class="container my-3 py-4">
+
+    <div class="col-md-8">
+        <form method = "POST" action="{% url 'crear-publicacion'%}" enctype="multipart/form-data">
+            
+            {% if messages %}
+            <ul class="messages list-unstyled">
+                {% for message in messages %}
+            <div {% if message.tags %} class="alert alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+                
+                {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+        {% csrf_token %}
+        {{form.media}}
+        {{form.descripcion}}
+        <label class="btn btn-primary">
+            <input type="file" name="archivo" class="form-control d-none" id="id_archivo">
+            Agregar archivo
+        </label>
+        <button type="submit"></button>
+        </form>
+
+    </div>
 
 </div>
 

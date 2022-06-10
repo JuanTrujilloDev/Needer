@@ -38,8 +38,8 @@ Needer | {{object.username}}
         <div class="col-lg-7 col-md-6 d-flex align-items-center container g-2 justify-content-center">
             <div class="w-100 col-12 d-table-cell align-bottom row g-2  text-break text-lg-start text-md-start text-sm-center text-center"> 
             
-            {% if object.first_name or object.last_name %}
-            <h2 class="text-primary fw-bold mb-0 mb-sm-2 mw-100">{{object.first_name}} {{object.last_name}}
+            {% if object.apodo %}
+            <h2 class="text-primary fw-bold mb-0 mb-sm-2 mw-100">{{object.apodo}}
             </h2    >
             <h3 class="text-muted">@ {{object.username}}</h3>
 
@@ -173,9 +173,15 @@ Needer | {{object.username}}
 
 
 
+                
+                {% if not publicaciones %}
+
+                <h2 class='text-muted'>Aun no tienes publicaciones!</h2>
+                <h4><small>Que esperas para crear una?</small></h4>
 
 
-
+                {% else %}
+                
                 <!--Publicaciones con mas LIKES!-->
                 <div class="col-12 text-center rounded shadow mt-4">
 
@@ -256,10 +262,10 @@ Needer | {{object.username}}
 
 
                         {% endif %}
-                        
+
                         {% if publicacion.archivo %}
 
-                        <img class="img-fluid pub-img rounded" alt="profile" src="{{publicacion.archivo.url}}" data-holder-rendered="true">
+                        {{publicacion.archivo|tipo_archivo|safe}}
                         
                         {% endif %}
 
@@ -277,6 +283,11 @@ Needer | {{object.username}}
                 </div>
 
                 {% endfor %}
+
+
+                {% endif %}
+
+
 
                 
 
