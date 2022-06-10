@@ -16,7 +16,7 @@ class CrearPublicacionForm(forms.ModelForm):
         super(CrearPublicacionForm, self).__init__(*args, **kwargs)
 
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
+            visible.field.widget.attrs['class'] = 'form-control '
 
 
     def clean(self):
