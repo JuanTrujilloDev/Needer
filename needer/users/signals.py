@@ -23,6 +23,7 @@ def user_signed(request, user, **kwargs):
     """
     if user.groups.name == "Creador de Contenido":
         user.slug = slugify(user.username)
+        user.apodo = user.slug
 
     else:
         user.foto = ""
@@ -52,7 +53,15 @@ def user_update(sender, instance, **kwargs):
         else:
             instance.foto = ""
             instance.slug = None
+            instance.link = ""
+            instance.apodo = ""
+            instance.cartera = 0
+            instance.biografia = ""
+            
+            print(instance.tipo_celebridad.all())
 
+            for tipo in instance.tipo_celebridad.all():
+                instance.tipo_celebridad.remove(tipo)
 
 
 

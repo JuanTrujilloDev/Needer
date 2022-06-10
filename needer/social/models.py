@@ -19,7 +19,7 @@ class Publicacion(models.Model):
     descripcion = HTMLField(verbose_name='Descripcion', max_length=280, null=True, blank=True)
     archivo = models.FileField(upload_to = postDirectory, blank=True, null=True, validators=[valid_file_extention, valid_file_size])
     fecha_creacion = models.DateTimeField(verbose_name='Fecha Publicacion', auto_now_add=True, auto_now=False)
-    fecha_actualizacion = models.DateTimeField(verbose_name='Fecha Actualizacion',  auto_now=True)
+    fecha_actualizacion = models.DateTimeField(verbose_name='Fecha Actualizacion',  auto_now=True, auto_now_add=False, blank=True, null=True)
 
 
 
@@ -28,13 +28,16 @@ class Publicacion(models.Model):
 
 
     def save(self, *args, **kwargs):
-        if self.archivo.file.content_type.split('/')[0] == 'image':
-            return super().save(*args, **kwargs)
-            file_compression(self.archivo)
+        if self.archivo:
+            if self.archivo.file.content_type.split('/')[0] == 'image':
+                return super().save(*args, **kwargs)
+                file_compression(self.archivo)
 
-        else:
-            file_compression(self.archivo)
-            return super().save(*args, **kwargs)
+            else:
+                file_compression(self.archivo)
+                return super().save(*args, **kwargs)
+
+        return super().save(*args, **kwargs)
 
 
     def delete(self, using=None, keep_parents=False):

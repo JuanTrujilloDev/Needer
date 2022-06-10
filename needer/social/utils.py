@@ -43,7 +43,7 @@ def valid_file_extention(value):
 
     # Si el archivo no se encuentra en las extensiones permitidas
     if not ext.lower() in valid_extentions:
-        raise ValidationError('El formato del archivo no es soportado, por favor utiliza cualquiera de los formatos permitidos. \n{0}'.format(valid_extentions))
+        raise ValidationError('El formato del archivo {1} no es soportado, por favor utiliza cualquiera de los formatos permitidos. \n{0}'.format(valid_extentions, ext.lower()))
 
 
 

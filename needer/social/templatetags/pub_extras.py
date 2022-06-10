@@ -1,5 +1,6 @@
 from django.utils import timezone
 from django import template
+import mimetypes
 
 register = template.Library()
 
@@ -31,8 +32,21 @@ def editado(publicacion):
         return None
 
 
-# TODO TEMPLATETAG PARA EL TIPO DE ARCHIVO
+def tipo_archivo(archivo):
+    
+    # retorna el tipo de archivo
+    content = mimetypes.guess_type(archivo.url, strict=True)[0]
+    print(content)
+    if content.split('/')[0] == 'image':
+        return f'<img class="img-fluid pub-img rounded" src="{archivo.url}" alt="profile" data-holder-rendered="true"/>'
+
+    elif content.split('/')[0] == 'audio':
+        return f'<audio controls controlsList="nodownload"> <source src="{archivo.url}" type="audio/mpeg">Your browser does not support the audio tag.</audio>'
+
+    elif content.split('/')[0] == 'video':
+        return f'<video class="pub-video" controls controlsList="nodownload"> <source src="{archivo.url}">Your browser does not support the video tag.</video>'
 
 
+register.filter('tipo_archivo', tipo_archivo)
 register.filter('editado', editado)
 register.filter('fecha_exacta', fecha_exacta)
