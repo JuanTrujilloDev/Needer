@@ -36,7 +36,7 @@ def tipo_archivo(archivo):
     
     # retorna el tipo de archivo
     content = mimetypes.guess_type(archivo.url, strict=True)[0]
-    print(content)
+
     if content.split('/')[0] == 'image':
         return f'<img class="img-fluid pub-img rounded" src="{archivo.url}" alt="profile" data-holder-rendered="true"/>'
 
@@ -47,6 +47,18 @@ def tipo_archivo(archivo):
         return f'<video class="pub-video" controls controlsList="nodownload"> <source src="{archivo.url}">Your browser does not support the video tag.</video>'
 
 
+def nsfw(value):
+
+    if value:
+        return 'nsfw'
+
+    return ''
+
+
+
+    
+
+register.filter('nsfw', nsfw)
 register.filter('tipo_archivo', tipo_archivo)
 register.filter('editado', editado)
 register.filter('fecha_exacta', fecha_exacta)

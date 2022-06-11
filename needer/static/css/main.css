@@ -19,6 +19,7 @@ h1, h2, h3, h4, h5, h6{
 
 .btn-primary{
     background-color: #5C28FF!important;
+    border: #5C28FF 1px solid;
 }
 
 .btn-secondary{

@@ -60,7 +60,11 @@ Needer | {{object.username}}
         <!--Ajustes-->
         <div class="col-md-2 d-flex align-items-end container g-2 justify-content-center">
             <div class="w-100 col-12 d-table-cell align-bottom row g-2 text-lg-start text-sm-center text-center"> 
+                {% if request.user == object %}
                 <h3 class="py-2 text-primary"><a href="{% url 'account_profile' %}"><i class="bi bi-gear"></i></a></h3>
+                {% else %}
+                <h3 class="py-2 text-primary"><a class="btn btn-primary rounded-pill" href="{% url 'account_profile' %}">Seguir</a></h3>
+                {% endif %}
             </div>
            
           
@@ -113,11 +117,14 @@ Needer | {{object.username}}
                 <h3 class="text-primary">Interacciones</h3> 
 
                 <div class="row d-flex justify-content-center align-items-center mt-4">
+
+                    {% if object.user.verificado %}
                     <div class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-dinero">   
                         <h4><i class="bi bi-coin fw-bold"></i></h4> 
                         <h5 class="fw-bold">213456</h5>
                         <h6 class="text-muted">Ventas</h6>
                     </div>
+                    {% endif %}
 
                     <div class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-seguidores">
                         <h4><i class="bi bi-person-hearts"></i></h4> 
@@ -142,9 +149,9 @@ Needer | {{object.username}}
 
 
 
-
+            {% if request.user == object %}
              <!--Esto crea publicación-->
-                <div class="row container-fluid px-0 bg-white rounded shadow py-4 d-flex justify-content-center align-items-center" style="height:auto;">
+                <div class="row container-fluid px-0 bg-white rounded shadow py-4 d-flex justify-content-center align-items-center mb-3" style="height:auto;">
                     <!--BOTON FOTO-->
                     <div class="col-lg-2 col-md-2 col-xl-2 col-sm-12   col-12 justify-content-center d-flex pe-lg-0 pe-xl-0 pe-md-0 pe-sm-auto pe-auto">
                         <a href="{{object.get_absolute_url}}" class="mb-lg-0 mb-md-0 mb-sm-3 mb-3 mb-xl-0 text-center text-sm-center text-md-start text-lg-start text-xl-start">
@@ -171,13 +178,20 @@ Needer | {{object.username}}
                         </div>
                 </div>
 
+            {% endif %}
+
 
 
                 
                 {% if not publicaciones %}
 
-                <h2 class='text-muted'>Aun no tienes publicaciones!</h2>
-                <h4><small>Que esperas para crear una?</small></h4>
+                <div class="col-12 text-center rounded shadow">
+        
+                    <h1 class='mb-2'>Aun no tienes publicaciones!</h1>
+                    <h2 class="mb-2 text-muted"><small>Que esperas apra crear una?</small></h2>
+                    <img class="mt-4 mb-3" src="{% static 'img/empty.svg'%}" class="img-fluid" width="50%">
+                    
+                </div>
 
 
                 {% else %}
@@ -248,34 +262,41 @@ Needer | {{object.username}}
                         
                     </div>
 
-
-
+                    
+                    
                     <!--Contenido de la Publicación-->
-                    <div class="text-decoration-none row container-fluid px-0 bg-white py-4 mw-100" style="height:auto;">
+                    <div  class="d-flex justify-content-center row {% if publicacion.nsfw %} pub-container align-items-center{% endif %}">
+                        
+                        
+                        <div class="text-decoration-none row container-fluid px-0 bg-white pt-4 mw-100 {{publicacion.nsfw|nsfw}}" style="height:auto;">
+                            {% if publicacion.descripcion %}
+                            
+                            <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-4">
+                                {{publicacion.descripcion|safe}}
+                            </div>
 
-                        
-                        {% if publicacion.descripcion %}
-                        
-                        <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-4">
-                            {{publicacion.descripcion|safe}}
+
+                            {% endif %}
+
+                            {% if publicacion.archivo %}
+
+                            {{publicacion.archivo|tipo_archivo|safe}}
+                            
+                            {% endif %}
+
                         </div>
+                        <!--TODO Validar funcionamiento-->
+                        {% if publicacion.nsfw %}<h3 class="align-middle text-danger nsfw-title text-center fw-bold"><i class="bi bi-radioactive"></i> NSFW <i class="bi bi-radioactive"></i></h4>{% endif %}
 
 
-                        {% endif %}
+                    </div>
 
-                        {% if publicacion.archivo %}
-
-                        {{publicacion.archivo|tipo_archivo|safe}}
-                        
-                        {% endif %}
-
-                            <!--Botones de la Publicación--> 
-                        <a href="{{publicacion.get_absolute_url}}" class="col-lg-12 row mt-4 text-decoration-none px-4">
-                            <button class="btn text-primary col-6 like"><i class="bi bi-heart"></i> Like </button>
-                            <button class="btn text-primary col-6 like"><i class="bi bi-chat-left"></i> Comentar </button>
-                        </a>
-
-
+                    <div class="row text-decoration-none row container-fluid px-0 pb-4 bg-white mw-100">
+                             <!--Botones de la Publicación--> 
+                             <a href="{{publicacion.get_absolute_url}}" class="col-lg-12 row mt-4 text-decoration-none px-4">
+                                <button class="btn text-primary col-6 like"><i class="bi bi-heart"></i> Like </button>
+                                <button class="btn text-primary col-6 like"><i class="bi bi-chat-left"></i> Comentar </button>
+                            </a>
                     </div>
 
                    
@@ -302,7 +323,7 @@ Needer | {{object.username}}
     
 </div>
 
-{% include 'social/creador/foto-perfil-modal.html' %}
+{% include 'social/user/foto-perfil-modal.html' %}
 
 {% endblock inner-content %}
 

@@ -62,7 +62,6 @@ class User(AbstractUser):
     last_name -> string
     password -> string(encrypted)
     email -> string
-    groups -> comes from Group Model
     num_documento -> string
     pais -> comes from Pais Model
     slug -> string
@@ -81,7 +80,6 @@ class User(AbstractUser):
     """
     
     
-    groups = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name="Groups")
     
     # Datos personales de facturacion.
         
@@ -109,6 +107,7 @@ class User(AbstractUser):
 
     # TODO REVISAR DE DOCUMENTACION
     cartera = models.DecimalField(max_digits=19,decimal_places=2, default=0, null=True, blank=True)
+    verificado = models.BooleanField(default=False, verbose_name='verificado')
 
 
 

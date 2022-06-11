@@ -1,0 +1,193 @@
+{% extends 'main/creador/content-creador.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/perfil-creador.css'%} ">
+{% endblock css %}
+
+{% block headtitle %}
+Needer | Crear Publicacion
+{% endblock headtitle %}
+
+
+
+{% block inner-content %}
+<div class="my-4 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center text-break">
+
+
+    <!--Formulario derecha-->
+    <div class="col-md-12 col-lg-7 row">
+        <h3 class="fw-bold text-muted">Crear una publicacion</h3>
+        <hr>
+        <form class="rounded shadow container-fluid p-4 bg-white" method = "POST" action="{% url 'crear-publicacion'%}" enctype="multipart/form-data">
+            
+            {% if messages %}
+            <ul class="messages list-unstyled">
+                {% for message in messages %}
+            <div {% if message.tags %} class="alert alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+                
+                {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+        {% csrf_token %}
+        <!--Formulario-->
+        {{form.media}}
+        {{form.descripcion}}
+
+        
+        <button class="col-12 mt-3 mb-1 file-route d-none bg-transparent btn rounded-pill mw-100 border-0" id="cancelar-archivo"><i class="bi bi-x-circle-fill me-2 cancelar-archivo text-danger" style="cursor:pointer;" ></i></button>
+        <!--Botones-->
+        <div class="d-inline-flex mt-2 col-12 justify-content-xl-start justify-content-lg-start justify-content-md-start justify-content-sm-start justify-content-center above-file">
+           
+            <label class="btn btn-secondary btn-sm rounded-pill me-2 px-2 border-0" id="archivo">
+                <h5 class="align-middle d-flex align-items-center mb-0 py-1 fw-bold">   
+                <input type="file" name="archivo" class="form-control d-none w-100" id="id_archivo">
+                <i class="bi bi-plus-lg ms-2" id="archivo-icon"></i>&nbsp;&nbsp;<i class="bi bi-file-earmark-fill me-2"></i>
+                </h5>
+            </label>
+
+            <label class="btn btn-secondary btn-sm rounded-pill me-2 px-2 border-0 nsfw" id="nsfw">
+                <h5 class="align-middle d-flex align-items-center mb-0 py-1 fw-bold">   
+                    {{form.nsfw}}
+                <i class="bi bi-plus-lg ms-2" id="nsfw-icon"></i>&nbsp;&nbsp;<strong class="me-2">NSFW</strong>
+                </h5>
+            </label>
+
+            
+
+
+        </div>
+        
+        <!--SUBMIT-->
+        <hr>
+        <div class="d-inline-flex mt-3 col-12 justify-content-xl-end justify-content-lg-end justify-content-md-end justify-content-sm-end justify-content-center">
+        
+        <a href="{{self.request.user.get_absolute_url}}" class="btn btn-secondary btn-lg fw-bold rounded-pill me-2">Cancelar</a>
+        <button class="btn btn-primary btn-lg rounded-pill fw-bold border-0" type="submit">Publicar</button>
+
+        </div>
+
+        </form>
+
+    </div>
+
+    <!--Reglas de la comunidad-->
+    <div class="row py-4 col-sm-12 col-lg-5  mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 divbib">
+
+        <div class="row rounded shadow bg-white py-3 mb-3">
+            <div class="d-inline-flex align-items-center border-bottom"> 
+                <img class="img-fluid me-2" width="15px" src="{% static 'img/Needer_logo.svg' %}"> <h4 class="fw-bold">Reglas de Needer</h4>
+                
+            </div>
+            <div class="row col-12">
+                <h6 class="fw-bold mt-md-3">1. Se respetuoso con los demas</h6>
+                <hr>
+                <h6 class="fw-bold">2. Goza conociendo tus limites</h6>
+                <hr>
+                <h6 class="fw-bold">3. Si tomas contenido de otras personas, dales el credito</h6>
+                <hr>
+                <h6 class="fw-bold">4. Se respetuoso con los demas</h6>
+                <hr>
+                <h6 class="fw-bold">5. Lee las reglas de la comunidad</h6>
+                
+            
+            </div>
+        </div>
+
+        <div class="row py-3 rounded bg-white shadow">
+            <small>Por favor, ten en cuenta la <a class="text-secondary" href="#">política de contenido de Needer</a> y no te olvides de disfrutar.</small>
+            <small class="fw-light mt-2 text-secondary">Needer Ltd © 2022. Todos los derechos reservados.</small>
+        </div>
+
+
+        
+        
+    </div>
+   
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+
+<script>
+
+$('#id_nsfw').change(function(){
+    
+    is_nsfw = $(this).val();
+
+    if (this.checked){
+        
+        $('#nsfw').removeClass('btn-secondary');
+        $('#nsfw').addClass('btn-terciary');
+        $('#nsfw-icon').removeClass('bi bi-plus-lg');
+        $('#nsfw-icon').addClass('bi bi-check-lg');
+
+    }else{
+       
+        $('#nsfw').removeClass('btn-terciary');
+        $('#nsfw').addClass('btn-secondary');
+        $('#nsfw-icon').removeClass('bi bi-check-lg');
+        $('#nsfw-icon').addClass('bi bi-plus-lg');
+    }
+ 
+
+});
+
+$('#cancelar-archivo').click(function(){
+            val = $('#id_archivo').val();
+            $('#id_archivo').val('');
+
+});
+
+
+$('#id_archivo').change(function(){
+    
+    value = $(this).val();
+
+   
+    
+    if (value != ''){
+        var dir = value.split('fakepath\\')[1];
+        $('.file-route').removeClass('d-none');
+        $('.file-route').append(dir);
+        $('#archivo').removeClass('btn-secondary');
+        $('#archivo').addClass('btn-terciary');
+        $('#archivo-icon').removeClass('bi bi-plus-lg');
+        $('#archivo-icon').addClass('bi bi-check-lg');
+
+       
+
+    }else{
+
+        $('.file-route').addClass('d-none');
+        $('#archivo').removeClass('btn-terciary');
+        $('#archivo').addClass('btn-secondary');
+        $('#archivo-icon').removeClass('bi bi-check-lg');
+        $('#archivo-icon').addClass('bi bi-plus-lg');
+    }
+ 
+
+});
+
+
+
+</script>
+{% endblock script %}
