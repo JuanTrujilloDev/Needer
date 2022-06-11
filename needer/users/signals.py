@@ -58,10 +58,10 @@ def user_update(sender, instance, **kwargs):
             instance.cartera = 0
             instance.biografia = ""
             
-            print(instance.tipo_celebridad.all())
+
 
             for tipo in instance.tipo_celebridad.all():
-                instance.tipo_celebridad.remove(tipo)
+                instance.tipo_celebridad.remove(tipo.id)
 
 
 

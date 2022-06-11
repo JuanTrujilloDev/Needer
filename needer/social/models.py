@@ -20,6 +20,7 @@ class Publicacion(models.Model):
     archivo = models.FileField(upload_to = postDirectory, blank=True, null=True, validators=[valid_file_extention, valid_file_size])
     fecha_creacion = models.DateTimeField(verbose_name='Fecha Publicacion', auto_now_add=True, auto_now=False)
     fecha_actualizacion = models.DateTimeField(verbose_name='Fecha Actualizacion',  auto_now=True, auto_now_add=False, blank=True, null=True)
+    nsfw = models.BooleanField(verbose_name='NSFW', default=False, null=False, blank=False)
 
 
 
