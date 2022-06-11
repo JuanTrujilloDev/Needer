@@ -15,8 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 from .models import Pais
-from .forms import (SocialCustomForm, SignupCustomForm, UpdateCreadorForm,
-                    UpdateConsumidorForm)
+from .forms import (SocialCustomForm, SignupCustomForm, UpdateUserForm)
 
 
 
@@ -66,42 +65,12 @@ class UserSignupView(SignupView):
 
 # User UPDATE VIEWS
 
-class UpdateConsumidorView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
-    """
-    UpdateConsumidor
 
-    Vista para actualizar el usuario que petenece
-    al grupo consumidor.
-
-    Arguments: Request, *args, **kwargs
-
-    Returns: User Instance Updated
-    """
-
-    success_message = 'Perfil actualizado satisfactoriamente!'
-    model = User
-    form_class = UpdateConsumidorForm
-    template_name = 'account/consumidor/update-consumidor.html'
-
-    def get_object(self):
-        return User.objects.get(pk = self.request.user.id)
-
-    def get_success_url(self) -> str:
-        return reverse('account_profile')
-
-    def get_context_data(self, **kwargs):
-        context =  super().get_context_data(**kwargs)
-        context['socials'] = SocialAccount.objects.filter(user = self.get_object())
-
-        return context
-
-
-class UpdateCreadorView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     """
     UpdateCreador
 
-    Vista para actualizar el usuario que petenece
-    al grupo creador de contenido.
+    Vista para actualizar el usuario
 
     Attrs: Request, *args, **kwargs
 
@@ -110,8 +79,8 @@ class UpdateCreadorView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     # TODO AGREGAR EL FORM Y VALIDAR CAMPOS
     success_message = 'Perfil actualizado satisfactoriamente!'
     model = User
-    form_class = UpdateCreadorForm
-    template_name = 'account/creador/update-creador.html'
+    form_class = UpdateUserForm
+    template_name = 'account/user/update-user.html'
 
     def get_success_url(self) -> str:
         return reverse('account_profile')
@@ -147,14 +116,9 @@ def updateAccountViewResolver(request):
 
     if request.user.is_authenticated:
 
-        if request.user.groups.name == 'Consumidor':
-            return UpdateConsumidorView.as_view()(request)
+            return UpdateUserView.as_view()(request)
 
-        elif request.user.groups.name == 'Creador de Contenido':
-            return UpdateCreadorView.as_view()(request)
 
-        else:
-            return HttpResponseNotFound('Not found')
 
     else:
         return redirect(reverse('account_login'))
@@ -167,12 +131,7 @@ class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
 
     def get_context_data(self, **kwargs):
         context = super(PasswordChangeView, self).get_context_data(**kwargs)
-        if self.request.user.groups.name == "Consumidor":
-            context['base_template'] = 'main/consumidor/content-consumidor.html'
-        elif self.request.user.groups.name == "Creador de Contenido":
-            context['base_template'] = 'main/creador/content-creador.html'
-        else:
-            raise Http404
+        context['base_template'] = 'main/user/content.html'
 
         return context
 
@@ -195,12 +154,7 @@ class CustomEmailChangeView(LoginRequiredMixin, EmailView):
 
     def get_context_data(self, **kwargs):
         context = super(CustomEmailChangeView, self).get_context_data(**kwargs)
-        if self.request.user.groups.name == "Consumidor":
-            context['base_template'] = 'main/consumidor/content-consumidor.html'
-        elif self.request.user.groups.name == "Creador de Contenido":
-            context['base_template'] = 'main/creador/content-creador.html'
-        else:
-            raise Http404
+        context['base_template'] = 'main/user/content.html'
 
         return context
 
@@ -224,12 +178,8 @@ class CustomConnectionsView(LoginRequiredMixin, ConnectionsView):
 
     def get_context_data(self, **kwargs):
         context = super(CustomConnectionsView, self).get_context_data(**kwargs)
-        if self.request.user.groups.name == "Consumidor":
-            context['base_template'] = 'main/consumidor/content-consumidor.html'
-        elif self.request.user.groups.name == "Creador de Contenido":
-            context['base_template'] = 'main/creador/content-creador.html'
-        else:
-            raise Http404
+        context['base_template'] = 'main/user/content.html'
+
 
         return context
 

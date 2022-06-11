@@ -60,7 +60,11 @@ Needer | {{object.username}}
         <!--Ajustes-->
         <div class="col-md-2 d-flex align-items-end container g-2 justify-content-center">
             <div class="w-100 col-12 d-table-cell align-bottom row g-2 text-lg-start text-sm-center text-center"> 
+                {% if request.user == object %}
                 <h3 class="py-2 text-primary"><a href="{% url 'account_profile' %}"><i class="bi bi-gear"></i></a></h3>
+                {% else %}
+                <h3 class="py-2 text-primary"><a class="btn btn-primary rounded-pill" href="{% url 'account_profile' %}">Seguir</a></h3>
+                {% endif %}
             </div>
            
           
@@ -113,11 +117,14 @@ Needer | {{object.username}}
                 <h3 class="text-primary">Interacciones</h3> 
 
                 <div class="row d-flex justify-content-center align-items-center mt-4">
+
+                    {% if object.user.verificado %}
                     <div class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-dinero">   
                         <h4><i class="bi bi-coin fw-bold"></i></h4> 
                         <h5 class="fw-bold">213456</h5>
                         <h6 class="text-muted">Ventas</h6>
                     </div>
+                    {% endif %}
 
                     <div class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-seguidores">
                         <h4><i class="bi bi-person-hearts"></i></h4> 
@@ -142,9 +149,9 @@ Needer | {{object.username}}
 
 
 
-
+            {% if request.user == object %}
              <!--Esto crea publicación-->
-                <div class="row container-fluid px-0 bg-white rounded shadow py-4 d-flex justify-content-center align-items-center" style="height:auto;">
+                <div class="row container-fluid px-0 bg-white rounded shadow py-4 d-flex justify-content-center align-items-center mb-3" style="height:auto;">
                     <!--BOTON FOTO-->
                     <div class="col-lg-2 col-md-2 col-xl-2 col-sm-12   col-12 justify-content-center d-flex pe-lg-0 pe-xl-0 pe-md-0 pe-sm-auto pe-auto">
                         <a href="{{object.get_absolute_url}}" class="mb-lg-0 mb-md-0 mb-sm-3 mb-3 mb-xl-0 text-center text-sm-center text-md-start text-lg-start text-xl-start">
@@ -170,6 +177,8 @@ Needer | {{object.username}}
                             <a href="{% url 'crear-publicacion' %}" class="btn btn-sm border-0 bg-outline text-muted d-flex align-items-center"><h4 class="fw-bold text-dark text-center"><i class="bi bi-upload"></i></h4></a>
                         </div>
                 </div>
+
+            {% endif %}
 
 
 
@@ -314,7 +323,7 @@ Needer | {{object.username}}
     
 </div>
 
-{% include 'social/creador/foto-perfil-modal.html' %}
+{% include 'social/user/foto-perfil-modal.html' %}
 
 {% endblock inner-content %}
 
