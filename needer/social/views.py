@@ -15,7 +15,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 # VISTA PARA PERFIL DEL CREADOR DE CONTENIDO
 class DetailCreador(LoginRequiredMixin, DetailView):
     model = User
-    template_name = 'social/perfil-creador.html'
+    template_name = 'social/user/perfil.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -46,7 +46,7 @@ class DetailCreador(LoginRequiredMixin, DetailView):
 
 class CrearPublicacionView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Publicacion
-    template_name = 'social/creador/crear-publi.html'
+    template_name = 'social/user/crear-publi.html'
     form_class = CrearPublicacionForm
     success_message = 'La publicacion fue creada satisfactoriamente!'
 
