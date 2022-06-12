@@ -1,0 +1,52 @@
+  {% load static %}
+  
+  <!-- Modal -->
+  <div class="modal fade" id="Metodo_Pago" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Vinculacon de Paypal</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div dir="ltr" class="modal-body row justify-content-center align-items-center" trbidi="on">
+            <div>
+                <p>PONER EL ESTADO DE LA VINCULACION QUE TIENE EL USUARIO, ADEMAS DE
+                    ESPECIFICAR EL PORQUE TIENE QUE VINCULAR LA CUENTA DE PAYPAL 
+                    JUAN DAVID EXPLIQUE PORQUE SI LO HAGO YO USTED LUEGO LO CAMBIA
+
+                    pd: dejelo bonito ahi quedo sirviendo la vinculacion falta crear el modelo para 
+                    guardar el correo y estado de vinculacion de paypal
+                    la cuenta debe ser cuenta bussines para vincularlar 
+                </p>
+            </div>
+            <script>
+              (function(d, s, id) {
+                var js, ref = d.getElementsByTagName(s)[0];
+                if (!d.getElementById(id)) {
+                  js = d.createElement(s);
+                  js.id = id;
+                  js.async = true;
+                  js.src = "https://www.paypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js";
+                  ref.parentNode.insertBefore(js, ref);
+                }
+              }(document, "script", "paypal-js"));
+          
+            </script>
+            <div class="col-4 text-center">
+            <a class="form-control btn btn-lg fw-bold text-muted" data-paypal-button="true" href="{{action_url}}" target="PPFrame">
+                <img class="img-fluid" src="{% static 'img/PayPal.svg.PNG' %}">
+            </a>
+            </div>
+          </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% block script %}
+
+{% endblock script %}

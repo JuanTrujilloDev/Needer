@@ -17,7 +17,7 @@
             {% with url_name=request.resolver_match.url_name %}
             <a class="me-4 mb-0 fw-bolder text-muted 
             {% if url_name == 'account_profile' %}active {% endif %}" href="{% url 'account_profile' %}"><h2 class="mb-0">Perfil</h2></a>
-            <a class="me-4 mb-0 fw-bolder text-muted" href="#"><h2 class="mb-0">Método de pago</h2></a>
+            <a data-bs-toggle="modal" data-bs-target="#Metodo_Pago" class="me-4 mb-0 fw-bolder text-muted"><h2 class="mb-0">Método de pago</h2></a>
             <a class="me-5 mb-0 fw-bolder text-muted
             {% if url_name == 'account_change_password' %}active {% endif %}" href="{% url 'account_change_password' %}"><h2 class="mb-0">Actualizar Contrasena</h2></a>
             {% endwith %}
@@ -220,7 +220,7 @@
 
 
 
-
+    {% include 'account/user/metodo_pago.html' %}
 {% endblock %}
 
 {% block script %}

@@ -1,3 +1,4 @@
+from re import template
 from allauth.socialaccount.views import SignupView as SocialSignupView, ConnectionsView
 from allauth.account.views import (SignupView, PasswordChangeView, EmailView,
                                    AccountInactiveView)
@@ -12,8 +13,8 @@ from django.http import Http404
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-
+from .utils import get_action_url
+from marketplace.models import Access_Token_Paypal
 from .models import Pais
 from .forms import (SocialCustomForm, SignupCustomForm, UpdateUserForm)
 
@@ -92,6 +93,7 @@ class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         context =  super().get_context_data(**kwargs)
         context['pais'] = Pais.objects.all().order_by('nombre')
         context['socials'] = SocialAccount.objects.filter(user = self.get_object())
+        context['action_url'] = get_action_url(Access_Token_Paypal.objects.get(pk=1).access_token)
 
         return context
 
@@ -219,3 +221,4 @@ class CustomInactiveView(AccountInactiveView):
 
     
     
+#vinculacion de paypal

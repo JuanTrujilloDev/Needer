@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'users',
     'main',
     'social',
-    
+    'marketplace',
 ]
 
 SITE_ID = 1
@@ -237,6 +237,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = os.environ['GMAIL_USER']
 EMAIL_HOST_PASSWORD = os.environ['GMAIL_PASSWORD'] 
 EMAIL_USE_SSL = False
+PAYPAL_CLIENT_ID =os.environ['PAYPAL_CLIENT_ID']
+PAYPAL_SECRET_ID = os.environ['PAYPAL_SECRET_ID']
 
 
 

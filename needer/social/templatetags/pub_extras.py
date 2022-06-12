@@ -38,7 +38,7 @@ def tipo_archivo(archivo):
     content = mimetypes.guess_type(archivo.url, strict=True)[0]
 
     if content.split('/')[0] == 'image':
-        return f'<img class="img-fluid pub-img rounded" src="{archivo.url}" alt="profile" data-holder-rendered="true"/>'
+        return f'<img data-bs-toggle="modal" data-bs-target="#exampleModal" class="img-fluid pub-img rounded" src="{archivo.url}" alt="profile" data-holder-rendered="true"/>'
 
     elif content.split('/')[0] == 'audio':
         return f'<audio controls controlsList="nodownload"> <source src="{archivo.url}" type="audio/mpeg">Your browser does not support the audio tag.</audio>'
