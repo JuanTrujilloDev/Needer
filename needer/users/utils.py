@@ -1,7 +1,6 @@
 import json
 import os
 from django.conf import settings
-from needer import settings as s
 from marketplace.models import Access_Token_Paypal
 import requests
 
@@ -18,8 +17,8 @@ def get_access_token():
     url = 'https://api-m.sandbox.paypal.com/v1/oauth2/token'
     data = {"grant_type": "client_credentials",
             'Content-Type': 'application/json'}
-    auth =(s.PAYPAL_CLIENT_ID, 
-    s.PAYPAL_SECRET_ID)
+    auth =(settings.PAYPAL_CLIENT_ID, 
+    settings.PAYPAL_SECRET_ID)
     response = requests.post(url,data, auth=auth)
     
     if response.status_code not in [200]:
@@ -28,6 +27,7 @@ def get_access_token():
     token = Access_Token_Paypal.objects.get(pk=1) 
     token.access_token =  'Bearer ' + response.json()['access_token']
     token.save()
+    return token.access_token
 
 
 
@@ -35,49 +35,50 @@ def get_access_token():
 def get_action_url(token):
     url = 'https://api-m.sandbox.paypal.com/v2/customer/partner-referrals'
     data={
-  "email": "CREADOR_CONTENIDO@CREADOR.com",#CORREO DEL CREADOR DE CONTENIDO QUE SE VA A VINCULAR SE MANDA PREDEFINIDO PERO EL CREADOR DE CONTENIDO LO PUEDE CAMBIAR EN LA VINCULACION
-  "preferred_language_code": "es-CO",
-  "tracking_id": "testenterprices123122",
-  "partner_config_override": {
-    "partner_logo_url": "https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg",
-    "return_url": "http://127.0.0.1:8000/accounts/profile/",
-    "return_url_description": "the url to return the merchant after the paypal onboarding process.",
-    "action_renewal_url": "http://needer.com.co",
-    "show_add_credit_card": True
-  },
-  "operations": [
-    {
-      "operation": "API_INTEGRATION",
-      "api_integration_preference": {
-        "rest_api_integration": {
-          "integration_method": "PAYPAL",
-          "integration_type": "THIRD_PARTY",
-          "third_party_details": {
-            "features": [
-              "PAYMENT",
-              "REFUND"
-            ],
+      "email": "CREADOR_CONTENIDO@CREADOR.com",#CORREO DEL CREADOR DE CONTENIDO QUE SE VA A VINCULAR SE MANDA PREDEFINIDO PERO EL CREADOR DE CONTENIDO LO PUEDE CAMBIAR EN LA VINCULACION
+      "preferred_language_code": "es-CO",
+      "tracking_id": "testenterprices123122",
+      "partner_config_override": {
+        "partner_logo_url": "https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg",
+        "return_url": "http://127.0.0.1:8000/accounts/profile/",
+        "return_url_description": "the url to return the merchant after the paypal onboarding process.",
+        "action_renewal_url": "http://needer.com.co",
+        "show_add_credit_card": True
+      },
+      "operations": [
+        {
+          "operation": "API_INTEGRATION",
+          "api_integration_preference": {
+            "rest_api_integration": {
+              "integration_method": "PAYPAL",
+              "integration_type": "THIRD_PARTY",
+              "third_party_details": {
+                "features": [
+                  "PAYMENT",
+                  "REFUND"
+                ],
+              }
+            }
           }
         }
-      }
+      ],
+      
+      "legal_consents": [
+        {
+          "type": "SHARE_DATA_CONSENT",
+          "granted": True
+        }
+      ],
+      "products": [
+        "EXPRESS_CHECKOUT"
+      ]
     }
-  ],
-  
-  "legal_consents": [
-    {
-      "type": "SHARE_DATA_CONSENT",
-      "granted": True
-    }
-  ],
-  "products": [
-    "EXPRESS_CHECKOUT"
-  ]
-}
     response = requests.post(url=url,headers={'Content-Type': 'application/json',
     'Authorization':token}, data=json.dumps(data))
     
     if response.status_code not in [201]:
-        get_access_token()
+        
+        token = get_access_token()
         response = requests.post(url=url,headers={'Content-Type': 'application/json',
         'Authorization':token}, data=json.dumps(data))
 

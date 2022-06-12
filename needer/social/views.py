@@ -81,9 +81,7 @@ class DetallePublicacionView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user_slug'] = self.get_object().user.slug
-
         context['innercontent'] = 'main/user/content.html'
-        context['image'] = Publicacion.objects.get(pk=self.kwargs['pk']).archivo
         return context
 
 
