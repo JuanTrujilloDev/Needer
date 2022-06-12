@@ -3,6 +3,7 @@ import os
 from django.conf import settings
 from marketplace.models import Access_Token_Paypal
 import requests
+import hashlib
 
 
 
@@ -33,11 +34,12 @@ def get_access_token():
 
 
 def get_action_url(token):
+    tracking_id =hashlib.sha256().hexdigest()
     url = 'https://api-m.sandbox.paypal.com/v2/customer/partner-referrals'
     data={
-      "email": "CREADOR_CONTENIDO@CREADOR.com",#CORREO DEL CREADOR DE CONTENIDO QUE SE VA A VINCULAR SE MANDA PREDEFINIDO PERO EL CREADOR DE CONTENIDO LO PUEDE CAMBIAR EN LA VINCULACION
+      "email": "",#CORREO DEL CREADOR DE CONTENIDO QUE SE VA A VINCULAR SE MANDA PREDEFINIDO PE
       "preferred_language_code": "es-CO",
-      "tracking_id": "testenterprices123122",
+      "tracking_id": tracking_id,
       "partner_config_override": {
         "partner_logo_url": "https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg",
         "return_url": "http://127.0.0.1:8000/accounts/profile/",
