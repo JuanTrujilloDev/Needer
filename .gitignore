@@ -135,10 +135,13 @@ include/
 Lib/
 pyvenv.cfg
 bin/
+*/bin/
+.env
+*/.env
 lib/
 .DS_Store
-../.DS_Store/
-.DS_Store/
+*/.DS_Store/*
+.DS_Store/*
 
 # VSCODE
 

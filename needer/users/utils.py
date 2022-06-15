@@ -37,7 +37,6 @@ def get_action_url(token):
     tracking_id =hashlib.sha256().hexdigest()
     url = 'https://api-m.sandbox.paypal.com/v2/customer/partner-referrals'
     data={
-      "email": "",#CORREO DEL CREADOR DE CONTENIDO QUE SE VA A VINCULAR SE MANDA PREDEFINIDO PE
       "preferred_language_code": "es-CO",
       "tracking_id": tracking_id,
       "partner_config_override": {
