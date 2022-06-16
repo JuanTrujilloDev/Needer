@@ -183,7 +183,7 @@ Needer | {{object.username}}
 
 
                 
-                {% if not publicaciones %}
+                {% if not object_list %}
 
                 <div class="col-12 text-center rounded shadow">
         
@@ -226,7 +226,7 @@ Needer | {{object.username}}
 
                 <!--Publicacion-->
 
-                {% for publicacion in publicaciones %}
+                {% for publicacion in object_list %}
                 <div class="row container-fluid px-0 bg-white rounded shadow d-flex justify-content-around align-items-center mt-4 publicacion" onclick="window.open('{{publicacion.get_absolute_url}}')"  style="height:auto; cursor: pointer;">
                     <div class="col-12 d-flex align-items-center justify-content-start pt-4">
                             <div class="col-lg-2 col-md-2   col-3 justify-content-center d-flex pe-0">
