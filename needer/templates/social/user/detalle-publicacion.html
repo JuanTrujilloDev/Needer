@@ -7,7 +7,7 @@
 {% endblock css %}
 
 {% block headtitle %}
-Needer | {{object.username}}
+Needer | {{publicacion.user.username}}
 {% endblock headtitle %}
 
 {% block inner-content %}
@@ -20,7 +20,7 @@ Needer | {{object.username}}
 
         <!--Icono y titulo-->
         <div class="row border-bottom d-flex">
-        <h1 class="text-center text-primary mb-0 "><a href="{% url 'detalle-creador'  request.user%}"><i class="bi bi-arrow-left text-primary float-start"></i></a>Publicacion</h1>
+        <h1 class="text-center text-primary mb-0 "><a href="{{publicacion.user.get_absolute_url}}"><i class="bi bi-arrow-left text-primary float-start"></i></a>Publicacion</h1>
         </div>
 
 
@@ -31,9 +31,9 @@ Needer | {{object.username}}
                 <!--Foto del usuario-->
                 <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0 mb-3">
                     <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
-                        {% if object.user.foto %}
+                        {% if publicacion.user.foto %}
                                     
-                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{object.user.foto.url}}"data-holder-rendered="true">
+                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{publicacion.user.foto.url}}"data-holder-rendered="true">
                     
                         {% else %}
                         <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"data-holder-rendered="true">
@@ -218,3 +218,6 @@ Needer | {{object.username}}
 </div>
 
 {% endblock %}
+
+{% block script %}
+{% endblock script %}
