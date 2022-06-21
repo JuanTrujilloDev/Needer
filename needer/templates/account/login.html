@@ -9,13 +9,13 @@
 {% endblock css %}
 
 {% block content %}
-<section class="login-view container-fluid d-flex justify-content-center align-items-center bg-primary py-2">
+<section class="login-view container-fluid d-flex justify-content-center align-items-center py-2 bg-primary" >
 
 <div class="container row justify-content-center">
 
 
 
-<div class="col-lg-6 col-md-10 bg-white p-5 rounded">
+<div class="col-lg-5 col-md-10 bg-light p-5 rounded">
 
   <h1 class="fw-bold text-center mb-2 pb-3"> <img src="{% static 'img/Needer_logo.svg' %}" class="img-fluid logo-login">
      &nbsp;{% trans "Sign In" %} en Needer
@@ -68,7 +68,7 @@
     {% endif %}
 
     <div class="form-group">
-    <button class="primaryAction btn btn-primary btn-lg form-control fw-bold" type="submit">{% trans "Sign In" %}</button>
+    <button class="primaryAction btn btn-primary btn-md form-control fw-bold rounded-pill" type="submit">{% trans "Sign In" %}</button>
     </div>
 
     <div class="d-flex my-3 justify-content-between ayudas">
@@ -80,12 +80,12 @@
 
 
 
-    <h5 class="login-divisor"><span>O</span></h5>
+    <h5 class="login-divisor"><span class="bg-light">O</span></h5>
   
   
     <div class="socialaccount_ballot social-login">
   
-      <a title="Google" class="socialaccount_provider google form-control btn btn-lg fw-bold text-muted" href="/accounts/google/login/?process=login">
+      <a title="Google" class="socialaccount_provider google form-control btn btn-md fw-bold text-muted rounded-pill" href="/accounts/google/login/?process=login">
         <img class="google-img" src="{% static 'img/Google.svg' %}"> &nbsp; Inicia sesion con google
       </a>
     </div>
