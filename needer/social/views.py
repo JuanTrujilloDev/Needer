@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.views.generic import DetailView, CreateView, ListView
+from django.views.generic import (DetailView, CreateView, 
+                                  ListView, TemplateView)
 from users.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
@@ -9,13 +10,14 @@ from django.http import HttpResponseNotFound
 from .forms import CrearPublicacionForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
-from .utils import is_ajax
+from .utils import is_ajax, DispatchAuthenticatedUserMixin
+from django.http import Http404
 
 
 
 
 # VISTA PARA PERFIL DEL CREADOR DE CONTENIDO
-class DetailCreador(LoginRequiredMixin, ListView):
+class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Publicacion
     template_name = 'social/user/perfil.html'
     paginate_by = 3
@@ -30,7 +32,13 @@ class DetailCreador(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self, **kwargs):
-        user = User.objects.get(slug = self.kwargs['slug'])
+        try:
+            # Si el usuario no existe
+            user = User.objects.get(slug = self.kwargs['slug'])
+        except:
+            # retorna error 404
+            raise Http404
+
         return Publicacion.objects.filter(user = user).order_by('-fecha_creacion')
 
 
@@ -42,42 +50,29 @@ class DetailCreador(LoginRequiredMixin, ListView):
 
         return ['social/user/perfil.html']
 
-            
-
     def dispatch(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            if self.request.user.is_active:
-                    response = super().dispatch(request, *args, **kwargs)
-                    return response
-            else:
-                logout(self.request)
-                return redirect(reverse('account_inactive'))
-        else:
-            return redirect(reverse('account_login'))
+        slug = self.kwargs['slug']
+        if slug.lower() in ['marketplace', 'home']:
+
+            if slug.lower() == 'home':
+
+                return redirect(reverse('home-social'))
+
+        return super().dispatch(request, *args, **kwargs)
+        
 
 
 
 
 # CRUD PUBLICACIONES
 
-class CrearPublicacionView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+# Crear publicacion
+class CrearPublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, 
+                            SuccessMessageMixin, CreateView):
     model = Publicacion
     template_name = 'social/user/crear-publi.html'
     form_class = CrearPublicacionForm
     success_message = 'La publicacion fue creada satisfactoriamente!'
-
-    def dispatch(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            if self.request.user.is_active:
-                # Lo envia a crear la publicacion
-                return super().dispatch(request, *args, **kwargs)
-
-
-            else:
-                logout(self.request)
-                return redirect(reverse('account_inactive'))
-        else:
-            return redirect(reverse('account_login'))
 
     # Se sobrescribe el form_valid para guardar el autor.
     def form_valid(self, form):
@@ -91,12 +86,15 @@ class CrearPublicacionView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return reverse('detalle-publicacion', kwargs={'pk': self.object.pk, 'user_slug': self.object.user.slug})
 
 
-class DetallePublicacionView(LoginRequiredMixin, DetailView):
+# Detalle Publicacion
+class DetallePublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, DetailView):
     model = Publicacion
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user_slug'] = self.get_object().user.slug
+
+        if self.kwargs['user_slug'] != self.get_object().user.slug:
+            raise Http404 
 
         context['innercontent'] = 'main/user/content.html'
 
@@ -104,17 +102,49 @@ class DetallePublicacionView(LoginRequiredMixin, DetailView):
 
 
     def get_template_names(self):
-            return ['social/user/detalle-publicacion.html']
-            
+            return ['social/user/detalle-publicacion.html']     
 
-    def dispatch(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            if self.request.user.is_active:
-                # Si el usuario es consumidor o es el dueno del perfil
-                return super().dispatch(request, *args, **kwargs)
 
-            else:
-                logout(self.request)
-                return redirect(reverse('account_inactive'))
-        else:
-            return redirect(reverse('account_login'))
+# Update Publicacion
+
+
+
+
+# Delete Publicacion
+
+
+
+
+# Lista Home Publicaciones
+
+
+class HomeSocialView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
+    model = Publicacion
+    template_name = 'social/user/home-social.html'
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+
+        # Aca se traerian a las personas relevantes.
+        # Y personas a las cuales uno esta suscrito.
+        return context
+
+    def get_queryset(self):
+        
+        # Aca primero se deberia retornar las publicaciones de personas que sigue.
+        # Si no sigue a nadie se buscarian por tipo de celebridad segun las mismas que tiene el.
+        # En caso de no tener ningun tipo de celebridad entonces de las personas relevantes primero.
+        # En orden de mas nuevo a mas antiguo.
+        # Y de ultimo irian las publicaciones en general de personas de mas nuevo a mas antiguo.
+        
+        return super().get_queryset()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['innercontent'] = 'main/user/content.html'
+
+        return context
+
+
+

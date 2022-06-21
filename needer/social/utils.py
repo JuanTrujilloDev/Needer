@@ -7,6 +7,9 @@ from PIL import Image
 from io import BytesIO
 import sys
 from PIL import Image
+from django.shortcuts import render, redirect
+from django.contrib.auth import logout
+from django.urls import reverse
 
 def postDirectory(instance, filename):
     '''
@@ -116,6 +119,20 @@ def file_compression(value):
 def is_ajax(request): 
     
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
+# Dispatch 
+class DispatchAuthenticatedUserMixin:
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            if self.request.user.is_active:
+                return super().dispatch(request, *args, **kwargs)
+            else:
+                logout(self.request)
+                return redirect(reverse('account_inactive'))
+        else:
+            return redirect(reverse('account_login'))
 
 
         

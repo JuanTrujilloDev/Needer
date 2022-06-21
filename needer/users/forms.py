@@ -110,16 +110,19 @@ class  SocialCustomForm(SocialSignupForm):
         """
         Se limpia el usuario para cumplir con el formato
 
-        5 a 10 Caracteres
+        3 a 18 Caracteres
         Solo Letras [A-Za-z numeros o ._]
         """
         username = self.cleaned_data['username']
         
         # Regex para nombre de usuario 
 
-        match = re.match('^[A-Za-z][A-Za-z0-9]{0,10}$', username)
+        match = re.match('^[A-Za-z][A-Za-z0-9]{3,18}$', username)
 
         if match:
+            if username.lower() in ['home', 'marketplace']:
+                raise forms.ValidationError('No puedes usar este nombre de usuario')
+
             try:
                 persona = User.objects.get(username__iexact=username)
             except:
@@ -128,7 +131,7 @@ class  SocialCustomForm(SocialSignupForm):
             if persona:
                 raise forms.ValidationError('El nombre de usuario ya se encuentra registrado, intenta con otro.')
 
-        raise forms.ValidationError('El usuario no cumple con el formato (Solo letras o numeros y debe empezar por letra).')
+        raise forms.ValidationError('El usuario no cumple con el formato (Solo letras o numeros y debe empezar por letra) de 3 a 18 caracteres.')
 
 
 
@@ -313,15 +316,18 @@ class  SignupCustomForm(SignupForm):
         """
         Se limpia el usuario para cumplir con el formato
 
-        5 a 10 Caracteres
+        3 a 18 Caracteres
         Solo Letras [A-Za-z numeros]
         """
         username = self.cleaned_data['username']
 
         # Regex para Username
-        match = re.match('^[A-Za-z][A-Za-z0-9]{0,10}$', username)
+        match = re.match('^[A-Za-z][A-Za-z0-9]{3,18}$', username)
 
         if match:
+            if username.lower() in ['home', 'marketplace']:
+                raise forms.ValidationError('No puedes usar este nombre de usuario')
+
             try:
                 persona = User.objects.get(username__iexact=username)
             except:
@@ -330,7 +336,8 @@ class  SignupCustomForm(SignupForm):
             if persona:
                 raise forms.ValidationError('El nombre de usuario ya se encuentra registrado, intenta con otro.')
 
-        raise forms.ValidationError('El usuario no cumple con el formato (Solo letras o numeros y debe empezar por letra).')
+
+        raise forms.ValidationError('El usuario no cumple con el formato (Solo letras o numeros y debe empezar por letra) de 3 a 18 caracteres.')
 
 
 
@@ -442,7 +449,7 @@ class UpdateUserForm(forms.ModelForm):
     biografia = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder':'Cuentale a tu publico de ti... (Maximo 150 caracteres)',
     'onKeyUp':"maximo(this,150);", 'onKeyDown':"maximo(this,150);", 'onkeypress':"cancelar();"}))
     tipo_celebridad = forms.ModelMultipleChoiceField(queryset = TipoCelebridad.objects.all(), required = False, widget= forms.CheckboxSelectMultiple())
-
+    banner = forms.ImageField(required=False)
 
     class Meta:
         # Model class
@@ -547,15 +554,19 @@ class UpdateUserForm(forms.ModelForm):
         """
         Se limpia el usuario para cumplir con el formato
 
-        5 a 10 Caracteres
+        3 a 18 Caracteres
         Solo Letras [A-Za-z numeros]
         """
         username = self.cleaned_data['username']
 
         # Regex para Username
-        match = re.match('^[A-Za-z][A-Za-z0-9]{4,10}$', username)
+        match = re.match('^[A-Za-z][A-Za-z0-9]{3,18}$', username)
 
         if match:
+            if username.lower() in ['home', 'marketplace']:
+                raise forms.ValidationError('No puedes usar este nombre de usuario')
+            
+            
             try:
                 persona = User.objects.get(username__iexact=username)
             except:
@@ -563,17 +574,20 @@ class UpdateUserForm(forms.ModelForm):
 
             if persona and (self.instance != persona):
                 raise forms.ValidationError('El nombre de usuario ya se encuentra registrado, intenta con otro.')
+            
+           
+            
             else:
                 return username
 
 
-        raise forms.ValidationError('El usuario no cumple con el formato (Solo letras o numeros y debe empezar por letra).')
+        raise forms.ValidationError('El usuario no cumple con el formato: De 4 a 10 caracteres (Solo letras o numeros y debe empezar por letra) de 3 a 18 caracteres.')
 
     def clean_apodo(self):
         """
         Se limpia el usuario para cumplir con el formato
 
-        5 a 10 Caracteres
+        4 a 25 Caracteres
         Solo Letras [A-Za-z numeros]
         """
         apodo = self.cleaned_data['apodo']
