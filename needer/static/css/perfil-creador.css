@@ -1,8 +1,33 @@
+.main{
+    padding-top: 0 !important;
+}
+.imgbanner{
+    margin: 0 !important;
+    width: 100% !important;
+    max-height: 300px;
+    min-height: 200px;
+    background-size: cover;
+    border: none !important;
+    border-radius: 0 0 10px 10px;
+}
+
+@media screen and (min-width:992px) {
+    .imgbanner{ 
+        min-height: 300px;
+    }
+    
+}
+
+
 .update-imagen{
     width: 200px;
     height: 200px;
     background-size: cover;
     border: 4px solid #dbdbdb;
+    left: 10%;
+    top: 5%;
+    margin-top: -25px;
+    margin-left: -25px;
 }
 
 .update-imagen:hover{
