@@ -1,0 +1,95 @@
+{% load static %}
+{% load pub_extras %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/perfil-creador.css'%} ">
+<link rel="stylesheet" href="{% static 'css/publicacion.css'%} ">
+{% endblock css %}
+
+
+
+
+                <!--Publicacion-->
+
+                {% for publicacion in object_list %}
+                <div class="row container-fluid px-0 bg-white rounded shadow d-flex justify-content-around align-items-center mt-4 publicacion" onclick="window.open('{{publicacion.get_absolute_url}}')"  style="height:auto; cursor: pointer;">
+                    <div class="col-12 d-flex align-items-center justify-content-start pt-4">
+                            <div class="col-lg-2 col-md-2   col-3 justify-content-center d-flex pe-0">
+                            <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
+                                {% if object.foto %}
+                                
+                                <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{object.foto.url}}"
+                                data-holder-rendered="true">
+                
+                                {% else %}
+                                <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true">
+                            
+                                {% endif %}
+                            </a>
+                            </div>
+
+                        <!--Autor y Hora-->
+                        <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1">
+                        <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                        <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none text-secondary">
+                       
+                            {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}
+                        </a> 
+                        </h5>
+                        <p class="my-0 text-muted">@{{publicacion.user.username}} · {{publicacion.fecha_creacion|fecha_exacta}}</p>
+                        {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
+                        </div>
+
+                        <div class="col d-flex align-items-center justify-content-end">
+                            <a class="btn text-primary text-end editar-pub-btn"><i class="bi bi-pencil-square border-none"></i></a>
+                        </div>
+                        
+                    </div>
+
+                    
+                    
+                    <!--Contenido de la Publicación-->
+                    <div  class="d-flex justify-content-center row {% if publicacion.nsfw %} pub-container align-items-center{% endif %}">
+                        
+                        
+                        <div class="text-decoration-none row container-fluid px-0 bg-white pt-4 mw-100 {{publicacion.nsfw|nsfw}}" style="height:auto;">
+                            {% if publicacion.descripcion %}
+                            
+                            <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-4">
+                                {{publicacion.descripcion|safe}}
+                            </div>
+
+
+                            {% endif %}
+
+                            {% if publicacion.archivo %}
+
+                            {{publicacion.archivo|tipo_archivo|safe}}
+                            
+                            {% endif %}
+
+                        </div>
+                        <!--TODO Validar funcionamiento-->
+                        {% if publicacion.nsfw %}<h3 class="align-middle text-danger nsfw-title text-center fw-bold"><i class="bi bi-radioactive"></i> NSFW <i class="bi bi-radioactive"></i></h4>{% endif %}
+
+
+                    </div>
+
+                    <div class="row text-decoration-none row container-fluid px-0 pb-4 bg-white mw-100">
+                             <!--Botones de la Publicación--> 
+                             <a href="{{publicacion.get_absolute_url}}" class="col-lg-12 row mt-4 text-decoration-none px-4">
+                                <button class="btn text-primary col-6 like"><i class="bi bi-heart"></i> Like </button>
+                                <button class="btn text-primary col-6 like"><i class="bi bi-chat-left"></i> Comentar </button>
+                            </a>
+                    </div>
+
+                   
+
+                </div>
+
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                <button value="?page={{ page_obj.next_page_number }}" class="load-more" id="load-more" onclick="loadMore(); this.onclick=null;" style="display:none">Load-more</button>
+                {% endif %}

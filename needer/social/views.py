@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import DetailView, CreateView
+from django.views.generic import DetailView, CreateView, ListView
 from users.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
@@ -8,31 +8,47 @@ from .models import Publicacion
 from django.http import HttpResponseNotFound
 from .forms import CrearPublicacionForm
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.paginator import Paginator
+from .utils import is_ajax
 
 
 
 
 # VISTA PARA PERFIL DEL CREADOR DE CONTENIDO
-class DetailCreador(LoginRequiredMixin, DetailView):
-    model = User
+class DetailCreador(LoginRequiredMixin, ListView):
+    model = Publicacion
     template_name = 'social/user/perfil.html'
+    paginate_by = 3
 
     def get_context_data(self, **kwargs):
+        
         context = super().get_context_data(**kwargs)
-        context['publicaciones'] = Publicacion.objects.filter(user = self.object).order_by('-fecha_creacion')
+        # Traemos el autor del perfil
+        context['object'] = User.objects.get(slug = self.kwargs['slug'])
         context['innercontent'] = 'main/user/content.html'
 
         return context
 
+    def get_queryset(self, **kwargs):
+        user = User.objects.get(slug = self.kwargs['slug'])
+        return Publicacion.objects.filter(user = user).order_by('-fecha_creacion')
+
 
     def get_template_names(self):
+        
+        if is_ajax(self.request):
+            # Si la peticion es ajax retornamos parte del html
+            return ['social/user/publicaciones-ajax.html']
+
         return ['social/user/perfil.html']
+
             
 
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
             if self.request.user.is_active:
-                    return super().dispatch(request, *args, **kwargs)
+                    response = super().dispatch(request, *args, **kwargs)
+                    return response
             else:
                 logout(self.request)
                 return redirect(reverse('account_inactive'))
