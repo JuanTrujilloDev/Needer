@@ -117,7 +117,6 @@ class DetallePublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
 
 # Lista Home Publicaciones
 
-
 class HomeSocialView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Publicacion
     template_name = 'social/user/home-social.html'
@@ -127,6 +126,7 @@ class HomeSocialView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListVie
 
         # Aca se traerian a las personas relevantes.
         # Y personas a las cuales uno esta suscrito.
+        
         return context
 
     def get_queryset(self):

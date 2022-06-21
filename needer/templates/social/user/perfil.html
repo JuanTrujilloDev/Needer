@@ -20,8 +20,11 @@ Needer | {{object.username}}
     <div class="seccion-arriba w-100 row mx-0">
 
         <!--Banner-->
-        <button type="button" data-bs-toggle="#" data-bs-target="#exampleModal" class="col-12 btn img-fluid imgbanner" style="background-image: url('{% static 'img/hola.jpeg' %}');"> </button>
-
+        {% if object.banner %}
+        <button type="button" data-bs-toggle="#" data-bs-target="#exampleModal" class="col-12 btn img-fluid imgbanner" style="background-image: url('{{object.banner.url}}');"> </button>
+        {% else %}
+        <button type="button" data-bs-toggle="#" data-bs-target="#exampleModal" class="col-12 btn img-fluid imgbanner" style="background-image: url('{% static 'img/placeholder-banner.png' %}');"> </button>
+        {% endif %}
 
         <!--FOTO-->
         <div class="col-lg-3 col-md-4 text-center mb-0 mb-sm-3 px-0 mx-0 align-items-center">
