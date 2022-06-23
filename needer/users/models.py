@@ -106,7 +106,7 @@ class User(AbstractUser):
     tipo_celebridad = models.ManyToManyField(TipoCelebridad, blank = True)
     foto = ResizedImageField(size=[500,500], upload_to = user_directory_path_profile,  blank=True)
     link = models.CharField(max_length=80, null=True, blank=True)
-    banner = ResizedImageField(size=[1200, 300], upload_to = banner_directory_path_profile, blank=True)
+    banner = ResizedImageField(size=[1280, 720], upload_to = banner_directory_path_profile, blank=True, quality=85)
 
     # TODO REVISAR DE DOCUMENTACION
     cartera = models.DecimalField(max_digits=19,decimal_places=2, default=0, null=True, blank=True)

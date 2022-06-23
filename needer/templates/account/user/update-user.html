@@ -35,6 +35,8 @@
             </datalist>
             {% csrf_token %}
 
+                
+                    
             {% if messages %}
         <ul class="messages list-unstyled">
             {% for message in messages %}
@@ -58,7 +60,16 @@
                 </div>
             {% endfor %}
         {% endif %}
-        
+
+         <!--Banner-->
+         <div class="col-12">
+            {% if object.banner %}
+            <button type="button" data-bs-toggle="#" data-bs-target="#exampleModal" class="col-12 btn img-fluid imgbanner" style="background-image: url('{{object.banner.url}}');"> </button>
+            {% else %}
+            <button type="button" data-bs-toggle="#" data-bs-target="#exampleModal" class="col-12 btn img-fluid imgbanner" style="background-image: url('{% static 'img/placeholder-banner.png' %}');"> </button>
+            {% endif %}
+            </div>
+
         <p><strong class="text-danger">{{ form.foto.errors.as_text }}</strong> </p>   
             {% if request.user.foto %}
             <a id="boton-imagen" class="btn rounded-circle overflow-hidden update-imagen" style="background-image: url({{request.user.foto.url}});"> </a>

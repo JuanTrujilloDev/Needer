@@ -4,9 +4,10 @@
 .imgbanner{
     margin: 0 !important;
     width: 100% !important;
-    max-height: 300px;
+    max-height: 440px;
     min-height: 200px;
-    background-size: cover;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
     border: none !important;
     border-radius: 0 0 10px 10px;
 }
@@ -28,6 +29,14 @@
     top: 5%;
     margin-top: -25px;
     margin-left: -25px;
+}
+@media screen and (max-width:992px) {
+    .update-imagen{ 
+       max-width: 100px;
+       max-height: 100px;
+       margin-left: 0px;
+    }
+    
 }
 
 .update-imagen:hover{
