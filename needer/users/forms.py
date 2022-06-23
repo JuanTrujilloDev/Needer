@@ -455,7 +455,7 @@ class UpdateUserForm(forms.ModelForm):
         # Model class
         model = User
         fields = ['first_name', 'last_name', 'pais', 'username', 'apodo', 'fecha_nacimiento', 
-                 'genero', 'tipo_celebridad', 'foto', 'biografia', 'link']
+                 'genero', 'tipo_celebridad', 'foto', 'biografia', 'link', 'banner']
 
 
     #Constructor permite modificar los campos 
