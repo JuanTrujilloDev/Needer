@@ -10,6 +10,7 @@ from PIL import Image
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.urls import reverse
+from django.core.exceptions import PermissionDenied
 
 def postDirectory(instance, filename):
     '''
@@ -121,7 +122,8 @@ def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
-# Dispatch 
+
+# Mixins
 class DispatchAuthenticatedUserMixin:
 
     def dispatch(self, request, *args, **kwargs):
@@ -133,6 +135,27 @@ class DispatchAuthenticatedUserMixin:
                 return redirect(reverse('account_inactive'))
         else:
             return redirect(reverse('account_login'))
+
+
+
+
+# Validar que sea el usuario el dueno de la publicacion
+
+class ValidateOwnershipMixin:
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            if self.request.user.is_active:
+                if self.request.user == self.get_object().user:
+                    return super().dispatch(request, *args, **kwargs)
+                else:
+                    raise PermissionDenied
+            else:
+                logout(self.request)
+                return redirect(reverse('account_inactive'))
+        else:
+            return redirect(reverse('account_login'))
+    
 
 
         
