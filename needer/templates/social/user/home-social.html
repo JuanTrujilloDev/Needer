@@ -60,9 +60,9 @@ Needer
                 <div class="col-12 d-flex align-items-center justify-content-start pt-4 mb-2">
                     <div class="col-lg-2 col-md-2   col-3 justify-content-center d-flex pe-0">
                     <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
-                        {% if object.foto %}
+                        {% if publicacion.user.foto %}
                         
-                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{object.foto.url}}"
+                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{publicacion.user.foto.url}}"
                         data-holder-rendered="true">
         
                         {% else %}
