@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import (DetailView, CreateView, 
-                                  ListView, TemplateView)
+                                  ListView, TemplateView, UpdateView)
 from users.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
@@ -10,7 +10,7 @@ from django.http import HttpResponseNotFound
 from .forms import CrearPublicacionForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
-from .utils import is_ajax, DispatchAuthenticatedUserMixin
+from .utils import is_ajax, DispatchAuthenticatedUserMixin, ValidateOwnershipMixin
 from django.http import Http404
 
 
@@ -20,7 +20,7 @@ from django.http import Http404
 class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Publicacion
     template_name = 'social/user/perfil.html'
-    paginate_by = 3
+    paginate_by = 2
 
     def get_context_data(self, **kwargs):
         
@@ -28,6 +28,7 @@ class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView
         # Traemos el autor del perfil
         context['object'] = User.objects.get(slug = self.kwargs['slug'])
         context['innercontent'] = 'main/user/content.html'
+        user = User.objects.get(slug = self.kwargs['slug'])
 
         return context
 
@@ -39,15 +40,13 @@ class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView
             # retorna error 404
             raise Http404
 
+        
+        
         return Publicacion.objects.filter(user = user).order_by('-fecha_creacion')
 
 
     def get_template_names(self):
         
-        if is_ajax(self.request):
-            # Si la peticion es ajax retornamos parte del html
-            return ['social/user/publicaciones-ajax.html']
-
         return ['social/user/perfil.html']
 
     def dispatch(self, request, *args, **kwargs):
@@ -107,6 +106,21 @@ class DetallePublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
 
 # Update Publicacion
 
+class UpdatePublicacionView(ValidateOwnershipMixin, LoginRequiredMixin, UpdateView):
+    model = Publicacion
+    fields = ['descripcion']
+    template_name = 'social/user/update-publicacion.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.kwargs['user_slug'] != self.get_object().user.slug:
+            raise Http404 
+
+        context['innercontent'] = 'main/user/content.html'
+
+        return context
+
 
 
 
@@ -119,15 +133,7 @@ class DetallePublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
 
 class HomeSocialView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Publicacion
-    template_name = 'social/user/home-social.html'
-
-    def get_context_data(self, **kwargs):
-        context =  super().get_context_data(**kwargs)
-
-        # Aca se traerian a las personas relevantes.
-        # Y personas a las cuales uno esta suscrito.
-        
-        return context
+    paginate_by = 3
 
     def get_queryset(self):
         
@@ -136,15 +142,21 @@ class HomeSocialView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListVie
         # En caso de no tener ningun tipo de celebridad entonces de las personas relevantes primero.
         # En orden de mas nuevo a mas antiguo.
         # Y de ultimo irian las publicaciones en general de personas de mas nuevo a mas antiguo.
-        
-        return super().get_queryset()
+       
+        return Publicacion.objects.all().order_by('-fecha_creacion')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Aca se traerian a las personas relevantes.
+        # Y personas a las cuales uno esta suscrito.
 
         context['innercontent'] = 'main/user/content.html'
 
         return context
+
+    def get_template_names(self):
+
+        return ['social/user/home-social.html']
 
 
 
