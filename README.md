@@ -12,9 +12,7 @@
 
 [@JuanTrujilloDev](https://github.com/JuanTrujilloDev/)
 
-[@AnderssonIbarra](https://github.com/AnderssonIbarra)
-
-[@JuanSPuentes](https://github.com/Sarsu12/)
+[@ThomasP360](https://github.com/ThomasP360/)
 
 ## Version History ⌛️
 
