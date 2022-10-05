@@ -1,3 +1,4 @@
+from colorama import Fore
 from django.db import models
 from users.models import User
 from django.urls import reverse
@@ -44,6 +45,15 @@ class Publicacion(models.Model):
     def delete(self, using=None, keep_parents=False):
         self.archivo.storage.delete(self.archivo.name)
         super().delete()
+
+
+class LikedPublicacion(models.Model):
+    id_publicacion = models.ForeignKey(Publicacion, verbose_name= ("Likes"), on_delete=models.CASCADE)
+    id_usuario = models.ForeignKey(User, verbose_name= ("Likes de Usuarios"), on_delete=models.CASCADE)
+    fecha = models.DateTimeField(verbose_name = 'Fecha de Like' ,auto_now_add=True, auto_now=False)
+
+    
+
 
 
         

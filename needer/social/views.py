@@ -1,12 +1,15 @@
+from http import HTTPStatus
 from django.shortcuts import render, redirect
+from django.views import View
 from django.views.generic import (DetailView, CreateView, 
                                   ListView, TemplateView, UpdateView)
+from requests import post
 from users.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import logout
-from .models import Publicacion
-from django.http import HttpResponseNotFound
+from .models import LikedPublicacion, Publicacion
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from .forms import CrearPublicacionForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
@@ -157,6 +160,11 @@ class HomeSocialView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListVie
     def get_template_names(self):
 
         return ['social/user/home-social.html']
+
+
+class Likes(View):
+    pass
+
 
 
 

@@ -1,101 +1,101 @@
 {% load static %}
 {% load pub_extras %}
+<div class="infinite-container px-0">
+    {% for publicacion in object_list %}
+    <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded shadow d-flex justify-content-around align-items-center mt-4 publicacion infinite-item" onclick="window.open('{{publicacion.get_absolute_url}}')" style="height:auto; cursor: pointer;">
+        <div class="col-12 d-flex align-items-center justify-content-start mb-2">
+            <div class="col-lg-2 col-md-2   col-3 justify-content-center d-flex pe-0">
+                <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
+                    {% if object.foto %}
+                    <img
+                        class="rounded-circle img-fluid profile-img"
+                        alt="profile"
+                        src="{{object.foto.url}}"
+                        data-holder-rendered="true"
+                    >
+                    {% else %}
+                    <img
+                        class="rounded-circle img-fluid profile-img"
+                        alt="profile"
+                        src="{% static 'img/default-profile.png' %}"
+                        data-holder-rendered="true"
+                    >
+                    {% endif %}
+                </a>
+            </div>
+            <!--Autor y Hora-->
+            <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1">
+                <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                    <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none text-secondary">
+                        {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}
+                    </a>
+                </h5>
+                <p class="my-0 text-muted">@{{publicacion.user.username}} · {{publicacion.fecha_creacion|fecha_exacta}}</p>
+                {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
+            </div>
+            <div class="col d-flex align-items-center justify-content-end">
+                {% if request.user == publicacion.user %}
+                <a class="btn text-primary text-end editar-pub-btn" href="{{publicacion.get_absolute_url}}/update">
+                    <i class="bi bi-pencil-square border-none"></i>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        <!--Contenido de la Publicación-->
+        <div class="d-flex justify-content-center row {% if publicacion.nsfw %} pub-container align-items-center{% endif %}">
+            <div class="text-decoration-none row container-fluid px-0 bg-white pt-4 mw-100 {{publicacion.nsfw|nsfw}}" style="height:auto;">
+                {% if publicacion.descripcion %}
+                <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-4">
+                    {{publicacion.descripcion|safe}}
+                </div>
+                {% endif %}
 
-{% block css %}
-<link rel="stylesheet" href="{% static 'css/perfil-creador.css'%} ">
-<link rel="stylesheet" href="{% static 'css/publicacion.css'%} ">
-{% endblock css %}
+                    {% if publicacion.archivo %}
 
-
-
-
-                <!--Publicacion-->
-
-                <!--Publicacion-->
-                <div class="infinite-content px-0">
-                    {% for publicacion in object_list %}
-                    <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded shadow d-flex justify-content-around align-items-center mt-4 publicacion data" onclick="window.open('{{publicacion.get_absolute_url}}')"  style="height:auto; cursor: pointer;">
-                        <div class="col-12 d-flex align-items-center justify-content-start">
-                                <div class="col-lg-2 col-md-2   col-3 justify-content-center d-flex pe-0">
-                                <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
-                                    {% if object.foto %}
-                                    
-                                    <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{object.foto.url}}"
-                                    data-holder-rendered="true">
+                    {{publicacion.archivo|tipo_archivo|safe}}
                     
-                                    {% else %}
-                                    <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"
-                                    data-holder-rendered="true">
-                                
-                                    {% endif %}
-                                </a>
-                                </div>
+                    {% endif %}
+            </div>
+            <!--TODO Validar funcionamiento-->
+            {% if publicacion.nsfw %}
+            <h4 class="align-middle text-danger nsfw-title text-center fw-bold">
+                <i class="bi bi-radioactive"></i> NSFW
+                <i class="bi bi-radioactive"></i>
+            </h4>
+            {% endif %}
+        </div>
+        <!--Cantidad de me gusta y comentario-->
+        <div class="row justify-content-start text-primary mt-3 align-items-center d-flex fw-bold py-2 px-4">
+            <h5 class="align-middle mb-0">
+                
+                <a href="" class="text-decoration-none text-primary z-2">
 
-                            <!--Autor y Hora-->
-                            <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1">
-                            <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
-                            <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none text-secondary">
-                        
-                                {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}
-                            </a> 
-                            </h5>
-                            <p class="my-0 text-muted">@{{publicacion.user.username}} · {{publicacion.fecha_creacion|fecha_exacta}}</p>
-                            {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
-                            </div>
-
-                            <div class="col d-flex align-items-center justify-content-end">
-                                {% if self.request.user == publicacion.user %}
-                                <a class="btn text-primary text-end editar-pub-btn"><i class="bi bi-pencil-square border-none"></i></a>
-                                {% endif %}
-                            </div>
-                            
-                        </div>
-
-                        
-                        
-                        <!--Contenido de la Publicación-->
-                        <div  class="d-flex justify-content-center row {% if publicacion.nsfw %} pub-container align-items-center{% endif %}">
-                            
-                            
-                            <div class="text-decoration-none row container-fluid px-0 bg-white pt-4 mw-100 {{publicacion.nsfw|nsfw}}" style="height:auto;">
-                                {% if publicacion.descripcion %}
-                                
-                                <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-4">
-                                    {{publicacion.descripcion|safe}}
-                                </div>
-
-
-                                {% endif %}
-
-                                {% if publicacion.archivo %}
-
-                                {{publicacion.archivo|tipo_archivo|safe}}
-                                
-                                {% endif %}
-
-                            </div>
-                            <!--TODO Validar funcionamiento-->
-                            {% if publicacion.nsfw %}<h3 class="align-middle text-danger nsfw-title text-center fw-bold"><i class="bi bi-radioactive"></i> NSFW <i class="bi bi-radioactive"></i></h3>{% endif %}
-
-
-                        </div>
-
-
-                          <!--Cantidad de me gusta y comentario-->
-                        <div class="row justify-content-start text-primary mt-3 align-items-center d-flex fw-bold py-2 px-4">
-                            <h5 class="align-middle mb-0"><small><i class="bi bi-heart-fill"></i></small> 200 &nbsp; 300 <i class="bi bi-chat"></i></h5>  
-                        </div>
-
-                       
-                    </div>
+                    <i class="bi bi-heart-fill"></i> 
+                    {% for count in publicacion.id_usuario %}
+                        {{ forloop.counter0 }} {{ count }}
                     {% endfor %}
+                </a>  
+                <a href="" class="text-decoration-none text-primary z-2">
+                    300
+                    <i class="bi bi-chat"></i>
+                </a>  
+            </h5>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+    {% if page_obj.has_next %}
+    <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}" style="display:none;">More</a>
+    {% endif %}
+    <div class="page-load-status mt-3">
+        <h5 class="infinite-scroll-request col-12 text-center">
+            Cargando...
+        </h5>
+        <h5 class="infinite-scroll-last col-12 text-center text-muted">No hay mas publicaciones</h5>
+        <p class="infinite-scroll-error">No mas contenido que cargar</p>
+    </div>
+    
 
-                    
-                   
-
-                    </div>
-
-                   
 
                     
                 

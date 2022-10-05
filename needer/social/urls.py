@@ -22,5 +22,7 @@ urlpatterns = [
     # path('<str:user_slug>/publicacion/<int:pk>/delete', DeletePublicacion.as_view(), name='update-publicacion'),
     
 
+    #likes
+    
 
 ]

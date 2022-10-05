@@ -14,11 +14,9 @@
 
 [@AnderssonIbarra](https://github.com/AnderssonIbarra)
 
-[@JuanSPuentes](https://github.com/Sarsu12/)
+[@JuanSPuentes](https://github.com/JuanSPuentes/)
 
 [@ThomasP360](https://github.com/ThomasP360)
-
-[@Santiagocp-oss](https://github.com/Santiagocp-oss)
 
 ## Version History ⌛️
 
