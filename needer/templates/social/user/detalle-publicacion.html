@@ -81,12 +81,18 @@ Needer | {{publicacion.user.username}}
                 </div>
 
                 <div class="row text-start border-bottom align-middle mt-2 py-2 border-top text-break">
-                    <p class="align-middle fw-bold my-auto">200 Me gusta &nbsp; 30 Comentarios</p>
+                    <p id = "like_count" class="align-middle fw-bold my-auto">{{CantLiked}} Me Gustas &nbsp; 30 Comentarios</p>
                 </div>
                 
                 <!--Botones de la Publicación--> 
-                <div class="col-12 row text-decoration-none">
-                    <button class="btn text-primary col-6 like z-2"><i class="bi bi-heart"></i> Me gusta </button>
+                <div id = 'divlike'class="col-12 row text-decoration-none">
+                    {% if EstadoLike %}
+                    {% csrf_token %}
+                        <button id="dislike" class="btn text-primary border-secondary col-6 like z-2"><i class="bi bi-heart"></i> No Me gusta</button>
+                    {% else %}
+                    {% csrf_token %}
+                        <button id="like" class="btn text-primary col-6 like z-2"><i class="bi bi-heart"></i> Me gusta</button>
+                    {% endif %}
                     <button class="btn text-primary col-6 like z-2"><i class="bi bi-chat-left"></i> Comentar </button>
                 </div>
 
@@ -245,4 +251,91 @@ Needer | {{publicacion.user.username}}
 {% endblock %}
 
 {% block script %}
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+{% comment %}         function Like(){
+            var id = {{ publicacion.id|safe}}
+            var slug = "{{ publicacion.user.slug|safe}}"
+            fetch("/like/"+id+"/like",{
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCookie('csrftoken'),
+                }
+            })
+
+        }
+
+        function DisLike(){
+            var id = {{ publicacion.id|safe}}
+            var slug = "{{ publicacion.user.slug|safe}}"
+            fetch("/like/"+id+"/dislike",{
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCookie('csrftoken'),
+                }
+            })
+            
+        } {% endcomment %}
+        {% comment %} Evento de Megusta con JS {% endcomment %}
+        $(document).on('click', '#like', function (e) {
+            e.preventDefault();
+            $.ajax({
+              type: 'POST',
+              url: '{% url "addlike" publicacion.id %}',
+              data: {
+                postid: $('#like').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+              },
+              success: function (json) {
+                document.getElementById("like_count").textContent = json['result']
+                document.getElementById("divlike").innerHTML  = `{% csrf_token %} <button id="dislike" class="btn text-primary  border-secondary col-6 like z-2"><i class="bi bi-heart"></i> No Me gusta</button>
+                                                                <button class="btn text-primary col-6 like z-2"><i class="bi bi-chat-left"></i> Comentar </button>`
+              },
+
+              error: function (xhr, errmsg, err) {
+        
+              }
+            });
+          })
+          {% comment %} Evento de No Me gusta js {% endcomment %}
+          $(document).on('click', '#dislike', function (e) {
+            e.preventDefault();
+            $.ajax({
+              type: 'POST',
+              url: '{% url "removelike" publicacion.id %}',
+              data: {
+                postid: $('#dislike').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+              },
+              success: function (json) {
+                document.getElementById("like_count").textContent = json['result']
+                document.getElementById("divlike").innerHTML  = `{% csrf_token %} <button id="like" class="btn text-primary col-6 like z-2"><i class="bi bi-heart"></i> Me gusta</button> 
+                                                                <button class="btn text-primary col-6 like z-2"><i class="bi bi-chat-left"></i> Comentar </button>`
+              },
+
+              error: function (xhr, errmsg, err) {
+        
+              }
+            });
+          })
+    </script>
 {% endblock script %}
+

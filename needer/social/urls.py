@@ -23,6 +23,7 @@ urlpatterns = [
     
 
     #likes
-    
+    path('like/<int:pk>/like', AddLikes.as_view(), name= 'addlike'),
+    path('like/<int:pk>/dislike', RemoveLikes.as_view(), name= 'removelike'),
 
 ]
