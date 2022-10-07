@@ -1,7 +1,7 @@
 from django.db.models.signals import pre_save, m2m_changed, post_init
 from django.dispatch import receiver
 from users.models import User
-from .models import Publicacion, LikedPublicacion
+from .models import Publicacion#, LikedPublicacion
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 
