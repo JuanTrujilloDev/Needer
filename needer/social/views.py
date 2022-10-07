@@ -3,7 +3,7 @@ from http import HTTPStatus
 import time
 from django.shortcuts import render, redirect
 from django.views import View
-from django.views.generic import (DetailView, CreateView, 
+from django.views.generic import (DetailView, CreateView, DeleteView,
                                   ListView, TemplateView, UpdateView)
 from requests import post
 from users.models import User
@@ -140,6 +140,16 @@ class UpdatePublicacionView(ValidateOwnershipMixin, LoginRequiredMixin, UpdateVi
 
 
 # Delete Publicacion
+class DeletePublicacionView(ValidateOwnershipMixin, LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    model = Publicacion
+    success_url = reverse_lazy('social-home')
+    success_message = 'Publicacion eliminada con exito!'
+
+    def get(self, *args, **kwargs):
+        user_slug = self.kwargs['user_slug']
+        pk = self.kwargs['pk']
+        return redirect('detalle-publicacion', user_slug= user_slug, pk = pk)
+
 
 
 
