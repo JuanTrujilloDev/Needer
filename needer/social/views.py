@@ -1,4 +1,6 @@
+from ast import Try
 from http import HTTPStatus
+import time
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import (DetailView, CreateView, 
@@ -9,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import logout
 from .models import LikedPublicacion, Publicacion
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import JsonResponse,HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from .forms import CrearPublicacionForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
@@ -32,6 +34,8 @@ class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView
         context['object'] = User.objects.get(slug = self.kwargs['slug'])
         context['innercontent'] = 'main/user/content.html'
         user = User.objects.get(slug = self.kwargs['slug'])
+        for i in list(context['object_list']):
+            i.cant_Like = LikedPublicacion.objects.filter(id_publicacion =i.id).count()
 
         return context
 
@@ -94,18 +98,26 @@ class DetallePublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        usuario = User.objects.get(id = self.request.user.id)
 
+        like_find = LikedPublicacion.objects.filter(id_publicacion = kwargs['object'].id, id_usuario = usuario)
+        if len(like_find)> 0: context['EstadoLike'] = True
+        else :context['EstadoLike'] = False 
+        cant_Like =LikedPublicacion.objects.filter(id_publicacion = kwargs['object'].id).count()
+              
+           
         if self.kwargs['user_slug'] != self.get_object().user.slug:
             raise Http404 
 
+        context['CantLiked'] = cant_Like
         context['innercontent'] = 'main/user/content.html'
-
+        
         return context
 
 
     def get_template_names(self):
             return ['social/user/detalle-publicacion.html']     
-
+    
 
 # Update Publicacion
 
@@ -153,8 +165,10 @@ class HomeSocialView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListVie
         # Aca se traerian a las personas relevantes.
         # Y personas a las cuales uno esta suscrito.
 
-        context['innercontent'] = 'main/user/content.html'
+        for i in list(context['object_list']):
+            i.cant_Like = LikedPublicacion.objects.filter(id_publicacion =i.id).count()
 
+        context['innercontent'] = 'main/user/content.html'
         return context
 
     def get_template_names(self):
@@ -162,9 +176,40 @@ class HomeSocialView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListVie
         return ['social/user/home-social.html']
 
 
-class Likes(View):
-    pass
+class AddLikes(LoginRequiredMixin, View):
+    
+    def post(self, request, pk, *args, **kwargs):
+        self.publicacion = Publicacion.objects.get(id = pk)
+        usuario = User.objects.get(id = request.user.id)
+        cantidadlike = LikedPublicacion.objects.filter(id_publicacion = self.publicacion).count()
+        """ Si el usuario ya dio like devuelva la cantidad de likes que tiene la publicacion """
+        if LikedPublicacion.objects.filter(id_publicacion = self.publicacion, id_usuario =usuario).exists(): 
+            cantidadlike = str(cantidadlike) + ' Me Gustas ' + '30 Comentarios'
+            return JsonResponse({'result':cantidadlike})
+        """ Si no ha dado like se crea el objeto y se suma + 1  """
+        LikedPublicacion.objects.create(id_publicacion = self.publicacion, id_usuario =usuario)
+        cantidadlike += 1
+        cantidadlike = str(cantidadlike) + ' Me Gustas ' + '30 Comentarios'
+        return JsonResponse({'result': cantidadlike})
 
+    def get_success_url(self) -> str:
+        return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
+
+
+class RemoveLikes(LoginRequiredMixin, View):
+    
+    def post(self, request, pk, *args, **kwargs):
+        """ la pk es el id de la publicacion para obtener el objeto """
+        self.publicacion = Publicacion.objects.get(id = pk)
+        """ Se obtiene el usuario que da el no me gusta """
+        usuario = User.objects.get(id = request.user.id)
+        LikedPublicacion.objects.filter(id_publicacion = self.publicacion, id_usuario =usuario).delete()
+        cantidadlike = len(LikedPublicacion.objects.filter(id_publicacion = self.publicacion))
+        cantidadlike = str(cantidadlike) + ' Me Gustas ' + '30 Comentarios'
+        return JsonResponse({'result': cantidadlike} )
+
+    def get_success_url(self) -> str:
+        return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
 
 
 
