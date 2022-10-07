@@ -44,7 +44,6 @@ class  SocialCustomForm(SocialSignupForm):
     last_name = forms.CharField(max_length=30, label="Apellidos", required=False)
     password1 = forms.CharField(max_length=30,label=("Contrasena"), widget=forms.PasswordInput, required=True)
     password2 = forms.CharField(max_length=30, label=("Confirma tu contrasena"), widget=forms.PasswordInput, required=True)
-    groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), label="Tipo de Usuario", blank=False, required=True)
     pais = forms.CharField(max_length=50, required=False)
     num_documento = forms.CharField(max_length=10, label="Numero de documento", required=False)
     """     via = forms.CharField(max_length=10, label="Via")
@@ -68,36 +67,41 @@ class  SocialCustomForm(SocialSignupForm):
         
     
 
-    # Validar si el usuario es Creador de contenido requerir los campos desde el back.
+    # Validar campos
     def clean(self):
         """
         Validate the form input
         """
         cleaned_data = super().clean()
-        groups = cleaned_data['groups']
+        first_name = cleaned_data.get('first_name')
+        last_name = cleaned_data.get('last_name')
+        num_documento = cleaned_data.get('num_documento')
+        pais = cleaned_data.get('pais')
 
-        if groups.name == "Consumidor":
-            return cleaned_data
+        if first_name == "":
+            self.add_error('first_name', ("Este campo es obligatorio")) 
+        else:
+            match = re.match('^[A-Z][a-zA-Z ]+$', first_name)
 
-        if groups.name == "Creador de Contenido":
-            first_name = cleaned_data.get('first_name')
-            last_name = cleaned_data.get('last_name')
-            num_documento = cleaned_data.get('num_documento')
-            pais = cleaned_data.get('pais')
+            if match:
+                pass
+            else:
+                self.add_error('first_name', ('Formato Invalido. El nombre debe contener solo letras y empezar por mayuscula.'))
 
-            if first_name == "":
-                self.add_error('first_name', _("Este campo es obligatorio")) 
+        if last_name == "":
+            self.add_error('last_name', ("Este campo es obligatorio")) 
+        else:
+            if match:
+                pass
+            else:
+                self.add_error('last_name', ('Formato Invalido. El apellido debe contener solo letras y empezar por mayuscula.'))
 
-            if last_name == "":
-                self.add_error('last_name', _("Este campo es obligatorio")) 
+        if num_documento == "":
+            self.add_error('num_documento', ("Este campo es obligatorio")) 
 
-            if num_documento == "":
-                self.add_error('num_documento', _("Este campo es obligatorio")) 
+        if pais == "":
+            self.add_error('pais', ("Este campo es obligatorio")) 
 
-            if pais == "":
-                self.add_error('pais', _("Este campo es obligatorio")) 
-
-            
         return cleaned_data
 
     #taken from https://github.com/pennersr/django-allauth/blob/master/allauth/account/forms.py
@@ -106,16 +110,19 @@ class  SocialCustomForm(SocialSignupForm):
         """
         Se limpia el usuario para cumplir con el formato
 
-        5 a 10 Caracteres
+        3 a 18 Caracteres
         Solo Letras [A-Za-z numeros o ._]
         """
         username = self.cleaned_data['username']
         
         # Regex para nombre de usuario 
 
-        match = re.match('^[A-Za-z][A-Za-z0-9]{0,10}$', username)
+        match = re.match('^[A-Za-z][A-Za-z0-9]{3,18}$', username)
 
         if match:
+            if username.lower() in ['home', 'marketplace']:
+                raise forms.ValidationError('No puedes usar este nombre de usuario')
+
             try:
                 persona = User.objects.get(username__iexact=username)
             except:
@@ -124,7 +131,7 @@ class  SocialCustomForm(SocialSignupForm):
             if persona:
                 raise forms.ValidationError('El nombre de usuario ya se encuentra registrado, intenta con otro.')
 
-        raise forms.ValidationError('El usuario no cumple con el formato (Solo letras o numeros y debe empezar por letra).')
+        raise forms.ValidationError('El usuario no cumple con el formato (Solo letras o numeros y debe empezar por letra) de 3 a 18 caracteres.')
 
 
 
@@ -160,13 +167,7 @@ class  SocialCustomForm(SocialSignupForm):
             String: num_documento
         """
         # TODO POSIBLEMENTE AGREGAR ERROR PARA DAR PISTA A CADA TIPO DE DOCUMENTO
-        # EJ: ERROR EN EL NUMERO DE CEDULA EL FORMATO ES (12345678 o 1234567890)
-        grupo = self.cleaned_data['groups']
-        value = grupo.name == "Consumidor"
-
-        if value:
-            return None
-        
+        # EJ: ERROR EN EL NUMERO DE CEDULA EL FORMATO ES (12345678 o 1234567890)        
 
         match = re.match("[0-9]{6,10}", self.cleaned_data["num_documento"])
         
@@ -183,13 +184,6 @@ class  SocialCustomForm(SocialSignupForm):
         
         
     def clean_pais(self):
-        grupo = self.cleaned_data['groups']
-        value = grupo.name == "Consumidor"
-
-        if value:
-            return Pais.objects.get(nombre = "United States of America")
-        
-
         pais = self.cleaned_data['pais']
         try:
             paises = Pais.objects.get(nombre = pais)
@@ -198,33 +192,6 @@ class  SocialCustomForm(SocialSignupForm):
 
         return paises
 
-
-      # clean_first name
-    def clean_first_name(self):
-
-        first_name = self.cleaned_data['first_name']
-
-        match = re.match('^[A-Z][a-zA-Z ]+$', first_name)
-
-        if match:
-            return first_name
-        
-        raise forms.ValidationError('Formato Invalido. El nombre debe contener solo letras y empezar por mayuscula.')
-
-    # clean_last name
-    def clean_last_name(self):
-
-        last_name = self.cleaned_data['last_name']
-
-        match = re.match('^[A-Z][a-zA-Z ]+$', last_name)
-
-        if match:
-            return last_name
-        
-        raise forms.ValidationError('Formato Invalido. El apellido debe contener solo letras y empezar por mayuscula.')
-
-
-    # TODO clean_last_name
             
         
     
@@ -247,7 +214,6 @@ class  SocialCustomForm(SocialSignupForm):
         user = adapter.save_user(request, self.sociallogin, form=self)
         user.num_documento = self.cleaned_data["num_documento"]
         #user.direccion_facturacion = "{} # {} - {}, {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"], self.cleaned_data["zip"])
-        user.groups = self.cleaned_data["groups"]
         user.pais = self.cleaned_data["pais"]
         user.save()
         self.custom_signup(request, user)
@@ -279,7 +245,6 @@ class  SignupCustomForm(SignupForm):
     last_name = forms.CharField(max_length=30, label="Apellidos", required=False)
     password1 = forms.CharField(max_length=30,label=("Contrasena"), widget=forms.PasswordInput, required=True)
     password2 = forms.CharField(max_length=30, label=("Confirma tu contrasena"), widget=forms.PasswordInput, required=True)
-    groups = forms.ModelChoiceField(queryset = Group.objects.filter(Q(name="Consumidor") | Q(name = "Creador de Contenido")), label="Tipo de Usuario", blank=False, required=False)
     pais = forms.CharField(max_length=50, required=False)
     num_documento = forms.CharField(max_length=10, label="Numero de documento", required=False)
     """     via = forms.CharField(max_length=10, label="Via")
@@ -302,63 +267,48 @@ class  SignupCustomForm(SignupForm):
     #taken from https://github.com/pennersr/django-allauth/blob/master/allauth/account/forms.py
 
 
-    # Validar si el usuario es Creador de contenido requerir los campos desde el back.
+    # Validar campos
     def clean(self):
         """
         Validate the form input
         """
         cleaned_data = super().clean()
-        groups = cleaned_data['groups']
+        first_name = cleaned_data.get('first_name')
+        last_name = cleaned_data.get('last_name')
+        num_documento = cleaned_data.get('num_documento')
+        pais = cleaned_data.get('pais')
 
-        if groups.name == "Consumidor":
-            return cleaned_data
+        if first_name == "":
+            self.add_error('first_name', ("Este campo es obligatorio")) 
+        else:
+            match = re.match('^[A-Z][a-zA-Z ]+$', first_name)
 
-        if groups.name == "Creador de Contenido":
-            first_name = cleaned_data.get('first_name')
-            last_name = cleaned_data.get('last_name')
-            num_documento = cleaned_data.get('num_documento')
-            pais = cleaned_data.get('pais')
+            if match:
+                pass
+            else:
+                self.add_error('first_name', ('Formato Invalido. El nombre debe contener solo letras y empezar por mayuscula.'))
 
-            if first_name == "":
-                self.add_error('first_name', _("Este campo es obligatorio")) 
+        if last_name == "":
+            self.add_error('last_name', ("Este campo es obligatorio")) 
+        else:
+            if match:
+                pass
+            else:
+                self.add_error('last_name', ('Formato Invalido. El apellido debe contener solo letras y empezar por mayuscula.'))
 
-            if last_name == "":
-                self.add_error('last_name', _("Este campo es obligatorio")) 
+        if num_documento == "":
+            self.add_error('num_documento', ("Este campo es obligatorio")) 
 
-            if num_documento == "":
-                self.add_error('num_documento', _("Este campo es obligatorio")) 
-
-            if pais == "":
-                self.add_error('pais', _("Este campo es obligatorio")) 
+        if pais == "":
+            self.add_error('pais', ("Este campo es obligatorio")) 
 
         return cleaned_data
 
 
 
 
-    # clean_first name
-    def clean_first_name(self):
 
-        first_name = self.cleaned_data['first_name']
 
-        match = re.match('^[A-Z][a-zA-Z ]+$', first_name)
-
-        if match:
-            return first_name
-        
-        raise forms.ValidationError('Formato Invalido. El nombre debe contener solo letras y empezar por mayuscula.')
-
-    # clean_last name
-    def clean_last_name(self):
-
-        last_name = self.cleaned_data['last_name']
-
-        match = re.match('^[A-Z][a-zA-Z ]+$', last_name)
-
-        if match:
-            return last_name
-        
-        raise forms.ValidationError('Formato Invalido. El apellido debe contener solo letras y empezar por mayuscula.')
 
         
 
@@ -366,15 +316,18 @@ class  SignupCustomForm(SignupForm):
         """
         Se limpia el usuario para cumplir con el formato
 
-        5 a 10 Caracteres
+        3 a 18 Caracteres
         Solo Letras [A-Za-z numeros]
         """
         username = self.cleaned_data['username']
 
         # Regex para Username
-        match = re.match('^[A-Za-z][A-Za-z0-9]{0,10}$', username)
+        match = re.match('^[A-Za-z][A-Za-z0-9]{3,18}$', username)
 
         if match:
+            if username.lower() in ['home', 'marketplace']:
+                raise forms.ValidationError('No puedes usar este nombre de usuario')
+
             try:
                 persona = User.objects.get(username__iexact=username)
             except:
@@ -383,7 +336,8 @@ class  SignupCustomForm(SignupForm):
             if persona:
                 raise forms.ValidationError('El nombre de usuario ya se encuentra registrado, intenta con otro.')
 
-        raise forms.ValidationError('El usuario no cumple con el formato (Solo letras o numeros y debe empezar por letra).')
+
+        raise forms.ValidationError('El usuario no cumple con el formato (Solo letras o numeros y debe empezar por letra) de 3 a 18 caracteres.')
 
 
 
@@ -423,8 +377,6 @@ class  SignupCustomForm(SignupForm):
         """
         # TODO POSIBLEMENTE AGREGAR ERROR PARA DAR PISTA A CADA TIPO DE DOCUMENTO
         # EJ: ERROR EN EL NUMERO DE CEDULA EL FORMATO ES (12345678 o 1234567890)
-        if self.cleaned_data.get('groups') == Group.objects.get(name = 'Consumidor'):
-            return None
 
 
         match = re.match("[0-9]{6,10}", self.cleaned_data["num_documento"])
@@ -443,10 +395,6 @@ class  SignupCustomForm(SignupForm):
         
     def clean_pais(self):
         
-
-        if self.cleaned_data.get('groups') == Group.objects.get(name = 'Consumidor'):
-            return Pais.objects.get(nombre="United States of America")
-
         pais = self.cleaned_data['pais']
         try:
             paises = Pais.objects.get(nombre = pais)
@@ -475,7 +423,6 @@ class  SignupCustomForm(SignupForm):
         user = super(SignupCustomForm, self).save(request)
         user.num_documento = self.cleaned_data["num_documento"]
         #user.direccion_facturacion = "{} # {} - {}, {}".format(self.cleaned_data["via"], self.cleaned_data["numero1"], self.cleaned_data["numero2"], self.cleaned_data["zip"])
-        user.groups = self.cleaned_data["groups"]
         user.pais = self.cleaned_data["pais"]
         user.save()
         return user
@@ -491,24 +438,24 @@ class  SignupCustomForm(SignupForm):
     
 
 # FORM UPDATECREADOR
-class UpdateCreadorForm(forms.ModelForm):
+class UpdateUserForm(forms.ModelForm):
 
     # Fields
+    first_name = forms.CharField(max_length=25, required=True, widget= forms.TextInput(attrs={'placeholder':'Ingresa tus nombres'}))
+    last_name = forms.CharField(max_length=25, required=True, widget= forms.TextInput(attrs={'placeholder':'Ingresa tus apellidos'}))
     pais = forms.CharField(max_length=30, required=True, widget= forms.TextInput(attrs={'placeholder':'Ingresa tu pais de residencia'}))
     foto = forms.ImageField(required=False)
     fecha_nacimiento = forms.DateField(widget= forms.DateInput(attrs={'type': 'date'}), required=True)
     biografia = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder':'Cuentale a tu publico de ti... (Maximo 150 caracteres)',
     'onKeyUp':"maximo(this,150);", 'onKeyDown':"maximo(this,150);", 'onkeypress':"cancelar();"}))
-    tipo_celebridad = forms.ModelMultipleChoiceField(queryset = TipoCelebridad.objects.all(), required = True, widget= forms.CheckboxSelectMultiple())
-
-    # TODO tipo_celebridad a CHECKBOXSELECTMULTIPLE
-
+    tipo_celebridad = forms.ModelMultipleChoiceField(queryset = TipoCelebridad.objects.all(), required = False, widget= forms.CheckboxSelectMultiple())
+    banner = forms.ImageField(required=False)
 
     class Meta:
         # Model class
         model = User
-        fields = ['first_name', 'last_name', 'pais', 'username', 'fecha_nacimiento', 
-                 'genero', 'tipo_celebridad', 'foto', 'biografia', 'link']
+        fields = ['first_name', 'last_name', 'pais', 'username', 'apodo', 'fecha_nacimiento', 
+                 'genero', 'tipo_celebridad', 'foto', 'biografia', 'link', 'banner']
 
 
     #Constructor permite modificar los campos 
@@ -526,7 +473,7 @@ class UpdateCreadorForm(forms.ModelForm):
            
             })
                 
-        super(UpdateCreadorForm, self).__init__(*args, **kwargs)
+        super(UpdateUserForm, self).__init__(*args, **kwargs)
         self.fields['pais'].widget.attrs['list'] = "id_pais"
         #self.fields['biografia'].widget.attrs['wrap'] = 'hard'
         
@@ -537,7 +484,6 @@ class UpdateCreadorForm(forms.ModelForm):
         self.fields['first_name'].widget.attrs['class'] = 'form-control form-control-lg'
         self.fields['last_name'].widget.attrs['class'] = 'form-control form-control-lg'
         self.fields['last_name'].widget.attrs['placeholder'] = 'Ingresa tu apellido'
-        self.fields['link'].widget.attrs['class'] = 'form-control form-control-lg'
         self.fields['tipo_celebridad'].widget.attrs['class'] = 'form-check'
         
 
@@ -545,7 +491,7 @@ class UpdateCreadorForm(forms.ModelForm):
         #Eliminando los saltos de linea porque me cagan
         a = self.cleaned_data['biografia']
         _ = " ".join(a.split()[::])
-        print(len(_))
+
         if len(_) > 150:
             raise forms.ValidationError('El maximo de caracteres es de 150')
         return _
@@ -569,34 +515,31 @@ class UpdateCreadorForm(forms.ModelForm):
     def clean_first_name(self):
 
         first_name = self.cleaned_data['first_name']
-
         match = re.match('^[A-Z][a-zA-Z ]+$', first_name)
 
         if match:
             return first_name
-        
+            
         raise forms.ValidationError('Formato Invalido. El nombre debe contener solo letras y empezar por mayuscula.')
 
     # clean_last name
     def clean_last_name(self):
 
         last_name = self.cleaned_data['last_name']
-
         match = re.match('^[A-Z][a-zA-Z ]+$', last_name)
 
         if match:
             return last_name
+            
+        raise forms.ValidationError('Formato Invalido. El nombre debe contener solo letras y empezar por mayuscula.')
         
-        raise forms.ValidationError('Formato Invalido. El apellido debe contener solo letras y empezar por mayuscula.')
+
 
     
     def clean_pais(self):
         """En caso de que el usuario sea tipo consumidor se le asigna un pais predeterminado
         en este caso es United States of America, pero si es creador de contendio si se le
         permite especificar un pais""" 
-
-        if self.cleaned_data.get('groups') == Group.objects.get(name = 'Consumidor'):
-            return Pais.objects.get(nombre="United States of America")
 
         pais = self.cleaned_data['pais']
         try:
@@ -611,15 +554,19 @@ class UpdateCreadorForm(forms.ModelForm):
         """
         Se limpia el usuario para cumplir con el formato
 
-        5 a 10 Caracteres
+        3 a 18 Caracteres
         Solo Letras [A-Za-z numeros]
         """
         username = self.cleaned_data['username']
 
         # Regex para Username
-        match = re.match('^[A-Za-z][A-Za-z0-9]{4,10}$', username)
+        match = re.match('^[A-Za-z][A-Za-z0-9]{3,18}$', username)
 
         if match:
+            if username.lower() in ['home', 'marketplace']:
+                raise forms.ValidationError('No puedes usar este nombre de usuario')
+            
+            
             try:
                 persona = User.objects.get(username__iexact=username)
             except:
@@ -627,11 +574,37 @@ class UpdateCreadorForm(forms.ModelForm):
 
             if persona and (self.instance != persona):
                 raise forms.ValidationError('El nombre de usuario ya se encuentra registrado, intenta con otro.')
+            
+           
+            
             else:
                 return username
 
 
-        raise forms.ValidationError('El usuario no cumple con el formato (Solo letras o numeros y debe empezar por letra).')
+        raise forms.ValidationError('El usuario no cumple con el formato: De 4 a 10 caracteres (Solo letras o numeros y debe empezar por letra) de 3 a 18 caracteres.')
+
+    def clean_apodo(self):
+        """
+        Se limpia el usuario para cumplir con el formato
+
+        4 a 25 Caracteres
+        Solo Letras [A-Za-z numeros]
+        """
+        apodo = self.cleaned_data['apodo']
+        
+        if apodo:
+            
+
+            # Regex para Username
+            match = re.match('^[A-Za-z][A-Za-z0-9 ]{4,25}$', apodo)
+
+            if match:
+                    return apodo
+
+
+            raise forms.ValidationError('El apodo no cumple con el formato (Solo letras, numeros o espacio y debe empezar por letra) minimo 4 caracteres y maximo 25 caracteres.')
+        
+        return apodo
 
 
     def clean_fecha_nacimiento(self):
@@ -661,8 +634,8 @@ class UpdateCreadorForm(forms.ModelForm):
 
         categorias = self.cleaned_data['tipo_celebridad']
 
-        if len(categorias) > 3:
-            raise forms.ValidationError("No puedes escoger mas de 3 categorias, selecciona las que mas se ajusten a tu perfil.")
+        if len(categorias) > 5:
+            raise forms.ValidationError("No puedes escoger mas de 5 categorias, selecciona las que mas se ajusten a tu perfil.")
 
         return categorias
 
@@ -683,45 +656,6 @@ class UpdateCreadorForm(forms.ModelForm):
 
 
 
-    # FORM UPDATECONSUMIDOR
-class UpdateConsumidorForm(forms.ModelForm):
-
-
-    class Meta:
-        model = User
-        fields =  ['username']
-
-    def __init__(self, *args, **kwargs):
-        super(UpdateConsumidorForm, self).__init__(*args, **kwargs)
-
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
-
-    def clean_username(self):
-        """
-        Se limpia el usuario para cumplir con el formato
-
-        5 a 10 Caracteres
-        Solo Letras [A-Za-z numeros]
-        """
-        username = self.cleaned_data['username']
-
-        # Regex para Username
-        match = re.match('^[A-Za-z][A-Za-z0-9]{4,10}$', username)
-
-        if match:
-            try:
-                persona = User.objects.get(username__iexact=username)
-            except:
-                return username
-
-            if persona and (self.instance != persona):
-                raise forms.ValidationError('El nombre de usuario ya se encuentra registrado, intenta con otro.')
-            else:
-                return username
-
-
-        raise forms.ValidationError('El usuario no cumple con el formato (Solo letras o numeros y debe empezar por letra).')
 
 
     

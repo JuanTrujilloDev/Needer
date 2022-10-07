@@ -19,10 +19,16 @@ h1, h2, h3, h4, h5, h6{
 
 .btn-primary{
     background-color: #5C28FF!important;
+    border: #5C28FF 1px solid;
 }
 
 .btn-secondary{
     background-color: #3131B3!important;
+
+}
+
+.btn-terciary{
+    background-color: #A3A3FF!important;
 
 }
 
@@ -32,6 +38,14 @@ h1, h2, h3, h4, h5, h6{
 
 .text-primary{
     color:#5C28FF!important;
+}
+
+.text-secondary{
+  color: #3131B3!important;
+}
+
+.text-terciary{
+  color: #A3A3FF;
 }
 
 .google{

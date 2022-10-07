@@ -19,6 +19,7 @@
 * 0.0
   * Project initialization.
   * User Signup and Login.
+  * Publications.
 
 ## License 💯
 
@@ -26,4 +27,8 @@ This project is licensed under the **Creative Commons Zero v1.0 Universal** Lice
 
 ## Acknowledgments ❤️
 
-Inspiration, code snippets, etc.
+Thanks to all the modules who made our life easier:
+
+* tinymce
+* python-dotenv
+* django-recaptcha

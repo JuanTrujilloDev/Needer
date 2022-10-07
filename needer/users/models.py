@@ -1,9 +1,10 @@
+from xml.dom import ValidationErr
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group
 from django_resized import ResizedImageField
-import os
-from django.conf import settings
 from django.urls import reverse
+from .utils import *
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -49,11 +50,7 @@ class TipoCelebridad(models.Model):
         return self.nombre
 
 
-def user_directory_path_profile(instance, filename):
-    profile_picture_name = 'account/{0}/profile/profile.jpg'.format(instance.username)
-    full_path = os.path.join(settings.MEDIA_ROOT, profile_picture_name)
-    if os.path.exists(full_path): os.remove(full_path)
-    return profile_picture_name
+
 
 class User(AbstractUser):
     """
@@ -67,7 +64,6 @@ class User(AbstractUser):
     last_name -> string
     password -> string(encrypted)
     email -> string
-    groups -> comes from Group Model
     num_documento -> string
     pais -> comes from Pais Model
     slug -> string
@@ -85,7 +81,7 @@ class User(AbstractUser):
     
     """
     
-    groups = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name="Groups")
+    
     
     # Datos personales de facturacion.
         
@@ -104,20 +100,33 @@ class User(AbstractUser):
         MUJER = 'Mujer', 'Mujer',
         OTRO = 'Otro', "Otro"
 
-
+    apodo = models.CharField(max_length=25, blank=True, default='')
     genero = models.CharField(max_length=7, choices = GeneroChoices.choices, default=GeneroChoices.OTRO)
     fecha_nacimiento = models.DateField(verbose_name="Fecha nacimiento", blank=True, null=True)
     tipo_celebridad = models.ManyToManyField(TipoCelebridad, blank = True)
     foto = ResizedImageField(size=[500,500], upload_to = user_directory_path_profile,  blank=True)
     link = models.CharField(max_length=80, null=True, blank=True)
 
+    banner = ResizedImageField(size=[1280, 720], upload_to = banner_directory_path_profile, blank=True, quality=85)
+
+
     # TODO REVISAR DE DOCUMENTACION
     cartera = models.DecimalField(max_digits=19,decimal_places=2, default=0, null=True, blank=True)
+    verificado = models.BooleanField(default=False, verbose_name='verificado')
 
 
 
     def get_absolute_url(self):
-        return reverse('perfil-creador', kwargs={'slug': self.slug})
+        return reverse('detalle-creador', kwargs={'slug': self.slug})
+
+
+    def delete(self, using=None, keep_parents=False):
+        self.foto.storage.delete(self.foto.name)
+        super().delete()
+
+    def clean(self):
+        if self.username.lower() in ['home', 'marketplace'] or self.slug.lower() in ['home', 'marketplace']:
+            raise ValidationError('Usuario incorrecto intenta con otro username')
 
 
     

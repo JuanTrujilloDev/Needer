@@ -18,6 +18,6 @@ class HomeView (TemplateView):
 
     def get(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return redirect(reverse('account_profile'))
+            return redirect(reverse('social-home'))
 
         return super().get(request, *args, **kwargs)

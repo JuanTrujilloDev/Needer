@@ -1,5 +1,5 @@
 body, html {
-    height:100%;
+    height:auto;
     overflow: hidden;
 }
 
@@ -42,6 +42,11 @@ body, html {
 
 .navbar{
     box-shadow: 0 1.5px 0px 0 rgba(0,0,0,.2)!important;
+    background-color: #5C28FF!important;
+}
+
+.navbar h3{
+  color:white;
 }
 
 
@@ -53,7 +58,8 @@ body, html {
 .navbar .profile-img{
   height: 50px;
   width: 50px;
-  border: 2px solid #d1d1d1;
+  object-fit: cover;
+  border: 2px solid #5C28FF;
 }
 
 .collapse-elements{
@@ -72,6 +78,7 @@ body, html {
 .active{
   color: #5C28FF;
 }
+
 
 
 

@@ -47,10 +47,11 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'tinymce',
     'needer',
     'users',
     'main',
-    'publicaciones',
+    'social',
     
 ]
 
@@ -138,7 +139,7 @@ AUTH_USER_MODEL = 'users.User'
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 
@@ -152,10 +153,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    
-]
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+        
+    ]
+else:
+     STATIC_ROOT = BASE_DIR / "static"
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -230,3 +237,18 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = os.environ['GMAIL_USER']
 EMAIL_HOST_PASSWORD = os.environ['GMAIL_PASSWORD'] 
 EMAIL_USE_SSL = False
+
+
+
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "silver",
+    "menubar": False,
+    "resize":False,
+    "height": 500,
+    "plugins": "advlist,autolink,lists,link,image,charmap,print,preview,anchor,"
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,noneditable,media,table,paste,"
+    "emoticons,code,help,wordcount code",
+    "toolbar": "undo redo | formatselect | "
+    "bold italic backcolor emoticons| link | alignleft aligncenter "
+    "outdent indent"
+}
