@@ -5,6 +5,8 @@ from users.models import User
 from django.urls import reverse
 from tinymce.models import HTMLField
 from .utils import *
+import os
+from needer import settings
 
 
 
@@ -44,8 +46,10 @@ class Publicacion(models.Model):
 
 
     def delete(self, using=None, keep_parents=False):
-        self.archivo.storage.delete(self.archivo.name)
+        if self.archivo:
+            os.remove(os.path.join(settings.MEDIA_ROOT, self.archivo.name))
         super().delete()
+
 
 
 class LikedPublicacion(models.Model):
