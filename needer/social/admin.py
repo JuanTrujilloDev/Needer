@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import Publicacion, LikedPublicacion, Comentarios
+
 # Register your models here.
 
 
@@ -8,3 +9,4 @@ from .models import Publicacion, LikedPublicacion, Comentarios
 admin.site.register(Publicacion)
 admin.site.register(LikedPublicacion)
 admin.site.register(Comentarios)
+
