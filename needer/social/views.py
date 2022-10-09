@@ -1,21 +1,18 @@
-from ast import Try
-from http import HTTPStatus
-import time
+import json
+from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import (DetailView, CreateView, 
                                   ListView, TemplateView, UpdateView)
-from requests import post
 from users.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
-from django.contrib.auth import logout
-from .models import LikedPublicacion, Publicacion
-from django.http import JsonResponse,HttpResponse, HttpResponseNotFound, HttpResponseRedirect
-from .forms import CrearPublicacionForm
+
+from .models import Comentarios, LikeComentarios, LikedPublicacion, Publicacion
+from django.http import HttpResponse, JsonResponse
+from .forms import CrearComentarios, CrearPublicacionForm
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.paginator import Paginator
-from .utils import is_ajax, DispatchAuthenticatedUserMixin, ValidateOwnershipMixin
+from .utils import DispatchAuthenticatedUserMixin, ValidateOwnershipMixin
 from django.http import Http404
 
 
@@ -96,10 +93,13 @@ class CrearPublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
 class DetallePublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, DetailView):
     model = Publicacion
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        """ Se obtiene el objeto del usuario para los likes """
         usuario = User.objects.get(id = self.request.user.id)
 
+        """ Evalua si el usuario ya dio like a la publicacion """
         like_find = LikedPublicacion.objects.filter(id_publicacion = kwargs['object'].id, id_usuario = usuario)
         if len(like_find)> 0: context['EstadoLike'] = True
         else :context['EstadoLike'] = False 
@@ -109,15 +109,15 @@ class DetallePublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
         if self.kwargs['user_slug'] != self.get_object().user.slug:
             raise Http404 
 
+        """ Se carga el formulario y se evalua en la vista de CrearComentarioView """
+        context['form'] = CrearComentarios
         context['CantLiked'] = cant_Like
+        context['Comentario'] = Comentarios.objects.filter(id_publicacion = kwargs['object'].id)
         context['innercontent'] = 'main/user/content.html'
-        
         return context
 
-
     def get_template_names(self):
-            return ['social/user/detalle-publicacion.html']     
-    
+            return ['social/user/detalle-publicacion.html']    
 
 # Update Publicacion
 
@@ -167,6 +167,7 @@ class HomeSocialView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListVie
 
         for i in list(context['object_list']):
             i.cant_Like = LikedPublicacion.objects.filter(id_publicacion =i.id).count()
+            i.cant_coment = Comentarios.objects.filter(id_publicacion =i.id).count()
 
         context['innercontent'] = 'main/user/content.html'
         return context
@@ -175,28 +176,30 @@ class HomeSocialView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListVie
 
         return ['social/user/home-social.html']
 
-
-class AddLikes(LoginRequiredMixin, View):
+""" Crear Likes """
+class AddLikesPublicacion(LoginRequiredMixin, View):
     
     def post(self, request, pk, *args, **kwargs):
         self.publicacion = Publicacion.objects.get(id = pk)
         usuario = User.objects.get(id = request.user.id)
         cantidadlike = LikedPublicacion.objects.filter(id_publicacion = self.publicacion).count()
+        cantidadcomentario = Comentarios.objects.filter(id_publicacion = self.publicacion).count()
         """ Si el usuario ya dio like devuelva la cantidad de likes que tiene la publicacion """
         if LikedPublicacion.objects.filter(id_publicacion = self.publicacion, id_usuario =usuario).exists(): 
-            cantidadlike = str(cantidadlike) + ' Me Gustas ' + '30 Comentarios'
+            cantidadlike = str(cantidadlike) + ' Me Gustas ' + str(cantidadcomentario)+' Comentarios'
             return JsonResponse({'result':cantidadlike})
         """ Si no ha dado like se crea el objeto y se suma + 1  """
         LikedPublicacion.objects.create(id_publicacion = self.publicacion, id_usuario =usuario)
         cantidadlike += 1
-        cantidadlike = str(cantidadlike) + ' Me Gustas ' + '30 Comentarios'
+        cantidadlike = str(cantidadlike) + ' Me Gustas ' + str(cantidadcomentario)+' Comentarios'
         return JsonResponse({'result': cantidadlike})
 
     def get_success_url(self) -> str:
         return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
 
 
-class RemoveLikes(LoginRequiredMixin, View):
+""" Eliminar Likes """
+class RemoveLikesPublicacion(LoginRequiredMixin, View):
     
     def post(self, request, pk, *args, **kwargs):
         """ la pk es el id de la publicacion para obtener el objeto """
@@ -204,12 +207,102 @@ class RemoveLikes(LoginRequiredMixin, View):
         """ Se obtiene el usuario que da el no me gusta """
         usuario = User.objects.get(id = request.user.id)
         LikedPublicacion.objects.filter(id_publicacion = self.publicacion, id_usuario =usuario).delete()
-        cantidadlike = len(LikedPublicacion.objects.filter(id_publicacion = self.publicacion))
-        cantidadlike = str(cantidadlike) + ' Me Gustas ' + '30 Comentarios'
+        cantidadlike = LikedPublicacion.objects.filter(id_publicacion = self.publicacion).count()
+        cantidadcomentario = Comentarios.objects.filter(id_publicacion = self.publicacion).count()
+        cantidadlike = str(cantidadlike) + ' Me Gustas ' + str(cantidadcomentario)+' Comentarios'
         return JsonResponse({'result': cantidadlike} )
 
     def get_success_url(self) -> str:
         return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
+
+
+""" Crear Comentario """
+class CrearComentarioView(DispatchAuthenticatedUserMixin,LoginRequiredMixin, View):
+    model = Comentarios
+    form_class = CrearComentarios
+
+    
+    def post(self, request, pk, *args, **kwargs):
+        """ pk es el identificador de la publicacion"""
+        self.publicacion = Publicacion.objects.get(id = pk)
+        self.usuario = User.objects.get(id = request.user.id)
+        form_ = self.form_class(request.POST)
+        if form_.is_valid():
+            comentario = form_.cleaned_data['comentario']
+            """ Crear objeto del comentario """
+            Comentarios.objects.create(id_publicacion = self.publicacion, id_autor = self.usuario, comentario = comentario)
+        
+        """ Listar los comentarios con ajax """
+        if self.request.headers.get('x-requested-with'):
+            """ se obtienen los comentarios de la publicacion y se pasan a la vista usando json """
+            listado = []
+            listadocomentarios = {}
+            query = Comentarios.objects.filter(id_publicacion = self.publicacion)
+            objecto = query.last()
+            listadocomentarios['url'] = objecto.id_autor.get_absolute_url()
+            try: 
+                objecto.id_autor.foto
+                listadocomentarios['img'] = objecto.id_autor.foto.url
+            except:
+                listadocomentarios['img']="/static/img/default-profile.png" 
+
+            listadocomentarios['apodo'] = objecto.id_autor.apodo
+            listadocomentarios['username'] = objecto.id_autor.username
+            listadocomentarios['comentario'] = objecto.comentario
+            listado.append(listadocomentarios)
+
+            listado = json.dumps(listado)
+            return JsonResponse({'listadocomentarios': listado} )
+
+        return HttpResponse(self.request, self. get_success_url())
+
+        
+    def get_success_url(self) -> str:
+        return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
+
+
+
+""" Crear Likes comentarios"""
+class AddLikesComentario(LoginRequiredMixin, View):
+    
+    def post(self, request, pk, *args, **kwargs):
+
+        self.comentario = Comentarios.objects.get(id = pk)
+        usuario = User.objects.get(id = request.user.id)
+        cantidadlike = LikeComentarios.objects.filter(id_comentario = self.comentario).count()
+
+        """ Si el usuario ya dio like devuelva la cantidad de likes que tiene la publicacion """
+        if LikeComentarios.objects.filter(id_publicacion = self.comentario, id_usuario =usuario).exists(): 
+            cantidadlike = str(cantidadlike)
+            return JsonResponse({'result':cantidadlike})
+        """ Si no ha dado like se crea el objeto y se suma + 1  """
+        LikeComentarios.objects.create(id_comentario = self.comentario, id_usuario =usuario)
+        cantidadlike += 1
+        cantidadlike = str(cantidadlike)
+        return JsonResponse({'result': cantidadlike})
+
+    def get_success_url(self) -> str:
+        return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
+
+
+""" Eliminar Likes comentarios"""
+class RemoveLikesComentario(LoginRequiredMixin, View):
+    
+    def post(self, request, pk, *args, **kwargs):
+        """ la pk es el id de la publicacion para obtener el objeto """
+        self.publicacion = Publicacion.objects.get(id = pk)
+        """ Se obtiene el usuario que da el no me gusta """
+        usuario = User.objects.get(id = request.user.id)
+        LikedPublicacion.objects.filter(id_publicacion = self.publicacion, id_usuario =usuario).delete()
+        cantidadlike = LikedPublicacion.objects.filter(id_publicacion = self.publicacion).count()
+        cantidadcomentario = Comentarios.objects.filter(id_publicacion = self.publicacion).count()
+        cantidadlike = str(cantidadlike) + ' Me Gustas ' + str(cantidadcomentario)+' Comentarios'
+        return JsonResponse({'result': cantidadlike} )
+
+    def get_success_url(self) -> str:
+        return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
+
+    
 
 
 
