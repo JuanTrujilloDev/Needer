@@ -1,3 +1,7 @@
+
+from operator import mod
+from colorama import Fore
+
 from django.db import models
 from users.models import User
 from django.urls import reverse
@@ -48,6 +52,19 @@ class Publicacion(models.Model):
             os.remove(os.path.join(settings.MEDIA_ROOT, self.archivo.name))
         super().delete()
 
+
+
+
+class Comentarios(models.Model):
+    id_publicacion = models.ForeignKey(Publicacion, verbose_name= ("Publicacion"), on_delete=models.CASCADE)
+    id_autor = models.ForeignKey(User, verbose_name= ("Autor"), on_delete=models.CASCADE)
+    comentario = models.TextField(max_length=120, verbose_name=("Comentario"), blank=False)
+    fecha_creacion = models.DateTimeField(verbose_name = 'Fecha de Like', auto_now_add=True, auto_now=False)
+
+class LikeComentarios(models.Model):
+    id_comentario = models.ForeignKey(Comentarios, verbose_name= ("Comentarios"), on_delete=models.CASCADE)
+    id_usuario = models.ForeignKey(User, verbose_name= ("Usuario"), on_delete=models.CASCADE)
+    fecha = models.DateTimeField(verbose_name = 'Fecha de Like' ,auto_now_add=True, auto_now=False)
 
         
 
