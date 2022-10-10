@@ -262,57 +262,9 @@ class CrearComentarioView(DispatchAuthenticatedUserMixin,LoginRequiredMixin, Vie
             listado.append(listadocomentarios)
 
             listado = json.dumps(listado)
-            return JsonResponse({'listadocomentarios': listado} )
-
-        return HttpResponse(self.request, self. get_success_url())
-
-        
-    def get_success_url(self) -> str:
-        return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
+        return JsonResponse({'listadocomentarios': listado} )
 
 
-
-""" Crear Likes comentarios"""
-class AddLikesComentario(LoginRequiredMixin, View):
-    
-    def post(self, request, pk, *args, **kwargs):
-
-        self.comentario = Comentarios.objects.get(id = pk)
-        usuario = User.objects.get(id = request.user.id)
-        cantidadlike = LikeComentarios.objects.filter(id_comentario = self.comentario).count()
-
-        """ Si el usuario ya dio like devuelva la cantidad de likes que tiene la publicacion """
-        if LikeComentarios.objects.filter(id_publicacion = self.comentario, id_usuario =usuario).exists(): 
-            cantidadlike = str(cantidadlike)
-            return JsonResponse({'result':cantidadlike})
-        """ Si no ha dado like se crea el objeto y se suma + 1  """
-        LikeComentarios.objects.create(id_comentario = self.comentario, id_usuario =usuario)
-        cantidadlike += 1
-        cantidadlike = str(cantidadlike)
-        return JsonResponse({'result': cantidadlike})
-
-    def get_success_url(self) -> str:
-        return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
-
-
-""" Eliminar Likes comentarios"""
-class RemoveLikesComentario(LoginRequiredMixin, View):
-    
-    def post(self, request, pk, *args, **kwargs):
-        """ la pk es el id de la publicacion para obtener el objeto """
-        self.publicacion = Publicacion.objects.get(id = pk)
-        """ Se obtiene el usuario que da el no me gusta """
-        usuario = User.objects.get(id = request.user.id)
-        LikedPublicacion.objects.filter(id_publicacion = self.publicacion, id_usuario =usuario).delete()
-        cantidadlike = LikedPublicacion.objects.filter(id_publicacion = self.publicacion).count()
-        cantidadcomentario = Comentarios.objects.filter(id_publicacion = self.publicacion).count()
-        cantidadlike = str(cantidadlike) + ' Me Gustas ' + str(cantidadcomentario)+' Comentarios'
-        return JsonResponse({'result': cantidadlike} )
-
-    def get_success_url(self) -> str:
-        return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
-
-    
 
 
 
