@@ -1,3 +1,7 @@
+
+from operator import mod
+from colorama import Fore
+
 from django.db import models
 from users.models import User
 from django.urls import reverse
@@ -18,7 +22,7 @@ class Publicacion(models.Model):
     user = models.ForeignKey(User, on_delete= models.CASCADE, verbose_name='Autor')
     
 
-    descripcion = HTMLField(verbose_name='Descripcion', max_length=280, null=True, blank=True)
+    descripcion = HTMLField(verbose_name='Descripcion', max_length=2200, null=True, blank=True)
     archivo = models.FileField(upload_to = postDirectory, blank=True, null=True, validators=[valid_file_extention, valid_file_size])
     fecha_creacion = models.DateTimeField(verbose_name='Fecha Publicacion', auto_now_add=True, auto_now=False)
     fecha_actualizacion = models.DateTimeField(verbose_name='Fecha Actualizacion',  auto_now=True, auto_now_add=False, blank=True, null=True)
@@ -48,6 +52,23 @@ class Publicacion(models.Model):
             os.remove(os.path.join(settings.MEDIA_ROOT, self.archivo.name))
         super().delete()
 
+
+class LikedPublicacion(models.Model):
+    id_publicacion = models.ForeignKey(Publicacion, verbose_name= ("Publicacion"), on_delete=models.CASCADE)
+    id_usuario = models.ForeignKey(User, verbose_name= ("Usuario"), on_delete=models.CASCADE)
+    fecha = models.DateTimeField(verbose_name = 'Fecha de Like' ,auto_now_add=True, auto_now=False)
+
+
+class Comentarios(models.Model):
+    id_publicacion = models.ForeignKey(Publicacion, verbose_name= ("Publicacion"), on_delete=models.CASCADE)
+    id_autor = models.ForeignKey(User, verbose_name= ("Autor"), on_delete=models.CASCADE)
+    comentario = models.TextField(max_length=120, verbose_name=("Comentario"), blank=False)
+    fecha_creacion = models.DateTimeField(verbose_name = 'Fecha de Like', auto_now_add=True, auto_now=False)
+
+class LikeComentarios(models.Model):
+    id_comentario = models.ForeignKey(Comentarios, verbose_name= ("Comentarios"), on_delete=models.CASCADE)
+    id_usuario = models.ForeignKey(User, verbose_name= ("Usuario"), on_delete=models.CASCADE)
+    fecha = models.DateTimeField(verbose_name = 'Fecha de Like' ,auto_now_add=True, auto_now=False)
 
         
 
