@@ -87,13 +87,20 @@
 </div>
     {% if page_obj.has_next %}
     <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}" style="display:none;">More</a>
+
+    {% else %}
+    <a class="infinite-more-link" href="?page=0" style="display:none;">More</a>
     {% endif %}
+
     <div class="page-load-status mt-3">
+        {% if page_obj.has_next %}
         <h5 class="infinite-scroll-request col-12 text-center">
             Cargando...
         </h5>
+        {% endif %}
         <h5 class="infinite-scroll-last col-12 text-center text-muted">No hay mas publicaciones</h5>
-        <p class="infinite-scroll-error">No mas contenido que cargar</p>
+        <h5 class="infinite-scroll-error col-12 text-center text-muted">No mas contenido que cargar</h5>
+
     </div>
     
 

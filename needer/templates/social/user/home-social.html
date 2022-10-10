@@ -44,6 +44,13 @@ Needer
                 {% include 'social/user/Componente-crear-publi.html' %}
             </div>
             {% comment %} Visualizacion de publicaciones {% endcomment %}
+            {% if messages %}
+            <ul class="messages list-unstyled">
+                {% for message in messages %}
+              <div {% if message.tags %} class="alert alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+                {% endfor %}
+            </ul>
+            {% endif %}
             {% include 'social/user/publicaciones-ajax.html' %}
         </div>
         <!--Contenido de la Derecha-->
