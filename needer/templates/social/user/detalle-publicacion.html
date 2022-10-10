@@ -104,15 +104,15 @@ Needer | {{publicacion.user.username}}
 
         <!--Formulario de Comentarios-->
         <form id='form-comentario' action="" method="post">   
-            {% csrf_token %}                               
+            {% csrf_token %}    
             <div class="border-top">
                 {{form.comentario}}
             </div>
-            <div>
+            <div id='div-comentar'>
                 <button class="btn text-primary like"><i class="bi bi-image-fill"></i></button>
                 <button class="btn text-primary like"><i class="bi bi-emoji-smile"></i></button>
                 <button class="btn text-primary like"><i class="bi bi-filetype-gif"></i></button>   
-                <button id = "comentario"  class="btn text-primary like float-end" type="submit"><i class="bi bi-chat-left"></i> Comentar</button>
+                <button id='boton-comentar' class="btn text-primary like float-end" type="submit"><i class="bi bi-chat-left"></i> Comentar</button>
             </div>
         </form>
 
@@ -246,7 +246,7 @@ Needer | {{publicacion.user.username}}
 <script>
     window.data = { url_dislike: '{% url "removelike" publicacion.id %}',
                     url_like: '{% url "addlike" publicacion.id %}',
-                    url_coment: '{% url "comentario" publicacion.id|safe%}'}
+                    url_coment: '{% url "comentario" publicacion.id %}'}
                     
 </script>
 {% endblock script %}
