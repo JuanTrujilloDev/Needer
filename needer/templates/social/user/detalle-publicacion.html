@@ -109,16 +109,15 @@ Needer | {{publicacion.user.username}}
         </div>
 
         <!--Formulario de Comentarios-->
-        <form id='form-comentario' action="" method="post">   
-            {% csrf_token %}                               
+        <form id='form-comentario' action="" method="post">                             
             <div class="border-top">
                 {{form.comentario}}
             </div>
-            <div>
+            <div id = "div-comentar">
                 <button class="btn text-primary like"><i class="bi bi-image-fill"></i></button>
                 <button class="btn text-primary like"><i class="bi bi-emoji-smile"></i></button>
                 <button class="btn text-primary like"><i class="bi bi-filetype-gif"></i></button>   
-                <button id = "comentario"  class="btn text-primary like float-end" type="submit"><i class="bi bi-chat-left"></i> Comentar</button>
+                <button id='boton-comentar' class="btn text-primary like float-end" type="submit"><i class="bi bi-chat-left"></i> Comentar</button>
             </div>
         </form>
 
@@ -186,10 +185,7 @@ Needer | {{publicacion.user.username}}
                 <!--Foto del usuario-->
                 <div class="col-lg-3 col-md-4 col-3 justify-content-center d-flex pe-0 mb-3">
                     <a href="/sarsu12/" class="text-center">
-                        
                         <img class="rounded-circle img-fluid profile-img" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true">
-                                
-                        
                         </a>
                 </div>
 
