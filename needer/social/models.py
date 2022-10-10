@@ -53,7 +53,10 @@ class Publicacion(models.Model):
         super().delete()
 
 
-
+class LikedPublicacion(models.Model):
+    id_publicacion = models.ForeignKey(Publicacion, verbose_name= ("Publicacion"), on_delete=models.CASCADE)
+    id_usuario = models.ForeignKey(User, verbose_name= ("Usuario"), on_delete=models.CASCADE)
+    fecha = models.DateTimeField(verbose_name = 'Fecha de Like' ,auto_now_add=True, auto_now=False)
 
 class Comentarios(models.Model):
     id_publicacion = models.ForeignKey(Publicacion, verbose_name= ("Publicacion"), on_delete=models.CASCADE)
