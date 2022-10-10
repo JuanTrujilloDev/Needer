@@ -58,7 +58,13 @@ Needer | {{publicacion.user.username}}
 
             <!--Contenido de la Publicación-->
             <div class="text-decoration-none row container-fluid justify-content-center px-0 bg-white mw-100" style="height:auto;">
-
+                {% if publicacion.user == request.user %}
+            
+                <form method="POST" action="{% url 'delete-publicacion' user_slug=request.user.slug pk=publicacion.pk %}">
+                    {% csrf_token %}
+                    <button type="submit">ELIMINAR</button>
+                </form> 
+                {% endif %}
             {% if publicacion.descripcion %}
                             
                 <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-3">
@@ -155,6 +161,13 @@ Needer | {{publicacion.user.username}}
             </div>
 
         {% endfor %}
+
+
+            <!--Botones de la Publicación--> 
+            <a href="{{publicacion.get_absolute_url}}" class="col-lg-12 row mt-2 text-decoration-none px-4">
+                <button class="btn text-primary col-6 like mb-2"><i class="bi bi-heart"></i></button>
+            </a>
+
 
         </div>
     </div>
