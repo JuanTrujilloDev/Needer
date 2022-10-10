@@ -5,7 +5,7 @@
     <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded shadow d-flex justify-content-around align-items-center mt-4 publicacion infinite-item" onclick="window.open('{{publicacion.get_absolute_url}}')" style="height:auto; cursor: pointer;">
         <div class="col-12 d-flex align-items-center justify-content-start mb-2">
             <div class="col-lg-2 col-md-2   col-3 justify-content-center d-flex pe-0">
-                <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
+                <a href="{{publicacion.user.get_absolute_url}}" class="text-center z-1">
                     {% if object.foto %}
                     <img
                         class="rounded-circle img-fluid profile-img"
@@ -65,23 +65,24 @@
             {% endif %}
         </div>
         <!--Cantidad de me gusta y comentario-->
-        <div class="row justify-content-start text-primary mt-3 align-items-center d-flex fw-bold py-2 px-4">
-            <h5 class="align-middle mb-0">
-                
-                <a href="" class="text-decoration-none text-primary z-2">
-                    {{publicacion.cant_Like }}
-                    <i class="bi bi-heart-fill"></i> 
-                    {% for count in publicacion.id_usuario %}
-                        {{ forloop.counter0 }} {{ count }}
-                    {% endfor %}
-                </a>  
-                <a href="" class="text-decoration-none text-primary z-2">
-                    {{publicacion.cant_coment}} 
-                    <i class="bi bi-chat"></i>
-                </a>  
-            </h5>
-        </div>
     </div>
+    <div class="row justify-content-start text-primary mt-3 align-items-center d-flex fw-bold py-2 px-4">
+        <h5 class="align-middle mb-0">
+
+            <button id="like_{{publicacion.id}}" onclick="like_{{publicacion.id}}()"class="text-decoration-none text-primary z-2">
+                {{publicacion.cant_Like }}
+                <i class="bi bi-heart-fill"></i> 
+                {% for count in publicacion.id_usuario %}
+                    {{ forloop.counter0 }} {{ count }}
+                {% endfor %}
+            </button>  
+            <a href="" class="text-decoration-none text-primary z-10">
+                {{publicacion.cant_coment}} 
+                <i class="bi bi-chat"></i>
+            </a>  
+        </h5>
+    </div>
+
     {% endfor %}
 </div>
     {% if page_obj.has_next %}

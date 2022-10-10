@@ -29,5 +29,4 @@ urlpatterns = [
 
     #Comentarios
     path('comentario/<int:pk>', CrearComentarioView.as_view(), name= 'comentario'),
-    path('comentario/<int:pk>/like', AddLikesComentario.as_view(), name= 'likecomentario'),
 ]
