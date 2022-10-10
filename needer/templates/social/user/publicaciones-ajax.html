@@ -45,6 +45,7 @@
         <div class="d-flex justify-content-center row {% if publicacion.nsfw %} pub-container align-items-center{% endif %}">
             <div class="text-decoration-none row container-fluid px-0 bg-white pt-4 mw-100 {{publicacion.nsfw|nsfw}}" style="height:auto;">
                 {% if publicacion.descripcion %}
+               
                 <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-4">
                     {{publicacion.descripcion|safe}}
                 </div>
@@ -69,7 +70,7 @@
     <div class="row justify-content-start text-primary mt-3 align-items-center d-flex fw-bold py-2 px-4">
         <h5 class="align-middle mb-0">
 
-            <button id="like_{{publicacion.id}}" onclick="like_{{publicacion.id}}()"class="text-decoration-none text-primary z-2">
+            <button id="like_{{publicacion.id}}" onclick="LikePublicacion('{{publicacion.likePublicacion}}')" class="text-decoration-none text-primary z-2">
                 {{publicacion.cant_Like }}
                 <i class="bi bi-heart-fill"></i> 
                 {% for count in publicacion.id_usuario %}

@@ -81,15 +81,15 @@ $(document).on('submit', '#form-comentario', function (e) {
 
 
 /* ajax para dar like publicacion*/
-$(document).on('click', '#like', function (e) {
+function LikePublicacion(url){
+    console.log(url);
     e.preventDefault();
     let a = window.data
     console.log(data)
     document.getElementById('like').disabled=true;
-    url = a.url_like
     $.ajax({
       type: 'POST',
-      url: a.url_like,
+      url: url,
       data: {
         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
         action: 'post'
@@ -105,7 +105,7 @@ $(document).on('click', '#like', function (e) {
 
       }
     });
-  })
+  }
 
   /* ajax para dar dislike publicacion*/
   $(document).on('click', '#dislike', function (e) {

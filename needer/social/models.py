@@ -52,6 +52,9 @@ class Publicacion(models.Model):
             os.remove(os.path.join(settings.MEDIA_ROOT, self.archivo.name))
         super().delete()
 
+    def likePublicacion(self):
+        return reverse('addlike', kwargs={'pk':self.id})
+
 
 class LikedPublicacion(models.Model):
     id_publicacion = models.ForeignKey(Publicacion, verbose_name= ("Publicacion"), on_delete=models.CASCADE)

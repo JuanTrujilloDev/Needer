@@ -23,8 +23,8 @@ urlpatterns = [
     
 
     #likes
-    path('like/<int:pk>/like', AddLikesPublicacion.as_view(), name= 'addlike'),
-    path('like/<int:pk>/dislike', RemoveLikesPublicacion.as_view(), name= 'removelike'),
+    path('publicacion/<int:pk>/like', AddLikesPublicacion.as_view(), name= 'addlike'),
+    path('publicacion/<int:pk>/dislike', RemoveLikesPublicacion.as_view(), name= 'removelike'),
 
 
     #Comentarios
