@@ -1,0 +1,37 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+{% endblock css %}
+
+
+<!--SIDEBAR-->
+
+<div class="col-lg-2 col-xl-2  sidebar-offcanvas bg-light pe-0 py-4 sidebar" id="sidebar" role="navigation">
+  <ul class="nav row d-flex pl-0 pt-3 mh-100 h-100 navegacion-sidebar">
+    <ul class="upper-items nav flex-column mb-auto mx-2">
+      {% with url_name=request.resolver_match.url_name %}
+      <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-archive me-2"></i>Home</h5></a></li>
+      <li class="nav-item"><a class="nav-link {% if url_name == 'detalle-creador'%} active  {% endif %}" href="{{request.user.get_absolute_url}}"><h5><i class="bi bi-person-circle me-2"></i>Mi Perfil</h5></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-archive me-2"></i>Inventario</h5></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-chat-left-text me-2"></i>Mensajes</h5></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-wallet2 me-2"></i>Pagos</h5></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-bar-chart-line me-2"></i>Estadisticas</h5></a></li>
+      <li class="nav-item"><a class="nav-link {% if url_name == 'account_profile' or url_name == 'account_change_password' or url_name == 'socialaccount_connections' or url_name == 'account_email'%} active  {% endif %}" 
+        href="{%url 'account_profile' %}"><h5><i class="bi bi-gear me-2"></i>Ajustes</h5></a></li>
+    </ul>
+    {% endwith %}
+
+      <ul class="nav flex-column pl-0 bottom-items buttom-0 h-auto align-bottom w-100">
+        <hr>
+        <li class="nav-item"><a class="nav-link text-muted fst-italic" href="#">Dona a Needer</a></li>
+        <li class="nav-item"><a class="nav-link text-muted fst-italic" href="#">Informacion</a></li>
+        <li class="nav-item"><a class="nav-link text-muted fst-italic" href="{% url 'account_logout' %}">Cerrar sesion</a></li>
+        <small class="text-center mt-3 text-muted fw-light fst-italic">Needer © - 2022</small>
+      </ul>
+
+        
+  </ul>
+  
+
+</div>

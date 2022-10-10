@@ -1,0 +1,28 @@
+.sidebar{
+    min-height: 100%;
+    background-color: #FFFF!important;
+    box-shadow: 3px 0 5px -2px rgba(0,0,0,.2);
+}
+
+.sidebar .navegacion-sidebar .upper-items .nav-link{
+    color:black;
+    font-weight: 400;
+}
+
+.sidebar .navegacion-sidebar .upper-items .nav-link:hover{
+    color:#5C28FF;
+    font-weight: bold;
+}
+
+.sidebar .navegacion-sidebar .bottom-items .nav-link:hover{
+    color:black;
+    font-weight: bold;
+}
+
+
+
+.active{
+    font-weight: bold!important;
+    color:#5C28FF!important;
+}
+

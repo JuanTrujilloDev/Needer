@@ -1,0 +1,37 @@
+
+.profile-img{
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border: 2px solid #d1d1d1;
+  }
+
+  .img-static{
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border: 2px solid #d1d1d1;
+
+  }
+  .profile-img-public{
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+    border: 2px solid #d1d1d1;
+  }
+
+.divbib{
+    display: none;
+    position: static;
+    height: 100%;
+}
+
+@media screen and (min-width:992px) {
+  .divbib{ 
+      position: sticky !important;  
+      top:0 ;    
+      height: 100%;
+      display: flex;
+  }
+  
+}

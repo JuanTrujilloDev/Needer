@@ -1,0 +1,60 @@
+.pre-ajustes a{
+    text-decoration: none;
+}
+
+.pre-ajustes .active{
+    border-bottom: 2px solid #5C28FF;
+}
+
+.update-imagen{
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+    border: 4px solid #dbdbdb;
+    margin-top: -50px;
+}
+
+@media screen and (max-width:992px) {
+    .update-imagen{ 
+       max-width: 100px;
+       max-height: 100px;
+    }
+    
+}
+
+.update-imagen:hover{
+    border: 4px solid #D1D1FF;
+}
+
+.form-control{
+    border-color: #5C28FF;
+}
+
+.inputs #id_biografia{
+    resize: none;
+    height: 150px!important;
+}
+
+.inputs p{
+    margin-bottom: 1px;
+    margin-top: 6px;
+}
+
+.imgbanner{
+    margin: 0 !important;
+    width: 100% !important;
+    max-height: 440px;
+    min-height: 200px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: none !important;
+    border-radius: 10px 10px 10px 10px;
+}
+
+@media screen and (min-width:992px) {
+    .imgbanner{ 
+        min-height: 300px;
+    }
+    
+}
+

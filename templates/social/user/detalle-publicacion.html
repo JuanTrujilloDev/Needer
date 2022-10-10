@@ -1,0 +1,242 @@
+{% extends innercontent %}
+{% load static %}
+{% load pub_extras %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/detalle-publicacion.css'%} ">
+{% endblock css %}
+
+{% block headtitle %}
+Needer | {{publicacion.user.username}}
+{% endblock headtitle %}
+
+{% block inner-content %}
+
+<!--Contenido de adentro-->
+<div class="my-4 pb-3 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
+    
+    <!--Contenido de la izquierda-->
+    <div class="d-flex justify-content-center row container-fluid col-sm-12 col-lg-8 px-0 shadow rounded">
+
+        <!--Icono y titulo-->
+        <div class="row border-bottom d-flex">
+        <h1 class="text-center text-primary mb-0 fw-bold"><a href="{{publicacion.user.get_absolute_url}}"><i class="bi bi-arrow-left text-primary float-start fw-bold"></i></a>Publicación</h1>
+        </div>
+
+
+        <!--Publicación-->
+        <div class="row container-fluid px-0 bg-white d-flex justify-content-around align-items-center mt-2 publicacion">
+            <div class="col-12 d-flex align-items-center justify-content-start pt-4">
+
+                <!--Foto del usuario-->
+                <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex mb-3">
+                    <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
+                        {% if publicacion.user.foto %}
+                                    
+                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{publicacion.user.foto.url}}"data-holder-rendered="true">
+                    
+                        {% else %}
+                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"data-holder-rendered="true">
+                                
+                        {% endif %}
+                        </a>
+                </div>
+
+            <!--Autor-->
+            <div class="row col-7 col-md-8 col-lg-8 gap-0 d-flex align-items-baseline h-100 mb-auto">
+                <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                    <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none text-secondary">
+                        
+                    {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}
+                    </a> 
+                </h5>
+                <p class="my-0 text-muted">@{{publicacion.user.username}}</p>
+                {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
+            </div>
+                            
+            </div>
+
+            <!--Contenido de la Publicación-->
+            <div class="text-decoration-none row container-fluid justify-content-center px-0 bg-white mw-100" style="height:auto;">
+
+            {% if publicacion.descripcion %}
+                            
+                <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-3">
+                {{publicacion.descripcion|safe}}
+                </div>
+
+            {% endif %}
+            
+            {% if publicacion.archivo %}
+
+            <div class="row justify-content-center w-100 container px-3">
+                {{publicacion.archivo|tipo_archivo|safe}}
+            </div>
+                        
+            {% endif %}
+
+                <!--Fecha de la creación de la publicación-->
+                <div class="row text-muted text-start mt-3 mb-2">
+                    <small>{{object.fecha_creacion}}</small>
+                </div>
+
+                <div class="row text-start border-bottom align-middle mt-2 py-2 border-top text-break">
+                    <p class="align-middle fw-bold my-auto">200 Me gusta &nbsp; 30 Comentarios</p>
+                </div>
+                
+                <!--Botones de la Publicación--> 
+                <div class="col-12 row text-decoration-none">
+                    <button class="btn text-primary col-6 like z-2"><i class="bi bi-heart"></i> Me gusta </button>
+                    <button class="btn text-primary col-6 like z-2"><i class="bi bi-chat-left"></i> Comentar </button>
+                </div>
+
+            </div>
+
+                    
+
+        </div>
+
+        <!--Realizar comentario-->
+        <div class="border-top">
+            <textarea class="form-control mt-3 bg-" style="resize:none;" placeholder="Escribe tu comentario"></textarea>
+        </div>
+        <div>
+            <button class="btn text-primary like"><i class="bi bi-image-fill"></i></button>
+            <button class="btn text-primary like"><i class="bi bi-emoji-smile"></i></button>
+            <button class="btn text-primary like"><i class="bi bi-filetype-gif"></i></button>   
+            <button class="btn text-primary like float-end"><i class="bi bi-chat-left"></i> Comentar</button>
+        </div>
+
+        <hr class="mt-3">
+
+        <!--Comentario Usuario-->
+        <div class="row col-12">
+
+
+            <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
+
+                <!--Foto del usuario-->
+                <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex mb-3">
+                    <a href="/sarsu12/" class="text-center">
+                        
+                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true">
+                                
+                        
+                        </a>
+                </div>
+
+                <!--Autor-->
+                <div class="row col-7 col-md-8 col-lg-8 ms-1 align-baseline mb-auto">
+                    <h5 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                        <a href="/sarsu12/" class="text-decoration-none text-primary">
+                            
+                        Juan David Trujillo 
+                        </a> 
+                    </h5>
+                    <p class="my-0 text-muted">@Sarsu12</p>
+                    
+                </div>
+                            
+            </div>
+
+            <div class="col-12">
+                <p class="text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi voluptatibus, pariatur est, nobis quisquam expedita placeat incidunt maxime a ea obcaecati explicabo asperiores fuga dolore eius in eligendi molestiae unde?</p>
+            </div>
+
+            <!--Botones de la Publicación--> 
+            <a href="{{publicacion.get_absolute_url}}" class="col-lg-12 row mt-2 text-decoration-none px-4">
+                <button class="btn text-primary col-6 like mb-2"><i class="bi bi-heart"></i></button>
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!--Contenido de la derecha-->
+    <div class="row py-3 col-sm-12 col-lg-4 rounded shadow bg-white mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 divbib">
+
+        <h4 class="text-primary text-start fw-bold mb-4">Quizas te guste</h4>
+
+        <!--Comentario Usuario-->
+        <div class="row col-12 mx-0 px-0 py-0 d-flex">
+                
+            <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
+
+                <!--Foto del usuario-->
+                <div class="col-lg-3 col-md-4 col-3 justify-content-center d-flex pe-0 mb-3">
+                    <a href="/sarsu12/" class="text-center">
+                        
+                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true">
+                                
+                        
+                        </a>
+                </div>
+
+                <!--Autor-->
+                <div class="col-7 col-md-8 col-lg-8 ms-1 align-baseline mb-auto">
+                    <h5 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                        <a href="/sarsu12/" class="text-decoration-none text-primary">
+                            
+                        Juan David Trujillo 
+                        </a> 
+                    </h5>
+                    <p class="my-0 text-muted">@Sarsu12</p>
+                    
+                </div>
+                            
+            </div>
+
+            <div class="col-12">
+                <p class="text-muted mb-0">Lorem ipsum dolor sit explicabo asperiores fuga dolore eius in eligendi molestiae unde?</p>
+            </div>
+
+        </div>
+
+        <div class="row col-12 mt-5 mx-0 px-0 py-0">
+                
+            <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
+
+                <!--Foto del usuario-->
+                <div class="col-lg-3 col-md-4 col-3 justify-content-center d-flex pe-0 mb-3">
+                    <a href="/sarsu12/" class="text-center">
+                        
+                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true">
+                                
+                        
+                        </a>
+                </div>
+
+                <!--Autor-->
+                <div class="col-7 col-md-8 col-lg-8 ms-1 align-baseline mb-auto">
+                    <h5 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                        <a href="/sarsu12/" class="text-decoration-none text-primary">
+
+                        Juan David Trujillo 
+                        </a> 
+                    </h5>
+                    <p class="my-0 text-muted">@Sarsu12</p>
+                    
+                </div>
+                            
+            </div>
+
+            <div class="col-12">
+                <p class="text-muted mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. asperiores fuga dolore eius in eligendi molestiae unde?</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+{% endblock script %}

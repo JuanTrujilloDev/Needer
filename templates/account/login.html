@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+{% block headtitle %} Needer - Login {% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock css %}
+
+{% block content %}
+<section class="login-view container-fluid d-flex justify-content-center align-items-center py-2 bg-primary" >
+
+<div class="container row justify-content-center">
+
+
+
+<div class="col-lg-5 col-md-10 bg-light p-5 rounded">
+
+  <h1 class="fw-bold text-center mb-2 pb-3"> <img src="{% static 'img/Needer_logo.svg' %}" class="img-fluid logo-login">
+     &nbsp;{% trans "Sign In" %} en Needer
+    </h1>
+
+
+  <form class="login pt-3" method="POST" action="{% url 'account_login' %}">
+
+    {% if messages %}
+    <ul class="messages list-unstyled">
+        {% for message in messages %}
+      <div {% if message.tags %} class="alert alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+  
+    {% csrf_token %}
+    {% if form.errors %}
+      {% for field in form %}
+          {% for error in field.errors %}
+              <div class="alert alert-danger">
+                  <strong>{{ error|escape }}</strong>
+              </div>
+          {% endfor %}
+      {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+  {% endif %}
+    <div class="form-group mb-3">
+    {{form.email.errors}}
+    <label for="id_login">Correo electrónico:</label>
+    <input class="form-control" type="email" name="login" placeholder="Correo electrónico" autocomplete="email" required="" id="id_login">
+    </div>
+
+    <div class="form-group mb-2">
+    <label for="id_password">Contraseña:</label>
+    <input class="form-control" type="password" name="password" placeholder="Contraseña" autocomplete="current-password" required="" id="id_password">
+    </div>
+
+    <div class="form-check my-3">
+    <label class="form-check-label" for="id_remember">Recordarme</label>
+    <input class="form-check-input" type="checkbox" name="remember" id="id_remember">
+    </div>
+
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+
+    <div class="form-group">
+    <button class="primaryAction btn btn-primary btn-md form-control fw-bold rounded-pill" type="submit">{% trans "Sign In" %}</button>
+    </div>
+
+    <div class="d-flex my-3 justify-content-between ayudas">
+    <a class="button secondaryAction " href="{% url 'account_reset_password' %}">¿Tienes problemas con iniciar sesión?</a>
+    <a class=" " href="{% url 'account_signup' %}">Unete</a>
+    </div>
+
+    {% get_providers as socialaccount_providers %}
+
+
+
+    <h5 class="login-divisor"><span class="bg-light">O</span></h5>
+  
+  
+    <div class="socialaccount_ballot social-login">
+  
+      <a title="Google" class="socialaccount_provider google form-control btn btn-md fw-bold text-muted rounded-pill" href="/accounts/google/login/?process=login">
+        <img class="google-img" src="{% static 'img/Google.svg' %}"> &nbsp; Inicia sesion con google
+      </a>
+    </div>
+
+  </form>
+
+
+  
+
+
+
+
+
+</div>
+</section>
+{% endblock %}
