@@ -34,16 +34,16 @@ $(document).on('submit', '#form-comentario', function (e) {
         action: 'post',
         
       },
-      success: function (listadocomentarios) {
+      success: function (json) {
             document.getElementById('id_comentario').value  = ''
-            document.getElementById('div-comentar').innerHTML =  `<button class="btn text-primary like"><i class="bi bi-image-fill"></i></button>
-                                        <button class="btn text-primary like"><i class="bi bi-emoji-smile"></i></button>
-                                        <button class="btn text-primary like"><i class="bi bi-filetype-gif"></i></button>   
+            document.getElementById('div-comentar').innerHTML =  `
                                         <button id='boton-comentar' class="btn text-primary like float-end" type="submit"><i class="bi bi-chat-left"></i> Comentar</button>`
-            
-            data_ = JSON.parse(listadocomentarios.listadocomentarios)
+            data_ = JSON.parse(json.listadocomentarios)
+            console.log(data_)
+            document.getElementById('coment'+data_[0].pk).innerHTML =  `<button class="btn text-primary align-middle border-secondary fs-5 fw-bold col-12 like z-2">`+data_[0].cantidad+` <i class="bi bi-chat-left"></i></button>`
             coment.insertAdjacentHTML('afterbegin', 
-            `<div class="align-middle mt-2 py-2 text-break">
+            `<div id = "comentarios`+data_[0].id+`">
+            <div class="align-middle mt-2 py-2 text-break">
                 <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
                 <!--Foto del usuario-->
                     <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0 mb-3">
@@ -67,8 +67,12 @@ $(document).on('submit', '#form-comentario', function (e) {
                 </div>
                 <!--Botones de la Publicación--> 
                 <div class="col-12 row text-decoration-none border-bottom border-top">
-                    <button id='likecoment' class="btn text-primary col-6 like z-2"><i class="bi bi-heart"></i></button>
+                    <div id = 'divlike`+data_[0].id+`' class="col-12 text-decoration-none ">
+                        <button id='like`+data_[0].id+`'  onclick="likepublicacion('`+data_[0].urllikecomentario+`')" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2"> 0 <i class="bi bi-heart"></i></button>
+                    </div>
+                    <button onclick="deletecomentario('`+data_[0].urlComentario+`', comentarios`+data_[0].id+`)" >ELIMINAR</button>
                 </div>
+            </div>
             </div>`
             );
       },
@@ -81,50 +85,40 @@ $(document).on('submit', '#form-comentario', function (e) {
 
 
 /* ajax para dar like publicacion*/
-$(document).on('click', '#like', function (e) {
-    e.preventDefault();
-    let a = window.data
-    console.log(data)
-    document.getElementById('like').disabled=true;
-    url = a.url_like
+function likepublicacion(url){
     $.ajax({
       type: 'POST',
-      url: a.url_like,
+      url: url,
       data: {
-        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        csrfmiddlewaretoken: getCookie('csrftoken'),
         action: 'post'
       },
       success: function (json) {
-        
-        document.getElementById("like_count").textContent = json['result']
-        document.getElementById("divlike").innerHTML  = `<button id="dislike" class="btn text-primary  border-secondary col-6 like z-2"><i class="bi bi-heart"></i> No Me gusta</button>
-                                                        <button class="btn text-primary col-6 like z-2"><i class="bi bi-chat-left"></i> Comentar </button>`
+        data_ = JSON.parse(json.result)
+        document.getElementById('like'+data_[0].pk).disabled=true;
+        document.getElementById("divlike"+data_[0].pk).innerHTML  = `<button id="dislike`+data_[0].pk+`" onclick = "dislikepublicacion('`+data_[0].url+`')" class="btn text-primary border-secondary align-middle fs-5 fw-bold col-12 like z-2">`+data_[0].likes +` <i class="bi bi-heart-fill"></i></button>`
       },
 
       error: function (xhr, errmsg, err) {
 
       }
     });
-  })
+}
 
   /* ajax para dar dislike publicacion*/
-  $(document).on('click', '#dislike', function (e) {
-    let a = window.data
-    url = a.url_dislike
-    document.getElementById('dislike').disabled=true;
-    e.preventDefault();
+  function dislikepublicacion(url){
+
     $.ajax({
       type: 'POST',
-      url: a.url_dislike,
+      url: url,
       data: {
-        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        csrfmiddlewaretoken: getCookie('csrftoken'),
         action: 'post'
       },
       success: function (json) {
-        
-        document.getElementById("like_count").textContent = json['result']
-        document.getElementById("divlike").innerHTML  = `<button id="like" class="btn text-primary col-6 like z-2"><i class="bi bi-heart"></i> Me gusta</button> 
-                                                        <button class="btn text-primary col-6 like z-2"><i class="bi bi-chat-left"></i> Comentar </button>`
+        data_ = JSON.parse(json.result)
+        document.getElementById('dislike'+data_[0].pk).disabled=true;
+        document.getElementById("divlike"+data_[0].pk).innerHTML  = `<button id="like`+data_[0].pk+`" onclick="likepublicacion('`+data_[0].url+`')" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2">`+data_[0].likes +` <i class="bi bi-heart"></i></button>`
         
       },
 
@@ -132,4 +126,26 @@ $(document).on('click', '#like', function (e) {
 
       }
     });
-  })
+  }
+
+function deletecomentario(url, id_div){
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: {
+        csrfmiddlewaretoken: getCookie('csrftoken'),
+        action: 'post'
+      },
+      success: function (json) {
+        data_ = JSON.parse(json.json)
+        document.getElementById('coment'+data_[0].pk).innerHTML =  `<button class="btn text-primary align-middle border-secondary fs-5 fw-bold col-12 like z-2">`+data_[0].cantidad+` <i class="bi bi-chat-left"></i></button>`
+    
+        id_div.remove()
+
+      },
+
+      error: function (xhr, errmsg, err) {
+
+      }
+    });
+}

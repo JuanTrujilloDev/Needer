@@ -27,7 +27,6 @@ class CrearPublicacionForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data =  super().clean()
-        print(cleaned_data)
         if not 'descripcion' in cleaned_data:
             cleaned_data['descripcion'] = ''
         else:
@@ -42,7 +41,7 @@ class CrearPublicacionForm(forms.ModelForm):
 
 
 class CrearComentarios(forms.ModelForm):
-    comentario = forms.CharField(max_length=120, widget=forms.Textarea(attrs={'placeholder':'Escribe tu comentario','rows':3, 'cols':1}))
+    comentario = forms.CharField(max_length=120, widget=forms.Textarea(attrs={'placeholder':'Escribe tu comentario','rows':1, 'cols':1}))
 
     class Meta:
         model = Comentarios
