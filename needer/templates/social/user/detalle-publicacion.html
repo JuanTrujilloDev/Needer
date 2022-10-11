@@ -20,14 +20,14 @@ Needer | {{publicacion.user.username}}
 
         <!--Icono y titulo-->
         <div class="row border-bottom d-flex">
-        <h1 class="text-center text-primary mb-0 "><a href="{{publicacion.user.get_absolute_url}}"><i class="bi bi-arrow-left text-primary float-start"></i></a>Publicacion</h1>
+            <h1 class="text-center text-primary mb-0 "><a href="{{publicacion.user.get_absolute_url}}"><i class="bi bi-arrow-left text-primary float-start"></i></a>Publicacion</h1>
+            
         </div>
 
-
+           
         <!--Publicación-->
         <div class="row container-fluid px-0 bg-white d-flex justify-content-around align-items-center mt-2 publicacion">
             <div class="col-12 d-flex align-items-center justify-content-start pt-4">
-
                 <!--Foto del usuario-->
                 <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0 mb-3">
                     <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
@@ -40,26 +40,25 @@ Needer | {{publicacion.user.username}}
                                 
                         {% endif %}
                         </a>
+                        
                 </div>
-
             <!--Autor-->
             <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1 d-flex align-items-baseline h-100 mb-auto">
                 <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
                     <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none text-secondary">
-                        
                     {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}
                     </a> 
                 </h5>
                 <p class="my-0 text-muted">@{{publicacion.user.username}}</p>
                 {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
             </div>
-                            
+            
             </div>
 
             <!--Contenido de la Publicación-->
             <div class="text-decoration-none row container-fluid justify-content-center px-0 bg-white mw-100" style="height:auto;">
                 {% if publicacion.user == request.user %}
-            
+                
                 <form method="POST" action="{% url 'delete-publicacion' user_slug=request.user.slug pk=publicacion.pk %}">
                     {% csrf_token %}
                     <button type="submit">ELIMINAR</button>
@@ -85,22 +84,23 @@ Needer | {{publicacion.user.username}}
                 <div class="row text-muted text-start mt-3 mb-2">
                     <small>{{object.fecha_creacion}}</small>
                 </div>
-
-                <div class="row text-start border-bottom align-middle mt-2 py-2 border-top text-break">
-                    <p id = "like_count" class="align-middle fw-bold my-auto">{{CantLiked}} Me Gustas &nbsp; {{Comentario.count}} Comentarios</p>
-                </div>
                 
                 <!--Botones de la Publicación--> 
-                <div id = 'divlike'class="col-12 row text-decoration-none">
+
+                <div class="row text-decoration-none ">
+                    <div id = 'divlike{{publicacion.id}}' class="col-6 text-decoration-none ">
                     {% if EstadoLike %}
-                    {% csrf_token %}
-                        <button id="dislike" class="btn text-primary border-secondary col-6 like z-2"><i class="bi bi-heart"></i> No Me gusta</button>
+                        <button id="dislike{{publicacion.id}}" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="btn text-primary border-secondary align-middle fs-5 fw-bold col-12 like z-2">{{CantLiked}} <i class="bi bi-heart-fill"></i></button>
                     {% else %}
-                    {% csrf_token %}
-                        <button id="like" class="btn text-primary col-6 like z-2"><i class="bi bi-heart"></i> Me gusta</button>
-                    {% endif %}
-                    <button class="btn text-primary col-6 like z-2"><i class="bi bi-chat-left"></i> Comentar </button>
+
+                        <button id="like{{publicacion.id}}" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2">{{CantLiked}} <i class="bi bi-heart"></i></button>
+                    {% endif %} 
+                    </div>
+                    <div id = 'coment{{publicacion.id}}' class="col-6 text-decoration-none" >
+                        <button class="btn text-primary align-middle border-secondary fs-5 fw-bold col-12 like z-2">{{Comentario.count}} <i class="bi bi-chat-left"></i></button>
+                    </div>
                 </div>
+      
 
             </div>
 
@@ -109,14 +109,11 @@ Needer | {{publicacion.user.username}}
         </div>
 
         <!--Formulario de Comentarios-->
-        <form id='form-comentario' action="" method="post">                             
+        <form id='form-comentario' action="" method="post">                           
             <div class="border-top">
                 {{form.comentario}}
             </div>
             <div id = "div-comentar">
-                <button class="btn text-primary like"><i class="bi bi-image-fill"></i></button>
-                <button class="btn text-primary like"><i class="bi bi-emoji-smile"></i></button>
-                <button class="btn text-primary like"><i class="bi bi-filetype-gif"></i></button>   
                 <button id='boton-comentar' class="btn text-primary like float-end" type="submit"><i class="bi bi-chat-left"></i> Comentar</button>
             </div>
         </form>
@@ -125,6 +122,8 @@ Needer | {{publicacion.user.username}}
         <hr class="mt-3">
         <div id = "comentarios">
         {% for com in Comentario %}
+        <div id = "comentarios{{com.id}}">
+            
         <!--Comentario Usuario-->
             <div class="align-middle mt-2 py-2 text-break">
                 <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
@@ -154,20 +153,21 @@ Needer | {{publicacion.user.username}}
                 </div>
                 <!--Botones de la Publicación--> 
                 <div class="col-12 row text-decoration-none border-bottom border-top">
-                    {% csrf_token %}
-                    <button id='likecoment' class="btn text-primary col-6 like z-2"><i class="bi bi-heart"></i></button>
+                    <div id = 'divlike{{com.id}}' class="col-12 text-decoration-none ">
+                        {% if com.bool_like %}
+                        <button id="dislike{{com.id}}" onclick = "dislikepublicacion('{{com.dislikeComentario}}')" class="btn text-primary border-secondary align-middle fs-5 fw-bold col-12 like z-2">{{com.cant_Like}} <i class="bi bi-heart-fill"></i></button>
+                        {% else %}
+                        <button id='like{{com.id}}'  onclick="likepublicacion('{{com.likeComentario}}')" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2"> {{com.cant_Like}} <i class="bi bi-heart"></i></button>
+
+                        {% endif %}
+                    </div>
+                    {% if com.id_autor == request.user %}
+                        <button onclick="deletecomentario('{{com.urlComentario}}', comentarios{{com.id}})" >ELIMINAR</button>
+                    {% endif %}
                 </div>
             </div>
-
+        </div>
         {% endfor %}
-
-
-            <!--Botones de la Publicación--> 
-            <a href="{{publicacion.get_absolute_url}}" class="col-lg-12 row mt-2 text-decoration-none px-4">
-                <button class="btn text-primary col-6 like mb-2"><i class="bi bi-heart"></i></button>
-            </a>
-
-
         </div>
     </div>
 
@@ -189,7 +189,7 @@ Needer | {{publicacion.user.username}}
                 <div class="col-lg-3 col-md-4 col-3 justify-content-center d-flex pe-0 mb-3">
                     <a href="/sarsu12/" class="text-center">
                         <img class="rounded-circle img-fluid profile-img" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true">
-                        </a>
+                    </a>
                 </div>
 
                 <!--Autor-->
@@ -253,9 +253,7 @@ Needer | {{publicacion.user.username}}
 
 <script src="{% static 'js/like-comen.js' %}"></script>
 <script>
-    window.data = { url_dislike: '{% url "removelike" publicacion.id %}',
-                    url_like: '{% url "addlike" publicacion.id %}',
-                    url_coment: '{% url "comentario" publicacion.id|safe%}'}
+    window.data = {url_coment: '{% url "comentario" publicacion.id|safe%}'}
                     
 </script>
 {% endblock script %}
