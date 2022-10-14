@@ -2,9 +2,9 @@
 {% load pub_extras %}
 <div class="infinite-container px-0">
     {% for publicacion in object_list %}
-    <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded shadow d-flex justify-content-around align-items-center mt-4 publicacion infinite-item" onclick="window.open('{{publicacion.get_absolute_url}}')" style="height:auto; cursor: pointer;">
+    <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded shadow d-flex justify-content-around align-items-center mt-4 publicacion infinite-item" >
         <div class="col-12 d-flex align-items-center justify-content-start mb-2">
-            <div class="col-lg-2 col-md-2   col-3 justify-content-center d-flex pe-0">
+            <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0">
                 <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
                     {% if object.foto %}
                     <img
@@ -33,17 +33,31 @@
                 <p class="my-0 text-muted">@{{publicacion.user.username}} · {{publicacion.fecha_creacion|fecha_exacta}}</p>
                 {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
             </div>
+
             <div class="col d-flex align-items-center justify-content-end">
                 {% if request.user == publicacion.user %}
-                <a class="btn text-primary text-end editar-pub-btn" href="{{publicacion.get_absolute_url}}/update">
-                    <i class="bi bi-pencil-square border-none"></i>
-                </a>
+
+                <div class="dropdown">
+                    <a class="btn btn-primary" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-pencil-square border-none"></i>
+                    </a>
+                  
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <li><a class="dropdown-item" href="{{publicacion.get_absolute_url}}/update"">Editar</a></li>
+                      <li><a class="dropdown-item" href="#">Eliminar</a></li>
+                      <li><a class="dropdown-item" href="#">Reportar</a></li>
+                    </ul>
+                  </div>
+
+                
                 {% endif %}
+                
             </div>
+            
         </div>
         <!--Contenido de la Publicación-->
         <div class="d-flex justify-content-center row {% if publicacion.nsfw %} pub-container align-items-center{% endif %}">
-            <div class="text-decoration-none row container-fluid px-0 bg-white pt-4 mw-100 {{publicacion.nsfw|nsfw}}" style="height:auto;">
+            <div class="text-decoration-none row container-fluid px-0 bg-white pt-4 mw-100 {{publicacion.nsfw|nsfw}}" onclick="window.open('{{publicacion.get_absolute_url}}')" style="height:auto; cursor: pointer;">
                 {% if publicacion.descripcion %}
                 <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-4">
                     {{publicacion.descripcion|safe}}

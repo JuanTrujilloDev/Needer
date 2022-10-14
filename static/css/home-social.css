@@ -1,14 +1,21 @@
 
 .profile-img{
-    height: 50px;
-    width: 50px;
+    height: 80px;
+    width: 80px;
     object-fit: cover;
     border: 2px solid #d1d1d1;
   }
 
+.imgcm{
+  height: 20px;
+  width: 20px;
+  object-fit: cover;
+  border: 1px solid #d1d1d1;
+}
+
   .img-static{
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
     object-fit: cover;
     border: 2px solid #d1d1d1;
 
@@ -24,6 +31,10 @@
     display: none;
     position: static;
     height: 100%;
+}
+
+.texti{
+  font-size: small;
 }
 
 @media screen and (min-width:992px) {

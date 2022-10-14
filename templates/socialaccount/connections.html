@@ -28,8 +28,8 @@
             {% endwith %}
         </div>
 
-    <div class="container-fluid mx-2 bg-light rounded rounded-5 my-5 py-3 px-4 bg-white shadow">
-    <h1 class="fw-bold">{% trans "Account Connections" %}</h1>
+    <div class="container-fluid mx-2 bg-light rounded rounded-5 col-lg-8 ms-5 my-5 py-3 px-4 bg-white shadow">
+    <h2 class="fw-bold">{% trans "Account Connections" %}</h2>
 
     {% if form.accounts %}
     <p>{% blocktrans %}You can sign in to your account using any of the following third party accounts:{% endblocktrans %}</p>
@@ -45,13 +45,13 @@
     
     {% for base_account in form.accounts %}
     {% with base_account.get_provider_account as account %}
-    <h4 class="fst-italic mb-3">
+    <h5 class="fst-italic mb-3">
     <label for="id_account_{{ base_account.id }}">
     <input class="form-check-input custom-check" id="id_account_{{ base_account.id }}" type="radio" name="account" value="{{ base_account.id }}"/>
     <span class="fst-normal fw-bold socialaccount_provider {{ base_account.provider }} {{ account.get_brand.id }}"><i class="bi bi-{{account.get_brand.name|lower}} {{account.get_brand.name|lower}} me-2 ms-2"></i>{{account.get_brand.name}}</span>
     {{ account }} - {{base_account.extra_data.email}}
     </label>
-    </h4>
+    </h5>
     {% endwith %}
     {% endfor %}
     
@@ -67,7 +67,7 @@
     <p>{% trans 'You currently have no social network accounts connected to this account.' %}</p>
     {% endif %}
     
-    <h2 class="text-muted my-3">{% trans 'Add a 3rd Party Account' %}</h2>
+    <h3 class="text-muted my-3">{% trans 'Add a 3rd Party Account' %}</h3>
     
     <ul class="socialaccount_providers list-unstyled">
     {% include "socialaccount/snippets/provider_list.html" with process="connect" %}

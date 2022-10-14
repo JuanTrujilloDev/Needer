@@ -16,7 +16,7 @@ Needer | {{publicacion.user.username}}
 <div class="my-4 pb-3 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
     
     <!--Contenido de la izquierda-->
-    <div class="d-flex justify-content-center row container-fluid col-sm-12 col-lg-8 px-0 shadow rounded">
+    <div class="d-flex justify-content-center row container-fluid row col-sm-12 col-lg-8 mx-auto px-0 shadow rounded">
 
         <!--Icono y titulo-->
         <div class="row border-bottom d-flex">
@@ -53,8 +53,31 @@ Needer | {{publicacion.user.username}}
                 <p class="my-0 text-muted">@{{publicacion.user.username}}</p>
                 {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
             </div>
-                            
+                         
+            <div class="col d-flex align-items-center justify-content-end">
+                
+
+                <div class="dropdown">
+                    <a class="btn btn-primary" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-pencil-square border-none"></i>
+                    </a>
+                  
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        {% if request.user == publicacion.user %}
+                      <li><a class="dropdown-item" href="{{publicacion.get_absolute_url}}/update"">Editar</a></li>
+                      <li><a class="dropdown-item" href="#">Eliminar</a></li>
+                      {% endif %}
+                      <li><a class="dropdown-item" href="#">Reportar</a></li>
+                    </ul>
+                  </div>
+
+                
+                
+                
             </div>
+            </div>
+
+            
 
             <!--Contenido de la Publicación-->
             <div class="text-decoration-none row container-fluid justify-content-center px-0 bg-white mw-100" style="height:auto;">
@@ -98,13 +121,7 @@ Needer | {{publicacion.user.username}}
 
         <!--Realizar comentario-->
         <div class="border-top">
-            <textarea class="form-control mt-3 bg-" style="resize:none;" placeholder="Escribe tu comentario"></textarea>
-        </div>
-        <div>
-            <button class="btn text-primary like"><i class="bi bi-image-fill"></i></button>
-            <button class="btn text-primary like"><i class="bi bi-emoji-smile"></i></button>
-            <button class="btn text-primary like"><i class="bi bi-filetype-gif"></i></button>   
-            <button class="btn text-primary like float-end"><i class="bi bi-chat-left"></i> Comentar</button>
+            <textarea class="form-control mt-3" style="resize:none;" placeholder="Escribe tu comentario"></textarea>
         </div>
 
         <hr class="mt-3">
@@ -113,34 +130,34 @@ Needer | {{publicacion.user.username}}
         <div class="row col-12">
 
 
-            <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
+            <div class="col-12 d-flex align-items-center justify-content-start pt-2 gap-0 row">
 
                 <!--Foto del usuario-->
-                <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex mb-3">
+                <div class="col-lg-1 col-md-1 col-2 justify-content-center d-flex">
                     <a href="/sarsu12/" class="text-center">
                         
-                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true">
+                        <img class="rounded-circle img-fluid imgcm" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true">
                                 
                         
                         </a>
                 </div>
 
                 <!--Autor-->
-                <div class="row col-7 col-md-8 col-lg-8 ms-1 align-baseline mb-auto">
-                    <h5 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                <div class="row col-8 col-md-9 col-lg-9 align-baseline">
+                    <h5 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 texti">
                         <a href="/sarsu12/" class="text-decoration-none text-primary">
                             
                         Juan David Trujillo 
                         </a> 
                     </h5>
-                    <p class="my-0 text-muted">@Sarsu12</p>
+                    <p class="my-0 text-muted texti">@Sarsu12</p>
                     
                 </div>
                             
             </div>
 
             <div class="col-12">
-                <p class="text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi voluptatibus, pariatur est, nobis quisquam expedita placeat incidunt maxime a ea obcaecati explicabo asperiores fuga dolore eius in eligendi molestiae unde?</p>
+                <p class="text-muted texti">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi voluptatibus, pariatur est, nobis quisquam expedita placeat incidunt maxime a ea obcaecati explicabo asperiores fuga dolore eius in eligendi molestiae unde?</p>
             </div>
 
             <!--Botones de la Publicación--> 
@@ -158,79 +175,70 @@ Needer | {{publicacion.user.username}}
 
 
     <!--Contenido de la derecha-->
-    <div class="row py-3 col-sm-12 col-lg-4 rounded shadow bg-white mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 divbib">
-
-        <h4 class="text-primary text-start fw-bold mb-4">Quizas te guste</h4>
-
-        <!--Comentario Usuario-->
-        <div class="row col-12 mx-0 px-0 py-0 d-flex">
-                
-            <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
-
-                <!--Foto del usuario-->
-                <div class="col-lg-3 col-md-4 col-3 justify-content-center d-flex pe-0 mb-3">
-                    <a href="/sarsu12/" class="text-center">
-                        
-                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true">
-                                
-                        
+    <div class="row col-lg-3 justify-content-end divbib">
+        <!--Quizas te guste-->
+        <div class="row py-4 col-sm-12 col-12 rounded shadow mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5">
+            <h4 class="text-primary text-center fw-bold mb-0">Quizas te guste</h4>
+            <!--Información del usuario-->
+            <div class="row col-12 mt-3 mx-0 px-0 py-0">
+                <!--Foto Usuario-->
+                <div class="col-3 d-flex pe-0 py-0 mb-2">
+                    <a href="#" class="text-start">
+                        <img
+                            class="rounded-circle img-fluid img-static"
+                            alt="profile"
+                            src="{% static 'img/default-profile.png' %}"
+                            data-holder-rendered="true"
+                        >
+                    </a>
+                </div>
+                <!--Datos-->
+                <div class="row col-9 align-items-center py-0 mb-2">
+                    <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 texti">
+                        <a href="#" class="text-decoration-none text-primary mx-3">
+                            Thomas Perez
                         </a>
-                </div>
-
-                <!--Autor-->
-                <div class="col-7 col-md-8 col-lg-8 ms-1 align-baseline mb-auto">
-                    <h5 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
-                        <a href="/sarsu12/" class="text-decoration-none text-primary">
-                            
-                        Juan David Trujillo 
-                        </a> 
                     </h5>
-                    <p class="my-0 text-muted">@Sarsu12</p>
-                    
-                </div>
-                            
-            </div>
-
-            <div class="col-12">
-                <p class="text-muted mb-0">Lorem ipsum dolor sit explicabo asperiores fuga dolore eius in eligendi molestiae unde?</p>
-            </div>
-
-        </div>
-
-        <div class="row col-12 mt-5 mx-0 px-0 py-0">
-                
-            <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
-
-                <!--Foto del usuario-->
-                <div class="col-lg-3 col-md-4 col-3 justify-content-center d-flex pe-0 mb-3">
-                    <a href="/sarsu12/" class="text-center">
-                        
-                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true">
-                                
-                        
+                    <h6 class="text-secondary mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                        <a href="#" class="text-decoration-none text-muted mx-3">
+                            @Pitzonia
                         </a>
+                    </h6>
                 </div>
-
-                <!--Autor-->
-                <div class="col-7 col-md-8 col-lg-8 ms-1 align-baseline mb-auto">
-                    <h5 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
-                        <a href="/sarsu12/" class="text-decoration-none text-primary">
-
-                        Juan David Trujillo 
-                        </a> 
-                    </h5>
-                    <p class="my-0 text-muted">@Sarsu12</p>
-                    
+                <div class="col-12">
+                    <p class="text-muted mb-0 texti">Lorem ipsum dolor molesiae unde?</p>
                 </div>
-                            
             </div>
-
-            <div class="col-12">
-                <p class="text-muted mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. asperiores fuga dolore eius in eligendi molestiae unde?</p>
+            <!--Información del usuario-->
+            <div class="row col-12 mt-3 mx-0 px-0 py-0">
+                <!--Foto Usuario-->
+                <div class="col-3 d-flex pe-0 py-0 mb-2">
+                    <a href="#" class="text-start">
+                        <img
+                            class="rounded-circle img-fluid img-static"
+                            alt="profile"
+                            src="{% static 'img/default-profile.png' %}"
+                            data-holder-rendered="true"
+                        >
+                    </a>
+                </div>
+                <div class="row col-9 align-items-center py-0 mb-2">
+                    <h6 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 texti">
+                        <a href="#" class="text-decoration-none text-primary mx-3">
+                         Sebastián pelo
+                        </a>
+                    </h6>
+                    <h6 class="text-secondary mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                        <a href="#" class="text-decoration-none text-muted mx-3">
+                            @WaifuFurro
+                        </a>
+                    </h6>
+                </div>
+                <div class="col-12">
+                    <p class="text-muted mb-0 texti">Lorem ipsum dolor mestiae unde?</p>
+                </div>
             </div>
-
         </div>
-
     </div>
 
 
