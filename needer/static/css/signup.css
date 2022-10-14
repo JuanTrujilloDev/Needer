@@ -1,0 +1,47 @@
+.registro{
+    overflow-y: hidden;
+}
+
+.formulario-derecha h1{
+    color:#5C28FF;
+}
+
+.formulario-derecha label{
+    color:#3131B3;
+    font-weight: bold;
+}
+
+.formulario-derecha{
+    overflow-y: auto;
+    min-height: 100vh;
+}
+
+.formulario-derecha .form-control{
+    border-color:#5C28FF;
+}
+
+.formulario-derecha .form-control::placeholder{
+    border-color:#3131B3;
+}
+
+.registro .imagen-izquierda{
+    background-image: url(../img/Needer-signup.jpg);
+    background-size: cover;
+    background-repeat: repeat;
+}
+
+.formulario-derecha .tipo-usuario option[value="1"]{
+    background-image: url(../img/Logo_Consumidor.svg);
+}
+
+@media (max-width:767.20px) {
+
+    .registro .imagen-izquierda{
+        display: none;
+    }
+    
+}
+
+#groupHelp{
+    color:#5C28FF!important;
+}

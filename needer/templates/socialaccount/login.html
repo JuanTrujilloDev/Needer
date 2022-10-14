@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block headtitle %} Needer - Login {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/continue.css' %}">
+{% endblock css %}
+
+{% block content %}
+<section class="continue bg-primary container-fluid d-flex align-items-center justify-content-center text-center">
+  <div class="container  inner-continue">
+  <img class="img-fluid" src="{% static 'img/Needer_Logo_Blanco.svg' %}">
+{% if process == "connect" %}
+
+<h1>Conectar cuenta de {{ provider.name }}.</h1>
+
+<p>Estas a punto de vincular tu cuenta de {{ provider.name }} a Needer.</p>
+{% else %}
+<h1>Inicio de sesion a traves de {{ provider.name }}.</h1>
+
+<p>Estas a punto de iniciar sesion a traves de tu cuenta de {{ provider.name }}.</p>
+{% endif %}
+
+<form method="post" name="social-login" style="display:none;">
+  {% if messages %}
+  <ul class="messages list-unstyled">
+      {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+      {% endfor %}
+  </ul>
+  {% endif %}
+  {% csrf_token %}
+  <button type="submit">{% trans "Continue" %}</button>
+</form>
+</div>
+</section>
+{% endblock %}
+
+{% block script %}
+<script>
+
+function resolveAfter1Seconds(x) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(x);
+    }, 500);
+  });
+}
+
+ document.body.onload = async function(){
+  await resolveAfter1Seconds(1)
+  document.forms['social-login'].submit();
+}
+
+</script>
+
+{% endblock script %}

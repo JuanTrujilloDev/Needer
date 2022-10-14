@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/content-creador.css' %}">
+{% endblock extra_head %}
+
+
+{% block content %}
+{% include 'main/user/nav.html' %}
+<div class="container-fluid" id="main">
+    <div class="row vh-100">
+       {% include 'main/user/sidebar.html' %}
+        <!--/col-->
+        <main class="col main pt-3 h-100 overflow-auto py-5">
+            {% block inner-content %}
+
+            {% endblock %}
+        </main>
+    </div>       
+</div>
+
+{% endblock %}

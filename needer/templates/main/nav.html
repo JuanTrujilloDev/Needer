@@ -1,0 +1,29 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/nav.css' %}">
+{% endblock css %}
+<section class="navegacion position-relative w-100">
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand ms-5 nav-titulo" href="{% url 'home-view' %}">
+            <img src="{% static 'img/Needer_logo.svg' %}" alt=""  width="40" height="40"  class="d-inline-block align-content-center">
+            Needer
+          </a>
+      <button class="navbar-toggler me-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        
+        <ul class="navbar-nav ms-lg-auto me-lg-5 mb-2 mb-lg-0">
+            <li class="nav-item me-lg-4 text-center">
+                <a class="nav-link active fw-bolder text-primary" href="{% url 'account_login'%} ">Iniciar Sesion</a>
+            </li>
+              <li class="nav-item text-center li-registro">
+                <a class="btn btn-primary btn-registro px-4 rounded-pill" href="{% url 'account_signup' %}">Registrate</a>
+              </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</section>

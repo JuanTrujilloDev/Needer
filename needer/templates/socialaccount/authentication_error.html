@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block headtitle %} Needer - Oauth Error {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/continue.css' %}">
+{% endblock css %}
+
+{% block content %}
+<section class="continue bg-primary container-fluid d-flex align-items-center justify-content-center text-center">
+  <div class="container  inner-continue">
+  <img class="img-fluid" src="{% static 'img/Needer_Logo_Blanco.svg' %}">
+
+
+<h1>Error de inicio de sesión con red social</h1>
+
+<p>Ocurrio un error mientras intentabas iniciar sesion a traves de tu cuenta de google, por favor vuelve a intentarlo.</p>
+
+<a class="btn btn-lg text-white border-white" href="{% url 'account_login' %}">Volver al login</a>
+
+
+
+</div>
+</section>
+{% endblock %}
