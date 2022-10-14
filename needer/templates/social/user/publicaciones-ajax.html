@@ -67,22 +67,21 @@
         </div>
         <!--Cantidad de me gusta y comentario-->
     </div>
-    <div class="row justify-content-start text-primary mt-3 align-items-center d-flex fw-bold py-2 px-4">
-        <h5 class="align-middle mb-0">
 
-            <button id="like_{{publicacion.id}}" onclick="LikePublicacion('{{publicacion.likePublicacion}}')" class="text-decoration-none text-primary z-2">
-                {{publicacion.cant_Like }}
-                <i class="bi bi-heart-fill"></i> 
-                {% for count in publicacion.id_usuario %}
-                    {{ forloop.counter0 }} {{ count }}
-                {% endfor %}
-            </button>  
-            <a href="" class="text-decoration-none text-primary z-10">
-                {{publicacion.cant_coment}} 
-                <i class="bi bi-chat"></i>
-            </a>  
-        </h5>
-    </div>
+
+        <div class="row justify-content-start text-primary mt-3 align-items-center d-flex fw-bold py-2 px-4">
+            <div id ='divlike{{publicacion.id}}'class="col-6 text-decoration-none">
+                {% if publicacion.bool_like %}
+                <button id="dislike{{publicacion.id}}" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="btn text-primary border-secondary align-middle fs-5 fw-bold col-12 like z-2">{{publicacion.cant_Like}} <i class="bi bi-heart-fill"></i></button>
+                {% else %}
+                <button id="like{{publicacion.id}}" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2"> {{publicacion.cant_Like }} <i class="bi bi-heart"></i></button>
+                {% endif %} 
+            </div>
+            <div class="col-6 text-decoration-none">
+                <a href="{{publicacion.get_absolute_url}}" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2">{{publicacion.cant_coment}}  <i class="bi bi-chat-left"></i></a>
+            </div>
+        </div>
+
 
     {% endfor %}
 </div>

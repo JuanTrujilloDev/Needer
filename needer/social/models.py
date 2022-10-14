@@ -52,8 +52,10 @@ class Publicacion(models.Model):
             os.remove(os.path.join(settings.MEDIA_ROOT, self.archivo.name))
         super().delete()
 
-    def likePublicacion(self):
-        return reverse('addlike', kwargs={'pk':self.id})
+
+    def likePublicacion(self): return reverse('addlike', kwargs={'pk':self.id})
+    def disPublicacion(self): return reverse('removelike', kwargs={'pk':self.id})
+
 
 
 class LikedPublicacion(models.Model):
@@ -67,6 +69,11 @@ class Comentarios(models.Model):
     id_autor = models.ForeignKey(User, verbose_name= ("Autor"), on_delete=models.CASCADE)
     comentario = models.TextField(max_length=120, verbose_name=("Comentario"), blank=False)
     fecha_creacion = models.DateTimeField(verbose_name = 'Fecha de Like', auto_now_add=True, auto_now=False)
+    
+    def likeComentario(self): return reverse('comentario-addlike', kwargs={'pk':self.id})
+    def dislikeComentario(self): return reverse('comentario-removelike', kwargs={'pk':self.id})
+    def urlComentario(self): return reverse('delete-comentario', kwargs={'pk':self.id,'user_slug':self.id_autor.slug})
+    
 
 class LikeComentarios(models.Model):
     id_comentario = models.ForeignKey(Comentarios, verbose_name= ("Comentarios"), on_delete=models.CASCADE)
