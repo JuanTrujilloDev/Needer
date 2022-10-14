@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block headtitle %} Needer - Oauth Error {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/continue.css' %}">
+{% endblock css %}
+
+{% block content %}
+<section class="continue bg-primary container-fluid d-flex align-items-center justify-content-center text-center">
+  <div class="container  inner-continue">
+  <img class="img-fluid" src="{% static 'img/Needer_Logo_Blanco.svg' %}">
+
+
+<h1>Error de inicio de sesión con red social</h1>
+
+<h2>{% trans "Login Cancelled" %}</h2>
+
+{% url 'account_login' as login_url %}
+
+<p>{% blocktrans %}You decided to cancel logging in to our site using one of your existing accounts. If this was a mistake, please proceed to <a href="{{login_url}}">sign in</a>.{% endblocktrans %}</p>
+
+
+
+</div>
+</section>
+{% endblock %}
+
+
+

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load account %}
+
+{% load static %}
+{% block headtitle %} Needer - Confirmar Contrasena {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/continue.css' %}">
+{% endblock css %}
+
+{% block content %}
+{% include 'main/nav.html' %}
+<section class="continue bg-primary container-fluid d-flex align-items-center justify-content-center ">
+  <div class="container  inner-continue justify-content-center row">
+  
+    <div class="col-md-10 col-lg-6">
+        <h1>{% trans "Confirm E-mail Address" %}</h1>
+
+        {% if confirmation %}
+        
+        {% user_display confirmation.email_address.user as user_display %}
+        
+        <p>{% blocktrans with confirmation.email_address.email as email %}Please confirm that <a class="text-light" href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
+        
+        <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+        {% csrf_token %}
+            <button class="btn btn-secondary btn-lg" type="submit">{% trans 'Confirm' %}</button>
+        </form>
+        
+        {% else %}
+        
+        {% url 'account_email' as email_url %}
+        
+        <p>{% blocktrans %}This e-mail confirmation link expired or is invalid.</a>.{% endblocktrans %}</p>
+        
+        {% endif %}
+  
+
+
+
+
+
+</div>
+</div>
+</section>
+{% endblock %}
+
+

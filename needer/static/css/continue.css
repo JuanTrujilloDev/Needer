@@ -1,0 +1,16 @@
+.inner-continue{
+    background-color: #5C28FF;
+}
+
+.continue{
+    height: 100vh;
+}
+
+.continue h1, .continue p{
+    color:#ffff;
+}
+
+.continue img{
+    height: 200px;
+    width: 100px;
+}

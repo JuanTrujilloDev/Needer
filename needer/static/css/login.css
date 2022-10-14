@@ -1,0 +1,49 @@
+.login-view{
+    min-height: 100vh;
+
+}
+
+.login-view .logo-login{
+    height: 40px;
+    width: 25px;
+}
+
+.login-view h1{
+    color:#5C28FF;
+    border-bottom:1.5px solid #5C28FF;
+    
+}
+
+.login-view .form-control{
+    border-color: #5C28FF!important;
+}
+
+.login-view label{
+    color: #3131B3;
+}
+
+.ayudas a{
+    text-decoration: none;
+    color: #3131B3;
+    font-weight: light;
+    font-size: .9rem;
+}
+
+.login-divisor {
+    width: 100%; 
+    text-align: center; 
+    border-bottom: 1px solid #5C28FF; 
+    line-height: 0.1em;
+    margin: 10px 0 20px; 
+    color:#5C28FF;
+ } 
+ 
+.login-divisor span { 
+     background:#fff; 
+     padding:0 10px; 
+ }
+
+ .social-login .google-img{
+     width: 40px;
+ }
+

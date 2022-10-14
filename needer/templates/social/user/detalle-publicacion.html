@@ -1,0 +1,261 @@
+{% extends innercontent %}
+{% load static %}
+{% load pub_extras %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/detalle-publicacion.css'%} ">
+{% endblock css %}
+
+{% block headtitle %}
+Needer | {{publicacion.user.username}}
+{% endblock headtitle %}
+
+{% block inner-content %}
+
+<!--Contenido de adentro-->
+<div class="my-4 pb-3 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
+    
+    <!--Contenido de la izquierda-->
+    <div class="d-flex justify-content-center row container-fluid col-sm-12 col-lg-7 px-0 shadow rounded">
+
+        <!--Icono y titulo-->
+        <div class="row border-bottom d-flex">
+            <h1 class="text-center text-primary mb-0 "><a href="{{publicacion.user.get_absolute_url}}"><i class="bi bi-arrow-left text-primary float-start"></i></a>Publicacion</h1>
+            
+        </div>
+
+           
+        <!--Publicación-->
+        <div class="row container-fluid px-0 bg-white d-flex justify-content-around align-items-center mt-2 publicacion">
+            <div class="col-12 d-flex align-items-center justify-content-start pt-4">
+                <!--Foto del usuario-->
+                <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0 mb-3">
+                    <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
+                        {% if publicacion.user.foto %}
+                                    
+                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{publicacion.user.foto.url}}"data-holder-rendered="true">
+                    
+                        {% else %}
+                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"data-holder-rendered="true">
+                                
+                        {% endif %}
+                        </a>
+                        
+                </div>
+            <!--Autor-->
+            <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1 d-flex align-items-baseline h-100 mb-auto">
+                <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                    <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none text-secondary">
+                    {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}
+                    </a> 
+                </h5>
+                <p class="my-0 text-muted">@{{publicacion.user.username}}</p>
+                {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
+            </div>
+            
+            </div>
+
+            <!--Contenido de la Publicación-->
+            <div class="text-decoration-none row container-fluid justify-content-center px-0 bg-white mw-100" style="height:auto;">
+                {% if publicacion.user == request.user %}
+                
+                <form method="POST" action="{% url 'delete-publicacion' user_slug=request.user.slug pk=publicacion.pk %}">
+                    {% csrf_token %}
+                    <button type="submit">ELIMINAR</button>
+                </form> 
+                {% endif %}
+            {% if publicacion.descripcion %}
+                            
+                <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-3">
+                {{publicacion.descripcion|safe}}
+                </div>
+
+            {% endif %}
+            
+            {% if publicacion.archivo %}
+
+            <div class="row justify-content-center w-100 container px-3">
+                {{publicacion.archivo|tipo_archivo|safe}}
+            </div>
+                        
+            {% endif %}
+
+                <!--Fecha de la creación de la publicación-->
+                <div class="row text-muted text-start mt-3 mb-2">
+                    <small>{{object.fecha_creacion}}</small>
+                </div>
+                
+                <!--Botones de la Publicación--> 
+
+                <div class="row text-decoration-none ">
+                    <div id = 'divlike{{publicacion.id}}' class="col-6 text-decoration-none ">
+                    {% if EstadoLike %}
+                        <button id="dislike{{publicacion.id}}" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="btn text-primary border-secondary align-middle fs-5 fw-bold col-12 like z-2">{{CantLiked}} <i class="bi bi-heart-fill"></i></button>
+                    {% else %}
+
+                        <button id="like{{publicacion.id}}" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2">{{CantLiked}} <i class="bi bi-heart"></i></button>
+                    {% endif %} 
+                    </div>
+                    <div id = 'coment{{publicacion.id}}' class="col-6 text-decoration-none" >
+                        <button class="btn text-primary align-middle border-secondary fs-5 fw-bold col-12 like z-2">{{Comentario.count}} <i class="bi bi-chat-left"></i></button>
+                    </div>
+                </div>
+      
+
+            </div>
+
+                    
+
+        </div>
+
+        <!--Formulario de Comentarios-->
+        <form id='form-comentario' action="" method="post">                           
+            <div class="border-top">
+                {{form.comentario}}
+            </div>
+            <div id = "div-comentar">
+                <button id='boton-comentar' class="btn text-primary like float-end" type="submit"><i class="bi bi-chat-left"></i> Comentar</button>
+            </div>
+        </form>
+
+    
+        <hr class="mt-3">
+        <div id = "comentarios">
+        {% for com in Comentario %}
+        <div id = "comentarios{{com.id}}">
+            
+        <!--Comentario Usuario-->
+            <div class="align-middle mt-2 py-2 text-break">
+                <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
+                    <!--Foto del usuario-->
+                    <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0 mb-3">
+                        <a href="{{com.id_autor.get_absolute_url}}" class="text-center">
+                            {% if com.id_autor.foto %}
+                            <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{com.id_autor.foto.url}}"data-holder-rendered="true">
+                            {% else %}
+                            <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"data-holder-rendered="true">  
+                            {% endif %}
+                        </a>
+                    </div>
+
+                    <!--Autor-->
+                    <div class="row col-7 col-md-8 col-lg-8 ms-1 align-baseline mb-auto">
+                        <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                            <a href="{{com.id_autor.get_absolute_url}}" class="text-decoration-none text-secondary"> 
+                                {% if com.id_autor.apodo %} {{com.id_autor.apodo}} {% else %} {{com.id_autor.username}} {% endif %}
+                            </a> 
+                        </h5>
+                        <p class="my-0 text-muted">@{{com.id_autor.username}}</p>
+                    </div>         
+                </div>
+                <div class="col-12">
+                    <p class="text-muted">{{com.comentario}}</p>
+                </div>
+                <!--Botones de la Publicación--> 
+                <div class="col-12 row text-decoration-none border-bottom border-top">
+                    <div id = 'divlike{{com.id}}' class="col-12 text-decoration-none ">
+                        {% if com.bool_like %}
+                        <button id="dislike{{com.id}}" onclick = "dislikepublicacion('{{com.dislikeComentario}}')" class="btn text-primary border-secondary align-middle fs-5 fw-bold col-12 like z-2">{{com.cant_Like}} <i class="bi bi-heart-fill"></i></button>
+                        {% else %}
+                        <button id='like{{com.id}}'  onclick="likepublicacion('{{com.likeComentario}}')" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2"> {{com.cant_Like}} <i class="bi bi-heart"></i></button>
+
+                        {% endif %}
+                    </div>
+                    {% if com.id_autor == request.user %}
+                        <button onclick="deletecomentario('{{com.urlComentario}}', comentarios{{com.id}})" >ELIMINAR</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        </div>
+    </div>
+
+
+
+
+
+    <!--Contenido de la derecha-->
+    <div class="row py-4 col-sm-12 col-lg-5 rounded shadow bg-white mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 divbib">
+
+        <h3 class="text-primary text-center fw-bold mb-4">Quizas te guste</h3>
+
+        <!--Comentario Usuario-->
+        <div class="row col-12 mx-0 px-0 py-0 d-flex">
+                
+            <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
+
+                <!--Foto del usuario-->
+                <div class="col-lg-3 col-md-4 col-3 justify-content-center d-flex pe-0 mb-3">
+                    <a href="/sarsu12/" class="text-center">
+                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true">
+                    </a>
+                </div>
+
+                <!--Autor-->
+                <div class="row col-7 col-md-8 col-lg-8 ms-1 align-baseline mb-auto">
+                    <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                        <a href="/sarsu12/" class="text-decoration-none text-secondary">
+                            
+                        Juan David Trujillo 
+                        </a> 
+                    </h5>
+                    <p class="my-0 text-muted">@Sarsu12</p>
+                    
+                </div>
+                            
+            </div>
+
+            <div class="col-12 mt-3">
+                <p class="text-muted mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi voluptatibus, pariatur est, nobis quisquam expedita placeat incidunt maxime a ea obcaecati explicabo asperiores fuga dolore eius in eligendi molestiae unde?</p>
+            </div>
+
+        </div>
+
+        <div class="row col-12 mt-5 mx-0 px-0 py-0">
+                
+            <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
+
+                <!--Foto del usuario-->
+                <div class="col-lg-3 col-md-4 col-3 justify-content-center d-flex pe-0 mb-3">
+                    <a href="/sarsu12/" class="text-center">
+                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true">    
+                    </a>
+                </div>
+
+                <!--Autor-->
+                <div class="row col-7 col-md-8 col-lg-8 ms-1 align-baseline mb-auto">
+                    <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                        <a href="/sarsu12/" class="text-decoration-none text-secondary">
+                            
+                        Juan David Trujillo 
+                        </a> 
+                    </h5>
+                    <p class="my-0 text-muted">@Sarsu12</p>
+                    
+                </div>
+                            
+            </div>
+
+            <div class="col-12 mt-3">
+                <p class="text-muted mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi voluptatibus, pariatur est, nobis quisquam expedita placeat incidunt maxime a ea obcaecati explicabo asperiores fuga dolore eius in eligendi molestiae unde?</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script src="{% static 'js/like-comen.js' %}"></script>
+<script>
+    window.data = {url_coment: '{% url "comentario" publicacion.id|safe%}'}
+                    
+</script>
+{% endblock script %}
+
