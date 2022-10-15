@@ -3,6 +3,7 @@
 <div class="infinite-container px-0">
     {% for publicacion in object_list %}
     <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded shadow d-flex justify-content-around align-items-center mt-4 publicacion infinite-item" >
+
         <div class="col-12 d-flex align-items-center justify-content-start mb-2">
             <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0">
                 <a href="{{publicacion.user.get_absolute_url}}" class="text-center z-1">
@@ -33,19 +34,22 @@
                 <p class="my-0 text-muted">@{{publicacion.user.username}} · {{publicacion.fecha_creacion|fecha_exacta}}</p>
                 {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
             </div>
+
+
+            <!-- Opciones de la publicación -->
             <div class="col d-flex align-items-center justify-content-end">
-                <div class="dropdown">
+                <div class="dropdown dropstart">
                     <a class="btn btn-primary" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-pencil-square border-none"></i>
+                        <i class="bi bi-three-dots"></i>
                     </a>
 
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         {% if request.user == publicacion.user %}
                       <li><a class="dropdown-item" href="{{publicacion.get_absolute_url}}/update"">Editar</a></li>
-                      <li><a class="dropdown-item" href="#"><form method="POST" action="{% url 'delete-publicacion' user_slug=request.user.slug pk=publicacion.pk %}">
+                      <li><form method="POST" action="{% url 'delete-publicacion' user_slug=request.user.slug pk=publicacion.pk %}">
                         {% csrf_token %}
-                        <button type="submit">ELIMINAR</button>
-                    </form> </a></li>
+                        <button class="dropdown-item" type="submit">Eliminar</button>
+                    </form></li>
                       
                       {% else %}
                       <li><a class="dropdown-item" href="#">Reportar</a></li>
@@ -53,7 +57,9 @@
                     </ul>
                   </div>
             </div>
+
         </div>
+
         <!--Contenido de la Publicación-->
         <div class="d-flex justify-content-center row {% if publicacion.nsfw %} pub-container align-items-center{% endif %}" onclick="window.open('{{publicacion.get_absolute_url}}')" style="cursor: pointer;">
             <div class="text-decoration-none row container-fluid px-0 bg-white pt-4 mw-100 {{publicacion.nsfw|nsfw}}" onclick="window.open('{{publicacion.get_absolute_url}}')" style="height:auto; cursor: pointer;">

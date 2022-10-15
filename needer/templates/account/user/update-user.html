@@ -202,7 +202,6 @@
             </div>
 
             <!--Social connections-->
-            <div class="row my-3">
                 <h4 class="text-muted fw-bold">Redes asociadas</h4>
                 {% for social in socials %}
                 <div class="row px-4 my-3">
@@ -213,13 +212,12 @@
                         <p class="fw-bold text-muted"><small>{{social.extra_data.email}}</small></p>
                     </div>
                     <div class="col-md-2 col-sm-12 text-center d-flex align-items-center justify-content-center">
-                        <a href="{% url 'socialaccount_connections' %}"> <h1 class="text-secondary"><i class="bi bi-info-circle-fill"></i></h1>  </a>
+                        <a href="{% url 'socialaccount_connections' %}"> <h1 class="text-primary"><i class="bi bi-info-circle-fill"></i></h1></a>
                     </div>
                     
                  </div>
                 {% endfor %}
 
-            </div>
 
 
             <!--Recuperar Password-->
