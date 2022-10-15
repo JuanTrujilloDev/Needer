@@ -26,6 +26,12 @@ border: 1px solid #d1d1d1;
 font-size: small;
 }
 
+@media screen and (max-width:992px){
+  .divbib{
+    display: none!important;
+  }  
+}
+
 @media screen and (min-width:992px) {
 .divbib{ 
     position: sticky !important;  

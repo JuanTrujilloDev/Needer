@@ -58,13 +58,13 @@ Needer | {{publicacion.user.username}}
 
 
                 <div class="dropdown dropstart">
-                    <a class="btn btn-primary" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="me-3 fs-3" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-three-dots"></i>
                     </a>
 
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         {% if request.user == publicacion.user %}
-                      <li><a class="dropdown-item" href="{{publicacion.get_absolute_url}}/update"">Editar</a></li>
+                      <li><a class="dropdown-item" href="{{publicacion.get_absolute_url}}/update">Editar</a></li>
                       <li><a class="dropdown-item" href="#"><form method="POST" action="{% url 'delete-publicacion' user_slug=request.user.slug pk=publicacion.pk %}">
                         {% csrf_token %}
                         <button type="submit">ELIMINAR</button>
@@ -145,7 +145,7 @@ Needer | {{publicacion.user.username}}
         <div id = "comentarios">
         {% for com in Comentario %}
         <div id = "comentarios{{com.id}}">
-            
+
         <!--Comentario Usuario-->
             <div class="align-middle mt-2 py-2 text-break">
                 <div class="col-12 d-flex align-items-center justify-content-start pt-2 gap-0 row">
@@ -159,7 +159,6 @@ Needer | {{publicacion.user.username}}
                             {% endif %}
                         </a>
                     </div>
-
                     <!--Autor-->
                     <div class="row col-8 col-md-9 col-lg-9 align-baseline">
                         <h5 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 texti">
@@ -168,8 +167,28 @@ Needer | {{publicacion.user.username}}
                             </a> 
                         </h5>
                         <p class="my-0 text-muted texti">@{{com.id_autor.username}}</p>
-                    </div>   
-                          
+                    </div>  
+                    {% comment %} Dropdown {% endcomment %}
+                    <div class="col d-flex align-items-center justify-content-end">
+                        <div class="dropdown dropstart">
+                            <a  role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots"></i>
+                            </a>
+            
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                {% if request.user == com.id_autor %}
+                            <li><a class="dropdown-item" href="{{publicacion.get_absolute_url}}/update">Editar</a></li>
+                            <li>
+                                <button class="dropdown-item" onclick="deletecomentario('{{com.urlComentario}}', comentarios{{com.id}})" >Eliminar</button>
+                            </li>
+                            
+                            {% else %}
+                            <li><a class="dropdown-item" href="#">Reportar</a></li>
+                            {% endif %}
+                            </ul>
+                        </div>   
+                    </div> 
+
                 </div>
                 <div class="col-12">
                     <p class="text-muted texti">{{com.comentario}}</p>
@@ -185,9 +204,9 @@ Needer | {{publicacion.user.username}}
 
                         {% endif %}
                     </div>
-                    {% if com.id_autor == request.user %}
+{% comment %}                     {% if com.id_autor == request.user %}
                         <button onclick="deletecomentario('{{com.urlComentario}}', comentarios{{com.id}})" >ELIMINAR</button>
-                    {% endif %}
+                    {% endif %} {% endcomment %}
                 </div>
             </div>
         </div>
