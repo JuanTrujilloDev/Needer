@@ -33,13 +33,3 @@ Thanks to all the modules who made our life easier:
 * tinymce
 * python-dotenv
 * django-recaptcha
-
-# Needer
-
->>>>>>> fa712562 (Initial commit)
->>>>>>>
->>>>>>
->>>>>
->>>>
->>>
->>
