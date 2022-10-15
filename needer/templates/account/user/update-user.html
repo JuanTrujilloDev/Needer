@@ -25,7 +25,7 @@
 
         <!--Formulario-->
 
-        <form class="rounded-5 mx-2 bg-white shadow rounded my-5 py-3 px-2 d-flex justify-content-center row" id="form-update" method="POST" action="{% url 'account_profile' %}" enctype="multipart/form-data">
+        <form class="rounded-5 mx-2 bg-white shadow rounded ms-5 my-5 py-3 px-2 d-flex justify-content-center row col-lg-10" id="form-update" method="POST" action="{% url 'account_profile' %}" enctype="multipart/form-data">
             <datalist id="id_pais" name="pais">
                 {% for data in pais %}
                 <option value="{{data}}"></option>
@@ -187,7 +187,7 @@
     <!--EMAILS-->
     
 
-    <div class="row d-flex align-items-center justify-content-center mx-2 bg-light rounded rounded-5 my-5 py-3 px-2 bg-white shadow">
+    <div class="row d-flex align-items-center justify-content-center col-lg-10 mx-2 bg-light rounded rounded-5 ms-5 my-5 py-3 px-2 bg-white shadow">
         <h1 class="mt-4 mb-3 fw-bold">Datos de acceso</h1>
             <h4 class="text-muted fw-bold">Email Principal</h4>
             <div class=" col-md-8 mb-3">
@@ -218,9 +218,7 @@
                     
                  </div>
                 {% endfor %}
-                <a href="{% url 'socialaccount_connections' %}" class="btn btn-lg btn-secondary rounded-pill">
-                    <h1 class="fw-bold">Administrar cuentas</h1>
-                </a>
+
             </div>
 
 

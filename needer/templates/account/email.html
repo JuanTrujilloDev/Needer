@@ -28,8 +28,8 @@
             {% endwith %}
         </div>
 
-      <div class="container-fluid mx-2 bg-light rounded rounded-5 my-5 py-3 px-4 bg-white shadow">
-        <h1 class="fw-bold">{% trans "E-mail Addresses" %}</h1>
+        <div class="container-fluid mx-2 bg-light rounded rounded-5 col-lg-10 ms-5 my-5 py-3 px-4 bg-white shadow">
+          <h2 class="fw-bold">{% trans "E-mail Addresses" %}</h2>
         {% if user.emailaddress_set.all %}
 
         {% if messages %}
@@ -52,7 +52,7 @@
         
              
         
-      <h4 class="fst-italic">
+        <h5 class="fst-italic">
         <input class="form-check-input custom-check" id="email_radio_{{forloop.counter}}" type="radio" name="email" {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{%endif %} value="{{emailaddress.email}}"/>
         {{ emailaddress.email }}
         {% if emailaddress.verified %}
@@ -61,7 +61,7 @@
             <span class="unverified text-danger fw-bold fst-normal">{% trans "Unverified" %}</span>
             {% endif %}
               {% if emailaddress.primary %}<span class="primary fw-bold text-primary fst-normal">{% trans "Primary" %}</span>{% endif %}
-      </h4>
+        </h5>
   
             
         </label>
@@ -84,11 +84,11 @@
         
           {% if can_add_email %}
           <hr>  
-            <h2 class="fw-bold text-muted">{% trans "Add E-mail Address" %}</h2>
+          <h3 class="fw-bold text-muted">{% trans "Add E-mail Address" %}</h3>
         
             <form method="post" action="{% url 'account_email' %}" class="add_email">
                 {% csrf_token %}
-               <h5 class="fw-bold text-muted"><label for="id_email">Correo electrónico:</label></h5> 
+                <h6 class="fw-bold text-muted"><label for="id_email">Correo electrónico:</label></h6> 
                 <input class="form-control mb-3" type="email" name="email" placeholder="Correo electrónico" required="" id="id_email">
                 <button class="btn btn-primary" name="action_add" type="submit">{% trans "Add E-mail" %}</button>
             </form>
