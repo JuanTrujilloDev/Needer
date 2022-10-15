@@ -16,17 +16,16 @@ Needer | {{publicacion.user.username}}
 <div class="my-4 pb-3 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
     
     <!--Contenido de la izquierda-->
-    <div class="d-flex justify-content-center row container-fluid row col-sm-12 col-lg-8 mx-auto px-0 shadow rounded">
+    <div class="gap-0 justify-content-center row col-sm-12 col-lg-8 mx-auto px-0 shadow rounded">
 
         <!--Icono y titulo-->
-        <div class="row border-bottom d-flex">
+        <div class="row border-bottom" style="height: 3rem;">
             <h1 class="text-center text-primary mb-0 "><a href="{{publicacion.user.get_absolute_url}}"><i class="bi bi-arrow-left text-primary float-start"></i></a>Editar Publicación</h1>
-            
         </div>
 
            
         <!--Publicación-->
-        <div class="row container-fluid px-0 bg-white d-flex justify-content-around align-items-center mt-2 rounded publicacion">
+        <div class="row px-0 bg-white d-flex justify-content-around align-items-center mt-2 rounded publicacion">
             <div class="col-12 d-flex align-items-center justify-content-start pt-4">
                 <!--Foto del usuario-->
                 <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0 mb-3">
@@ -56,7 +55,7 @@ Needer | {{publicacion.user.username}}
             </div>
 
             <!--Contenido de la Publicación-->
-            <div class="text-decoration-none row container-fluid justify-content-center px-0 bg-white mw-100" style="height:auto;">
+            <div class="text-decoration-none row justify-content-center px-0 bg-white mw-100" style="height:auto;">
                 
             {% if publicacion.descripcion %}
                             
