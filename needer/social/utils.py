@@ -11,6 +11,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.urls import reverse
 from django.core.exceptions import PermissionDenied
+from django.http import Http404
+
 
 def postDirectory(instance, filename):
     '''
@@ -155,6 +157,12 @@ class ValidateOwnershipMixin:
                 return redirect(reverse('account_inactive'))
         else:
             return redirect(reverse('account_login'))
+
+
+class PreventGetMethodMixin:
+
+    def get(self, request, *args, **kwargs):
+        raise Http404
     
 
 

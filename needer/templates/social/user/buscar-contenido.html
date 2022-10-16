@@ -1,0 +1,15 @@
+
+{% if object_list %}
+{{object_list}}
+{% endif %}
+
+{% if users %}
+{{users}}
+{% endif %}
+
+{% if messages %}
+{% for message in messages %}
+{{message}}
+{{message.tags}}
+{% endfor %}
+{% endif %}

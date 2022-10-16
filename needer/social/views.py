@@ -13,8 +13,13 @@ from .models import Comentarios, LikeComentarios, LikedPublicacion, Publicacion
 from django.http import HttpResponse, JsonResponse
 from .forms import CrearComentarios, CrearPublicacionForm
 from django.contrib.messages.views import SuccessMessageMixin
-from .utils import DispatchAuthenticatedUserMixin, ValidateOwnershipMixin
+from django.contrib import messages
+from .utils import DispatchAuthenticatedUserMixin, ValidateOwnershipMixin, PreventGetMethodMixin
 from django.http import Http404
+from django.db.models import Q
+import re
+import urllib
+
 
 
 
@@ -201,7 +206,7 @@ class HomeSocialView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListVie
         return ['social/user/home-social.html']
 
 """ Crear Likes publicacion"""
-class AddLikesPublicacion(LoginRequiredMixin, View):
+class AddLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, View):
     model = LikedPublicacion
 
     def get_queryset(self):
@@ -240,12 +245,14 @@ class AddLikesPublicacion(LoginRequiredMixin, View):
 
 
 """ Eliminar Likes publicacion"""
-class RemoveLikesPublicacion(LoginRequiredMixin, DeleteView):
+class RemoveLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, DeleteView):
     model = LikedPublicacion
 
     def get_queryset(self):
         self.queryset =  self.model.objects.filter(id_publicacion = self.publicacion, id_usuario =self.request.user)
         return self.queryset
+
+    
 
     def post(self, request, pk, *args, **kwargs):
         """ la pk es el id de la publicacion para obtener el objeto """
@@ -319,12 +326,12 @@ class CrearComentarioView(DispatchAuthenticatedUserMixin,LoginRequiredMixin, Vie
         return JsonResponse({'listadocomentarios': listado} )
 
 """ Eliminar comentario de la publicacion """
-class DeleteComentarioView(LoginRequiredMixin, DeleteView):
+class DeleteComentarioView(PreventGetMethodMixin, LoginRequiredMixin, DeleteView):
     model = Comentarios
 
     def get_queryset(self):
         self.queryset =  self.model.objects.filter(id = self.id_coment)
-        return self.queryset   
+        return self.queryset  
 
     def post(self, request, pk, *args, **kwargs):
         self.id_coment = pk
@@ -349,12 +356,13 @@ class DeleteComentarioView(LoginRequiredMixin, DeleteView):
 
 
 """ Crear likes comentarios """
-class AddLikesComentarios(LoginRequiredMixin, View):
+class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
     model = LikeComentarios
 
     def get_queryset(self, pk):
         self.queryset =  self.model.objects.filter(id = pk)
         return self.queryset
+
 
     def post(self, request, pk, *args, **kwargs):
         self.comentario = Comentarios.objects.get(id = pk)
@@ -390,12 +398,13 @@ class AddLikesComentarios(LoginRequiredMixin, View):
 
 
 """ Eliminar likes en comentarios """
-class RemoveLikesComentarios(LoginRequiredMixin, DeleteView):
+class RemoveLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, DeleteView):
     model = LikeComentarios
 
     def get_queryset(self):
         self.queryset =  self.model.objects.filter(id_comentario = self.comentario, id_usuario = self.request.user)
         return self.queryset
+
 
     def post(self, request, pk, *args, **kwargs):
         """ la pk es el id de la publicacion para obtener el objeto """
@@ -419,6 +428,45 @@ class RemoveLikesComentarios(LoginRequiredMixin, DeleteView):
         return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
 
 
+""" Buscar elementos en la red social """
+
+class BuscarContenidoView(LoginRequiredMixin, ListView):
+    template_name = "social/user/buscar-contenido.html"
+    model = Publicacion
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        query = self.request.GET.get('q')
+
+        if not query:
+            raise Http404
+        # Traducir el q url a formato entendible
+        query = urllib.parse.unquote(query)
+        query = query.lower()
+        special_characters = '"!@#$%^&*()-+?_=,<>/"'
+        # No permitir caracteres especiales
+        if any(c in special_characters for c in query):
+            messages.error(self.request, 'No se permiten caracteres especiales en la busqueda.')
+        else: 
+            context_data['users'] = User.objects.filter(Q(username__icontains=query ) | Q(apodo__icontains=query) )
+       # context_data['productos'] 
+        return context_data
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            # Traducir el q url a formato entendible
+            query = urllib.parse.unquote(query.lower())
+            query = query.lower()
+            special_characters = '"!@#$%^&*()-+?_=,<>/"'
+
+            # No permitir caracteres especiales
+            if any(c in special_characters for c in query):
+                pass
+            else: 
+                return Publicacion.objects.filter(descripcion__icontains=query)
+        else:
+            raise Http404
 
 
 

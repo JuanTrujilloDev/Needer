@@ -32,4 +32,8 @@ urlpatterns = [
     path('comentario/<int:pk>/delete/<str:user_slug>', DeleteComentarioView.as_view(), name= 'delete-comentario'),
     path('comentario/<int:pk>/like', AddLikesComentarios.as_view(), name= 'comentario-addlike'),
     path('comentario/<int:pk>/dislike', RemoveLikesComentarios.as_view(), name= 'comentario-removelike'),
+
+    #Busqueda Contenido
+    path('publicacion/busqueda', BuscarContenidoView.as_view(), name='busqueda-publicacion')
+
 ]
