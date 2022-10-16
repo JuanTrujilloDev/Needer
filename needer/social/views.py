@@ -448,8 +448,11 @@ class BuscarContenidoView(LoginRequiredMixin, ListView):
         if any(c in special_characters for c in query):
             messages.error(self.request, 'No se permiten caracteres especiales en la busqueda.')
         else: 
-            context_data['users'] = User.objects.filter(Q(username__icontains=query ) | Q(apodo__icontains=query) )
-       # context_data['productos'] 
+            #TODO ORDERNAR POR NUMERO DE SEGUIDORES
+            context_data['users'] = User.objects.filter((Q(username__icontains=query ) | Q(apodo__icontains=query)) &  Q(is_active=True)).order_by("-date_joined")
+        
+        #TODO FILTRAR PRODUCTOS
+        # context_data['productos'] 
         return context_data
 
     def get_queryset(self):
@@ -464,7 +467,7 @@ class BuscarContenidoView(LoginRequiredMixin, ListView):
             if any(c in special_characters for c in query):
                 pass
             else: 
-                return Publicacion.objects.filter(descripcion__icontains=query)
+                return Publicacion.objects.filter(descripcion__icontains=query).order_by("-fecha_creacion")
         else:
             raise Http404
 
