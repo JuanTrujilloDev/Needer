@@ -13,10 +13,10 @@ Needer | {{publicacion.user.username}}
 {% block inner-content %}
 
 <!--Contenido de adentro-->
-<div class="my-4 pb-3 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
+<div class="my-4 pb-3 row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
     
     <!--Contenido de la izquierda-->
-    <div class="gap-0 justify-content-center row col-sm-12 col-lg-8 mx-auto px-0 shadow rounded">
+    <div class="d-flex justify-content-center row col-sm-12 col-lg-8 mx-auto px-0 shadow rounded">
 
         <!--Icono y titulo-->
         <div class="row border-bottom" style="height: 3rem;">
@@ -25,81 +25,48 @@ Needer | {{publicacion.user.username}}
 
            
         <!--Publicación-->
-        <div class="row px-0 bg-white d-flex justify-content-around align-items-center mt-2 rounded publicacion">
-            <div class="col-12 d-flex align-items-center justify-content-start pt-4">
-                <!--Foto del usuario-->
-                <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0 mb-3">
-                    <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
-                        {% if publicacion.user.foto %}
-                                    
-                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{publicacion.user.foto.url}}"data-holder-rendered="true">
+            <form class="rounded shadow container-fluid p-4 bg-white" method = "POST" action="{% url 'crear-publicacion'%}" enctype="multipart/form-data">
+                
+                {% if messages %}
+                <ul class="messages list-unstyled">
+                    {% for message in messages %}
+                <div {% if message.tags %} class="alert alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+    
                     
-                        {% else %}
-                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"data-holder-rendered="true">
-                                
-                        {% endif %}
-                        </a>
-                        
-                </div>
-            <!--Autor-->
-            <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1 d-flex align-items-baseline h-100 mb-auto">
-                <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
-                    <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none text-secondary">
-                    {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}
-                    </a> 
-                </h5>
-                <p class="my-0 text-muted">@{{publicacion.user.username}}</p>
-                {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
-            </div>
-                
-            </div>
-
-            <!--Contenido de la Publicación-->
-            <div class="text-decoration-none row justify-content-center px-0 bg-white mw-100" style="height:auto;">
-                
-            {% if publicacion.descripcion %}
-                            
-                <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-3">
-                {{publicacion.descripcion|safe}}
-                </div>
-
-            {% endif %}
+                    {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+    
+            {% csrf_token %}
+            <!--Formulario-->
+            {{form.media}}
+            {{form.descripcion}}
+    
+            <div class="d-inline-flex mt-3 col-12 justify-content-xl-end justify-content-lg-end justify-content-md-end justify-content-sm-end justify-content-center">
             
-            {% if publicacion.archivo %}
-
-            <div class="row justify-content-center w-100 container px-3">
-                {{publicacion.archivo|tipo_archivo|safe}}
+            <a href="{{self.request.user.get_absolute_url}}" class="btn btn-primary btn-lg fw-bold rounded-pill me-2">Cancelar</a>
+            <button class="btn btn-primary btn-lg rounded-pill fw-bold border-0" type="submit">Editar</button>
+    
             </div>
-                        
-            {% endif %}
-                
-                <!--Botones de la Publicación--> 
-
-                <div class="d-inline-flex mt-2 col-12 justify-content-xl-end justify-content-lg-end justify-content-md-end justify-content-sm-end justify-content-center mb-2 border-top">
-           
-                    <label class="btn btn-primary btn-sm rounded-pill me-2 mt-2 px-2 border-0">
-                        <h6 class="align-middle d-flex align-items-center mb-0 py-1 fw-bold">   
-                        Cancelar
-                        </h6>
-                    </label>
-        
-                    <label class="btn btn-primary btn-sm rounded-pill me-2 px-2 mt-2 border-0">
-                        <h6 class="align-middle d-flex align-items-center mb-0 py-1 fw-bold">   
-                        Editar
-                        </h6>
-                    </label>
-
-                </div>
-      
-
-            </div>
-              
-
-        </div>
+    
+            </form>
+    
 
     </div>
-
-
 
 
 
