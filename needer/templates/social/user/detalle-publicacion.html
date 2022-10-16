@@ -16,7 +16,7 @@ Needer | {{publicacion.user.username}}
 <div class="my-4 pb-3 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
     
     <!--Contenido de la izquierda-->
-    <div class="d-flex justify-content-center row container-fluid row col-sm-12 col-lg-8 mx-auto px-0 shadow rounded">
+    <div class="d-flex justify-content-center row container-fluid row col-sm-12 col-lg-8 col-md-8 mx-auto px-0 shadow rounded">
 
         <!--Icono y titulo-->
         <div class="row border-bottom d-flex">
@@ -29,28 +29,28 @@ Needer | {{publicacion.user.username}}
         <div class="row container-fluid px-0 bg-white d-flex justify-content-around align-items-center mt-2 publicacion">
             <div class="col-12 d-flex align-items-start justify-content-start pt-4">
                 <!--Foto del usuario-->
-                <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0 mb-3">
+                <div class="col-lg-1 col-md-1 col-2 justify-content-start d-flex pe-0 mb-3">
                     <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
                         {% if publicacion.user.foto %}
                                     
-                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{publicacion.user.foto.url}}"data-holder-rendered="true">
+                        <img class="rounded-circle img-fluid profile-img-public" alt="profile" src="{{publicacion.user.foto.url}}"data-holder-rendered="true">
                     
                         {% else %}
-                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"data-holder-rendered="true">
+                        <img class="rounded-circle img-fluid profile-img-public" alt="profile" src="{% static 'img/default-profile.png' %}"data-holder-rendered="true">
                                 
                         {% endif %}
                         </a>
                         
                 </div>
             <!--Autor-->
-            <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1 d-flex align-items-baseline h-100 mb-auto">
+            <div class="col-8 col-md-9 col-lg-9 gap-0 ms-1 d-flex align-items-baseline h-100 mb-auto">
                 <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
                     <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none text-secondary">
                     {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}
                     </a> 
                 </h5>
-                <p class="my-0 text-muted">@{{publicacion.user.username}}</p>
-                {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
+                <p class="my-0 text-muted ms-2 me-2">@{{publicacion.user.username}}</p>
+                {% if publicacion|editado %} {{publicacion|editado|safe}}{% endif %}
             </div>
          
                 
@@ -67,7 +67,7 @@ Needer | {{publicacion.user.username}}
                       <li><a class="dropdown-item" href="{{publicacion.get_absolute_url}}/update">Editar</a></li>
                       <li><form method="POST" action="{% url 'delete-publicacion' user_slug=request.user.slug pk=publicacion.pk %}">
                         {% csrf_token %}
-                        <button class="dropdown-item" type="submit">Eliminar</button>
+                        <a class="dropdown-item" type="submit">Eliminar</a>
                     </form> </li>
                       
                       {% else %}
@@ -110,16 +110,16 @@ Needer | {{publicacion.user.username}}
                 <!--Botones de la Publicación--> 
 
                 <div class="row text-decoration-none ">
-                    <div id = 'divlike{{publicacion.id}}' class="col-6 text-decoration-none ">
+                    <div id = 'divlike{{publicacion.id}}' class="col-2 text-decoration-none ">
                     {% if EstadoLike %}
-                        <button id="dislike{{publicacion.id}}" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="btn text-primary border-secondary align-middle fs-5 fw-bold col-12 like z-2">{{CantLiked}} <i class="bi bi-heart-fill"></i></button>
+                        <a id="dislike{{publicacion.id}}" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="btn text-primary border-secondary align-middle fs-5 fw-bold col-12 like z-2">{{CantLiked}} <i class="bi bi-heart-fill"></i></a>
                     {% else %}
 
-                        <button id="like{{publicacion.id}}" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2">{{CantLiked}} <i class="bi bi-heart"></i></button>
+                        <a id="like{{publicacion.id}}" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2">{{CantLiked}} <i class="bi bi-heart"></i></a>
                     {% endif %} 
                     </div>
-                    <div id = 'coment{{publicacion.id}}' class="col-6 text-decoration-none" >
-                        <button class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2">{{Comentario.count}} <i class="bi bi-chat-left"></i></button>
+                    <div id = 'coment{{publicacion.id}}' class="col-2 text-decoration-none" >
+                        <a class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2">{{Comentario.count}} <i class="bi bi-chat-left"></i></a>
                     </div>
                 </div>
       
@@ -131,10 +131,25 @@ Needer | {{publicacion.user.username}}
         </div>
 
         <!--Formulario de Comentarios-->
-        <form id='form-comentario' class="border-bottom container" action="" method="post">                           
-            <div class="border-top">
-                <textarea class="form-control mt-3" style="resize:none;" name="comentario" cols="1" rows="1" placeholder="Escribe tu comentario" maxlength="120" class="form-control mt-3" style="resize:none;" required="" id="id_comentario"></textarea>
+        <form id='form-comentario' class="border-bottom container" action="" method="post">       
+                                
+            <div class="col-12 d-flex border-top justify-content-start">
+                
+                <div class="col-1 d-flex pe-0 py-0 mb-2 mx-2 mt-2">
+                    <a href="#" class="text-start">
+                        <img
+                            class="rounded-circle profile-img"
+                            alt="profile"
+                            src="{% static 'img/default-profile.png' %}"
+                            data-holder-rendered="true"
+                        >
+                    </a>
+                </div>
+
+                <textarea class="form-control mt-2" style="resize:none;" name="comentario" row="col-1" placeholder="Escribe tu comentario" maxlength="120" style="resize:none;" required="" id="id_comentario"></textarea>
+           
             </div>
+
             <div id = "div-comentar">
                 <button id='boton-comentar' class="btn text-primary like float-end" type="submit"><i class="bi bi-chat-left"></i> Comentar</button>
             </div>
@@ -148,6 +163,7 @@ Needer | {{publicacion.user.username}}
         <!--Comentario Usuario-->
             <div class="align-middle mt-2 py-2 container-fluid col-12 justify-content-center w-100">
                 <div class="col-12 d-flex align-items-center justify-content-center w-100 pt-2 gap-0 row">
+
                     <!--Foto del usuario-->
                     <div class="col-lg-1 col-md-1 col-2 justify-content-center d-flex">
                         <a href="{{com.id_autor.get_absolute_url}}" class="text-center">
@@ -158,15 +174,26 @@ Needer | {{publicacion.user.username}}
                             {% endif %}
                         </a>
                     </div>
+
                     <!--Autor-->
-                    <div class="row col-8 col-md-9 col-lg-9 align-baseline">
+                    <div class="col-8 col-md-9 col-lg-9 gap-0 ms-1 d-flex align-items-baseline h-100 mb-auto">
                         <h5 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 texti">
                             <a href="{{com.id_autor.get_absolute_url}}" class="text-decoration-none text-secondary"> 
                                 {% if com.id_autor.apodo %} {{com.id_autor.apodo}} {% else %} {{com.id_autor.username}} {% endif %}
                             </a> 
                         </h5>
-                        <p class="my-0 text-muted texti">@{{com.id_autor.username}}</p>
+                        <p class="my-0 text-muted ms-2 texti">@{{com.id_autor.username}}</p>
+                       
+                        <!--Fecha de la creación de la publicación-->
+                        <div class="text-muted ms-2">
+                            <small>Fecha de creación</small>
+                        </div>
+                   
                     </div>  
+
+                    <!--Fecha de la creación de la publicación-->
+                    
+
                     {% comment %} Dropdown {% endcomment %}
                     <div class="col d-flex align-items-center justify-content-end">
                         <div class="dropdown dropstart">
@@ -189,6 +216,7 @@ Needer | {{publicacion.user.username}}
                     </div> 
 
                 </div>
+                
                 <div class="col-12">
                     <p class="text-muted texti">{{com.comentario}}</p>
                 </div>
@@ -197,14 +225,14 @@ Needer | {{publicacion.user.username}}
                 <div class="col-12 row text-decoration-none border-bottom border-top">
                     <div id = 'divlike{{com.id}}' class="col-12 text-decoration-none ">
                         {% if com.bool_like %}
-                        <button id="dislike{{com.id}}" onclick = "dislikepublicacion('{{com.dislikeComentario}}')" class="btn text-primary border-secondary align-middle fs-5 fw-bold col-12 like z-2">{{com.cant_Like}} <i class="bi bi-heart-fill"></i></button>
+                        <a id="dislike{{com.id}}" onclick = "dislikepublicacion('{{com.dislikeComentario}}')" class="btn text-primary border-secondary align-middle fs-5 fw-bold col-2 like z-2">{{com.cant_Like}} <i class="bi bi-heart-fill"></i></a>
                         {% else %}
-                        <button id='like{{com.id}}'  onclick="likepublicacion('{{com.likeComentario}}')" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2"> {{com.cant_Like}} <i class="bi bi-heart"></i></button>
+                        <a id='like{{com.id}}'  onclick="likepublicacion('{{com.likeComentario}}')" class="btn text-primary align-middle fs-5 fw-bold col-2 like z-2"> {{com.cant_Like}} <i class="bi bi-heart"></i></a>
 
                         {% endif %}
                     </div>
                         {% comment %}                     {% if com.id_autor == request.user %}
-                        <button onclick="deletecomentario('{{com.urlComentario}}', comentarios{{com.id}})" >ELIMINAR</button>
+                        <a onclick="deletecomentario('{{com.urlComentario}}', comentarios{{com.id}})" >ELIMINAR</a>
                     {% endif %} {% endcomment %}
                 </div>
             </div>
@@ -219,9 +247,9 @@ Needer | {{publicacion.user.username}}
 
 
  <!--Contenido de la derecha-->
- <div class="row col-lg-3 justify-content-end divbib">
+ <div class="col-lg-3 col-md-3 justify-content-end divbib">
     <!--Quizas te guste-->
-    <div class="row py-4 col-sm-12 col-12 rounded shadow mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5">
+    <div class="py-4 rounded shadow mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5">
         <h4 class="text-primary text-center fw-bold mb-0">Quizas te guste</h4>
         <!--Información del usuario-->
         <div class="row col-12 mt-3 mx-0 px-0 py-0">
@@ -229,7 +257,7 @@ Needer | {{publicacion.user.username}}
             <div class="col-3 d-flex pe-0 py-0 mb-2">
                 <a href="#" class="text-start">
                     <img
-                        class="rounded-circle img-fluid img-static"
+                        class="rounded-circle profile-img-qtg"
                         alt="profile"
                         src="{% static 'img/default-profile.png' %}"
                         data-holder-rendered="true"
@@ -237,13 +265,13 @@ Needer | {{publicacion.user.username}}
                 </a>
             </div>
             <!--Datos-->
-            <div class="row col-9 align-items-center py-0 mb-2">
-                <h5 class="text-secondary text-start fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 texti">
-                    <a href="#" class="text-decoration-none text-primary mx-3 text-start">
-                        Thomas Perez
+            <div class="row col-9 py-0 mb-2 g-0 align-content-center">
+                <h5 class="text-secondary text-center fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 me-0 texti">
+                    <a href="#" class="text-decoration-none text-primary mx-3">
+                        Thomas Perez 
                     </a>
                 </h5>
-                <h6 class="text-secondary mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                <h6 class="text-secondary text-center mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
                     <a href="#" class="text-decoration-none text-muted mx-3">
                         @Pitzonia
                     </a>
@@ -259,25 +287,27 @@ Needer | {{publicacion.user.username}}
             <div class="col-3 d-flex pe-0 py-0 mb-2">
                 <a href="#" class="text-start">
                     <img
-                        class="rounded-circle img-fluid img-static"
+                        class="rounded-circle profile-img-qtg"
                         alt="profile"
                         src="{% static 'img/default-profile.png' %}"
                         data-holder-rendered="true"
                     >
                 </a>
             </div>
-            <div class="row col-9 align-items-center py-0 mb-2">
-                <h6 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 texti">
+            
+            <div class="row col-9 py-0 mb-2 g-0 align-content-center">
+                <h6 class="text-secondary text-center fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 texti">
                     <a href="#" class="text-decoration-none text-primary mx-3">
-                     Sebastián pelo
+                     Sebastián pelo 
                     </a>
                 </h6>
-                <h6 class="text-secondary mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                <h6 class="text-secondary text-center mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
                     <a href="#" class="text-decoration-none text-muted mx-3">
-                        @WaifuFurro
+                        @WaifuFurro 
                     </a>
                 </h6>
             </div>
+            
             <div class="col-12">
                 <p class="text-muted mb-0 texti">Lorem ipsum dolor mestiae unde?</p>
             </div>

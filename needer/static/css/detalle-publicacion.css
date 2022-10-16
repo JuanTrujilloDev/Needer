@@ -44,8 +44,8 @@
 }
 
 .profile-img{
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
     object-fit: cover;
     border: 2px solid #d1d1d1;
   }
@@ -56,6 +56,22 @@
     object-fit: cover;
   }
 
+.profile-img-qtg{
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border: 2px solid #d1d1d1;
+}
+
+@media screen and (max-width:1283px){
+    .profile-img-qtg{
+        height: 40px;
+        width: 40px;
+        object-fit: cover;
+        border: 2px solid #d1d1d1;
+        columns: 1;
+    }
+}
 
   .divbib{
       display: none;
