@@ -97,6 +97,32 @@
       height: 100%;
   }
 
+  .div-galeria{
+    height: 40vh;
+    width: 30%;
+    margin-bottom: 5%;
+    overflow: hidden;
+    object-fit: contain;
+  }
+
+
+
+  @media screen and (max-width:1020px) {
+    .div-galeria{
+        height: 25vh;
+        width: 45%;
+        margin-bottom: 5%;
+      }
+    
+  }
+
+  @media screen and (min-width:374px) {
+    .div-galeria-container{
+        justify-content: space-between !important;
+    }
+    
+  }
+
   @media screen and (min-width:992px) {
     .divbib{ 
         position: sticky !important;  

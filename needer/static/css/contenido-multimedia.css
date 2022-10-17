@@ -1,0 +1,30 @@
+.pub-video{
+    min-width: 100% !important;
+    min-height: 100% !important;
+    padding: 0 !important;
+    object-fit: fill !important;
+}
+
+.pub-img{
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+ }
+
+.pub-audio{
+    background-image: url('../../../static/img/audio.webp'); 
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+audio::-webkit-media-controls-panel{
+    background-color: #ffffff;
+    }
+    
+audio{
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    border-radius: 0px !important;
+
+}

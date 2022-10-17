@@ -44,7 +44,7 @@ def tipo_archivo(archivo):
         return f'<audio controls controlsList="nodownload"> <source src="{archivo.url}" type="audio/mpeg">Your browser does not support the audio tag.</audio>'
 
     elif content.split('/')[0] == 'video':
-        return f'<video class="pub-video" controls controlsList="nodownload"> <source src="{archivo.url}">Your browser does not support the video tag.</video>'
+        return f'<video class="pub-video img-fluid rounded" controls controlsList="nodownload"> <source src="{archivo.url}">Your browser does not support the video tag.</video>'
 
 
 def nsfw(value):
