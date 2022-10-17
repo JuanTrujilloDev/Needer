@@ -163,6 +163,9 @@ class PreventGetMethodMixin:
 
     def get(self, request, *args, **kwargs):
         raise Http404
+
+
+    
     
 
 

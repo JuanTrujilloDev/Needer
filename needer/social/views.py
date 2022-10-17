@@ -19,13 +19,14 @@ from django.http import Http404
 from django.db.models import Q
 import re
 import urllib
+from main.utils import *
 
 
 
 
 
 # VISTA PARA PERFIL DEL CREADOR DE CONTENIDO
-class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
+class DetailCreador(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Publicacion
     template_name = 'social/user/perfil.html'
     paginate_by = 2
@@ -35,7 +36,6 @@ class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView
         context = super().get_context_data(**kwargs)
         # Traemos el autor del perfil
         context['object'] = User.objects.get(slug = self.kwargs['slug'])
-        context['innercontent'] = 'main/user/content.html'
         user = User.objects.get(slug = self.kwargs['slug'])
         for i in list(context['object_list']):
             i.cant_Like = LikedPublicacion.objects.filter(id_publicacion =i.id).count()
@@ -98,7 +98,7 @@ class CrearPublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
 
 
 # Detalle Publicacion
-class DetallePublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, DetailView):
+class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, LoginRequiredMixin, DetailView):
     model = Publicacion
 
 
@@ -121,7 +121,6 @@ class DetallePublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
         context['form'] = CrearComentarios
         context['CantLiked'] = cant_Like
         context['Comentario'] = Comentarios.objects.filter(id_publicacion = kwargs['object'].id).order_by("-fecha_creacion")
-        context['innercontent'] = 'main/user/content.html'
         for i in list(context['Comentario']):
             i.cant_Like = LikeComentarios.objects.filter(id_comentario =i.id).count()
 
@@ -134,7 +133,7 @@ class DetallePublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
 
 # Update Publicacion
 
-class UpdatePublicacionView(ValidateOwnershipMixin, LoginRequiredMixin, UpdateView):
+class UpdatePublicacionView(ExtendsInnerContentMixin, ValidateOwnershipMixin, LoginRequiredMixin, UpdateView):
     model = Publicacion
     fields = ['descripcion']
     template_name = 'social/user/update-publicacion.html'
@@ -145,7 +144,7 @@ class UpdatePublicacionView(ValidateOwnershipMixin, LoginRequiredMixin, UpdateVi
         if self.kwargs['user_slug'] != self.get_object().user.slug:
             raise Http404 
 
-        context['innercontent'] = 'main/user/content.html'
+
 
         return context
 
@@ -173,7 +172,7 @@ class DeletePublicacionView(ValidateOwnershipMixin, LoginRequiredMixin, SuccessM
 
 # Lista Home Publicaciones
 
-class HomeSocialView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
+class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Publicacion
     paginate_by = 3
 
@@ -198,7 +197,6 @@ class HomeSocialView(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListVie
             i.bool_like =LikedPublicacion.objects.filter(id_publicacion =i.id, id_usuario = self.request.user).exists()
 
 
-        context['innercontent'] = 'main/user/content.html'
         return context
 
     def get_template_names(self):
@@ -393,7 +391,7 @@ class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
         result['likes'] =  str(cantidadlike)
         listado.append(result)
         listado = json.dumps(listado)
-        print(listado)
+
         return JsonResponse({'result': listado} )
 
     def get_success_url(self) -> str:
@@ -434,32 +432,42 @@ class RemoveLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, DeleteVi
 
 """ Buscar elementos en la red social """
 
-class BuscarContenidoView(LoginRequiredMixin, ListView):
+class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
     template_name = "social/user/buscar-contenido.html"
     model = Publicacion
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
+        # Trae el query a realizar
         query = self.request.GET.get('q')
-
+        
+        # Si no trae el query retornar directamente el context_data
         if not query:
-            raise Http404
-        # Traducir el q url a formato entendible
+            return context_data
+        
+        # Traducir el query url a formato entendible
         query = urllib.parse.unquote(query)
         query = query.lower()
         special_characters = '"!@#$%^&*()-+?_=,<>/"'
+
         # No permitir caracteres especiales
         if any(c in special_characters for c in query):
-            messages.error(self.request, 'No se permiten caracteres especiales en la busqueda.')
+          pass
+          # En caso de haber caracteres especiales en el get_queryset arroja error.
+          # messages.error(self.request, 'No se permiten caracteres especiales en la busqueda.')
+
         else: 
+            # En caso contrario trae los objetos
             #TODO ORDERNAR POR NUMERO DE SEGUIDORES
+            query = query.strip()
             context_data['users'] = User.objects.filter((Q(username__icontains=query ) | Q(apodo__icontains=query)) &  Q(is_active=True)).order_by("-date_joined")
         
-        #TODO FILTRAR PRODUCTOS
-        # context_data['productos'] 
+            #TODO FILTRAR PRODUCTOS
+            # context_data['productos'] 
         return context_data
 
     def get_queryset(self):
+        # Coge el query
         query = self.request.GET.get('q')
         if query:
             # Traducir el q url a formato entendible
@@ -467,24 +475,83 @@ class BuscarContenidoView(LoginRequiredMixin, ListView):
             query = query.lower()
             special_characters = '"!@#$%^&*()-+?_=,<>/"'
 
-            # No permitir caracteres especiales
-            if any(c in special_characters for c in query):
-                pass
-            else: 
-                return Publicacion.objects.filter(descripcion__icontains=query).order_by("-fecha_creacion")
+            # Si la busqueda son solo espacios arrojaria error
+            if len(query.replace(" ", "")) < 1:
+                messages.error(self.request, 'La busqueda debe contener contenido.')
+
+            # Si tiene contenido
+            else:
+                # No permitir caracteres especiales
+                if any(c in special_characters for c in query):
+                    messages.error(self.request, 'No se permiten caracteres especiales en la busqueda.')
+                else: 
+                    # Retorna los objetos y quita los espacios al inicio y final de la busqueda
+                    query = query.strip()
+                    return Publicacion.objects.filter(descripcion__icontains=query).order_by("-fecha_creacion")
         else:
-            raise Http404
+            # Si no hay nada arroja error y no retorna ningun objeto
+            messages.error(self.request, "No haz realizado una busqueda")
+
+
+"""Busqueda Solo Usuarios"""
+
+class BuscarUsuarioView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
+    model = User
+    template_name = "social/user/buscar-user.html"
+
+    def get_queryset(self):
+        # Traela busqueda
+        query = self.request.GET.get('q')
+
+        # Si hay busqueda
+        if query:
+            # Traducir el q url a formato entendible
+            query = urllib.parse.unquote(query.lower())
+            query = query.lower()
+            special_characters = '"!@#$%^&*()-+?_=,<>/"'
+
+            # Si la busqueda solo contiene espacios arroja error debusqueda
+            if len(query.replace(" ", "")) == 0:
+                messages.error(self.request, 'La busqueda debe contener contenido.')
+            else:
+            # No permitir caracteres especiales
+                if any(c in special_characters for c in query):
+                    messages.error(self.request, "No se permiten caracteres especiales en tu busqueda")
+                else: 
+                    # Quita los espacios en blanco al inicio y al final de la busqueda
+                    query = query.strip()
+                    users = User.objects.filter(Q(username__icontains=query) | Q(apodo__icontains=query) 
+                                    | Q(first_name=query) | Q(last_name=query))
+                    
+                    # Si se encuentran usuarios los retorna
+                    if users:
+                        return users
+                    
+                    # En caso contrario no retornaria nada y arroja error
+                    messages.error(self.request, "No se ha encontrado usuario")    
+                    return None
+
+        else:
+            # En caso contrario no retorna nada y arroja error
+            messages.error(self.request, "No haz realizado una busqueda")
+        
+
 
 
 """Vista de galeria"""
 
 
-class GaleriaSocial(LoginRequiredMixin, ListView):
+class GaleriaSocial(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
     model = Publicacion
     template_name = "social/user/galeria-social.html"
 
 
-    #TODO TRAER SOLO PUBLICACIONES CON FOTO/VIDEO/AUDIO
+    def get_queryset(self):
+        # Trae solo los objetos con archivo y que correspondan al perfil del usuario
+        slug = self.kwargs['user_slug']
+        user = User.objects.get(slug=slug)
+        queryset = Publicacion.objects.filter(~Q(archivo="") & Q(user=user))
+        return queryset
 
 
 
