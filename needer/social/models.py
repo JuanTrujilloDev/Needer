@@ -49,7 +49,10 @@ class Publicacion(models.Model):
 
     def delete(self, using=None, keep_parents=False):
         if self.archivo:
-            os.remove(os.path.join(settings.MEDIA_ROOT, self.archivo.name))
+            try:
+                os.remove(os.path.join(settings.MEDIA_ROOT, self.archivo.name))
+            except:
+                pass
         super().delete()
 
 
