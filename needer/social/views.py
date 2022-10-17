@@ -541,17 +541,17 @@ class BuscarUsuarioView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
 """Vista de galeria"""
 
 
-class GaleriaSocial(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
-    model = Publicacion
+class GaleriaSocial(ExtendsInnerContentMixin, LoginRequiredMixin, DetailView):
+    model = User
     template_name = "social/user/galeria-social.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['publicaciones'] = Publicacion.objects.filter(Q(user=self.get_object()) | ~Q(archivo=""))
+        return context
 
-    def get_queryset(self):
-        # Trae solo los objetos con archivo y que correspondan al perfil del usuario
-        slug = self.kwargs['user_slug']
-        user = User.objects.get(slug=slug)
-        queryset = Publicacion.objects.filter(~Q(archivo="") & Q(user=user))
-        return queryset
+
+    
 
 
 
