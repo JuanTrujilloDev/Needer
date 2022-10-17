@@ -3,6 +3,7 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/nav.css' %}">
 {% endblock css %}
+
 <section class="navegacion w-100">
 <nav class="navbar navbar-expand-lg bg-primary navbar-dark overflow-auto text-light sticky-top  w-100">
     <div class="container-fluid d-flex justify-content-between w-100">
@@ -15,9 +16,10 @@
            
       <div class="col-4 row d-flex justify-content-center">
         <div class="input-box d-flex align-items-center">
+          <form method="GET" action="{% url 'busqueda-contenido' %}">
           <i class="bi bi-search me-2"></i>
-          <input type="text" class="form-control" placeholder="Fotos, vídeos, artistas...">
-          
+          <input maxlength="50" type="text" class="form-control" id="search_form" name="q" placeholder="Fotos, vídeos, artistas...">
+          </form>
         </div>
       </div>
 
@@ -79,3 +81,7 @@
     </div>
   </nav>
 </section>
+
+{% block script %}
+<script src="{% static 'js/global.js' %}"></script>
+{% endblock script %}

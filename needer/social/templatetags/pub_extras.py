@@ -27,7 +27,7 @@ def fecha_exacta(fecha):
 def editado(publicacion):
 
     if publicacion.fecha_actualizacion > publicacion.fecha_creacion :
-        return '<small class="text-muted">Editado <i class="bi bi-pencil text-primary"></i></small>'
+        return '<small class="text-muted editado">Editado <i class="bi bi-pencil text-primary"></i></small>'
     else:
         return None
 

@@ -4,8 +4,8 @@
     {% for publicacion in object_list %}
     <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded shadow d-flex justify-content-around align-items-center mt-4 publicacion infinite-item" >
 
-        <div class="col-12 d-flex align-items-center justify-content-start mb-2">
-            <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0">
+        <div class="col-12 container d-flex align-items-center justify-content-start mb-2">
+            <div class=" justify-content-start d-flex pe-0">
                 <a href="{{publicacion.user.get_absolute_url}}" class="text-center z-1">
                     {% if object.foto %}
                     <img
@@ -26,12 +26,12 @@
             </div>
             <!--Autor y Hora-->
             <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1">
-                <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 text-break text-truncate">
                     <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none text-secondary">
                         {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}
                     </a>
                 </h5>
-                <p class="my-0 text-muted">@{{publicacion.user.username}} · {{publicacion.fecha_creacion|fecha_exacta}}</p>
+                <p class="my-0 text-muted text-break">@{{publicacion.user.username}} · {{publicacion.fecha_creacion|fecha_exacta}}</p>
                 {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
             </div>
 
@@ -67,7 +67,7 @@
             <div class="text-decoration-none row container-fluid px-0 bg-white pt-4 mw-100 {{publicacion.nsfw|nsfw}}" onclick="window.open('{{publicacion.get_absolute_url}}')" style="height:auto; cursor: pointer;">
                 {% if publicacion.descripcion %}
                
-                <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-4">
+                <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-2">
                     {{publicacion.descripcion|safe}}
                 </div>
                 {% endif %}
@@ -87,16 +87,19 @@
             {% endif %}
         </div>
         <!--Cantidad de me gusta y comentario-->
-        <div class="row justify-content-start text-primary mt-3 align-items-center d-flex fw-bold py-2 px-4">
-            <div id ='divlike{{publicacion.id}}'class="col-6 text-decoration-none">
-                {% if publicacion.bool_like %}
-                <button id="dislike{{publicacion.id}}" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2">{{publicacion.cant_Like}} <i class="bi bi-heart-fill"></i></button>
-                {% else %}
-                <button id="like{{publicacion.id}}" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2"> {{publicacion.cant_Like }} <i class="bi bi-heart"></i></button>
-                {% endif %} 
+         <!--Botones de la Publicación--> 
+
+         <div class="row text-decoration-none pt-1 w-100 container col-12">
+            <div id = 'divlike{{publicacion.id}}' class="p-0 me-2 col-md-2 col-xl-1 col-lg-2 col-2 text-center">
+            {% if EstadoLike %}
+                <a id="dislike{{publicacion.id}}" href="#" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="text-muted botones-interaccion px-0 fw-lighter text-decoration-none border-secondary align-middle fs-5 fw-bold col-12 like z-2"><i class="bi bi-heart-fill text-primary"></i> {{publicacion.cant_Like}} </a>
+            {% else %}
+
+                <a id="like{{publicacion.id}}" href="#" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class=" botones-interaccion px-0 text-muted text-decoration-none align-middle fw-lighter fs-5 fw-bold col-12 like z-2"><i class="bi bi-heart"></i> {{publicacion.cant_Like}} </a>
+            {% endif %} 
             </div>
-            <div class="col-6 text-decoration-none">
-                <a href="{{publicacion.get_absolute_url}}" class="btn text-primary align-middle fs-5 fw-bold col-12 like z-2">{{publicacion.cant_coment}}  <i class="bi bi-chat-left"></i></a>
+            <div id = 'coment{{publicacion.id}}'  class="p-0 col-md-2 col-xl-1 col-lg-2 col-2">
+                <a href="#" class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2" onclick="$('.form-comentario').focus();"><i class="bi  {% if Comentario.count != 0 %} text-primary bi-chat-left-fill {% else %} bi-chat-left {% endif %}"></i> {{publicacion.cant_coment}} </a>
             </div>
         </div>
     </div>

@@ -5,6 +5,17 @@
     border: 4px solid #dbdbdb;
 }
 
+.editado{
+    font-size: 0.6em!important;
+}
+
+.img-derecha{
+    height: 55px;
+    width: 55px;
+    border: 2px solid #d1d1d1;
+}
+
+
 .update-imagen:hover{
     border: 4px solid #D1D1FF;
 }
@@ -50,26 +61,28 @@
     border: 2px solid #d1d1d1;
   }
 
-  .profile-img-public{
-    height: 60px;
-    width: 60px;
-    object-fit: cover;
-  }
+
 
 .profile-img-qtg{
-    height: 50px;
-    width: 50px;
+    height: 80px;
+    width: 80px;
     object-fit: cover;
     border: 2px solid #d1d1d1;
 }
 
 @media screen and (max-width:1283px){
     .profile-img-qtg{
-        height: 40px;
-        width: 40px;
+        height: 50px;
+        width: 50px;
         object-fit: cover;
         border: 2px solid #d1d1d1;
         columns: 1;
+    }
+
+    .img-derecha{
+        height: 40px;
+        width: 40px;
+        border: 2px solid #d1d1d1;
     }
 }
 
@@ -93,6 +106,65 @@
     
 }
 
+.img-comment{
+    height: 55px;
+    width: 55px;
+    border: 2px solid #d1d1d1;
+}
+
+
+
+@media screen and (max-width:570px){
+
+    .img-derecha{
+        height: 40px;
+        width: 40px;
+        border: 2px solid #d1d1d1;
+    }
+
+
+    .img-comment{
+        height: 40px;
+        width: 40px;
+        object-fit: cover;
+        border: 2px solid #d1d1d1;
+        columns: 1;
+    }
+
+    .autor-comentario{
+        display: list-item!important;
+    }
+
+    .autor-publicacion{
+        display: list-item!important;
+    }
+
+    .autor-publicacion h4{
+        font-size:1em
+    }
+
+    .autor-publicacion p{
+        font-size: 0.8em!important;
+    }
+}
+
+@media screen and (max-width:380px){
+    .autor-comentario h5{
+        font-size: 0.9em!important;
+    }
+
+    .autor-comentario p{
+        font-size: 0.7em!important;
+    }
+}
+
+.botones-interaccion{
+    font-size: 1.2em!important;
+}
+
+#boton-comentar{
+    font-size: 1.2em!important;
+}
 
 
 

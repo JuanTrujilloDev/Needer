@@ -67,7 +67,7 @@ class LikedPublicacion(models.Model):
 class Comentarios(models.Model):
     id_publicacion = models.ForeignKey(Publicacion, verbose_name= ("Publicacion"), on_delete=models.CASCADE)
     id_autor = models.ForeignKey(User, verbose_name= ("Autor"), on_delete=models.CASCADE)
-    comentario = models.TextField(max_length=120, verbose_name=("Comentario"), blank=False)
+    comentario = models.TextField(max_length=520, verbose_name=("Comentario"), blank=False)
     fecha_creacion = models.DateTimeField(verbose_name = 'Fecha de Like', auto_now_add=True, auto_now=False)
     
     def likeComentario(self): return reverse('comentario-addlike', kwargs={'pk':self.id})

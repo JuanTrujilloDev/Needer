@@ -120,7 +120,7 @@ class DetallePublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
         """ Se carga el formulario y se evalua en la vista de CrearComentarioView """
         context['form'] = CrearComentarios
         context['CantLiked'] = cant_Like
-        context['Comentario'] = Comentarios.objects.filter(id_publicacion = kwargs['object'].id)
+        context['Comentario'] = Comentarios.objects.filter(id_publicacion = kwargs['object'].id).order_by("-fecha_creacion")
         context['innercontent'] = 'main/user/content.html'
         for i in list(context['Comentario']):
             i.cant_Like = LikeComentarios.objects.filter(id_comentario =i.id).count()
@@ -295,7 +295,11 @@ class CrearComentarioView(DispatchAuthenticatedUserMixin,LoginRequiredMixin, Vie
             comentario = form_.cleaned_data['comentario']
             """ Crear objeto del comentario """
             query.create(id_publicacion = self.publicacion, id_autor = self.usuario, comentario = comentario)
-        
+        else:
+            # Si hay error en el formulario retornar error para que el cliente lo reciba en JSON
+            mensaje= "Error"
+            return JsonResponse({'mensaje': mensaje} )
+
         """ Listar los comentarios con ajax """
         if self.request.headers.get('x-requested-with'):
             """ se obtienen los comentarios de la publicacion y se pasan a la vista usando json """
@@ -472,6 +476,15 @@ class BuscarContenidoView(LoginRequiredMixin, ListView):
             raise Http404
 
 
+"""Vista de galeria"""
+
+
+class GaleriaSocial(LoginRequiredMixin, ListView):
+    model = Publicacion
+    template_name = "social/user/galeria-social.html"
+
+
+    #TODO TRAER SOLO PUBLICACIONES CON FOTO/VIDEO/AUDIO
 
 
 
