@@ -4,6 +4,15 @@
     background-size: cover;
 }
 
+.btn-mostrar{
+    background-color: gray;
+    color: #ffff;
+}
+
+.btn-mostrar :hover{
+    color: #5C28FF;
+}
+
 @media screen and (max-width:1020px) {
     .busqueda-imagen{
         height: 55px;
