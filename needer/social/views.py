@@ -549,7 +549,7 @@ class GaleriaSocial(ExtendsInnerContentMixin, LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['publicaciones'] = Publicacion.objects.filter(Q(user=self.get_object()) | ~Q(archivo=""))
+        context['publicaciones'] = Publicacion.objects.filter(Q(user=self.get_object()) & ~Q(archivo=""))
         return context
 
 

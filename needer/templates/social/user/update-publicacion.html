@@ -25,7 +25,7 @@ Needer | {{publicacion.user.username}}
 
            
         <!--Publicación-->
-            <form class="rounded shadow container-fluid p-4 bg-white" method = "POST" action="{% url 'crear-publicacion'%}" enctype="multipart/form-data">
+            <form class="rounded shadow container-fluid p-4 bg-white" method = "POST" action="{% url 'update-publicacion'%}" enctype="multipart/form-data">
                 
                 {% if messages %}
                 <ul class="messages list-unstyled">

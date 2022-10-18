@@ -15,8 +15,8 @@
       </div>
            
       <div class="col-4 row d-flex justify-content-center">
-        <div class="input-box d-flex align-items-center">
-          <form method="GET" action="{% url 'busqueda-contenido' %}">
+        <div class="input-box align-items-center">
+          <form method="GET" class="d-flex align-items-center" action="{% url 'busqueda-contenido' %}">
           <i class="bi bi-search me-2"></i>
           <input maxlength="50" type="text" class="form-control" id="search_form" name="q" placeholder="Fotos, vídeos, artistas...">
           </form>
