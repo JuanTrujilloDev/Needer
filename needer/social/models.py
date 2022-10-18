@@ -35,14 +35,18 @@ class Publicacion(models.Model):
 
 
     def save(self, *args, **kwargs):
-        if self.archivo:
-            if self.archivo.file.content_type.split('/')[0] == 'image':
-                return super().save(*args, **kwargs)
-                file_compression(self.archivo)
+        
+        # Si se esta creando el objeto
+        if self._state.adding:
+            if self.archivo:
+                if self.archivo.file.content_type.split('/')[0] == 'image':
+                    # file_compression(self.archivo)
+                    return super().save(*args, **kwargs)
+                    
 
-            else:
-                file_compression(self.archivo)
-                return super().save(*args, **kwargs)
+                else:
+                    file_compression(self.archivo)
+                    return super().save(*args, **kwargs)
 
         return super().save(*args, **kwargs)
 
