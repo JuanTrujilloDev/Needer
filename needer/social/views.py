@@ -460,7 +460,7 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
             # En caso contrario trae los objetos
             #TODO ORDERNAR POR NUMERO DE SEGUIDORES
             query = query.strip()
-            context_data['users'] = User.objects.filter((Q(username__icontains=query ) | Q(apodo__icontains=query)) &  Q(is_active=True)).order_by("-date_joined")
+            context_data['users'] = User.objects.filter((Q(username__icontains=query ) | Q(apodo__icontains=query)) &  Q(is_active=True)).order_by("-date_joined")[0:3]
         
             #TODO FILTRAR PRODUCTOS
             # context_data['productos'] 
@@ -487,7 +487,9 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
                 else: 
                     # Retorna los objetos y quita los espacios al inicio y final de la busqueda
                     query = query.strip()
-                    return Publicacion.objects.filter(descripcion__icontains=query).order_by("-fecha_creacion")
+                    return Publicacion.objects.filter(Q(descripcion__icontains=query) | Q(user__apodo__icontains=query) | Q(user__username__icontains=query) 
+                                                     | Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query) | 
+                                                      Q(user__apodo__icontains=query)).order_by("-fecha_creacion")
         else:
             # Si no hay nada arroja error y no retorna ningun objeto
             messages.error(self.request, "No haz realizado una busqueda")
