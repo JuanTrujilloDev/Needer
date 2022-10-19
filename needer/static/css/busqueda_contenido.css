@@ -1,0 +1,27 @@
+.busqueda-imagen{
+    width: 70px;
+    height: 70px;
+    background-size: cover;
+}
+
+.btn-mostrar{
+    background-color: gray;
+    color: #ffff;
+}
+
+.btn-mostrar :hover{
+    color: #5C28FF;
+}
+
+@media screen and (max-width:1020px) {
+    .busqueda-imagen{
+        height: 55px;
+        width: 55px;
+        background-size: cover;
+      }
+    
+  }
+
+.nombre-usuario{
+    margin-bottom: 0 !important;
+}
