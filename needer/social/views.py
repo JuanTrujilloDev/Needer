@@ -29,7 +29,7 @@ from main.utils import *
 class DetailCreador(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Publicacion
     template_name = 'social/user/perfil.html'
-    paginate_by = 2
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         
@@ -174,7 +174,7 @@ class DeletePublicacionView(ValidateOwnershipMixin, LoginRequiredMixin, SuccessM
 
 class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Publicacion
-    paginate_by = 3
+    paginate_by = 5
 
     def get_queryset(self):
         
@@ -430,11 +430,16 @@ class RemoveLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, DeleteVi
         return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
 
 
+
+
 """ Buscar elementos en la red social """
 
 class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
     template_name = "social/user/buscar-contenido.html"
     model = Publicacion
+    paginate_by = 5
+
+
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -443,16 +448,18 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
         
         # Si no trae el query retornar directamente el context_data
         if not query:
+            
             return context_data
         
         # Traducir el query url a formato entendible
         query = urllib.parse.unquote(query)
         query = query.lower()
-        special_characters = '"!@#$%^&*()-+?_=,<>/"'
-
+        special_characters = '<>/"'
+        
         # No permitir caracteres especiales
-        if any(c in special_characters for c in query):
-          pass
+        if any(c in special_characters for c in query) or len(query.replace(" ", "")) < 1:
+          messages.add_message(self.request, 40, 'Error en la busqueda.')
+          return context_data
           # En caso de haber caracteres especiales en el get_queryset arroja error.
           # messages.error(self.request, 'No se permiten caracteres especiales en la busqueda.')
 
@@ -466,9 +473,24 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
             # context_data['productos'] 
         return context_data
 
+
+
+
+
     def get_queryset(self):
+
+        # Si esta paginando que siga retornando los objetos
+        if "page" in self.request.get_full_path():
+            query = " "
+            return Publicacion.objects.filter(Q(descripcion__icontains=query) | Q(user__apodo__icontains=query) | Q(user__username__icontains=query) 
+                                                     | Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query) | 
+                                                     Q(user__apodo__icontains=query)).order_by("-fecha_creacion")
+        
+        
+        # En caso contrario revisa la query desde  0
         # Coge el query
         query = self.request.GET.get('q')
+
         if query:
             # Traducir el q url a formato entendible
             query = urllib.parse.unquote(query.lower())
@@ -477,13 +499,15 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
 
             # Si la busqueda son solo espacios arrojaria error
             if len(query.replace(" ", "")) < 1:
-                messages.error(self.request, 'La busqueda debe contener contenido.')
+                messages.add_message(self.request, 40, 'Busqueda vacia.')
+                return []
 
             # Si tiene contenido
             else:
                 # No permitir caracteres especiales
                 if any(c in special_characters for c in query):
-                    messages.error(self.request, 'No se permiten caracteres especiales en la busqueda.')
+                    messages.add_message(self.request, 40, 'No se permiten caracteres especiales en la busqueda.')
+                    return []
                 else: 
                     # Retorna los objetos y quita los espacios al inicio y final de la busqueda
                     query = query.strip()
@@ -492,7 +516,8 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
                                                       Q(user__apodo__icontains=query)).order_by("-fecha_creacion")
         else:
             # Si no hay nada arroja error y no retorna ningun objeto
-            messages.error(self.request, "No haz realizado una busqueda")
+            
+            return []
 
 
 """Busqueda Solo Usuarios"""
@@ -500,42 +525,48 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
 class BuscarUsuarioView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
     model = User
     template_name = "social/user/buscar-user.html"
+    paginate_by = 8
+    ordering = "id"
 
+    # get_Queryset Busqueda Usuario
     def get_queryset(self):
-        # Traela busqueda
+
+        # Si esta paginando que siga retornando los objetos
+        if "page" in self.request.get_full_path():
+            query = " "
+            return User.objects.filter((Q(username__icontains=query ) | Q(apodo__icontains=query)) &  Q(is_active=True)).order_by("-date_joined")
+        
+        
+        # En caso contrario revisa la query desde  0
+        # Coge el query
         query = self.request.GET.get('q')
 
-        # Si hay busqueda
         if query:
             # Traducir el q url a formato entendible
             query = urllib.parse.unquote(query.lower())
             query = query.lower()
             special_characters = '"!@#$%^&*()-+?_=,<>/"'
 
-            # Si la busqueda solo contiene espacios arroja error debusqueda
-            if len(query.replace(" ", "")) == 0:
-                messages.error(self.request, 'La busqueda debe contener contenido.')
-            else:
-            # No permitir caracteres especiales
-                if any(c in special_characters for c in query):
-                    messages.error(self.request, "No se permiten caracteres especiales en tu busqueda")
-                else: 
-                    # Quita los espacios en blanco al inicio y al final de la busqueda
-                    query = query.strip()
-                    users = User.objects.filter(Q(username__icontains=query) | Q(apodo__icontains=query) 
-                                    | Q(first_name=query) | Q(last_name=query))
-                    
-                    # Si se encuentran usuarios los retorna
-                    if users:
-                        return users
-                    
-                    # En caso contrario no retornaria nada y arroja error
-                    messages.error(self.request, "No se ha encontrado usuario")    
-                    return None
+            # Si la busqueda son solo espacios arrojaria error
+            if len(query.replace(" ", "")) < 1:
+                messages.add_message(self.request, 40, 'Busqueda vacia.')
+                return []
 
+            # Si tiene contenido
+            else:
+                # No permitir caracteres especiales
+                if any(c in special_characters for c in query):
+                    messages.add_message(self.request, 40, 'No se permiten caracteres especiales en la busqueda.')
+                    return []
+                else: 
+                    # Retorna los objetos y quita los espacios al inicio y final de la busqueda
+                    query = query.strip()
+                    return User.objects.filter((Q(username__icontains=query ) | Q(apodo__icontains=query)) &  Q(is_active=True)).order_by("-date_joined")
         else:
-            # En caso contrario no retorna nada y arroja error
-            messages.error(self.request, "No haz realizado una busqueda")
+            # Si no hay nada arroja error y no retorna ningun objeto
+            messages.add_message(self.request, 40, 'Error en la busqueda.')
+            return []
+    
         
 
 

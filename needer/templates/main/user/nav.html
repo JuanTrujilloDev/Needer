@@ -18,7 +18,7 @@
         <div class="input-box align-items-center">
           <form method="GET" class="d-flex align-items-center" action="{% url 'busqueda-contenido' %}">
           <i class="bi bi-search me-2"></i>
-          <input maxlength="50" type="text" class="form-control" id="search_form" name="q" placeholder="Fotos, vídeos, artistas...">
+          <input maxlength="50" required minlength="1" type="text" class="form-control" id="search_form" name="q" placeholder="Fotos, vídeos, artistas...">
           </form>
         </div>
       </div>
