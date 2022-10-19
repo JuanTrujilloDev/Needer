@@ -67,7 +67,7 @@ Needer | {{publicacion.user.username}}
                       <li><a class="dropdown-item" href="{{publicacion.get_absolute_url}}update">Editar</a></li>
                       <li><form method="POST" action="{% url 'delete-publicacion' user_slug=request.user.slug pk=publicacion.pk %}">
                         {% csrf_token %}
-                        <a class="dropdown-item" type="submit">Eliminar</a>
+                        <button class="dropdown-item" type="submit">Eliminar</button>
                     </form> </li>
                       
                       {% else %}
@@ -96,7 +96,7 @@ Needer | {{publicacion.user.username}}
             
             {% if publicacion.archivo %}
 
-            <div class="row justify-content-center w-100 container px-3">
+            <div class="row justify-content-center w-100 container px-3 py-2">
                 {{publicacion.archivo|tipo_archivo|safe}}
             </div>
                         
