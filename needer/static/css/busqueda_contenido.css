@@ -13,6 +13,28 @@
     color: #5C28FF;
 }
 
+.contenido-marketplace{
+    min-width: 100% !important;
+    min-height: 100% !important;
+    padding: 0 !important;
+    object-fit: fill !important;
+}
+
+
+@media screen and (max-width:767px) {
+    .nombre-contenido-marketplace{
+        font-size: small;
+      }
+    
+  }
+
+  @media screen and (min-width:768px) {
+    .nombre-contenido-marketplace{
+        font-size: medium;
+      }
+    
+  }
+
 @media screen and (max-width:1020px) {
     .busqueda-imagen{
         height: 55px;

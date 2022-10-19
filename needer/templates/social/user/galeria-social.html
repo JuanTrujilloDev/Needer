@@ -107,32 +107,26 @@ Needer | {{object.username}}
         </a>
         {% endwith %}
     </div>
+
     <!--Contenido interno-->
     <div class="my-4 container row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-between justify-content-around div-galeria-container">
         
         {% for publicacion in publicaciones %}
-        <a class="col-3 justify-content-center align-items-center shadow px-0 div-galeria pub-audio align-items-end text-center" href="#">
-
+        <a class="col-3 justify-content-center shadow px-0 div-galeria align-items-end text-center" href="#">
             
             {% if publicacion.archivo %}
-            
 
-            {{publicacion.archivo|tipo_archivo|safe}}
-            
+            {{publicacion.archivo|tipo_archivo|safe}}      
             
             {% else %}
-
-            
             
             {% endif %}
-           
             
         </a>
         {% endfor %}
 
-
-
     </div>
+
 </div>
 {% include 'social/user/foto-perfil-modal.html' %}
 
