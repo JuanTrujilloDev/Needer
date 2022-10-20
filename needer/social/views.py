@@ -116,9 +116,11 @@ class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUser
         
 
         """ Evalua si el usuario ya dio like a la publicacion """
-        like_find = LikedPublicacion.objects.filter(id_publicacion = context["publicacion"].id, id_usuario = usuario)
+        like_find = LikedPublicacion.objects.filter(id_publicacion = context["publicacion"].id, user = usuario)
         if len(like_find)> 0: context['EstadoLike'] = True
         else :context['EstadoLike'] = False 
+        # TODO ARREGLAR CANTIDAD LIKES
+        print(context["page_obj"])
         cant_Like =LikedPublicacion.objects.filter(id_publicacion = context["publicacion"].id).count()
               
            
@@ -132,7 +134,7 @@ class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUser
             
             i.cant_Like = LikeComentarios.objects.filter(id_comentario =i.id).count()
 
-            i.bool_like =LikeComentarios.objects.filter(id_comentario =i.id, id_usuario = self.request.user).exists()
+            i.bool_like =LikeComentarios.objects.filter(id_comentario =i.id, user = self.request.user).exists()
 
         return context
 
@@ -208,7 +210,7 @@ class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, L
         for i in list(context['object_list']):
             i.cant_Like = LikedPublicacion.objects.filter(id_publicacion =i.id).count()
             i.cant_coment = Comentarios.objects.filter(id_publicacion =i.id).count()
-            i.bool_like =LikedPublicacion.objects.filter(id_publicacion =i.id, user = self.request.user).exists()
+            i.bool_like = LikedPublicacion.objects.filter(id_publicacion =i.id, user = self.request.user).exists()
 
 
         context['innercontent'] = 'main/user/content.html'
@@ -263,7 +265,7 @@ class AddLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, View):
 
 """ Eliminar Likes publicacion"""
 
-class RemoveLikesPublicacion(PreventGetMethodMixin, ValidateOwnershipMixin, LoginRequiredMixin, DeleteView):
+class RemoveLikesPublicacion(PreventGetMethodMixin, ValidateOwnershipMixin, LoginRequiredMixin, View):
 
     model = LikedPublicacion
 
@@ -300,7 +302,7 @@ class RemoveLikesPublicacion(PreventGetMethodMixin, ValidateOwnershipMixin, Logi
 
 """ Crear Comentario """
 
-class CrearComentarioView(ValidateOwnershipMixin, DispatchAuthenticatedUserMixin,LoginRequiredMixin, View):
+class CrearComentarioView(DispatchAuthenticatedUserMixin,LoginRequiredMixin, CreateView):
 
     model = Comentarios
     form_class = CrearComentarios
@@ -384,10 +386,6 @@ class DeleteComentarioView(PreventGetMethodMixin, ValidateOwnershipMixin, LoginR
         return reverse('detalle-publicacion', kwargs={'pk': self.get_object().id_publicacion.id, 'user_slug': self.get_object().user.slug})
 
 
-class AddLikesComentarios(PreventGetMethodMixin,  LoginRequiredMixin, View):
-
-
-
 """ Crear likes comentarios """
 
 class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
@@ -432,13 +430,10 @@ class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
         return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
 
 
-class RemoveLikesComentarios(PreventGetMethodMixin, ValidateOwnershipMixin, LoginRequiredMixin, View):
-
-
 
 """ Eliminar likes en comentarios """
 
-class RemoveLikesComentarios(ValidateOwnershipMixin, PreventGetMethodMixin, LoginRequiredMixin, DeleteView):
+class RemoveLikesComentarios(ValidateOwnershipMixin, PreventGetMethodMixin, LoginRequiredMixin, View):
 
     model = LikeComentarios
 

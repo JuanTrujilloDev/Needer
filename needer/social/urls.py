@@ -39,6 +39,6 @@ urlpatterns = [
 
 
     #Galeria Red Social
-   
+    path('<str:slug>/galeria/', GaleriaSocial.as_view(), name='galeria-social'),
 
 ]
