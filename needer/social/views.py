@@ -14,7 +14,7 @@ from django.http import HttpResponse, JsonResponse
 from .forms import CrearComentarios, CrearPublicacionForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from .utils import DispatchAuthenticatedUserMixin, ValidateOwnershipMixin, PreventGetMethodMixin
+from .utils import *
 from django.http import Http404
 from django.db.models import Q
 import re
@@ -206,7 +206,7 @@ class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, L
 
 """ Crear Likes publicacion"""
 
-class AddLikesPublicacion(ValidateOwnershipMixin, LoginRequiredMixin, View):
+class AddLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, View):
 
     model = LikedPublicacion
 
@@ -246,11 +246,12 @@ class AddLikesPublicacion(ValidateOwnershipMixin, LoginRequiredMixin, View):
 
 
 """ Eliminar Likes publicacion"""
-class RemoveLikesPublicacion(ValidateOwnershipMixin, LoginRequiredMixin, DeleteView):
+class RemoveLikesPublicacion(ValidateLikeOwnershipMixin, LoginRequiredMixin, DeleteView):
 
     model = LikedPublicacion
 
     def get_queryset(self):
+        self.publicacion = Publicacion.objects.get(id = self.kwargs["pk"])
         self.queryset =  self.model.objects.filter(id_publicacion = self.publicacion, id_usuario =self.request.user)
         return self.queryset
 

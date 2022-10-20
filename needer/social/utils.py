@@ -158,6 +158,21 @@ class ValidateOwnershipMixin:
         else:
             return redirect(reverse('account_login'))
 
+class ValidateLikeOwnershipMixin:
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            if self.request.user.is_active:
+                if self.request.user == self.get_object().id_usuario:
+                    return super().dispatch(request, *args, **kwargs)
+                else:
+                    raise PermissionDenied
+            else:
+                logout(self.request)
+                return redirect(reverse('account_inactive'))
+        else:
+            return redirect(reverse('account_login'))
+
 
 class PreventGetMethodMixin:
 
