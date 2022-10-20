@@ -113,7 +113,7 @@ Needer | {{object.username}}
         
 
         {% for publicacion in object_list %}
-        <a class="col-3 infinite-item justify-content-center align-items-center shadow px-0 div-galeria pub-audio align-items-end text-center" href="#">
+        <a class="col-3 infinite-item justify-content-center align-items-center shadow px-0 div-galeria pub-audio align-items-end text-center" href="{{publicacion.get_absolute_url}}" target="_blank">
 
 
             
