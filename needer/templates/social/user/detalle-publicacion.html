@@ -133,7 +133,7 @@ Needer | {{publicacion.user.username}}
                     {% endif %} 
                     </div>
                     <div id = 'coment{{publicacion.id}}'  class="p-0 col-md-2 col-xl-1 col-lg-2 col-2">
-                        <a href="#" class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2" onclick="$('.form-comentario').focus();"><i class="bi  {% if object_list.count != 0 %} text-primary bi-chat-left-fill {% else %} bi-chat-left {% endif %}"></i> {{object_list.count}} </a>
+                        <a href="#" class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2" onclick="$('.form-comentario').focus();"><i class="bi  {% if object_list.count != 0 %} text-primary bi-chat-left-fill {% else %} bi-chat-left {% endif %}"></i> {{paginator.count}} </a>
                     </div>
                 </div>
             </div>

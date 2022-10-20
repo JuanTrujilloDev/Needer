@@ -119,8 +119,8 @@ class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUser
         like_find = LikedPublicacion.objects.filter(id_publicacion = context["publicacion"].id, user = usuario)
         if len(like_find)> 0: context['EstadoLike'] = True
         else :context['EstadoLike'] = False 
-        # TODO ARREGLAR CANTIDAD LIKES
-        print(context["page_obj"])
+        
+     
         cant_Like =LikedPublicacion.objects.filter(id_publicacion = context["publicacion"].id).count()
               
            
