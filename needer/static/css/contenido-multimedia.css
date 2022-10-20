@@ -11,11 +11,6 @@
     padding: 0 !important;
  }
 
-.pub-audio{
-    background-image: url('../../../static/img/audio.webp'); 
-    background-repeat: no-repeat !important;
-    background-size: cover !important;
-}
 
 audio::-webkit-media-controls-panel{
     background-color: #ffffff;
