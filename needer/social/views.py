@@ -218,7 +218,9 @@ class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, L
         return ['social/user/home-social.html']
 
 """ Crear Likes publicacion"""
-class AddLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, View):
+
+class AddLikesPublicacion(PreventGetMethodMixin, ValidateOwnershipMixin, LoginRequiredMixin, View):
+
     model = LikedPublicacion
 
     def get_queryset(self):
@@ -256,8 +258,9 @@ class AddLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, View):
         return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
 
 
-""" Eliminar Likes publicacion"""
-class RemoveLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, DeleteView):
+
+class RemoveLikesPublicacion(PreventGetMethodMixin, ValidateOwnershipMixin, LoginRequiredMixin, DeleteView):
+
     model = LikedPublicacion
 
     def get_queryset(self):
@@ -288,7 +291,7 @@ class RemoveLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, DeleteVi
 
 
 """ Crear Comentario """
-class CrearComentarioView(DispatchAuthenticatedUserMixin,LoginRequiredMixin, View):
+class CrearComentarioView(ValidateOwnershipMixin, DispatchAuthenticatedUserMixin,LoginRequiredMixin, View):
     model = Comentarios
     form_class = CrearComentarios
 
@@ -341,8 +344,9 @@ class CrearComentarioView(DispatchAuthenticatedUserMixin,LoginRequiredMixin, Vie
             listado = json.dumps(listado)
         return JsonResponse({'listadocomentarios': listado} )
 
-""" Eliminar comentario de la publicacion """
-class DeleteComentarioView(PreventGetMethodMixin, LoginRequiredMixin, DeleteView):
+
+class DeleteComentarioView(PreventGetMethodMixin, ValidateOwnershipMixin, LoginRequiredMixin, DeleteView):
+
     model = Comentarios
 
     def get_queryset(self):
@@ -371,8 +375,8 @@ class DeleteComentarioView(PreventGetMethodMixin, LoginRequiredMixin, DeleteView
         return reverse('detalle-publicacion', kwargs={'pk': self.get_object().id_publicacion.id, 'user_slug': self.get_object().id_autor.slug})
 
 
-""" Crear likes comentarios """
-class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
+class AddLikesComentarios(PreventGetMethodMixin, ValidateOwnershipMixin, LoginRequiredMixin, View):
+
     model = LikeComentarios
 
     def get_queryset(self, pk):
@@ -413,8 +417,8 @@ class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
 
 
 
-""" Eliminar likes en comentarios """
-class RemoveLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, DeleteView):
+class RemoveLikesComentarios(PreventGetMethodMixin, ValidateOwnershipMixin, LoginRequiredMixin, DeleteView):
+
     model = LikeComentarios
 
     def get_queryset(self):
