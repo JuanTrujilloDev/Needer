@@ -25,7 +25,7 @@ Needer | {{publicacion.user.username}}
 
            
         <!--Publicación-->
-            <form class="rounded shadow container-fluid p-4 bg-white" method = "POST" action="{% url 'update-publicacion'%}" enctype="multipart/form-data">
+            <form class="rounded shadow container-fluid p-4 bg-white" method = "POST" action="{% url 'update-publicacion' user_slug=publicacion.user.slug pk=publicacion.pk%}" enctype="multipart/form-data">
                 
                 {% if messages %}
                 <ul class="messages list-unstyled">
@@ -54,11 +54,17 @@ Needer | {{publicacion.user.username}}
             {% csrf_token %}
             <!--Formulario-->
             {{form.media}}
+
+            <div class="row justify-content-center w-100 container-fluid d-flex mx-0 py-3">
+                {{publicacion.archivo|tipo_archivo|safe}}
+            </div>
+
             {{form.descripcion}}
     
             <div class="d-inline-flex mt-3 col-12 justify-content-xl-end justify-content-lg-end justify-content-md-end justify-content-sm-end justify-content-center">
             
-            <a href="{{self.request.user.get_absolute_url}}" class="btn btn-primary btn-lg fw-bold rounded-pill me-2">Cancelar</a>
+            <a href="{{self.request.user.get_absolute_url}}" class="btn btn-terciary btn-lg fw-bold rounded-pill me-2">Cancelar</a>
+            
             <button class="btn btn-primary btn-lg rounded-pill fw-bold border-0" type="submit">Editar</button>
     
             </div>
@@ -96,11 +102,15 @@ Needer | {{publicacion.user.username}}
             <small class="fw-light mt-2 text-secondary">Needer Ltd © 2022. Todos los derechos reservados.</small>
         </div>
 
-        <button class="btn btn-primary">Eliminar Publicación</button>
+        <form class="text-center py-0 px-0"  method="POST" action="{% url 'delete-publicacion' user_slug=request.user.slug pk=publicacion.pk %}">
+            {% csrf_token %}
+            <button class="col-12  btn btn-primary">Eliminar Publicación</button>
+        </form> 
+       
 
      </div>
 
-
+     
 
 </div>
 {% endblock %}

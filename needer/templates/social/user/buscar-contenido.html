@@ -20,22 +20,21 @@ Needer
 <div class="container-fluid pb-4 mx-auto w-100" id="contenido">
     
 
-        
-        
-        
+    {% if messages %}
+    <ul class="messages list-unstyled text-center my-auto col-lg-8 mx-auto">
+        {% for message in messages %}
+      <div {% if message.tags %} class="mb-3 alert my-auto alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
+ 
+
+    {% if users %}
+    
         <!--Contenido de la busqueda usuario-->
         <div class="row container-fluid d-flex justify-content-center align-middle col-lg-8 px-0 mx-auto shadow rounded">
 
-            {% if messages %}
-            <ul class="messages list-unstyled text-center my-auto">
-                {% for message in messages %}
-              <div {% if message.tags %} class="alert my-auto alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
-                {% endfor %}
-            </ul>
-            {% endif %}
-
-            {% if users %}
             <div class="col-12 d-flex justify-content-start px-0">
                 <h2 class="col-xl-3 col-lg-3 col-md-2 col-sm-2 col-2 text-center fw-bold">Usuarios</h2>
             </div>
@@ -105,6 +104,12 @@ Needer
             <div class="col-12 d-flex justify-content-center px-0 py-3">
                 <a class="col-10 text-center btn btn-mostrar" href="{% url 'busqueda-user' %}?q={{request.GET.q}}"><h3 class="fw-bold my-auto">Mostrar todos</h3></a>
             </div>
+
+            {% else %}
+
+            <!--TODO-->
+
+           <h1>No se encontraron usuarios</h1> 
             {% endif %}
 
             
@@ -147,7 +152,10 @@ Needer
             {% include 'social/user/publicaciones-ajax.html' %}
 
             {% else %}
-                
+            
+            <!--TODO NO SE ENCONTRARON PUBLICACIONES-->    
+
+            <h1>No se encontraron publicaciones</h1>
 
             {% endif %}
         </div>

@@ -1,8 +1,5 @@
-var search_input = document.getElementById("search_form")
-
-
-search_input.addEventListener("keydown", function (e){
-    if(e.code === "Enter" && !e.shiftKey) {
+$("#search_form").keypress(function (e) {
+    if(e.which === 13 && !e.shiftKey) {
         e.preventDefault();
     
         $(this).closest("form").submit();

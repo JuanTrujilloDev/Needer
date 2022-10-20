@@ -35,10 +35,11 @@ urlpatterns = [
 
     #Busqueda Contenido
     path('contenido/busqueda/', BuscarContenidoView.as_view(), name='busqueda-contenido'),
-    path('user/busqueda/', BuscarUsuarioView.as_view(), name="busqueda-user"),
+    path('usuario/busqueda/', BuscarUsuarioView.as_view(), name='busqueda-user'),
+    
 
 
     #Galeria Red Social
-    path("<str:slug>/galeria/", GaleriaSocial.as_view(), name="galeria-social"),
+    path('<str:slug>/galeria/', GaleriaSocial.as_view(), name='galeria-social'),
 
 ]

@@ -109,10 +109,13 @@ Needer | {{object.username}}
     </div>
 
     <!--Contenido interno-->
-    <div class="my-4 container row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-between justify-content-around div-galeria-container">
+    <div class="my-4 infinite-container container row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-between justify-content-around div-galeria-container">
         
-        {% for publicacion in publicaciones %}
-        <a class="col-3 justify-content-center shadow px-0 div-galeria align-items-end text-center" href="#">
+
+        {% for publicacion in object_list %}
+        <a class="col-3 infinite-item justify-content-center align-items-center shadow px-0 div-galeria pub-audio align-items-end text-center" href="#">
+
+
             
             {% if publicacion.archivo %}
 
@@ -125,7 +128,27 @@ Needer | {{object.username}}
         </a>
         {% endfor %}
 
+
     </div>
+
+    {% if page_obj.has_next %}
+        <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}" style="display:none;">More</a>
+    
+        {% else %}
+        <a class="infinite-more-link" href="?page=0" style="display:none;">More</a>
+        {% endif %}
+
+        <div class="page-load-status mt-3">
+            {% if page_obj.has_next %}
+            <h3 class="infinite-scroll-request col-12 text-center">
+                Cargando...
+            </h3>
+            {% endif %}
+ 
+    
+        </div>
+
+
 
 </div>
 {% include 'social/user/foto-perfil-modal.html' %}
@@ -135,6 +158,5 @@ Needer | {{object.username}}
 {% block script %}
 <script src="https://unpkg.com/infinite-scroll@4.0.1/dist/infinite-scroll.pkgd.min.js"></script>
 <script src="{% static 'js/load-more-ajax.js' %}"></script>
-<script src="{% static 'js/like-comen.js' %}"></script>
 {% endblock script %}
 

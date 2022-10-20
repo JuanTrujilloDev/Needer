@@ -158,7 +158,6 @@ class ValidateOwnershipMixin:
         else:
             return redirect(reverse('account_login'))
 
-
 class PreventGetMethodMixin:
 
     def get(self, request, *args, **kwargs):
