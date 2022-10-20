@@ -96,24 +96,36 @@ TEMPLATES = [
     },
 ]
 
+FIXTURE_DIRS = [os.path.join(BASE_DIR, "fixtures")]
+
 WSGI_APPLICATION = 'needer.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.postgresql',
-    'NAME': 'df9i7g690gjrvt',
-    'USER': 'vkchuvxhtezpvu',
-    'PASSWORD': os.environ["DB_PASSWORD"],
-    # ↓ HOST instead of HOSTS
-    'HOST': os.environ["DB_HOST"],
-    'PORT': 5432
-  }
+
+
+DATABASES_AVAILABLE = {
+        'main': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'df9i7g690gjrvt',
+            'USER': 'vkchuvxhtezpvu',
+            'PASSWORD': os.environ["DB_PASSWORD"],
+            # ↓ HOST instead of HOSTS
+            'HOST': os.environ["DB_HOST"],
+            'PORT': 5432,
+        },
+      'sqlite': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
 }
 
+database = os.environ.get('DJANGO_DATABASE_TEST', 'main')
+DATABASES = {
+    'default': DATABASES_AVAILABLE[database]
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

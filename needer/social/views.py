@@ -218,7 +218,9 @@ class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, L
         return ['social/user/home-social.html']
 
 """ Crear Likes publicacion"""
+
 class AddLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, View):
+
     model = LikedPublicacion
 
     def get_queryset(self):
@@ -257,7 +259,9 @@ class AddLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, View):
 
 
 """ Eliminar Likes publicacion"""
-class RemoveLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, DeleteView):
+
+class RemoveLikesPublicacion(PreventGetMethodMixin, ValidateOwnershipMixin, LoginRequiredMixin, DeleteView):
+
     model = LikedPublicacion
 
     def get_queryset(self):
@@ -288,7 +292,7 @@ class RemoveLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, DeleteVi
 
 
 """ Crear Comentario """
-class CrearComentarioView(DispatchAuthenticatedUserMixin,LoginRequiredMixin, View):
+class CrearComentarioView(ValidateOwnershipMixin, DispatchAuthenticatedUserMixin,LoginRequiredMixin, View):
     model = Comentarios
     form_class = CrearComentarios
 
@@ -342,7 +346,9 @@ class CrearComentarioView(DispatchAuthenticatedUserMixin,LoginRequiredMixin, Vie
         return JsonResponse({'listadocomentarios': listado} )
 
 """ Eliminar comentario de la publicacion """
-class DeleteComentarioView(PreventGetMethodMixin, LoginRequiredMixin, DeleteView):
+
+class DeleteComentarioView(PreventGetMethodMixin, ValidateOwnershipMixin, LoginRequiredMixin, DeleteView):
+
     model = Comentarios
 
     def get_queryset(self):
@@ -372,7 +378,9 @@ class DeleteComentarioView(PreventGetMethodMixin, LoginRequiredMixin, DeleteView
 
 
 """ Crear likes comentarios """
+
 class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
+
     model = LikeComentarios
 
     def get_queryset(self, pk):
@@ -414,7 +422,9 @@ class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
 
 
 """ Eliminar likes en comentarios """
-class RemoveLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, DeleteView):
+
+class RemoveLikesComentarios(ValidateOwnershipMixin, PreventGetMethodMixin, LoginRequiredMixin, DeleteView):
+
     model = LikeComentarios
 
     def get_queryset(self):
