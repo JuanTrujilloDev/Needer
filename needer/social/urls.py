@@ -35,6 +35,7 @@ urlpatterns = [
 
     #Busqueda Contenido
     path('contenido/busqueda/', BuscarContenidoView.as_view(), name='busqueda-contenido'),
+    path('usuario/busqueda/', BuscarUsuarioView.as_view(), name='busqueda-user'),
     
 
 

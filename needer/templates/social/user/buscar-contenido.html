@@ -28,17 +28,16 @@ Needer
     </ul>
     {% endif %}
 
-    {% if users %}
-    <div class="col-12 d-flex justify-content-start px-0">
-        <h2 class="col-xl-3 col-lg-3 col-md-2 col-sm-2 col-2 text-center fw-bold">Usuarios</h2>
-    </div>
-        
-        
-        
+ 
 
+    {% if users %}
+    
         <!--Contenido de la busqueda usuario-->
         <div class="row container-fluid d-flex justify-content-center align-middle col-lg-8 px-0 mx-auto shadow rounded">
 
+            <div class="col-12 d-flex justify-content-start px-0">
+                <h2 class="col-xl-3 col-lg-3 col-md-2 col-sm-2 col-2 text-center fw-bold">Usuarios</h2>
+            </div>
             
             {% for user in users %}
             
