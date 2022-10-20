@@ -98,35 +98,49 @@ class CrearPublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
 
 
 # Detalle Publicacion
-class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, LoginRequiredMixin, DetailView):
-    model = Publicacion
+class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
+    model = Comentarios
+    paginate_by = 8
+    ordering = ["-fecha_creacion"]
 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # Se trae la Publicacion a la vista
+        autor = User.objects.get(slug=self.kwargs['user_slug'])
+        context["publicacion"] = Publicacion.objects.get(Q(user=autor) & Q(id=self.kwargs["pk"]))
+        
+
         """ Se obtiene el objeto del usuario para los likes """
         usuario = User.objects.get(id = self.request.user.id)
+        
 
         """ Evalua si el usuario ya dio like a la publicacion """
-        like_find = LikedPublicacion.objects.filter(id_publicacion = kwargs['object'].id, id_usuario = usuario)
+        like_find = LikedPublicacion.objects.filter(id_publicacion = context["publicacion"].id, id_usuario = usuario)
         if len(like_find)> 0: context['EstadoLike'] = True
         else :context['EstadoLike'] = False 
-        cant_Like =LikedPublicacion.objects.filter(id_publicacion = kwargs['object'].id).count()
+        cant_Like =LikedPublicacion.objects.filter(id_publicacion = context["publicacion"].id).count()
               
            
-        if self.kwargs['user_slug'] != self.get_object().user.slug:
+        if self.kwargs['user_slug'] != context["publicacion"].user.slug:
             raise Http404 
 
         """ Se carga el formulario y se evalua en la vista de CrearComentarioView """
         context['form'] = CrearComentarios
         context['CantLiked'] = cant_Like
-        context['Comentario'] = Comentarios.objects.filter(id_publicacion = kwargs['object'].id).order_by("-fecha_creacion")
-        for i in list(context['Comentario']):
+        for i in list(context['object_list']):
+            
             i.cant_Like = LikeComentarios.objects.filter(id_comentario =i.id).count()
 
             i.bool_like =LikeComentarios.objects.filter(id_comentario =i.id, id_usuario = self.request.user).exists()
 
         return context
+
+    def get_queryset(self):
+        autor = User.objects.get(slug=self.kwargs['user_slug'])
+        publicacion = Publicacion.objects.get(Q(user=autor) & Q(id=self.kwargs["pk"]))
+        return Comentarios.objects.filter(Q(id_publicacion=publicacion)).order_by("-fecha_creacion")
 
     def get_template_names(self):
             return ['social/user/detalle-publicacion.html']    
@@ -574,14 +588,19 @@ class BuscarUsuarioView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
 """Vista de galeria"""
 
 
-class GaleriaSocial(ExtendsInnerContentMixin, LoginRequiredMixin, DetailView):
-    model = User
+class GaleriaSocial(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
+    model = Publicacion
     template_name = "social/user/galeria-social.html"
+    paginate_by = 9
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['publicaciones'] = Publicacion.objects.filter(Q(user=self.get_object()) & ~Q(archivo=""))
+        context['object'] = User.objects.get(slug = self.kwargs['slug'])
         return context
+
+    def get_queryset(self):
+        user = User.objects.get(slug = self.kwargs['slug'])
+        return Publicacion.objects.filter(Q(user=user) & ~Q(archivo="")).order_by("-fecha_creacion")
 
 
     

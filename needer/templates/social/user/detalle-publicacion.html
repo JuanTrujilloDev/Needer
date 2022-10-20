@@ -133,12 +133,12 @@ Needer | {{publicacion.user.username}}
                     {% endif %} 
                     </div>
                     <div id = 'coment{{publicacion.id}}'  class="p-0 col-md-2 col-xl-1 col-lg-2 col-2">
-                        <a href="#" class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2" onclick="$('.form-comentario').focus();"><i class="bi  {% if Comentario.count != 0 %} text-primary bi-chat-left-fill {% else %} bi-chat-left {% endif %}"></i> {{Comentario.count}} </a>
+                        <a href="#" class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2" onclick="$('.form-comentario').focus();"><i class="bi  {% if object_list.count != 0 %} text-primary bi-chat-left-fill {% else %} bi-chat-left {% endif %}"></i> {{object_list.count}} </a>
                     </div>
                 </div>
             </div>
                                 
-            <div class="col-12 d-flex justify-content-start align-items-center align-middle border-bottom">
+            <div class="col-12 d-flex justify-content-start align-items-center align-middle {% if not object_list %} border-bottom {% endif %}">
                 
                 <div class="col d-flex pe-0 py-0 my-2 ms-2 me-3 align-middle d-flex h-100 align-items-center">
                     <a href="#" class="text-start my-auto">
@@ -160,9 +160,10 @@ Needer | {{publicacion.user.username}}
         </form>
 
     
-        <div id = "comentarios" class="container d-flex row justify-content-center">
-        {% for com in Comentario %}
-        <div id = "comentarios{{com.id}}" class=" row container mw-100 {% if not forloop.last %} border-bottom {% endif %}">
+        <div id = "comentarios" class="infinite-container container d-flex row justify-content-center">
+
+        {% for com in object_list %}
+        <div id = "comentarios{{com.id}}" class="infinite-item row container mw-100 border-top ">
 
         <!--Comentario Usuario-->
             <div class="align-middle px-2 mt-2 py-2 col-12 row container-fluid px-0 d-flex justify-content-start">
@@ -241,6 +242,25 @@ Needer | {{publicacion.user.username}}
             </div>
         </div>
         {% endfor %}
+
+        {% if page_obj.has_next %}
+        <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}" style="display:none;">More</a>
+    
+        {% else %}
+        <a class="infinite-more-link" href="?page=0" style="display:none;">More</a>
+        {% endif %}
+
+        <div class="page-load-status mt-3">
+            {% if page_obj.has_next %}
+            <h5 class="infinite-scroll-request col-12 text-center">
+                Cargando...
+            </h5>
+            {% endif %}
+ 
+    
+        </div>
+    
+     
 
         </div>
     </div>
@@ -331,5 +351,7 @@ Needer | {{publicacion.user.username}}
     window.data = {url_coment: '{% url "comentario" publicacion.id|safe%}'}
                     
 </script>
+<script src="https://unpkg.com/infinite-scroll@4.0.1/dist/infinite-scroll.pkgd.min.js"></script>
+<script src="{% static 'js/load-more-comments.js' %}"></script>
 {% endblock script %}
 
