@@ -35,21 +35,28 @@ class Publicacion(models.Model):
 
 
     def save(self, *args, **kwargs):
-        if self.archivo:
-            if self.archivo.file.content_type.split('/')[0] == 'image':
-                return super().save(*args, **kwargs)
-                file_compression(self.archivo)
+        
+        # Si se esta creando el objeto
+        if self._state.adding:
+            if self.archivo:
+                if self.archivo.file.content_type.split('/')[0] == 'image':
+                    # file_compression(self.archivo)
+                    return super().save(*args, **kwargs)
+                    
 
-            else:
-                file_compression(self.archivo)
-                return super().save(*args, **kwargs)
+                else:
+                    file_compression(self.archivo)
+                    return super().save(*args, **kwargs)
 
         return super().save(*args, **kwargs)
 
 
     def delete(self, using=None, keep_parents=False):
         if self.archivo:
-            os.remove(os.path.join(settings.MEDIA_ROOT, self.archivo.name))
+            try:
+                os.remove(os.path.join(settings.MEDIA_ROOT, self.archivo.name))
+            except:
+                pass
         super().delete()
 
 
@@ -67,7 +74,7 @@ class LikedPublicacion(models.Model):
 class Comentarios(models.Model):
     id_publicacion = models.ForeignKey(Publicacion, verbose_name= ("Publicacion"), on_delete=models.CASCADE)
     id_autor = models.ForeignKey(User, verbose_name= ("Autor"), on_delete=models.CASCADE)
-    comentario = models.TextField(max_length=120, verbose_name=("Comentario"), blank=False)
+    comentario = models.TextField(max_length=520, verbose_name=("Comentario"), blank=False)
     fecha_creacion = models.DateTimeField(verbose_name = 'Fecha de Like', auto_now_add=True, auto_now=False)
     
     def likeComentario(self): return reverse('comentario-addlike', kwargs={'pk':self.id})

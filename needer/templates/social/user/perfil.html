@@ -98,7 +98,7 @@ Needer | {{object.username}}
         {% if url_name == 'detalle-creador' %}active {% endif %}" href="{{object.get_absolute_url}}">
             <h2 class="mb-0">Perfil</h2>
         </a>
-        <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted text-decoration-none text-center" href="#">
+        <a href="{% url 'galeria-social'  slug=object.slug %}" class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted text-decoration-none text-center" href="#">
             <h2 class="mb-0">Galeria</h2>
         </a>
         <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none text-center

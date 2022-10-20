@@ -28,6 +28,7 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .btn-terciary{
+    color: #ffffff !important;
     background-color: #A3A3FF!important;
 
 }
@@ -73,5 +74,16 @@ h1, h2, h3, h4, h5, h6{
     border-radius: 10px;
     border: 3px solid #ffffff;
   }
+
+.alert-error{
+  --bs-alert-color: #842029;
+  --bs-alert-bg: #f8d7da;
+  --bs-alert-border-color: #f5c2c7;
+}
+
+.messages{
+  padding-left: 0px!important;
+  padding-right: 0px!important;
+}
 
 
