@@ -14,7 +14,7 @@ from django.http import HttpResponse, JsonResponse
 from .forms import CrearComentarios, CrearPublicacionForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from .utils import DispatchAuthenticatedUserMixin, ValidateOwnershipMixin, PreventGetMethodMixin
+from .utils import *
 from django.http import Http404
 from django.db.models import Q
 import re
@@ -23,19 +23,18 @@ from main.utils import *
 
 
 
-
-
 # VISTA PARA PERFIL DEL CREADOR DE CONTENIDO
-class DetailCreador(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
+class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Publicacion
     template_name = 'social/user/perfil.html'
-    paginate_by = 5
+    paginate_by = 2
 
     def get_context_data(self, **kwargs):
         
         context = super().get_context_data(**kwargs)
         # Traemos el autor del perfil
         context['object'] = User.objects.get(slug = self.kwargs['slug'])
+        context['innercontent'] = 'main/user/content.html'
         user = User.objects.get(slug = self.kwargs['slug'])
         for i in list(context['object_list']):
             i.cant_Like = LikedPublicacion.objects.filter(id_publicacion =i.id).count()
@@ -144,10 +143,11 @@ class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUser
 
     def get_template_names(self):
             return ['social/user/detalle-publicacion.html']    
+ 
 
 # Update Publicacion
 
-class UpdatePublicacionView(ExtendsInnerContentMixin, ValidateOwnershipMixin, LoginRequiredMixin, UpdateView):
+class UpdatePublicacionView(ValidateOwnershipMixin, LoginRequiredMixin, UpdateView):
     model = Publicacion
     fields = ['descripcion']
     template_name = 'social/user/update-publicacion.html'
@@ -158,7 +158,7 @@ class UpdatePublicacionView(ExtendsInnerContentMixin, ValidateOwnershipMixin, Lo
         if self.kwargs['user_slug'] != self.get_object().user.slug:
             raise Http404 
 
-
+        context['innercontent'] = 'main/user/content.html'
 
         return context
 
@@ -208,9 +208,10 @@ class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, L
         for i in list(context['object_list']):
             i.cant_Like = LikedPublicacion.objects.filter(id_publicacion =i.id).count()
             i.cant_coment = Comentarios.objects.filter(id_publicacion =i.id).count()
-            i.bool_like =LikedPublicacion.objects.filter(id_publicacion =i.id, id_usuario = self.request.user).exists()
+            i.bool_like =LikedPublicacion.objects.filter(id_publicacion =i.id, user = self.request.user).exists()
 
 
+        context['innercontent'] = 'main/user/content.html'
         return context
 
     def get_template_names(self):
@@ -220,6 +221,7 @@ class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, L
 """ Crear Likes publicacion"""
 
 class AddLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, View):
+
 
     model = LikedPublicacion
 
@@ -241,13 +243,13 @@ class AddLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, View):
 
         """ Si el usuario ya dio like devuelva la cantidad de likes que tiene la publicacion """
 
-        if query.filter(id_usuario = self.request.user).exists(): 
+        if query.filter(user = self.request.user).exists(): 
             result['likes'] =  str(cantidadlike)
             listado.append(result)
             listado = json.dumps(listado)
             return JsonResponse({'result': listado} )
         """ Si no ha dado like se crea el objeto y se suma + 1  """
-        query.create(id_publicacion = self.publicacion, id_usuario =usuario)
+        query.create(id_publicacion = self.publicacion, user =usuario)
         cantidadlike += 1
         result['likes'] =  str(cantidadlike)
         listado.append(result)
@@ -258,6 +260,7 @@ class AddLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, View):
         return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
 
 
+
 """ Eliminar Likes publicacion"""
 
 class RemoveLikesPublicacion(PreventGetMethodMixin, ValidateOwnershipMixin, LoginRequiredMixin, DeleteView):
@@ -265,8 +268,12 @@ class RemoveLikesPublicacion(PreventGetMethodMixin, ValidateOwnershipMixin, Logi
     model = LikedPublicacion
 
     def get_queryset(self):
-        self.queryset =  self.model.objects.filter(id_publicacion = self.publicacion, id_usuario =self.request.user)
+        self.publicacion = Publicacion.objects.get(id = self.kwargs["pk"])
+        self.queryset =  self.model.objects.get(id_publicacion = self.publicacion, user =self.request.user)
         return self.queryset
+
+    def get_object(self):
+        return self.get_queryset()
 
     
 
@@ -292,7 +299,9 @@ class RemoveLikesPublicacion(PreventGetMethodMixin, ValidateOwnershipMixin, Logi
 
 
 """ Crear Comentario """
+
 class CrearComentarioView(ValidateOwnershipMixin, DispatchAuthenticatedUserMixin,LoginRequiredMixin, View):
+
     model = Comentarios
     form_class = CrearComentarios
 
@@ -310,12 +319,8 @@ class CrearComentarioView(ValidateOwnershipMixin, DispatchAuthenticatedUserMixin
         if form_.is_valid():
             comentario = form_.cleaned_data['comentario']
             """ Crear objeto del comentario """
-            query.create(id_publicacion = self.publicacion, id_autor = self.usuario, comentario = comentario)
-        else:
-            # Si hay error en el formulario retornar error para que el cliente lo reciba en JSON
-            mensaje= "Error"
-            return JsonResponse({'mensaje': mensaje} )
-
+            query.create(id_publicacion = self.publicacion, user = self.usuario, comentario = comentario)
+        
         """ Listar los comentarios con ajax """
         if self.request.headers.get('x-requested-with'):
             """ se obtienen los comentarios de la publicacion y se pasan a la vista usando json """
@@ -324,18 +329,18 @@ class CrearComentarioView(ValidateOwnershipMixin, DispatchAuthenticatedUserMixin
             query.filter(id_publicacion = self.publicacion)
 
             objecto = query.last()
-            listadocomentarios['url'] = objecto.id_autor.get_absolute_url()
+            listadocomentarios['url'] = objecto.user.get_absolute_url()
             listadocomentarios['id'] = objecto.id
             listadocomentarios['urlComentario'] = objecto.urlComentario()
 
             try: 
-                objecto.id_autor.foto
-                listadocomentarios['img'] = objecto.id_autor.foto.url
+                objecto.user.foto
+                listadocomentarios['img'] = objecto.user.foto.url
             except:
                 listadocomentarios['img']="/static/img/default-profile.png" 
 
-            listadocomentarios['apodo'] = objecto.id_autor.apodo
-            listadocomentarios['username'] = objecto.id_autor.username
+            listadocomentarios['apodo'] = objecto.user.apodo
+            listadocomentarios['username'] = objecto.user.username
             listadocomentarios['comentario'] = objecto.comentario
             listadocomentarios['cantidad'] = query.count()
             listadocomentarios['pk'] =  self.publicacion.id
@@ -345,14 +350,16 @@ class CrearComentarioView(ValidateOwnershipMixin, DispatchAuthenticatedUserMixin
             listado = json.dumps(listado)
         return JsonResponse({'listadocomentarios': listado} )
 
+
 """ Eliminar comentario de la publicacion """
 
 class DeleteComentarioView(PreventGetMethodMixin, ValidateOwnershipMixin, LoginRequiredMixin, DeleteView):
 
+
     model = Comentarios
 
     def get_queryset(self):
-        self.queryset =  self.model.objects.filter(id = self.id_coment)
+        self.queryset =  self.model.objects.filter(id = self.kwargs["pk"])
         return self.queryset  
 
     def post(self, request, pk, *args, **kwargs):
@@ -360,7 +367,7 @@ class DeleteComentarioView(PreventGetMethodMixin, ValidateOwnershipMixin, LoginR
         query = self.get_queryset()
         cantidad = query.last()
         
-        if query.filter(id_autor = self.request.user).exists():
+        if query.filter(user = self.request.user).exists():
             query.delete()
             """ filtrar cantidad de comentarios en la publcacion """
         cantidad_likes = self.model.objects.filter(id_publicacion = cantidad.id_publicacion).count()
@@ -374,12 +381,17 @@ class DeleteComentarioView(PreventGetMethodMixin, ValidateOwnershipMixin, LoginR
         return JsonResponse({'json': listado} )
 
     def get_success_url(self) -> str:
-        return reverse('detalle-publicacion', kwargs={'pk': self.get_object().id_publicacion.id, 'user_slug': self.get_object().id_autor.slug})
+        return reverse('detalle-publicacion', kwargs={'pk': self.get_object().id_publicacion.id, 'user_slug': self.get_object().user.slug})
+
+
+class AddLikesComentarios(PreventGetMethodMixin,  LoginRequiredMixin, View):
+
 
 
 """ Crear likes comentarios """
 
 class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
+
 
     model = LikeComentarios
 
@@ -401,23 +413,26 @@ class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
 
         """ Si el usuario ya dio like devuelva la cantidad de likes que tiene la publicacion """
 
-        if query.filter(id_usuario = self.request.user).exists(): 
+        if query.filter(user = self.request.user).exists(): 
             result['likes'] =  str(cantidadlike)
             listado.append(result)
             listado = json.dumps(listado)
             return JsonResponse({'result': listado} )
         """ Si no ha dado like se crea el objeto y se suma + 1  """
-        query.create(id_comentario = self.comentario, id_usuario = usuario)
+        query.create(id_comentario = self.comentario, user = usuario)
 
         cantidadlike += 1
         result['likes'] =  str(cantidadlike)
         listado.append(result)
         listado = json.dumps(listado)
-
+        
         return JsonResponse({'result': listado} )
 
     def get_success_url(self) -> str:
         return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
+
+
+class RemoveLikesComentarios(PreventGetMethodMixin, ValidateOwnershipMixin, LoginRequiredMixin, View):
 
 
 
@@ -428,8 +443,11 @@ class RemoveLikesComentarios(ValidateOwnershipMixin, PreventGetMethodMixin, Logi
     model = LikeComentarios
 
     def get_queryset(self):
-        self.queryset =  self.model.objects.filter(id_comentario = self.comentario, id_usuario = self.request.user)
+        self.queryset =  self.model.objects.get(id_comentario = self.kwargs["pk"], user = self.request.user)
         return self.queryset
+
+    def get_object(self):
+        return self.get_queryset()
 
 
     def post(self, request, pk, *args, **kwargs):
@@ -452,8 +470,6 @@ class RemoveLikesComentarios(ValidateOwnershipMixin, PreventGetMethodMixin, Logi
 
     def get_success_url(self) -> str:
         return reverse('detalle-publicacion', kwargs={'pk': self.publicacion.id, 'user_slug': self.publicacion.user.slug})
-
-
 
 
 """ Buscar elementos en la red social """
@@ -613,7 +629,7 @@ class GaleriaSocial(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
         return Publicacion.objects.filter(Q(user=user) & ~Q(archivo="")).order_by("-fecha_creacion")
 
 
-    
+
 
 
 

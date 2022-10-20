@@ -67,24 +67,24 @@ class Publicacion(models.Model):
 
 class LikedPublicacion(models.Model):
     id_publicacion = models.ForeignKey(Publicacion, verbose_name= ("Publicacion"), on_delete=models.CASCADE)
-    id_usuario = models.ForeignKey(User, verbose_name= ("Usuario"), on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name= ("Usuario"), on_delete=models.CASCADE)
     fecha = models.DateTimeField(verbose_name = 'Fecha de Like' ,auto_now_add=True, auto_now=False)
 
 
 class Comentarios(models.Model):
     id_publicacion = models.ForeignKey(Publicacion, verbose_name= ("Publicacion"), on_delete=models.CASCADE)
-    id_autor = models.ForeignKey(User, verbose_name= ("Autor"), on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name= ("Autor"), on_delete=models.CASCADE)
     comentario = models.TextField(max_length=520, verbose_name=("Comentario"), blank=False)
     fecha_creacion = models.DateTimeField(verbose_name = 'Fecha de Like', auto_now_add=True, auto_now=False)
     
     def likeComentario(self): return reverse('comentario-addlike', kwargs={'pk':self.id})
     def dislikeComentario(self): return reverse('comentario-removelike', kwargs={'pk':self.id})
-    def urlComentario(self): return reverse('delete-comentario', kwargs={'pk':self.id,'user_slug':self.id_autor.slug})
+    def urlComentario(self): return reverse('delete-comentario', kwargs={'pk':self.id,'user_slug':self.user.slug})
     
 
 class LikeComentarios(models.Model):
     id_comentario = models.ForeignKey(Comentarios, verbose_name= ("Comentarios"), on_delete=models.CASCADE)
-    id_usuario = models.ForeignKey(User, verbose_name= ("Usuario"), on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name= ("Usuario"), on_delete=models.CASCADE)
     fecha = models.DateTimeField(verbose_name = 'Fecha de Like' ,auto_now_add=True, auto_now=False)
 
         
