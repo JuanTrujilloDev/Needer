@@ -63,6 +63,14 @@ class Publicacion(models.Model):
     def likePublicacion(self): return reverse('addlike', kwargs={'pk':self.id})
     def disPublicacion(self): return reverse('removelike', kwargs={'pk':self.id})
 
+    def cantidadLikes(self):
+        # Metodo para contar Likes
+        return LikedPublicacion.objects.filter(id_publicacion=self).count()
+
+    def cantidadComentarios(self):
+        # Metodo para contar comentarios
+        return Comentarios.objects.filter(id_publicacion=self).count()
+
 
 
 class LikedPublicacion(models.Model):
@@ -81,6 +89,9 @@ class Comentarios(models.Model):
     def dislikeComentario(self): return reverse('comentario-removelike', kwargs={'pk':self.id})
     def urlComentario(self): return reverse('delete-comentario', kwargs={'pk':self.id,'user_slug':self.user.slug})
     
+    def cantidadLikes(self):
+        # Metodo para contar likes de comentarios
+        return LikeComentarios.objects.filter(id_comentario=self).count()
 
 class LikeComentarios(models.Model):
     id_comentario = models.ForeignKey(Comentarios, verbose_name= ("Comentarios"), on_delete=models.CASCADE)

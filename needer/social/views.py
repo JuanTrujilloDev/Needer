@@ -36,9 +36,7 @@ class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView
         context['object'] = User.objects.get(slug = self.kwargs['slug'])
         context['innercontent'] = 'main/user/content.html'
         user = User.objects.get(slug = self.kwargs['slug'])
-        for i in list(context['object_list']):
-            i.cant_Like = LikedPublicacion.objects.filter(id_publicacion =i.id).count()
-            i.cant_coment = Comentarios.objects.filter(id_publicacion =i.id).count()
+
         return context
 
 
@@ -111,29 +109,26 @@ class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUser
         context["publicacion"] = Publicacion.objects.get(Q(user=autor) & Q(id=self.kwargs["pk"]))
         
 
-        """ Se obtiene el objeto del usuario para los likes """
-        usuario = User.objects.get(id = self.request.user.id)
+
         
 
         """ Evalua si el usuario ya dio like a la publicacion """
-        like_find = LikedPublicacion.objects.filter(id_publicacion = context["publicacion"].id, user = usuario)
+        like_find = LikedPublicacion.objects.filter(id_publicacion = context["publicacion"].id, user = self.request.user)
         if len(like_find)> 0: context['EstadoLike'] = True
         else :context['EstadoLike'] = False 
         
-     
-        cant_Like =LikedPublicacion.objects.filter(id_publicacion = context["publicacion"].id).count()
               
            
         if self.kwargs['user_slug'] != context["publicacion"].user.slug:
             raise Http404 
 
+        context["publicacion"].bool_comment = Comentarios.objects.filter(Q(id_publicacion = context["publicacion"]) & Q(user = self.request.user)).exists()
+
         """ Se carga el formulario y se evalua en la vista de CrearComentarioView """
         context['form'] = CrearComentarios
-        context['CantLiked'] = cant_Like
+
         for i in list(context['object_list']):
             
-            i.cant_Like = LikeComentarios.objects.filter(id_comentario =i.id).count()
-
             i.bool_like =LikeComentarios.objects.filter(id_comentario =i.id, user = self.request.user).exists()
 
         return context
@@ -208,10 +203,8 @@ class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, L
         """ Asignacion de la cantidad de likes, comentarios y si el usuario le ha dado like
             a la publicacion o no le ha dado like """
         for i in list(context['object_list']):
-            i.cant_Like = LikedPublicacion.objects.filter(id_publicacion =i.id).count()
-            i.cant_coment = Comentarios.objects.filter(id_publicacion =i.id).count()
-            i.bool_like = LikedPublicacion.objects.filter(id_publicacion =i.id, user = self.request.user).exists()
-
+            i.bool_like = LikedPublicacion.objects.filter(Q(id_publicacion =i.id) & Q(user = self.request.user)).exists()
+            i.bool_comment = Comentarios.objects.filter(Q(id_publicacion =i.id) & Q(user = self.request.user)).exists()
 
         context['innercontent'] = 'main/user/content.html'
         return context
@@ -236,7 +229,7 @@ class AddLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, View):
         usuario = User.objects.get(id = request.user.id)
 
         query = self.get_queryset()
-        cantidadlike = query.count()
+        cantidadlike = self.publicacion.cantidadLikes()
 
         result = {}
         listado = []
@@ -285,7 +278,7 @@ class RemoveLikesPublicacion(PreventGetMethodMixin, ValidateOwnershipMixin, Logi
         """ Se obtiene el usuario que da el no me gusta """
         query = self.get_queryset()
         query.delete()
-        cantidadlike = self.model.objects.filter(id_publicacion = self.publicacion).count()
+        cantidadlike = self.publicacion.cantidadLikes()
         result = {}
         listado = []
         result['pk'] =  self.publicacion.id
@@ -402,7 +395,7 @@ class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
         self.comentario = Comentarios.objects.get(id = pk)
         usuario = User.objects.get(id = request.user.id)
         query = self.get_queryset(pk)
-        cantidadlike = query.count()
+        cantidadlike = self.comentario.cantidadLikes()
 
         result = {}
         listado = []
@@ -451,7 +444,7 @@ class RemoveLikesComentarios(ValidateOwnershipMixin, PreventGetMethodMixin, Logi
         """ Se obtiene el usuario que da el no me gusta """
         self.get_queryset().delete()
 
-        cantidadlike = self.model.objects.filter(id_comentario = self.comentario).count()
+        cantidadlike = self.comentario.cantidadLikes()
 
         result = {}
         listado = []

@@ -92,14 +92,14 @@
          <div class="row text-decoration-none pt-1 w-100 container col-12">
             <div id = 'divlike{{publicacion.id}}' class="p-0 me-2 col-md-2 col-xl-1 col-lg-2 col-2 text-center">
             {% if publicacion.bool_like %}
-                <a id="dislike{{publicacion.id}}" href="#" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="text-muted botones-interaccion px-0 fw-lighter text-decoration-none border-secondary align-middle fs-5 fw-bold col-12 like z-2"><i class="bi bi-heart-fill text-primary"></i> {{publicacion.cant_Like}} </a>
+                <a id="dislike{{publicacion.id}}" href="#" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="text-muted botones-interaccion px-0 fw-lighter text-decoration-none border-secondary align-middle fs-5 fw-bold col-12 like z-2"><i class="bi bi-heart-fill text-primary"></i> {{publicacion.cantidadLikes}} </a>
             {% else %}
 
-                <a id="like{{publicacion.id}}" href="#" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class=" botones-interaccion px-0 text-muted text-decoration-none align-middle fw-lighter fs-5 fw-bold col-12 like z-2"><i class="bi bi-heart"></i> {{publicacion.cant_Like}} </a>
+                <a id="like{{publicacion.id}}" href="#" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class=" botones-interaccion px-0 text-muted text-decoration-none align-middle fw-lighter fs-5 fw-bold col-12 like z-2"><i class="bi bi-heart"></i> {{publicacion.cantidadLikes}} </a>
             {% endif %} 
             </div>
             <div id = 'coment{{publicacion.id}}'  class="p-0 col-md-2 col-xl-1 col-lg-2 col-2">
-                <a href="#" class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2" onclick="$('.form-comentario').focus();"><i class="bi  {% if publicacion.cant_coment != 0 %} text-primary bi-chat-left-fill {% else %} bi-chat-left {% endif %}"></i> {{publicacion.cant_coment}} </a>
+                <a href="#" class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2" onclick="$('.form-comentario').focus();"><i class="bi  {% if publicacion.bool_comment %} text-primary bi-chat-left-fill {% else %} bi-chat-left {% endif %}"></i> {{publicacion.cantidadComentarios}} </a>
             </div>
         </div>
     </div>
