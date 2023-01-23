@@ -17,20 +17,54 @@ Needer
 
 {% block inner-content %}
 <!--Contenido de adentro-->
-<div class="container-fluid pb-4 mx-auto w-100" id="contenido">
+<div class="container-fluid pb-4 d-flex justify-content-center mx-auto w-100" style="min-height: 100%;" id="contenido">
+
+   
+    {% if users == None and object_list|length == 0 %}
+    <div class="row container my-auto">
+        {% if messages %}
+        <ul class="messages list-unstyled text-center my-auto col-lg-8 mx-auto">
+            {% for message in messages %}
+        <div {% if message.tags %} class="mb-3 alert my-auto alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+            {% endfor %}
+        </ul>
+        
+        {% endif %}
+    
+    {{ users|busqueda_vacia:object_list|safe }}
     
 
-    {% if messages %}
-    <ul class="messages list-unstyled text-center my-auto col-lg-8 mx-auto">
-        {% for message in messages %}
-      <div {% if message.tags %} class="mb-3 alert my-auto alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
-        {% endfor %}
-    </ul>
+   
+
+    </div>
+
+    {% elif users.count == 0 and object_list.count == 0 %}
+
+    <div class="row container my-auto">
+        {% if messages %}
+        <ul class="messages list-unstyled text-center my-auto col-lg-8 mx-auto">
+            {% for message in messages %}
+        <div {% if message.tags %} class="mb-3 alert my-auto alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+            {% endfor %}
+        </ul>
+        
+        {% endif %}
+    
+        {{ users|busqueda_vacia:object_list|safe }}
+    
+
+   
+
+    </div>
+
     {% endif %}
 
+    
  
 
     {% if users %}
+    <div class="container-fluid pb-4 mx-auto w-100">
+    
     
         <!--Contenido de la busqueda usuario-->
         <div class="row container-fluid d-flex justify-content-center align-middle col-lg-8 px-0 mx-auto shadow rounded">
@@ -65,24 +99,24 @@ Needer
                 </div>
 
                 <!--Nombres y apodo-->
-                <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-5 col-4 d-flex align-items-center container g-2 justify-content-center">
+                <div class="row  col-xl-6 col-lg-6 col-md-6 col-sm-5 col-4 d-flex align-items-center container g-2 justify-content-center">
                     <div class="w-100 col-12 d-table-cell align-bottom row g-0 text-break text-lg-start text-md-start text-sm-start text-start">
                         {% if user.first_name and user.last_name %}
-                        <h4 class="text-primary text-truncate fw-bold mb-0 mb-sm-2 mw-100 nombre-usuario">
+                        <h4 onclick="window.open('{{user.get_absolute_url}}')" class="text-primary text-truncate fw-bold mb-0 mb-sm-2 mw-100 nombre-usuario">
                             {{user.first_name}} {{user.last_name}}
                         </h4>
                         {% else %}
-                        <h4 class="text-primary text-truncate fw-bold mb-0 mb-sm-2 mw-100 nombre-usuario">
+                        <h4 onclick="window.open('{{user.get_absolute_url}}')" class="text-primary text-truncate fw-bold mb-0 mb-sm-2 mw-100 nombre-usuario">
                             {{user.username}}
                         </h4>
                         {% endif %}
     
                         {% if user.apodo %}
-                        <h5 class="text-muted text-truncate fw-bold mb-0 mb-sm-2 mw-100">
+                        <h5 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted text-truncate fw-bold mb-0 mb-sm-2 mw-100">
                             @{{user.apodo}}
                         </h5>
                         {% else %}
-                        <h5 class="text-muted text-truncate fw-bold mb-0 mb-sm-2 mw-100">
+                        <h5 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted text-truncate fw-bold mb-0 mb-sm-2 mw-100">
                             @{{user.username}}
                         </h5>
                         {% endif %}
@@ -103,21 +137,18 @@ Needer
             {% endfor %}
             <div class="col-12 d-flex justify-content-center px-0 py-3">
                 <a class="col-10 text-center btn btn-mostrar" href="{% url 'busqueda-user' %}?q={{request.GET.q}}"><h3 class="fw-bold my-auto">Mostrar todos</h3></a>
-            </div>
+            </div>  
 
-            {% else %}
+    
 
-            <!--TODO-->
-
-           <h1>No se encontraron usuarios</h1> 
             {% endif %}
 
             
 
         </div>
 
-
-        <div class="row container-fluid d-flex justify-content-around align-middle col-lg-8 mx-auto shadow mt-4">
+        <!--TODO QUITAR EL IF CUANDO ESTE HECHO LA BUSQUEDA DE MARKETPLACE-->
+        <div class="row d-none  container-fluid d-flex justify-content-around align-middle col-lg-8 mx-auto shadow mt-4">
 
             <div class="col-12 d-flex justify-content-start px-0">
                 <h2 class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-12 text-center fw-bold">Marketplace</h2>
@@ -151,16 +182,10 @@ Needer
 
             {% include 'social/user/publicaciones-ajax.html' %}
 
-            {% else %}
-            
-            <!--TODO NO SE ENCONTRARON PUBLICACIONES-->    
-
-            <h1>No se encontraron publicaciones</h1>
-
             {% endif %}
         </div>
 
-
+    </div>
 </div>
     {% endblock inner-content %}
 
