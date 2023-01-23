@@ -14,6 +14,7 @@ from json import load
 from dotenv import load_dotenv
 from pathlib import Path
 import os
+import sys
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -124,7 +125,11 @@ DATABASES_AVAILABLE = {
     },
 }
 
-database = os.environ.get('DJANGO_DATABASE_TEST', 'sqlite')
+if 'test' in sys.argv:
+    database = os.environ.get('DJANGO_DATABASE_TEST', 'sqlite')
+else:
+    database = 'main'
+
 DATABASES = {
     'default': DATABASES_AVAILABLE[database]
 }
