@@ -139,6 +139,8 @@ lib/
 .DS_Store
 ../.DS_Store/
 .DS_Store/
+../db.json
+.db.json
 
 # VSCODE
 
