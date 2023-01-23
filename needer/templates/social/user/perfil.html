@@ -12,9 +12,10 @@ Needer | {{object.username}}
 {% endblock headtitle %}
 
 {% block inner-content %}
-<div class="container pb-4" id="contenido">
+<div class="container pb-4 mx-auto" id="contenido">
     <!--Datos personales-->
     <div class="seccion-arriba w-100 row mx-0">
+
         <!--Banner-->
         {% if object.banner %}
         <button
@@ -97,7 +98,7 @@ Needer | {{object.username}}
         {% if url_name == 'detalle-creador' %}active {% endif %}" href="{{object.get_absolute_url}}">
             <h2 class="mb-0">Perfil</h2>
         </a>
-        <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted text-decoration-none text-center" href="#">
+        <a href="{% url 'galeria-social'  slug=object.slug %}" class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted text-decoration-none text-center" href="#">
             <h2 class="mb-0">Galeria</h2>
         </a>
         <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none text-center
@@ -149,10 +150,18 @@ Needer | {{object.username}}
                 </div>
             </div>
         </div>
+        
         <!-- Contenido a la derecha UWU -->
         <div class="d-flex justify-content-center row container-fluid col-sm-12 col-lg-7 px-0 contenido-derecha">
             <!--TODOS LOS DIVS DENTRO DEL CONTENIDO DERECHA DEBEN IR CON PX-0 Y CONTAINER FLUID-->
             {% if request.user == object %}
+            {% if messages %}
+            <ul class="messages list-unstyled">
+                {% for message in messages %}
+            <div {% if message.tags %} class="alert alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+                {% endfor %}
+            </ul>
+            {% endif %}
             <!--Esto crea publicación-->
             <div class="row container-fluid px-0 bg-white rounded shadow py-4 d-flex justify-content-center align-items-center mb-3" style="height:auto;">
                 <!--BOTON FOTO-->
@@ -175,6 +184,7 @@ Needer | {{object.username}}
                         {% endif %}
                     </a>
                 </div>
+
                 {% comment %} componente para crear publicaciones {% endcomment %}
                 {% include 'social/user/Componente-crear-publi.html' %}
             </div>
@@ -254,4 +264,5 @@ Needer | {{object.username}}
 {% block script %}
 <script src="https://unpkg.com/infinite-scroll@4.0.1/dist/infinite-scroll.pkgd.min.js"></script>
 <script src="{% static 'js/load-more-ajax.js' %}"></script>
+<script src="{% static 'js/like-comen.js' %}"></script>
 {% endblock script %}

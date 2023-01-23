@@ -22,7 +22,6 @@ $(document).on('submit', '#form-comentario', function (e) {
     let a = window.data
     /* div donde se va a adjuntar el nuevo comentario */
     var coment = document.getElementById('comentarios');
-    document.getElementById('boton-comentar').disabled=true;
     url = a.url_coment
     e.preventDefault();
     $.ajax({
@@ -34,97 +33,130 @@ $(document).on('submit', '#form-comentario', function (e) {
         action: 'post',
         
       },
-      success: function (listadocomentarios) {
-            document.getElementById('id_comentario').value  = ''
-            document.getElementById('div-comentar').innerHTML =  `<button class="btn text-primary like"><i class="bi bi-image-fill"></i></button>
-                                        <button class="btn text-primary like"><i class="bi bi-emoji-smile"></i></button>
-                                        <button class="btn text-primary like"><i class="bi bi-filetype-gif"></i></button>   
-                                        <button id='boton-comentar' class="btn text-primary like float-end" type="submit"><i class="bi bi-chat-left"></i> Comentar</button>`
+      success: function (json) {
             
-            data_ = JSON.parse(listadocomentarios.listadocomentarios)
+        try{
+            document.getElementById('id_comentario').value  = ''
+            data_ = JSON.parse(json.listadocomentarios);
+
+            console.log(data_[0].comentario)
+
+            document.getElementById('coment'+data_[0].pk).innerHTML =  `<a href="#" class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2"> <i class="text-primary bi bi-chat-left-fill"></i> `+data_[0].cantidad+`</a>`
             coment.insertAdjacentHTML('afterbegin', 
-            `<div class="align-middle mt-2 py-2 text-break">
-                <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
+            `<div id = "comentarios`+data_[0].id+`" class=" row container mw-100">
+
+            <!--Comentario Usuario-->
+            <div class="align-middle px-2 mt-2 py-2 col-12 row container-fluid px-0 d-flex justify-content-start">
+              <div class="container w-100 col-12 d-flex justify-content-start align-items-center align-middle">
+
+
                 <!--Foto del usuario-->
-                    <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0 mb-3">
-                        <a href="`+data_[0].url+`" class="text-center">
-                            <img class="rounded-circle img-fluid profile-img" alt="profile" src="`+data_[0].img+`"data-holder-rendered="true">
-                        </a>
-                    </div>
+                    
+                      <a href="`+data_[0].url+`" class="px-0 text-start my-auto">
+                          <img class="rounded-circle img-fluid img-comment" alt="profile" src="`+data_[0].img+`"data-holder-rendered="true">
+                      </a>
+                    
 
                 <!--Autor-->
-                    <div class="row col-7 col-md-8 col-lg-8 ms-1 align-baseline mb-auto">
-                        <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                    <div class="autor-comentario col-8 col-md-9 col-lg-9 col-sm-8 col-xs-6 gap-0 ms-2 d-flex align-items-center align-middle h-100 mb-auto">
+                        <h5 class="text-break text-truncate fw-bold me-lg-2 me-xl-2 me-xxl-2 me-md-2 me-sm-2 me-2 mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 align-middle me-lg-2">
                             <a href="`+data_[0].url+`" class="text-decoration-none text-secondary"> 
                                 `+data_[0].apodo+`
                             </a> 
                         </h5>
-                        <p class="my-0 text-muted">@`+data_[0].username+`</p>
+                        <p class="my-0 text-muted texti text-start text-break text-truncate">@`+data_[0].username+`</p>
+                    </div>  
+                    
+                  <div class="col-1 d-flex align-items-center justify-content-end">
+                    <div class="dropdown dropstart">
+                        <a  role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots"></i>
+                        </a>
+        
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+
+                        <li>
+                            <button class="dropdown-item" onclick="deletecomentario('`+data_[0].urlComentario+`', comentarios`+data_[0].id+`)" >Eliminar</button>
+                        </li>
+                        
+                        </ul>
                     </div>   
+                  </div>
+                    
                 </div>
-                <div class="col-12">
-                    <p class="text-muted">`+data_[0].comentario+`</p>
+
+                
+
+                <div class="col-12 my-2 text-muted text-break">
+                    `+data_[0].comentario+`
                 </div>
                 <!--Botones de la Publicación--> 
-                <div class="col-12 row text-decoration-none border-bottom border-top">
-                    <button id='likecoment' class="btn text-primary col-6 like z-2"><i class="bi bi-heart"></i></button>
+                <div class="col-12 d-flex align-items-center gap-0 d-inline-flex text-decoration-none">
+                    <div id = 'divlike`+data_[0].id+`' class="text-decoration-none">
+                        <a id='like`+data_[0].id+`' href="#"  onclick="likepublicacion('`+data_[0].urllikecomentario+`')" class="text-muted float-start pe-auto text-decoration-none text-start fs-5 fw-bold col like z-2"> <i class="bi bi-heart"></i> 0</a>
+                    </div>
+                    <!--Fecha de la creación de la publicación-->
+                    <small class="col ms-2 fw-lighter text-muted">Hace unos instantes</small>
+                    
                 </div>
+            </div>
             </div>`
             );
+
+        }catch{
+          //TODO AGREGAR MENSAJE DE ERROR
+          console.log("Agregar Mensaje de error")
+        }
       },
 
       error: function (xhr, errmsg, err) {
-
+        var textarea = document.getElementsByName("comentario");
+        textarea.className += "bg-red"
       }
     })
   })
 
 
 /* ajax para dar like publicacion*/
-$(document).on('click', '#like', function (e) {
-    e.preventDefault();
-    let a = window.data
-    console.log(data)
-    document.getElementById('like').disabled=true;
-    url = a.url_like
+
+function likepublicacion(url){
+
     $.ajax({
       type: 'POST',
-      url: a.url_like,
+      url: url,
       data: {
-        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        csrfmiddlewaretoken: getCookie('csrftoken'),
         action: 'post'
       },
       success: function (json) {
-        
-        document.getElementById("like_count").textContent = json['result']
-        document.getElementById("divlike").innerHTML  = `<button id="dislike" class="btn text-primary  border-secondary col-6 like z-2"><i class="bi bi-heart"></i> No Me gusta</button>
-                                                        <button class="btn text-primary col-6 like z-2"><i class="bi bi-chat-left"></i> Comentar </button>`
+        data_ = JSON.parse(json.result)
+        document.getElementById('like'+data_[0].pk).disabled=true;
+        document.getElementById('like'+data_[0].pk).remove();
+        document.getElementById("divlike"+data_[0].pk).innerHTML  = `<a href="#" id="dislike`+data_[0].pk+`" onclick = "dislikepublicacion('`+data_[0].url+`')" class=" text-muted botones-interaccion px-0 fw-lighter text-decoration-none border-secondary align-middle fs-5 fw-bold col-12 like z-2"> <i class="bi bi-heart-fill text-primary"></i> `+data_[0].likes +`</a>`
       },
 
       error: function (xhr, errmsg, err) {
 
       }
     });
-  })
+
+}
+
 
   /* ajax para dar dislike publicacion*/
-  $(document).on('click', '#dislike', function (e) {
-    let a = window.data
-    url = a.url_dislike
-    document.getElementById('dislike').disabled=true;
-    e.preventDefault();
+  function dislikepublicacion(url){
+
     $.ajax({
       type: 'POST',
-      url: a.url_dislike,
+      url: url,
       data: {
-        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        csrfmiddlewaretoken: getCookie('csrftoken'),
         action: 'post'
       },
       success: function (json) {
-        
-        document.getElementById("like_count").textContent = json['result']
-        document.getElementById("divlike").innerHTML  = `<button id="like" class="btn text-primary col-6 like z-2"><i class="bi bi-heart"></i> Me gusta</button> 
-                                                        <button class="btn text-primary col-6 like z-2"><i class="bi bi-chat-left"></i> Comentar </button>`
+        data_ = JSON.parse(json.result)
+        document.getElementById('dislike'+data_[0].pk).disabled=true;
+        document.getElementById("divlike"+data_[0].pk).innerHTML  = `<a href="#" id="like`+data_[0].pk+`" onclick="likepublicacion('`+data_[0].url+`')" class="botones-interaccion px-0 text-muted text-decoration-none align-middle fw-lighter fs-5 fw-bold col-12 like z-2"> <i class="bi bi-heart"></i> `+data_[0].likes+`</a>`
         
       },
 
@@ -132,4 +164,40 @@ $(document).on('click', '#like', function (e) {
 
       }
     });
-  })
+  }
+
+function deletecomentario(url, id_div){
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: {
+        csrfmiddlewaretoken: getCookie('csrftoken'),
+        action: 'post'
+      },
+      success: function (json) {
+        data_ = JSON.parse(json.json)
+
+        if(data_[0].cantidad == 0){
+          document.getElementById('coment'+data_[0].pk).innerHTML =  `<a href="#"  class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2" onclick="$('.form-comentario').focus();"><i class="bi bi-chat-left"></i> `+data_[0].cantidad+`</a>`
+        }else{
+          document.getElementById('coment'+data_[0].pk).innerHTML =  `<a href="#"  class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2" onclick="$('.form-comentario').focus();"><i class="bi text-primary bi-chat-left-fill"></i> `+data_[0].cantidad+`</a>`
+        }
+        
+    
+        id_div.remove()
+
+      },
+
+      error: function (xhr, errmsg, err) {
+
+      }
+    });
+}
+
+$("#id_comentario").keypress(function (e) {
+  if(e.which === 13 && !e.shiftKey) {
+      e.preventDefault();
+  
+      $(this).closest("form").submit();
+  }
+});

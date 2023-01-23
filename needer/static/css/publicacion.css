@@ -24,7 +24,7 @@
 
  .pub-img{
     max-height: 510px;
-    max-width: 100%;
+    max-width: 100% !important;
     object-fit: cover;
 
  }

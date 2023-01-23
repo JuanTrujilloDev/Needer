@@ -1,0 +1,116 @@
+{% extends innercontent %}
+{% load static %}
+{% load pub_extras %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/detalle-publicacion.css'%} ">
+{% endblock css %}
+
+{% block headtitle %}
+Needer | {{publicacion.user.username}}
+{% endblock headtitle %}
+
+{% block inner-content %}
+
+<!--Contenido de adentro-->
+<div class="my-4 pb-3 row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
+    
+    <!--Contenido de la izquierda-->
+    <div class="d-flex justify-content-center row col-sm-12 col-lg-8 mx-auto px-0 shadow rounded">
+
+        <!--Icono y titulo-->
+        <div class="row border-bottom" style="height: 3rem;">
+            <h1 class="text-center text-primary mb-0 "><a href="{{publicacion.user.get_absolute_url}}"><i class="bi bi-arrow-left text-primary float-start"></i></a>Editar Publicación</h1>
+        </div>
+
+           
+        <!--Publicación-->
+            <form class="rounded shadow container-fluid p-4 bg-white" method = "POST" action="{% url 'update-publicacion' user_slug=publicacion.user.slug pk=publicacion.pk%}" enctype="multipart/form-data">
+                
+                {% if messages %}
+                <ul class="messages list-unstyled">
+                    {% for message in messages %}
+                <div {% if message.tags %} class="alert alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+    
+                    
+                    {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+    
+            {% csrf_token %}
+            <!--Formulario-->
+            {{form.media}}
+
+            <div class="row justify-content-center w-100 container-fluid d-flex mx-0 py-3">
+                {{publicacion.archivo|tipo_archivo|safe}}
+            </div>
+
+            {{form.descripcion}}
+    
+            <div class="d-inline-flex mt-3 col-12 justify-content-xl-end justify-content-lg-end justify-content-md-end justify-content-sm-end justify-content-center">
+            
+            <a href="{{self.request.user.get_absolute_url}}" class="btn btn-terciary btn-lg fw-bold rounded-pill me-2">Cancelar</a>
+            
+            <button class="btn btn-primary btn-lg rounded-pill fw-bold border-0" type="submit">Editar</button>
+    
+            </div>
+    
+            </form>
+    
+
+    </div>
+
+
+
+     <!--Reglas de la comunidad-->
+     <div class="row col-sm-12 col-lg-4 mt-0 mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 justify-content-center divbib">
+
+        <div class="row rounded shadow bg-white mb-3">
+            <div class="d-inline-flex align-items-center border-bottom"> 
+                <img class="img-fluid me-2" width="15px" src="{% static 'img/Needer_logo.svg' %}"> <h4 class="fw-bold">Reglas de Needer</h4>
+                
+            </div>
+            <div class="row col-12">
+                <h6 class="fw-bold mt-md-3">1. Se respetuoso con los demas</h6>
+                <hr>
+                <h6 class="fw-bold">2. Goza conociendo tus limites</h6>
+                <hr>
+                <h6 class="fw-bold">3. Si tomas contenido de otras personas, dales el credito</h6>
+                <hr>
+                <h6 class="fw-bold">4. Se respetuoso con los demas</h6>
+                
+            
+            </div>
+        </div>
+
+        <div class="row py-3 mb-2 rounded bg-white shadow">
+            <small>Por favor, ten en cuenta la <a class="text-secondary" href="#">política de contenido de Needer</a> y no te olvides de disfrutar.</small>
+            <small class="fw-light mt-2 text-secondary">Needer Ltd © 2022. Todos los derechos reservados.</small>
+        </div>
+
+        <form class="text-center py-0 px-0"  method="POST" action="{% url 'delete-publicacion' user_slug=request.user.slug pk=publicacion.pk %}">
+            {% csrf_token %}
+            <button class="col-12  btn btn-primary">Eliminar Publicación</button>
+        </form> 
+       
+
+     </div>
+
+     
+
+</div>
+{% endblock %}

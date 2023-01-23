@@ -35,39 +35,67 @@ class Publicacion(models.Model):
 
 
     def save(self, *args, **kwargs):
-        if self.archivo:
-            if self.archivo.file.content_type.split('/')[0] == 'image':
-                return super().save(*args, **kwargs)
-                file_compression(self.archivo)
+        
+        # Si se esta creando el objeto
+        if self._state.adding:
+            if self.archivo:
+                if self.archivo.file.content_type.split('/')[0] == 'image':
+                    # file_compression(self.archivo)
+                    return super().save(*args, **kwargs)
+                    
 
-            else:
-                file_compression(self.archivo)
-                return super().save(*args, **kwargs)
+                else:
+                    file_compression(self.archivo)
+                    return super().save(*args, **kwargs)
 
         return super().save(*args, **kwargs)
 
 
     def delete(self, using=None, keep_parents=False):
         if self.archivo:
-            os.remove(os.path.join(settings.MEDIA_ROOT, self.archivo.name))
+            try:
+                os.remove(os.path.join(settings.MEDIA_ROOT, self.archivo.name))
+            except:
+                pass
         super().delete()
+
+
+    def likePublicacion(self): return reverse('addlike', kwargs={'pk':self.id})
+    def disPublicacion(self): return reverse('removelike', kwargs={'pk':self.id})
+
+    def cantidadLikes(self):
+        # Metodo para contar Likes
+        return LikedPublicacion.objects.filter(id_publicacion=self).count()
+
+    def cantidadComentarios(self):
+        # Metodo para contar comentarios
+        return Comentarios.objects.filter(id_publicacion=self).count()
+
 
 
 class LikedPublicacion(models.Model):
     id_publicacion = models.ForeignKey(Publicacion, verbose_name= ("Publicacion"), on_delete=models.CASCADE)
-    id_usuario = models.ForeignKey(User, verbose_name= ("Usuario"), on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name= ("Usuario"), on_delete=models.CASCADE)
     fecha = models.DateTimeField(verbose_name = 'Fecha de Like' ,auto_now_add=True, auto_now=False)
 
 
 class Comentarios(models.Model):
     id_publicacion = models.ForeignKey(Publicacion, verbose_name= ("Publicacion"), on_delete=models.CASCADE)
-    id_autor = models.ForeignKey(User, verbose_name= ("Autor"), on_delete=models.CASCADE)
-    comentario = models.TextField(max_length=120, verbose_name=("Comentario"), blank=False)
+    user = models.ForeignKey(User, verbose_name= ("Autor"), on_delete=models.CASCADE)
+    comentario = models.TextField(max_length=520, verbose_name=("Comentario"), blank=False)
     fecha_creacion = models.DateTimeField(verbose_name = 'Fecha de Like', auto_now_add=True, auto_now=False)
+    
+    def likeComentario(self): return reverse('comentario-addlike', kwargs={'pk':self.id})
+    def dislikeComentario(self): return reverse('comentario-removelike', kwargs={'pk':self.id})
+    def urlComentario(self): return reverse('delete-comentario', kwargs={'pk':self.id,'user_slug':self.user.slug})
+    
+    def cantidadLikes(self):
+        # Metodo para contar likes de comentarios
+        return LikeComentarios.objects.filter(id_comentario=self).count()
 
 class LikeComentarios(models.Model):
     id_comentario = models.ForeignKey(Comentarios, verbose_name= ("Comentarios"), on_delete=models.CASCADE)
-    id_usuario = models.ForeignKey(User, verbose_name= ("Usuario"), on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name= ("Usuario"), on_delete=models.CASCADE)
     fecha = models.DateTimeField(verbose_name = 'Fecha de Like' ,auto_now_add=True, auto_now=False)
 
         

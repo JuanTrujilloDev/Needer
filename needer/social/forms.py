@@ -27,7 +27,6 @@ class CrearPublicacionForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data =  super().clean()
-        print(cleaned_data)
         if not 'descripcion' in cleaned_data:
             cleaned_data['descripcion'] = ''
         else:
@@ -42,7 +41,7 @@ class CrearPublicacionForm(forms.ModelForm):
 
 
 class CrearComentarios(forms.ModelForm):
-    comentario = forms.CharField(max_length=120, widget=forms.Textarea(attrs={'placeholder':'Escribe tu comentario','rows':3, 'cols':1}))
+    comentario = forms.CharField(max_length=520, widget=forms.Textarea(attrs={'placeholder':'Escribe tu comentario','rows':1, 'cols':1}))
 
     class Meta:
         model = Comentarios
@@ -50,5 +49,13 @@ class CrearComentarios(forms.ModelForm):
         
     def __init__ (self, *args, **kwargs):
         super(CrearComentarios, self).__init__(*args, **kwargs)
-        self.fields['comentario'].widget.attrs['class'] = 'form-control mt-3'
+        self.fields['comentario'].widget.attrs['class'] = 'rounded-pill form-control my-2 me-3 form-comentario'
         self.fields['comentario'].widget.attrs['style'] = 'resize:none;'
+
+    def clean_comentario(self):
+        for letra in self.cleaned_data["comentario"]:
+
+            if letra in '><|':
+                raise forms.ValidationError("No se puede agregar caracteres como: '><|'")
+
+        return self.cleaned_data["comentario"]

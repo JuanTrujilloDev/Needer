@@ -16,55 +16,76 @@ Needer | {{publicacion.user.username}}
 <div class="my-4 pb-3 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
     
     <!--Contenido de la izquierda-->
-    <div class="d-flex justify-content-center row container-fluid col-sm-12 col-lg-7 px-0 shadow rounded">
+    <div class="d-flex justify-content-center row container-fluid row col-sm-12 col-lg-8 col-md-8 mx-auto px-0 shadow rounded">
 
         <!--Icono y titulo-->
         <div class="row border-bottom d-flex">
-        <h1 class="text-center text-primary mb-0 "><a href="{{publicacion.user.get_absolute_url}}"><i class="bi bi-arrow-left text-primary float-start"></i></a>Publicacion</h1>
+            <h1 class="text-center text-primary mb-0 "><a href="{{publicacion.user.get_absolute_url}}"><i class="bi bi-arrow-left text-primary float-start"></i></a>Publicacion</h1>
+            
         </div>
 
-
+           
         <!--Publicación-->
         <div class="row container-fluid px-0 bg-white d-flex justify-content-around align-items-center mt-2 publicacion">
-            <div class="col-12 d-flex align-items-center justify-content-start pt-4">
-
+            <div class="container-fluid w-100 col-12 d-flex justify-content-start align-items-center align-middle pt-3">
                 <!--Foto del usuario-->
-                <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0 mb-3">
-                    <a href="{{publicacion.user.get_absolute_url}}" class="text-center">
+
+                    <a href="{{publicacion.user.get_absolute_url}}" class="px-2 text-start my-auto">
                         {% if publicacion.user.foto %}
                                     
-                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{publicacion.user.foto.url}}"data-holder-rendered="true">
+                        <img class="rounded-circle img-fluid profile-img-qtg" alt="profile" src="{{publicacion.user.foto.url}}"data-holder-rendered="true">
                     
                         {% else %}
-                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"data-holder-rendered="true">
+                        <img class="rounded-circle img-fluid profile-img-qtg" alt="profile" src="{% static 'img/default-profile.png' %}"data-holder-rendered="true">
                                 
                         {% endif %}
                         </a>
-                </div>
+                        
 
             <!--Autor-->
-            <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1 d-flex align-items-baseline h-100 mb-auto">
-                <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
-                    <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none text-secondary">
-                        
+            <div class="autor-publicacion my-auto col-8 col-md-9 col-lg-9 col-sm-8 col-xs-6 gap-0 ms-2 d-flex align-items-center align-middle h-100">
+                <h4 class="row text-break text-truncate fw-bold me-lg-2 me-xl-2 me-xxl-2 me-md-2 me-sm-2 me-2 mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 align-middle me-lg-2">
+                    <a href="{{publicacion.user.get_absolute_url}}" class="text-break text-truncate text-decoration-none text-secondary">
                     {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}
                     </a> 
-                </h5>
-                <p class="my-0 text-muted">@{{publicacion.user.username}}</p>
-                {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
+                    <p class="my-0 text-muted texti text-start text-break text-truncate">@{{publicacion.user.username}}</p>
+                </h4>
+
             </div>
-                            
+         
+                
+            <div class="col-1 d-flex align-items-center justify-content-end">
+
+
+                <div class="dropdown dropstart">
+                    <a class="fs-2 align-text-top" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots"></i>
+                    </a>
+
+                    <ul class="dropdown-menu " aria-labelledby="dropdownMenuLink">
+                        {% if request.user == publicacion.user %}
+                      <li><a class="dropdown-item" href="{{publicacion.get_absolute_url}}update">Editar</a></li>
+                      <li><form method="POST" action="{% url 'delete-publicacion' user_slug=request.user.slug pk=publicacion.pk %}">
+                        {% csrf_token %}
+                        <button class="dropdown-item" type="submit">Eliminar</button>
+                    </form> </li>
+                      
+                      {% else %}
+                      <li><a class="dropdown-item" href="#">Reportar</a></li>
+                      {% endif %}
+                    </ul>
+                </div>
+
+
+
+
+            </div>
+                
             </div>
 
             <!--Contenido de la Publicación-->
-            <div class="text-decoration-none row container-fluid justify-content-center px-0 bg-white mw-100" style="height:auto;">
-                {% if publicacion.user == request.user %}
-            
-                <form method="POST" action="{% url 'delete-publicacion' user_slug=request.user.slug pk=publicacion.pk %}">
-                    {% csrf_token %}
-                    <button type="submit">ELIMINAR</button>
-                </form> 
-                {% endif %}
+            <div class="text-decoration-none pt-3 row container-fluid justify-content-center px-0 bg-white mw-100" style="height:auto;">
+                
             {% if publicacion.descripcion %}
                             
                 <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-3">
@@ -75,32 +96,19 @@ Needer | {{publicacion.user.username}}
             
             {% if publicacion.archivo %}
 
-            <div class="row justify-content-center w-100 container px-3">
+            <div class="row justify-content-center w-100 container px-3 py-2">
                 {{publicacion.archivo|tipo_archivo|safe}}
             </div>
                         
             {% endif %}
 
                 <!--Fecha de la creación de la publicación-->
-                <div class="row text-muted text-start mt-3 mb-2">
-                    <small>{{object.fecha_creacion}}</small>
-                </div>
-
-                <div class="row text-start border-bottom align-middle mt-2 py-2 border-top text-break">
-                    <p id = "like_count" class="align-middle fw-bold my-auto">{{CantLiked}} Me Gustas &nbsp; {{Comentario.count}} Comentarios</p>
+                <div class="row text-muted text-start mb-2">
+                    {% if publicacion|editado %} {{publicacion|editado|safe}}{% endif %}  <small>{{object.fecha_creacion}}</small> 
                 </div>
                 
-                <!--Botones de la Publicación--> 
-                <div id = 'divlike'class="col-12 row text-decoration-none">
-                    {% if EstadoLike %}
-                    {% csrf_token %}
-                        <button id="dislike" class="btn text-primary border-secondary col-6 like z-2"><i class="bi bi-heart"></i> No Me gusta</button>
-                    {% else %}
-                    {% csrf_token %}
-                        <button id="like" class="btn text-primary col-6 like z-2"><i class="bi bi-heart"></i> Me gusta</button>
-                    {% endif %}
-                    <button class="btn text-primary col-6 like z-2"><i class="bi bi-chat-left"></i> Comentar </button>
-                </div>
+                
+      
 
             </div>
 
@@ -109,142 +117,229 @@ Needer | {{publicacion.user.username}}
         </div>
 
         <!--Formulario de Comentarios-->
-        <form id='form-comentario' action="" method="post">                             
-            <div class="border-top">
-                {{form.comentario}}
-            </div>
-            <div id = "div-comentar">
-                <button class="btn text-primary like"><i class="bi bi-image-fill"></i></button>
-                <button class="btn text-primary like"><i class="bi bi-emoji-smile"></i></button>
-                <button class="btn text-primary like"><i class="bi bi-filetype-gif"></i></button>   
-                <button id='boton-comentar' class="btn text-primary like float-end" type="submit"><i class="bi bi-chat-left"></i> Comentar</button>
-            </div>
-        </form>
+        <form id='form-comentario' class="container d-flex row justify-content-center" action="" method="post"> 
+            {% csrf_token %}
+            <div class="row border-top container-fluid w-100 col-12 d-flex justify-content-center">
 
-    
-        <hr class="mt-3">
-        <div id = "comentarios">
-        {% for com in Comentario %}
-        <!--Comentario Usuario-->
-            <div class="align-middle mt-2 py-2 text-break">
-                <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
-                    <!--Foto del usuario-->
-                    <div class="col-lg-2 col-md-2 col-3 justify-content-center d-flex pe-0 mb-3">
-                        <a href="{{com.id_autor.get_absolute_url}}" class="text-center">
-                            {% if com.id_autor.foto %}
-                            <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{com.id_autor.foto.url}}"data-holder-rendered="true">
-                            {% else %}
-                            <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"data-holder-rendered="true">  
-                            {% endif %}
-                        </a>
-                    </div>
-
-                    <!--Autor-->
-                    <div class="row col-7 col-md-8 col-lg-8 ms-1 align-baseline mb-auto">
-                        <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
-                            <a href="{{com.id_autor.get_absolute_url}}" class="text-decoration-none text-secondary"> 
-                                {% if com.id_autor.apodo %} {{com.id_autor.apodo}} {% else %} {{com.id_autor.username}} {% endif %}
-                            </a> 
-                        </h5>
-                        <p class="my-0 text-muted">@{{com.id_autor.username}}</p>
-                    </div>         
-                </div>
-                <div class="col-12">
-                    <p class="text-muted">{{com.comentario}}</p>
-                </div>
                 <!--Botones de la Publicación--> 
-                <div class="col-12 row text-decoration-none border-bottom border-top">
-                    {% csrf_token %}
-                    <button id='likecoment' class="btn text-primary col-6 like z-2"><i class="bi bi-heart"></i></button>
+
+                <div class="row text-decoration-none pt-1 w-100 container col-12 p-0">
+                    <div id = 'divlike{{publicacion.id}}' class="p-0 me-2 col-md-2 col-xl-1 col-lg-2 col-2 text-center">
+                    {% if EstadoLike %}
+                        <a id="dislike{{publicacion.id}}" href="#" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="text-muted botones-interaccion px-0 fw-lighter text-decoration-none border-secondary align-middle fs-5 fw-bold col-12 like z-2"><i class="bi bi-heart-fill text-primary"></i> {{publicacion.cantidadLikes}} </a>
+                    {% else %}
+
+                        <a id="like{{publicacion.id}}" href="#" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class=" botones-interaccion px-0 text-muted text-decoration-none align-middle fw-lighter fs-5 fw-bold col-12 like z-2"><i class="bi bi-heart"></i> {{publicacion.cantidadLikes}} </a>
+                    {% endif %} 
+                    </div>
+                    <div id = 'coment{{publicacion.id}}'  class="p-0 col-md-2 col-xl-1 col-lg-2 col-2">
+                        <a href="#" class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2" onclick="$('.form-comentario').focus();"><i class="bi  {% if publicacion.bool_comment %} text-primary bi-chat-left-fill {% else %} bi-chat-left {% endif %}"></i> {{paginator.count}} </a>
+                    </div>
                 </div>
             </div>
-
-        {% endfor %}
-
-
-            <!--Botones de la Publicación--> 
-            <a href="{{publicacion.get_absolute_url}}" class="col-lg-12 row mt-2 text-decoration-none px-4">
-                <button class="btn text-primary col-6 like mb-2"><i class="bi bi-heart"></i></button>
-            </a>
-
-
-        </div>
-    </div>
-
-
-
-
-
-    <!--Contenido de la derecha-->
-    <div class="row py-4 col-sm-12 col-lg-5 rounded shadow bg-white mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 divbib">
-
-        <h3 class="text-primary text-center fw-bold mb-4">Quizas te guste</h3>
-
-        <!--Comentario Usuario-->
-        <div class="row col-12 mx-0 px-0 py-0 d-flex">
+                                
+            <div class="col-12 d-flex justify-content-start align-items-center align-middle {% if not object_list %} border-bottom {% endif %}">
                 
-            <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
-
-                <!--Foto del usuario-->
-                <div class="col-lg-3 col-md-4 col-3 justify-content-center d-flex pe-0 mb-3">
-                    <a href="/sarsu12/" class="text-center">
-                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true">
-                        </a>
-                </div>
-
-                <!--Autor-->
-                <div class="row col-7 col-md-8 col-lg-8 ms-1 align-baseline mb-auto">
-                    <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
-                        <a href="/sarsu12/" class="text-decoration-none text-secondary">
-                            
-                        Juan David Trujillo 
-                        </a> 
-                    </h5>
-                    <p class="my-0 text-muted">@Sarsu12</p>
-                    
-                </div>
-                            
-            </div>
-
-            <div class="col-12 mt-3">
-                <p class="text-muted mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi voluptatibus, pariatur est, nobis quisquam expedita placeat incidunt maxime a ea obcaecati explicabo asperiores fuga dolore eius in eligendi molestiae unde?</p>
-            </div>
-
-        </div>
-
-        <div class="row col-12 mt-5 mx-0 px-0 py-0">
-                
-            <div class="col-12 d-flex align-items-center justify-content-start pt-4 gap-0 row">
-
-                <!--Foto del usuario-->
-                <div class="col-lg-3 col-md-4 col-3 justify-content-center d-flex pe-0 mb-3">
-                    <a href="/sarsu12/" class="text-center">
-                        <img class="rounded-circle img-fluid profile-img" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true">    
+                <div class="col d-flex pe-0 py-0 my-2 ms-2 me-3 align-middle d-flex h-100 align-items-center">
+                    <a href="#" class="text-start my-auto">
+                        <img
+                            class="rounded-circle profile-img my-auto"
+                            alt="profile"
+                            src="{% static 'img/default-profile.png' %}"
+                            data-holder-rendered="true"
+                        >
                     </a>
                 </div>
 
-                <!--Autor-->
-                <div class="row col-7 col-md-8 col-lg-8 ms-1 align-baseline mb-auto">
-                    <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
-                        <a href="/sarsu12/" class="text-decoration-none text-secondary">
-                            
-                        Juan David Trujillo 
-                        </a> 
-                    </h5>
-                    <p class="my-0 text-muted">@Sarsu12</p>
-                    
-                </div>
-                            
+                {{form.comentario}}
+                
+             
             </div>
 
-            <div class="col-12 mt-3">
-                <p class="text-muted mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi voluptatibus, pariatur est, nobis quisquam expedita placeat incidunt maxime a ea obcaecati explicabo asperiores fuga dolore eius in eligendi molestiae unde?</p>
+            
+        </form>
+
+    
+        <div id = "comentarios" class="infinite-container container d-flex row justify-content-center">
+
+        {% for com in object_list %}
+        <div id = "comentarios{{com.id}}" class="infinite-item row container mw-100 border-top ">
+
+        <!--Comentario Usuario-->
+            <div class="align-middle px-2 mt-2 py-2 col-12 row container-fluid px-0 d-flex justify-content-start">
+                <div class="container w-100 col-12 d-flex justify-content-start align-items-center align-middle">
+
+                    <!--Foto del usuario-->
+                        <a href="{{com.user.get_absolute_url}}" class="px-0 text-start my-auto">
+                            {% if com.user.foto %}
+                            <img class="rounded-circle img-fluid img-comment" alt="profile" src="{{com.user.foto.url}}"data-holder-rendered="true">
+                            {% else %}
+                            <img class="rounded-circle img-fluid img-comment" alt="profile" src="/static/img/default-profile.png" data-holder-rendered="true"> 
+                            {% endif %}
+                        </a>
+                    
+
+                    <!--Autor-->
+                    <div class="autor-comentario col-8 col-md-9 col-lg-9 col-sm-8 col-xs-6 gap-0 ms-2 d-flex align-items-center align-middle h-100 mb-auto">
+                        <h5 class="text-break text-truncate fw-bold me-lg-2 me-xl-2 me-xxl-2 me-md-2 me-sm-2 me-2 mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 align-middle me-lg-2">
+                            <a href="{{com.user.get_absolute_url}}" class="text-decoration-none text-secondary"> 
+                                {% if com.user.apodo %} {{com.user.apodo}} {% else %} {{com.user.username}} {% endif %}
+                            </a> 
+                        </h5>
+                        <p class="my-0 text-muted texti text-start text-break text-truncate">@{{com.user.username}}</p>
+                       
+                
+                        
+                   
+                    </div>  
+
+                   
+
+                    {% comment %} Dropdown {% endcomment %}
+                    <div class="col-1 d-flex align-items-center justify-content-end">
+                        <div class="dropdown dropstart">
+                            <a  role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots"></i>
+                            </a>
+            
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                {% if request.user == com.user or request.user == publicacion.user %}
+                            <li>
+                                <button class="dropdown-item" onclick="deletecomentario('{{com.urlComentario}}', comentarios{{com.id}})" >Eliminar</button>
+                            </li>
+                            
+                            {% else %}
+                            <li><a class="dropdown-item" href="#">Reportar</a></li>
+                            {% endif %}
+                            </ul>
+                        </div>   
+                    </div> 
+
+                </div>
+                
+                <div class="col-12 my-2 text-muted text-break">
+                    {{com.comentario|linebreaks}}
+                </div>
+                
+                <!--Botones de la Publicación--> 
+                <div class="col-12 d-flex align-items-center gap-0 d-inline-flex text-decoration-none">
+                    <div id = 'divlike{{com.id}}' class="text-decoration-none">
+                        {% if com.bool_like %}
+                        <a id="dislike{{com.id}}" href="#" onclick = "dislikepublicacion('{{com.dislikeComentario}}')" class="text-muted float-start pe-auto text-decoration-none text-start fs-5 fw-bold col like z-2"><i class="bi bi-heart-fill text-primary"></i> {{com.cantidadLikes}} </a>
+                        {% else %}
+                        <a id='like{{com.id}}' href="#"  onclick="likepublicacion('{{com.likeComentario}}')" class="text-start float-start pe-auto text-decoration-none text-muted align-middle fs-5 fw-bold col like z-2"><i class="bi bi-heart"></i>  {{com.cantidadLikes}} </a>
+
+                        {% endif %}
+
+                         <!--Fecha de la creación de la publicación-->
+                    </div>
+                    <small class="fw-lighter text-muted ms-2"> {{com.fecha_creacion|fecha_exacta}}</small>
+
+                        {% comment %}                     {% if com.user == request.user %}
+                        <a onclick="deletecomentario('{{com.urlComentario}}', comentarios{{com.id}})" >ELIMINAR</a>
+                    {% endif %} {% endcomment %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}" style="display:none;">More</a>
+    
+        {% else %}
+        <a class="infinite-more-link" href="?page=0" style="display:none;">More</a>
+        {% endif %}
+
+        <div class="page-load-status mt-3">
+            {% if page_obj.has_next %}
+            <h5 class="infinite-scroll-request col-12 text-center">
+                Cargando...
+            </h5>
+            {% endif %}
+ 
+    
+        </div>
+    
+     
+
+        </div>
+    </div>
+
+
+
+
+
+ <!--Contenido de la derecha-->
+    <div class="col-lg-3 col-md-3 justify-content-end divbib">
+        <!--Quizas te guste-->
+        <div class="py-4 rounded shadow mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5">
+            <h4 class="text-primary text-center fw-bold mb-0">Quizas te guste</h4>
+                <!--Información del usuario-->
+            <div class="row col-12 mt-3 mx-0 px-0 py-0 d-flex align-items-center">
+                    <!--Foto Usuario-->
+                    <div class="col-3 col-lg-3 col-md-3 col-xl-3 d-flex pe-2 py-0 mb-2">
+                        <a href="#" class="text-start">
+                            <img
+                                class="rounded-circle img-derecha"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                    <!--Datos-->
+                    <div class="ps-2 row col py-0 mb-2 g-0 align-content-center px-md-2 px-lg-1 mx-lg-2">
+                        <h5 class="text-secondary text-start fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 me-0 texti">
+                            <a href="#" class="text-decoration-none text-primary text-break text-truncate">
+                                Thomas Perez 
+                            </a>
+                        </h5>
+                        <h6 class="ps-2 text-secondary text-start mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                            <a href="#" class="text-decoration-none text-muted texti text-break text-truncate">
+                                @Pitzonia
+                            </a>
+                        </h6>
+                    </div>
+                    <div class="col-12">
+                        <p class="text-muted mb-0 texti">Lorem ipsum dolor molesiae unde?</p>
+                    </div>
+            </div>
+
+
+            <!--Información del usuario-->
+            <div class="row col-12 mt-3 mx-0 px-0 py-0 d-flex align-items-center">
+                <!--Foto Usuario-->
+                <div class="col-3 col-lg-3 col-md-3 col-xl-3 d-flex pe-2 py-0 mb-2">
+                    <a href="#" class="text-start">
+                        <img
+                            class="rounded-circle img-derecha"
+                            alt="profile"
+                            src="{% static 'img/default-profile.png' %}"
+                            data-holder-rendered="true"
+                        >
+                    </a>
+                </div>
+                <!--Datos-->
+                <div class="row col py-0 mb-2 g-0 align-content-center px-md-2 px-lg-1 mx-lg-2">
+                    <h5 class="ps-2 text-secondary text-start fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 me-0 texti">
+                        <a href="#" class="text-decoration-none text-primary text-break text-truncate">
+                            Thomas Perez 
+                        </a>
+                    </h5>
+                    <h6 class="ps-2 text-secondary text-start mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 texti">
+                        <a href="#" class="text-decoration-none text-muted text-break text-truncate">
+                            @Pitzonia
+                        </a>
+                    </h6>
+                </div>
+                <div class="col-12">
+                    <p class="text-muted mb-0 texti">Lorem ipsum dolor molesiae unde?</p>
+                </div>
             </div>
 
         </div>
 
     </div>
-
 </div>
 
 {% endblock %}
@@ -253,10 +348,10 @@ Needer | {{publicacion.user.username}}
 
 <script src="{% static 'js/like-comen.js' %}"></script>
 <script>
-    window.data = { url_dislike: '{% url "removelike" publicacion.id %}',
-                    url_like: '{% url "addlike" publicacion.id %}',
-                    url_coment: '{% url "comentario" publicacion.id|safe%}'}
+    window.data = {url_coment: '{% url "comentario" publicacion.id|safe%}'}
                     
 </script>
+<script src="https://unpkg.com/infinite-scroll@4.0.1/dist/infinite-scroll.pkgd.min.js"></script>
+<script src="{% static 'js/load-more-comments.js' %}"></script>
 {% endblock script %}
 
