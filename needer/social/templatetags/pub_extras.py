@@ -1,6 +1,9 @@
 from django.utils import timezone
 from django import template
 import mimetypes
+from needer.settings import STATIC_URL
+import os
+
 
 register = template.Library()
 
@@ -54,6 +57,33 @@ def nsfw(value):
 
     return ''
 
+# TODO AGREGAR LA PARTE DEL MARKETPLACE
+@register.simple_tag
+def busquedaVacia(users, object_list):
+
+    if not users and len(object_list) == 0:
+        return f'''<div class="row container my-auto mt-2 d-flex justify-content-center">
+       
+        <img
+        class="mt-4 mb-3 img-fluid img-busqueda"
+        src="/{os.path.join(STATIC_URL,'img/void.svg')}"
+        >
+        <h3 class="text-center ">No se encontro nada referente a tu busqueda</h3>
+        <h6 class="text-center ">Prueba con otras palabras claves o quita los filtros de busqueda</h6>
+    </div>'''
+    elif len(users) == 0 and len(object_list) == 0:
+        return f'''<div class="row container mt-2 my-auto d-flex justify-content-center">
+       
+        <img
+        class="mt-4 mb-3 img-fluid img-busqueda"
+        src="/{os.path.join(STATIC_URL,'img/void.svg')}"
+        >
+        <h3 class="text-center ">No se encontro nada referente a tu busqueda</h3>
+        <h6 class="text-center ">Prueba con otras palabras claves o quita los filtros de busqueda</h6>
+    </div>'''
+    
+    else:
+        return False
 
 
     
@@ -62,3 +92,4 @@ register.filter('nsfw', nsfw)
 register.filter('tipo_archivo', tipo_archivo)
 register.filter('editado', editado)
 register.filter('fecha_exacta', fecha_exacta)
+register.filter("busqueda_vacia", busquedaVacia)

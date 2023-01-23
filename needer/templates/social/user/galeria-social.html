@@ -111,6 +111,20 @@ Needer | {{object.username}}
     <!--Contenido interno-->
     <div class="my-4 infinite-container container row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-between justify-content-around div-galeria-container">
         
+        {% if object_list.count == 0 %}
+    
+        <div class="row container my-auto d-flex justify-content-center w-100">
+           
+            <img
+            class="mt-4 mb-3 img-fluid"
+            src="{% static 'img/publicar.svg'%}"
+            style="height: 50vh;"
+            >
+            <h3 class="text-center ">No tienes ninguna publicacion, <a class="text-decoration-none fw-bold text-primary" href="{% url 'crear-publicacion' %}">publica ahora!</a></h3>
+        </div>
+    
+    
+        {% endif %}
 
         {% for publicacion in object_list %}
         <a class="col-3 infinite-item justify-content-center align-items-center shadow px-0 div-galeria pub-audio align-items-end text-center" href="{{publicacion.get_absolute_url}}" target="_blank">
