@@ -54,11 +54,10 @@ Needer | {{publicacion.user.username}}
             {% csrf_token %}
             <!--Formulario-->
             {{form.media}}
-            {% if publicacion.archivo %}
+
             <div class="row justify-content-center w-100 container-fluid d-flex mx-0 py-3">
                 {{publicacion.archivo|tipo_archivo|safe}}
             </div>
-            {% endif %}
 
             {{form.descripcion}}
     
