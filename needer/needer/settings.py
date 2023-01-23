@@ -14,6 +14,7 @@ from json import load
 from dotenv import load_dotenv
 from pathlib import Path
 import os
+import sys
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -52,6 +53,8 @@ INSTALLED_APPS = [
     'users',
     'main',
     'social',
+    'chat',
+    'channels',
     
 ]
 
@@ -98,8 +101,8 @@ TEMPLATES = [
 
 FIXTURE_DIRS = [os.path.join(BASE_DIR, "fixtures")]
 
-WSGI_APPLICATION = 'needer.wsgi.application'
-
+#WSGI_APPLICATION = 'needer.wsgi.application'
+ASGI_APPLICATION = 'needer.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -122,7 +125,11 @@ DATABASES_AVAILABLE = {
     },
 }
 
-database = os.environ.get('DJANGO_DATABASE_TEST', 'main')
+if 'test' in sys.argv:
+    database = os.environ.get('DJANGO_DATABASE_TEST', 'sqlite')
+else:
+    database = 'main'
+
 DATABASES = {
     'default': DATABASES_AVAILABLE[database]
 }
@@ -164,6 +171,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        # 'CONFIG': {
+        #     'hosts': [('127.0.0.1', 6379)],
+        # }
+    }
+}
 
 if DEBUG:
     STATICFILES_DIRS = [
