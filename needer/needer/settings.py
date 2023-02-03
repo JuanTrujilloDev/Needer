@@ -10,11 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-from json import load
 from dotenv import load_dotenv
 from pathlib import Path
 import os
 import sys
+from google.oauth2 import service_account
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,7 +30,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -180,8 +180,8 @@ CHANNEL_LAYERS = {
         # }
     }
 }
-
-if DEBUG:
+""" cambiar False por DEBUG """
+if False:
     STATICFILES_DIRS = [
         BASE_DIR / "static",
         
@@ -280,3 +280,18 @@ TINYMCE_DEFAULT_CONFIG = {
     "bold italic backcolor emoticons| link | alignleft aligncenter "
     "outdent indent"
 }
+
+## GETTING THE CREDENTIALS OF THE ACCOUNT ##
+
+
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(os.path.join(BASE_DIR,"credentials.json"))  
+GOOGLE_APPLICATION_CREDENTIALS = '/path/service-account.json'
+## STATIC FILES ##  
+
+STATICFILES_FINDERS = ('django.contrib.staticfiles.finders.FileSystemFinder', 'django.contrib.staticfiles.finders.AppDirectoriesFinder', )   
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'needer'
+
+STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+
