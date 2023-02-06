@@ -5,26 +5,31 @@
 {% endblock css %}
 
 <section class="navegacion w-100">
-<nav class="navbar navbar-expand-lg bg-primary navbar-dark overflow-auto text-light sticky-top  w-100">
+<nav class="navbar navbar-expand-lg navbar-dark overflow-auto text-light sticky-top  w-100">
     <div class="container-fluid d-flex justify-content-between w-100">
-      <div class="col-4">
-        <a class="navbar-brand ms-5 nav-titulo" href="{% url 'home-view' %}">
-            <img src="{% static 'img/Needer_Logo_Blanco.svg' %}" alt=""  width="40" height="40"  class="d-inline-block align-content-center">
+      <div class="col-4 d-flex align-items-center">
+        <a class="navbar-brand ms-5" href="{% url 'home-view' %}">
+            <img src="{% static 'img/Needer_logo_1.png' %}" alt=""  width="20" height="40"  class="d-inline-block align-content-center">
           </a>
+        <a href="{% url 'home-view' %}">
+            <h2 class="mb-0">Needer</h2>
+        </a>
+          
 
       </div>
            
-      <div class="col-4 row d-flex justify-content-center">
+      <div class="col-4 row d-flex justify-content-end">
         <div class="input-box align-items-center">
           <form method="GET" class="d-flex align-items-center" action="{% url 'busqueda-contenido' %}">
-          <i class="bi bi-search me-2"></i>
-          <input maxlength="50" required minlength="1" type="text" class="form-control" id="search_form" name="q" placeholder="Fotos, vídeos, artistas...">
+            <i class="bi bi-search notificacion mx-2" style="color: #737373;"></i>
+          <input maxlength="50" required minlength="1" type="text" class="form-control" id="search_form" name="q" placeholder="Buscar...">
           </form>
         </div>
       </div>
 
           <div class="d-md-none right-elements  d-lg-flex float-end justify-content-end col-4">
-            <a class="nav-link fw-bolder notificacion me-4" ><i class="bi bi-bell"></i></a>
+            <a class="nav-link fw-bolder notificacion me-4 " ><i class="bi bi-chat-dots" style="color: #737373;"></i></a>
+            <a class="nav-link fw-bolder notificacion me-4 " ><i class="bi bi-bell " style="color: #737373;"></i></a>
             <a class="nav-link  me-5" href="{{request.user.get_absolute_url}}">
               {% if request.user.foto %}
               <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{request.user.foto.url}}"
