@@ -2,16 +2,16 @@
 {% load pub_extras %}
 <div class="infinite-container px-0">
     {% for publicacion in object_list %}
-    <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded shadow d-flex justify-content-around align-items-center mt-4 publicacion infinite-item" >
+    <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded-4 publicacion-shadow d-flex justify-content-around align-items-center mt-4 publicacion infinite-item" >
 
         <div class="col-12 container d-flex align-items-center justify-content-start mb-2">
             <div class=" justify-content-start d-flex pe-0">
                 <a href="{{publicacion.user.get_absolute_url}}" class="text-center z-1">
-                    {% if object.foto %}
+                    {% if publicacion.user.foto %}
                     <img
                         class="rounded-circle img-fluid profile-img"
                         alt="profile"
-                        src="{{object.foto.url}}"
+                        src="{{publicacion.user.foto.url}}"
                         data-holder-rendered="true"
                     >
                     {% else %}
