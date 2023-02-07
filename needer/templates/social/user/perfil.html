@@ -15,7 +15,6 @@ Needer | {{object.username}}
 <div class="container pb-4 mx-auto mt-5" id="contenido">
     <!--Datos personales-->
     {% include 'social/user/datos-personales.html' %}
-    
     <!--Navegacion secundaria-->
     <div class="mb-4 px-0 container-fluid my-4 d-flex justify-content-lg-start justify-content-md-start justify-content-sm-start justify-content-start border-bottom mb-3">
         {% with url_name=request.resolver_match.url_name %}
