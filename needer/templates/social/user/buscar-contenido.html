@@ -77,7 +77,7 @@ Needer
             {% for user in users %}
             
             <!--CONTENEDOR DE USUARIOS-->
-            <div class="col-4 row d-flex px-0 shadow">
+            <div class="col-3 row d-flex px-0 shadow m-4 contuser">
             <!--Foto Banner Busqueda-->
                 {% if user.banner %}
                 <button
@@ -104,7 +104,7 @@ Needer
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
                         class="rounded-circle overflow-hidden busqueda-imagen img-fluid"
-                        style="background-image: url({{user.foto.url}}); object-fit: cover;"
+                        src="{{user.foto.url}}"
                     >
                     {% else %}
                     <button
@@ -147,11 +147,6 @@ Needer
             </div>
 
             {% endfor %}
-            <div class="col-12 d-flex justify-content-center px-0 py-3">
-                <a class="col-10 text-center btn btn-mostrar" href="{% url 'busqueda-user' %}?q={{request.GET.q}}"><h3 class="fw-bold my-auto">Mostrar todos</h3></a>
-            </div>  
-
-    
 
             {% endif %}
 
