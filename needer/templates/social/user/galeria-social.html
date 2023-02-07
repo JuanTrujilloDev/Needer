@@ -49,19 +49,24 @@ Needer | {{object.username}}
     
     
         {% endif %}
+        <!-- Gallery -->
+        <div class="row">
+            {% for publicacion in object_list %}
+            <div class="col-lg-4 col-md-12 mb-4 mb-lg-0 p-2">
+                <a class="infinite-item justify-content-center align-items-center shadow px-0 div-galeria pub-audio align-items-end text-center" href="{{publicacion.get_absolute_url}}" target="_blank">
+                    {% if publicacion.archivo %}
+                    
+                    {{publicacion.archivo|tipo_archivo|safe}}      
+                    
+                    {% else %}
+                    Error no se encontro la imagen
+                    {% endif %} 
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+  <!-- Gallery -->
 
-        {% for publicacion in object_list %}
-        <a class="col-3 infinite-item justify-content-center align-items-center shadow px-0 div-galeria pub-audio align-items-end text-center" href="{{publicacion.get_absolute_url}}" target="_blank">
-            {% if publicacion.archivo %}
-
-            {{publicacion.archivo|tipo_archivo|safe}}      
-            
-            {% else %}
-            Error no se encontro la imagen
-            {% endif %}
-            
-        </a>
-        {% endfor %}
 
 
     </div>

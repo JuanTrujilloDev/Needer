@@ -153,12 +153,22 @@ a:hover {
         margin-bottom: 5%;
       }
       .update-imagen{
-        max-width: 180px;
-        max-height: 180px;
+        max-width: 220px;
+        max-height: 220px;
         margin-top: -70px;
         margin-left: 10px;
     }
-    
+    .h11{
+        margin: 0px 0px;
+
+    }
+    .h22{
+        margin: 0px 0px;
+
+    }
+    .h44{
+        margin: 0px 0px;
+    }
   }
 
   @media screen and (min-width:374px) {
