@@ -45,13 +45,13 @@ Needer | {{object.username}}
                 class="rounded-circle overflow-hidden update-imagen img-fluid"
             >
             {% else %}
-            <button
+            <img
+                src="{% static 'img/default-profile.png' %}"
                 type="button"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
-                class="col-12 btn rounded-circle overflow-hidden update-imagen"
-                style="background-image: url('{% static 'img/default-profile.png' %}');"
-            ></button>
+                class="rounded-circle overflow-hidden update-imagen img-fluid"
+            >
             {% endif %}
         </div>
         <!--Texto Informacion-->
