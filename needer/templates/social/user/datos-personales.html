@@ -1,0 +1,81 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/perfil-creador.css'%} ">
+{% endblock css %}
+
+<div class="seccion-arriba w-100 row mx-0">
+    <!--Banner-->
+    {% if object.banner %}
+    <button
+        type="button"
+        data-bs-toggle="#"
+        data-bs-target="#exampleModal"
+        class="col-12 btn img-fluid imgbanner"
+        style="background-image: url('{{object.banner.url}}');"
+    ></button>
+    {% else %}
+    <button
+        type="button"
+        data-bs-toggle="#"
+        data-bs-target="#exampleModal"
+        class="col-12 btn img-fluid imgbanner"
+        style="background-image: url('{% static 'img/placeholder-banner.png' %}');"
+    ></button>
+    {% endif %}
+    <!--FOTO-->
+    <div class="col-lg-4 col-md-4 col-3 text-center mb-0 mb-sm-3 px-0 mx-0 align-items-center">
+        {% if object.foto %}
+        <img
+            src="{{object.foto.url}}"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+            class="rounded-circle overflow-hidden update-imagen img-fluid"
+        >
+        {% else %}
+        <img
+            src="{% static 'img/default-profile.png' %}"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+            class="rounded-circle overflow-hidden update-imagen img-fluid"
+        >
+        {% endif %}
+    </div>
+    <!--Texto Informacion-->
+    <div class="col-lg-6 col-md-6 col-6 align-items-center container g-2 justify-content-start">
+        <div class="d-table-cell align-bottom row g-2  text-break text-lg-start text-md-start text-sm-start">
+            {% if object.apodo %}
+            <h1 class="text-primary fw-bold mb-0 mw-100 h11">
+                {{object.apodo}}
+            </h1>
+            <h2 class="text-muted h22">@ {{object.username}}</h2>
+            {% else %}
+            <h1 class="text-primary fw-bold mb-0 mw-100 h11">
+                {{object.username}}
+            </h1>
+            {% endif %}
+            <h4 class="text-muted mb-0 h44">needer.com.co/{{object.slug}}</h4>
+        </div>
+    </div>
+    <!--Ajustes-->
+    <div class="col-md-2 col-sm-2 col-3 d-flex container g-2">
+        <div class="col-12 d-table-cell align-bottom g-2 text-lg-end text-sm-end text-end">
+            {% if request.user == object %}
+                <a class="tuerca" href="{% url 'account_profile' %}">
+                    <i class="bi bi-gear"></i>
+                </a>
+            <h4 class="text-muted h44">
+                {{object.pais}}
+            </h4>
+            <h4 class="text-muted h44">
+                {{object.date_joined|date:"M/Y"}}
+            </h4>
+            {% else %}
+            <h3 class="py-2 text-primary">
+                <a class="btn btn-primary rounded-pill" href="{% url 'account_profile' %}">Seguir</a>
+            </h3>
+            {% endif %}
+        </div>
+    </div>
+</div>
