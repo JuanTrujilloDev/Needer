@@ -35,7 +35,7 @@ Needer | {{object.username}}
         ></button>
         {% endif %}
         <!--FOTO-->
-        <div class="col-xl-3 col-lg-4 col-md-4 col-3 text-center mb-0 mb-sm-3 px-0 mx-0 align-items-center">
+        <div class="col-xl-3 col-lg-4 col-md-4 col-4 text-center mb-0 mb-sm-3 px-0 mx-0 align-items-center">
             {% if object.foto %}
             <img
                 src="{{object.foto.url}}"
@@ -55,7 +55,7 @@ Needer | {{object.username}}
             {% endif %}
         </div>
         <!--Texto Informacion-->
-        <div class="col-xl-7 col-lg-6 col-md-6 col-6 align-items-center container g-2 justify-content-start">
+        <div class="col-xl-7 col-lg-6 col-md-6 col-5 align-items-center container g-2 justify-content-start">
             <div class="d-table-cell align-bottom row g-2  text-break text-lg-start text-md-start text-sm-start">
                 {% if object.apodo %}
                 <h1 class="text-primary fw-bold mb-0 mw-100 h11">
@@ -71,7 +71,7 @@ Needer | {{object.username}}
             </div>
         </div>
         <!--Ajustes-->
-        <div class="col-md-2 col-sm-2 col-3 d-flex container g-2">
+        <div class="col-xl-2 col-md-2 col-sm-2 col-3 d-flex container g-2">
             <div class="col-12 d-table-cell align-bottom g-2 text-lg-end text-sm-end text-end">
                 {% if request.user == object %}
                     <a class="tuerca" href="{% url 'account_profile' %}">

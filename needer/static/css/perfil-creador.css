@@ -12,13 +12,6 @@
     border-radius: 10px 10px 10px 10px;
 }
 
-@media screen and (min-width:992px) {
-    .imgbanner{ 
-        min-height: 300px;
-    }
-    
-}
-
 .update-imagen{
     width: 250px;
     height: 250px;
@@ -72,7 +65,7 @@ a:hover {
     color: #A3A3FF;
 }
 
-@media screen and (max-width:896px) {
+@media screen and (max-width:914px) {
     .imgbanner{ 
         min-height: 150px;
     }
@@ -92,10 +85,19 @@ a:hover {
         font-size: medium !important;
     }
     .update-imagen{
+        margin-top: -70px;
+        margin-left: 20px;
+        max-width: 150px;
+        max-height: 150px;
+    }
+}
+
+@media screen and (max-width:668px){
+    .update-imagen{
         margin-top: -30px;
         margin-left: 20px;
-        max-width: 100px;
-        max-height: 100px;
+        max-width: 120px;
+        max-height: 120px;
     }
 }
 
@@ -144,12 +146,18 @@ a:hover {
 
 
 
-  @media screen and (max-width:1020px) {
+  @media screen  and (min-width:1024px) and (max-width:1300px) {
     .div-galeria{
         height: 25vh;
         width: 45%;
         margin-bottom: 5%;
       }
+      .update-imagen{
+        max-width: 180px;
+        max-height: 180px;
+        margin-top: -70px;
+        margin-left: 10px;
+    }
     
   }
 
@@ -160,12 +168,28 @@ a:hover {
     
   }
 
+ @media screen and (min-width:915px) and (max-width:992px){
+    .imgbanner{ 
+        min-height: 200px;
+    }
+    .update-imagen{
+        max-width: 180px;
+        max-height: 180px;
+        margin-top: -50px;
+        margin-left: 10px;
+    }
+    
+ }
+
   @media screen and (min-width:992px) {
     .divbib{ 
         position: sticky !important;  
         top:0 ;    
         height: 100%;
         display: flex;
+    }
+    .imgbanner{ 
+        min-height: 300px;
     }
     
 }
