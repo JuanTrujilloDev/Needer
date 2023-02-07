@@ -26,10 +26,6 @@
     border: 4px solid #D1D1FF;
 }
 
-.form-control{
-    border-color: #5C28FF;
-}
-
 .inputs #id_biografia{
     resize: none;
     height: 150px!important;

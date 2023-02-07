@@ -1,7 +1,18 @@
 .busqueda-imagen{
     width: 70px;
     height: 70px;
+    object-fit: cover;  
+}
+
+.bannerimg{
+    margin: 0 !important;
+    width: 100% !important;
+    max-height: 350px;
+    min-height: 100px;
     background-size: cover;
+    background-repeat: no-repeat;
+    border: none !important;
+    border-radius: 10px 10px 0px 0px;
 }
 
 .btn-mostrar{
@@ -51,3 +62,4 @@
 .img-busqueda{
     height: 50vh!important;
 }
+
