@@ -214,11 +214,16 @@ function seguirUsuario(url){
     },
     success: function (json) {
       data_ = JSON.parse(json.result)
-      document.getElementById('follow').disabled=true;
-      document.getElementById('follow').remove();
-      document.getElementById('cantidad_seguidores').innerText = data_[0].followers;
+    
+      document.getElementById('follow'+data_[0].pk+'').disabled=true;
+      document.getElementById('follow'+data_[0].pk+'').remove();
 
-      document.getElementById("seguir_usuario").innerHTML  = ` <a class="btn btn-primary rounded-pill" id="follow" href="#" onclick="dejarSeguirUsuario('`+data_[0].url+`')">Seguido</a>`
+      if (document.getElementById('cantidad_seguidores')){
+        document.getElementById('cantidad_seguidores').innerText = data_[0].followers;
+      }
+      
+
+      document.getElementById("seguir_usuario-"+data_[0].pk+"").innerHTML  = ` <a class="btn btn-md btn-followed rounded-pill" id="follow`+data_[0].pk+`" href="#" onclick="dejarSeguirUsuario('`+data_[0].url+`')">Seguido</a>`
     },
 
     error: function (xhr, errmsg, err) {
@@ -241,10 +246,14 @@ function dejarSeguirUsuario(url){
     },
     success: function (json) {
       data_ = JSON.parse(json.result)
-      document.getElementById('follow').disabled=true;
-      document.getElementById('follow').remove();
-      document.getElementById('cantidad_seguidores').innerText = data_[0].followers;
-      document.getElementById("seguir_usuario").innerHTML  = ` <a class="btn btn-primary rounded-pill" id="follow" href="#" onclick="seguirUsuario('`+data_[0].url+`')">Seguir</a>`
+      document.getElementById('follow'+data_[0].pk+'').disabled=true;
+      document.getElementById('follow'+data_[0].pk+'').remove();
+
+      if (document.getElementById('cantidad_seguidores')){
+        document.getElementById('cantidad_seguidores').innerText = data_[0].followers;
+      }
+      
+      document.getElementById("seguir_usuario-"+data_[0].pk+"").innerHTML  = ` <a class="btn btn-md btn-primary fw-bold rounded-pill" id="follow`+data_[0].pk+`" href="#" onclick="seguirUsuario('`+data_[0].url+`')">Seguir</a>`
     },
 
     error: function (xhr, errmsg, err) {

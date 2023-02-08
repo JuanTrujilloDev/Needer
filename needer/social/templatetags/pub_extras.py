@@ -91,8 +91,8 @@ def busquedaVacia(users, object_list):
 def sigueUsuario(follower, request_user):
 
     if SeguidorUsuario.objects.filter(followed_user_id=follower, follower_user_id=request_user):
-        return mark_safe(f'''<a class="btn btn-primary rounded-pill" id="follow" href="#" onclick="dejarSeguirUsuario('{follower.dejarseguirUsuario()}')">Seguido</a>''')
-    return mark_safe(f'''<a class="btn btn-primary rounded-pill" id="follow" href="#" onclick="seguirUsuario('{follower.seguirUsuario()}')">Seguir</a>''')
+        return mark_safe(f'''<a class="btn btn-followed rounded-pill btn-md" id="follow{follower.pk}" href="#" onclick="dejarSeguirUsuario('{follower.dejarseguirUsuario()}')">Seguido</a>''')
+    return mark_safe(f'''<a class="btn btn-primary rounded-pill fw-bold btn-md" id="follow{follower.pk}" href="#" onclick="seguirUsuario('{follower.seguirUsuario()}')">Seguir</a>''')
 
 
     

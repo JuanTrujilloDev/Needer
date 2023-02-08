@@ -710,12 +710,27 @@ class SeguidoresUsuario(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
     template_name = 'social/user/seguidores.html'
 
     def get_queryset(self):
+        # TODO ORDENAR LOS SEGUIDORES
         user = get_object_or_404(User, slug=self.kwargs['slug'])
-        return user.get_user_followers()
+        followers = user.get_user_followers()
+        followed = self.request.user.get_user_followed()
+        follower_list = []
+        if self.request.user != user and self.request.user in followers:
+            follower_list.append(self.request.user)
+
+        for follower in followed:
+            if follower in followers:
+                follower_list.append(follower)
+        
+        for person in followers:
+            follower_list.append(person)
+
+        follower_list = list(dict.fromkeys(follower_list))
+        return follower_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user'] = get_object_or_404(User, slug=self.kwargs['slug'])
+        context['object'] = get_object_or_404(User, slug=self.kwargs['slug'])
         return context
 
 
@@ -728,11 +743,39 @@ class SeguidosUsuario(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         user = get_object_or_404(User, slug=self.kwargs['slug'])
-        return user.get_user_followed()
+        followed = user.get_user_followed()
+
+        # Ordenar los resultados:
+        # Primero el request.user, luego los followed por el request.user
+        # Finalmente los que no sigue
+
+        if self.request.user != user:
+            request_user_followed = self.request.user.get_user_followed()
+
+            if request_user_followed:
+                new_followed = []
+                for user in request_user_followed:
+                    if user in followed:
+                        new_followed.append(user)
+        
+                followed = new_followed + followed
+              
+
+            if self.request.user in followed and followed[0] != self.request.user:
+                followed = [self.request.user] + followed
+
+            followed = list(dict.fromkeys(followed))
+                
+
+            
+        # Si el usuario es el mismo al request.user se retorna directamente, puesto que ya
+        # Vienen ordenados
+
+        return followed
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user'] = get_object_or_404(User, slug=self.kwargs['slug'])
+        context['object'] = get_object_or_404(User, slug=self.kwargs['slug'])
         return context
 
 

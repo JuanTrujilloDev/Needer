@@ -85,7 +85,9 @@ Needer | {{object.username}}
                 </h3>
                 {% else %}
                 <h3 class="py-2 text-primary">
-                    <a class="btn btn-primary rounded-pill" href="{% url 'account_profile' %}">Seguir</a>
+                    <div id="seguir_usuario-{{object.id}}">
+                    {%  sigueUsuario object request.user %}
+                    </div>
                 </h3>
                 {% endif %}
             </div>

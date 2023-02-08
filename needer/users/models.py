@@ -129,11 +129,11 @@ class User(AbstractUser):
             raise ValidationError('Usuario incorrecto intenta con otro username')
 
     def get_user_followers(self):
-        seguidores = [object_list.follower_user_id for object_list in SeguidorUsuario.objects.filter(followed_user_id=self)]
+        seguidores = [object_list.follower_user_id for object_list in SeguidorUsuario.objects.filter(followed_user_id=self).order_by('follower_user_id__username')]
         return seguidores
 
     def get_user_followed(self): 
-        seguidos = [object_list.followed_user_id for object_list in SeguidorUsuario.objects.filter(follower_user_id=self)]   
+        seguidos = [object_list.followed_user_id for object_list in SeguidorUsuario.objects.filter(follower_user_id=self).order_by('followed_user_id__username')]   
         return seguidos
 
     def seguirUsuario(self):
