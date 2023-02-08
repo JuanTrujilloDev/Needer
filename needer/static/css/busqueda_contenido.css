@@ -185,6 +185,54 @@
     
   }
 
+@media screen and (min-width:1025px) and (max-width:1370px){
+    .biografiauser{
+        font-size:small;
+        margin-bottom: 5px !important;
+
+    }
+    .nombre-usuario, .apodo-user, .nombre-contenido-marketplace{
+        font-size: medium !important;
+    }
+    .busqueda-imagen{
+        height: 50px;
+        width: 50px;
+        background-size: cover;
+      }
+      .celebridad{
+        margin: 1px 1px !important;
+        font-size: 6px !important;
+        color: #ffff;
+        border: none !important;
+        background-color: #a3a3ff;
+    }
+    .audio{
+        height: 25% !important;
+        font-size: 10px !important;
+        margin-left: 40px !important;
+        margin-top: -70px !important;
+        color: #434343;
+        border: none !important;
+        background-color: #d3d3d3;
+    }
+    .descuento{
+        margin: 5px 5px !important;
+        height: 25% !important;
+        font-size: 10px !important;
+        color: #3131B3;
+        border: none !important;
+    }
+    
+    .precio-2{
+        margin: 5px 5px !important;
+        height: 25% !important;
+        font-size: 12px !important;
+        color: #ffff !important;
+        border: none !important;
+        background-color: #3131B3;
+    }
+}
+
   @media screen and (min-width:1150px) and (max-width:1180px){
     .biografiauser{
         font-size:small;
