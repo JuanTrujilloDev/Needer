@@ -2,10 +2,17 @@
     border-radius: 0px 0px 10px 10px;
 }
 
+.img-marketplace{
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px 10px 0px 0px;
+}
+
 .busqueda-imagen{
     width: 70px;
     height: 70px;
     margin-top: -70px;
+    margin-left: 20px;
     object-fit: cover;  
 }
 .nombre-usuario{
@@ -18,12 +25,47 @@
 }
 
 .celebridad{
-    margin-top: 5px !important;
-    margin-bottom: 5px !important;
-    font-size: x-small;
-    color: #a3a3ff;
+    margin: 3px 3px !important;
+    font-size: xx-small !important;
+    color: #ffff;
     border: none !important;
-    background-color: #5C28FF;
+    background-color: #a3a3ff;
+}
+
+.audio{
+    height: 25% !important;
+    font-size: 12px !important;
+    margin-left: 70px !important;
+    margin-top: -80px !important;
+    color: #434343;
+    border: none !important;
+    background-color: #d3d3d3;
+}
+.descuento{
+    margin: 5px 5px !important;
+    height: 25% !important;
+    font-size: 12px !important;
+    color: #3131B3;
+    border: none !important;
+}
+
+.precio-2{
+    margin: 5px 5px !important;
+    height: 25% !important;
+    font-size: 15px !important;
+    color: #ffff !important;
+    border: none !important;
+    background-color: #3131B3;
+}
+
+
+.precio{
+    margin: 5px 5px !important;
+    font-size: 12px !important;
+    color: #0b0b0b;
+    text-decoration:line-through;
+    border: none !important;
+    background-color: #a3a3ff;
 }
 
 .bannerimg{
@@ -38,7 +80,8 @@
 }
 
 .btn-mostrar{
-    color: #5C28FF;
+    text-decoration:underline;
+    text-decoration-color: #3131B3;
 }
 
 
@@ -49,29 +92,165 @@
     object-fit: fill !important;
 }
 
+@media (max-width: 576px){
+.contenido {
+    justify-content:flex-start !important;
+   
+}
+}
 
 @media screen and (max-width:767px) {
     .nombre-contenido-marketplace{
         font-size: small;
       }
-    
-  }
 
-  @media screen and (min-width:768px) {
-    .nombre-contenido-marketplace{
-        font-size: medium;
-      }
-    
-  }
-
-@media screen and (max-width:1020px) {
     .busqueda-imagen{
-        height: 55px;
-        width: 55px;
+        height: 50px;
+        width: 50px;
         background-size: cover;
       }
     
   }
+
+  @media screen and (max-width:840px){
+    h5, h4{
+        font-size: medium !important;
+    }
+    .biografiauser{
+        font-size:small;
+    margin-bottom: 5px !important;
+
+    }
+    .busqueda-imagen{
+        height: 60px;
+        width: 60px;
+        background-size: cover;
+      }
+      .celebridad{
+        margin: 1px 1px !important;
+        font-size: 6px !important;
+        color: #ffff;
+        border: none !important;
+        background-color: #a3a3ff;
+    }
+    
+  }
+
+  @media screen and (max-width:1024px){
+    .nombre-usuario, .apodo-user, .nombre-contenido-marketplace{
+        font-size: medium !important;
+    }
+    .biografiauser{
+        font-size:small;
+    margin-bottom: 5px !important;
+
+    }
+    .busqueda-imagen{
+        height: 40px;
+        width: 40px;
+        background-size: cover;
+      }
+      .celebridad{
+        margin: 1px 1px !important;
+        font-size: 6px !important;
+        color: #ffff;
+        border: none !important;
+        background-color: #a3a3ff;
+    }
+    .audio{
+        height: 25% !important;
+        font-size: 10px !important;
+        margin-left: 30px !important;
+        margin-top: -60px !important;
+        color: #434343;
+        border: none !important;
+        background-color: #d3d3d3;
+    }
+    .descuento{
+        margin: 5px 5px !important;
+        height: 25% !important;
+        font-size: 8px !important;
+        color: #3131B3;
+        border: none !important;
+    }
+    
+    .precio-2{
+        margin: 5px 5px !important;
+        height: 25% !important;
+        font-size: 10px !important;
+        color: #ffff !important;
+        border: none !important;
+        background-color: #3131B3;
+    }
+    
+  }
+
+  @media screen and (min-width:1150px) and (max-width:1180px){
+    .biografiauser{
+        font-size:small;
+        margin-bottom: 5px !important;
+
+    }
+    .nombre-usuario, .apodo-user, .nombre-contenido-marketplace{
+        font-size: medium !important;
+    }
+    .busqueda-imagen{
+        height: 50px;
+        width: 50px;
+        background-size: cover;
+      }
+      .celebridad{
+        margin: 1px 1px !important;
+        font-size: 6px !important;
+        color: #ffff;
+        border: none !important;
+        background-color: #a3a3ff;
+    }
+    .audio{
+        height: 25% !important;
+        font-size: 10px !important;
+        margin-left: 40px !important;
+        margin-top: -70px !important;
+        color: #434343;
+        border: none !important;
+        background-color: #d3d3d3;
+    }
+    .descuento{
+        margin: 5px 5px !important;
+        height: 25% !important;
+        font-size: 10px !important;
+        color: #3131B3;
+        border: none !important;
+    }
+    
+    .precio-2{
+        margin: 5px 5px !important;
+        height: 25% !important;
+        font-size: 12px !important;
+        color: #ffff !important;
+        border: none !important;
+        background-color: #3131B3;
+    }
+    
+  }
+
+  @media screen and (min-width:1368px){
+    
+    .busqueda-imagen{
+        height: 50px;
+        width: 50px;
+        background-size: cover;
+      }
+      .celebridad{
+        margin: 1px 1px !important;
+        font-size: 6px !important;
+        color: #ffff;
+        border: none !important;
+        background-color: #a3a3ff;
+    }
+    
+  }
+
 
 .img-busqueda{
     height: 50vh!important;
