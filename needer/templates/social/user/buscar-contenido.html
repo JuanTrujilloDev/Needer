@@ -75,106 +75,10 @@ Needer
             <div class="col-5 d-flex justify-content-end align-items-end px-0">
                 <a class="col-10 link btn-mostrar" href="{% url 'busqueda-user' %}?q={{request.GET.q}}"><h6 class="fw-bold my-auto text-secondary text-end">Ver más</h6></a>
             </div>
-
-            {% for user in users %}
             
-            
-            <!--CONTENEDOR DE USUARIOS-->
-            <div class="col-10 col-md-3 col-sm-5 px-0 shadow m-4 contuser">
-            <!--Foto Banner Busqueda-->
-                {% if user.banner %}
-                <button
-                    type="button"
-                    data-bs-toggle="#"
-                    data-bs-target="#exampleModal"
-                    class="col-12 btn img-fluid bannerimg"
-                    style="background-image: url('{{user.banner.url}}');"
-                ></button>
-                {% else %}
-                <button
-                    type="button"
-                    data-bs-toggle="#"
-                    data-bs-target="#exampleModal"
-                    class="col-12 btn img-fluid bannerimg"
-                    style="background-image: url('{% static 'img/placeholder-banner.png' %}');"
-                ></button>
-                {% endif %}
-            <!--Foto Perfil Busqueda-->
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-2 col-2 text-center g-0 mt-3 mb-0 mx-0">
-                    {% if user.foto %}
-                    <img
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                        class="rounded-circle overflow-hidden busqueda-imagen img-fluid"
-                        src="{{user.foto.url}}"
-                    >
-                    {% else %}
-                    <button
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                        class="col-12 btn border rounded-circle overflow-hidden busqueda-imagen img-fluid"
-                        style="background-image: url('{% static 'img/default-profile.png' %}');"
-                    ></button>
-                    {% endif %}
-                </div>
-
-                <!--Nombres, Apodo, Bibliografia y Tipo de Celebridad-->
-                <div class="row  col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex align-items-center container g-2 justify-content-center px-3 mb-0">
-                    <div class="w-100 col-12 d-table-cell align-bottom row g-0 text-break text-lg-start text-md-start text-sm-start text-start">
-                        {% if user.first_name and user.last_name %}
-                        <h4 onclick="window.open('{{user.get_absolute_url}}')" class="text-primary text-truncate fw-bold mb-0 mb-sm-2 mw-100 nombre-usuario">
-                            {{user.first_name}} {{user.last_name}}
-                        </h4>
-                        {% else %}
-                        <h4 onclick="window.open('{{user.get_absolute_url}}')" class="text-primary text-truncate fw-bold mb-0 mb-sm-2 mw-100 nombre-usuario">
-                            {{user.username}}
-                        </h4>
-                        {% endif %}
-    
-                        {% if user.apodo %}
-                        <h5 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted text-truncate fw-bold mb-0 mb-sm-2 mw-100 apodo-user">
-                            @{{user.apodo}}
-                        </h5>
-                        {% else %}
-                        <h5 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted text-truncate fw-bold mb-0 mb-sm-2 mw-100 apodo-user">
-                            @{{user.username}}
-                        </h5>
-                        {% endif %}
-                    </div>
-
-                        {% if user.biografia %}
-                            <h4 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted  text-brake fw-light mb-0 mw-100 biografiauser">
-                                {{user.biografia|truncatechars:80}}
-                            </h4>
-                            {% else %}
-                            <div class="m-4">
-
-                            </div>
-
-
-                        {% endif %}
-
-                        <div class="flex container-fluid row col-12 mx-0 px-0 justify-content-beetween">
-                            {% if user.tipo_celebridad %}
-                                
-                                    {% for tipo in user.tipo_celebridad.all %}
-                                    <div onclick="window.open('{{user.get_absolute_url}}')" class="col-5 align-items-center rounded-pill text-center fw-light mw-100 celebridad">
-                                    {{tipo}}
-                                    </div>
-                                    {% endfor %}    
-                            {% endif %}
-                         </div>
-
-                </div>
-
-                    
-
-            </div>
-
-            {% endfor %}
-
+            {% comment %} Componente de buscar usuario {% endcomment %}
+            {% include 'social/user/componente-buscar-usuario.html' with object_list=users%}
+        
             {% endif %}
 
             
