@@ -70,14 +70,19 @@ Needer
         <!--Contenido de la busqueda usuario-->
         <div class="row d-flex container-fluid justify-content-center align-middle col-lg-12 px-0 mx-auto">
 
-            <div class="col-12 d-flex justify-content-start px-0">
-                <h2 class="col-xl-3 col-lg-3 col-md-2 col-sm-2 col-2 text-center fw-bold">Usuarios</h2>
+            <div class="col-5 d-flex justify-content-start mx-1 align-items-end px-0">
+                <h1 class="text-primary fw-bold mb-0">Usuarios</h1>
             </div>
             
+            <div class="col-5 d-flex justify-content-end align-items-end px-0">
+                <a class="col-10 btn btn-mostrar" href="{% url 'busqueda-user' %}?q={{request.GET.q}}"><h3 class="fw-bold my-auto">Ver más</h3></a>
+            </div>
+
             {% for user in users %}
             
+            
             <!--CONTENEDOR DE USUARIOS-->
-            <div class="col-3 row d-flex px-0 shadow m-4 contuser">
+            <div class="col-3 px-0 shadow m-4 contuser">
             <!--Foto Banner Busqueda-->
                 {% if user.banner %}
                 <button
@@ -117,8 +122,8 @@ Needer
                     {% endif %}
                 </div>
 
-                <!--Nombres y apodo-->
-                <div class="row  col-xl-6 col-lg-6 col-md-6 col-sm-5 col-6 d-flex align-items-center container g-2 justify-content-center">
+                <!--Nombres, Apodo, Bibliografia y Tipo de Celebridad-->
+                <div class="row  col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex align-items-center container g-2 justify-content-center px-3 mb-0">
                     <div class="w-100 col-12 d-table-cell align-bottom row g-0 text-break text-lg-start text-md-start text-sm-start text-start">
                         {% if user.first_name and user.last_name %}
                         <h4 onclick="window.open('{{user.get_absolute_url}}')" class="text-primary text-truncate fw-bold mb-0 mb-sm-2 mw-100 nombre-usuario">
@@ -131,17 +136,41 @@ Needer
                         {% endif %}
     
                         {% if user.apodo %}
-                        <h5 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted text-truncate fw-bold mb-0 mb-sm-2 mw-100">
+                        <h5 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted text-truncate fw-bold mb-0 mb-sm-2 mw-100 apodo-user">
                             @{{user.apodo}}
                         </h5>
                         {% else %}
-                        <h5 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted text-truncate fw-bold mb-0 mb-sm-2 mw-100">
+                        <h5 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted text-truncate fw-bold mb-0 mb-sm-2 mw-100 apodo-user">
                             @{{user.username}}
                         </h5>
                         {% endif %}
                     </div>
+
+                        {% if user.biografia %}
+                            <h4 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted  text-brake fw-light mb-0 mw-100 biografiauser">
+                                {{user.biografia|truncatechars:100}}
+                            </h4>
+                            {% else %}
+                            <div class="m-4">
+
+                            </div>
+
+
+                        {% endif %}
+
+                        <div class="flex container-fluid row col-12 justify-content-start">
+                            {% if user.tipo_celebridad %}
+                                
+                                    {% for tipo in user.tipo_celebridad.all %}
+                                    <div onclick="window.open('{{user.get_absolute_url}}')" class="col-6 align-items-center rounded-pill text-center fw-light mb-0 mw-100 celebridad">
+                                    {{tipo}}
+                                    </div>
+                                    {% endfor %}    
+                            {% endif %}
+                         </div>
+
                 </div>
-                
+
                     
 
             </div>

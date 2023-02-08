@@ -46,7 +46,7 @@ Needer | {{object.username}}
             </a>
             {% endif %}
             <!--Tipo de celebridad-->
-            <div class="felx container-fluid justify-content-between my-3 ">
+            <div class="flex container-fluid justify-content-between my-3 ">
                 {% for tipo in object.tipo_celebridad.all %}
                     <a href="#" class="categorias-badges border px-2 mb-2 mx-2 rounded-pill col text-center">{{tipo.nombre}}</a>
                 {% endfor %}

@@ -1,24 +1,28 @@
-.profile-img{
-  height: 80px;
-  width: 80px;
-  object-fit: cover;
-  border: 2px solid #d1d1d1;
+
+.ajustesombra{
+  box-shadow: rgba(0,0,0,0.25) 2px 3px 4px 0px ;
 }
 
-.imgcm{
-height: 20px;
-width: 20px;
-object-fit: cover;
-border: 1px solid #d1d1d1;
+.profile-img{
+  height: 70px;
+  width: 70px;
+  object-fit: cover;
+  border: 1px solid #d1d1d1;
 }
 
 .img-static{
   height: 50px;
   width: 50px;
   object-fit: cover;
+  border: 1px solid #d1d1d1;
+  height: 100%;
+}
+
+.img-static-2{
+  height: 75px;
+  width: 75px;
+  object-fit: cover;
   border: 2px solid #d1d1d1;
-
-
   height: 100%;
 }
 
@@ -40,4 +44,93 @@ font-size: small;
       display: flex;
   }
   
+}
+
+@media screen and (max-width:1180px) {
+  .divbib h4{
+    font-size: larger !important;
+  }
+  .divbib h3{
+    font-size: 0.8rem !important;
+  }
+  .divbib h6{
+    font-size: x-small !important;
+  }
+  .texti{
+    font-size: xx-small !important;
+  }
+  .img-static{
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border: 1px solid #d1d1d1;
+    height: 100%;
+  }
+  .corazon{
+    font-size: large !important;
+  }
+
+}
+
+@media screen and (min-width:1081px) and (max-width:1425px) {
+  .divbib h4{
+    font-size: larger !important;
+  }
+  .divbib h3{
+    font-size: 1rem !important;
+  }
+  .divbib h6{
+    font-size: small !important;
+  }
+  .texti{
+    font-size: x-small !important;
+  }
+  .img-static{
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border: 1px solid #d1d1d1;
+  }
+  .corazon{
+    font-size: large !important;
+  }
+  .profile-img{
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border: 1px solid #d1d1d1;
+  }
+
+}
+
+@media screen and (max-width:1024px) and (min-width:993px) {
+  .divbib h4{
+    font-size: large !important;
+  }
+  .divbib h3{
+    font-size: 0.8rem !important;
+  }
+  .divbib h6{
+    font-size: x-small !important;
+  }
+  .texti{
+    font-size: xx-small !important;
+  }
+  .img-static{
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border: 1px solid #d1d1d1;
+    height: 100%;
+  }
+  .corazon{
+    font-size: large !important;
+  }
+  .profile-img{
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border: 1px solid #d1d1d1;
+  }
+
 }

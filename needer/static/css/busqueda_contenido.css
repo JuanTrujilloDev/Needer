@@ -1,11 +1,29 @@
 .contuser{
-    border-radius: 0px 0px 20px 20px;
+    border-radius: 0px 0px 10px 10px;
 }
 
 .busqueda-imagen{
     width: 70px;
     height: 70px;
+    margin-top: -70px;
     object-fit: cover;  
+}
+.nombre-usuario{
+    margin-bottom: 0px !important;
+}
+
+.biografiauser{
+    font-size: medium;
+    margin-bottom: 5px !important;
+}
+
+.celebridad{
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+    font-size: x-small;
+    color: #a3a3ff;
+    border: none !important;
+    background-color: #5C28FF;
 }
 
 .bannerimg{
@@ -20,13 +38,9 @@
 }
 
 .btn-mostrar{
-    background-color: gray;
-    color: #ffff;
-}
-
-.btn-mostrar :hover{
     color: #5C28FF;
 }
+
 
 .contenido-marketplace{
     min-width: 100% !important;
@@ -58,10 +72,6 @@
       }
     
   }
-
-.nombre-usuario{
-    margin-bottom: 0 !important;
-}
 
 .img-busqueda{
     height: 50vh!important;
