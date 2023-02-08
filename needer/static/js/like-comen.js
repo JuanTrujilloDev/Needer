@@ -132,7 +132,7 @@ function likepublicacion(url){
         data_ = JSON.parse(json.result)
         document.getElementById('like'+data_[0].pk).disabled=true;
         document.getElementById('like'+data_[0].pk).remove();
-        document.getElementById("divlike"+data_[0].pk).innerHTML  = `<a href="#" id="dislike`+data_[0].pk+`" onclick = "dislikepublicacion('`+data_[0].url+`')" class=" text-muted botones-interaccion px-0 fw-lighter text-decoration-none border-secondary align-middle fs-5 fw-bold col-12 like z-2"> <i class="bi bi-heart-fill text-primary"></i> `+data_[0].likes +`</a>`
+        document.getElementById("divlike"+data_[0].pk).innerHTML  = `<a href="#" id="dislike`+data_[0].pk+`" onclick = "dislikepublicacion('`+data_[0].url+`')" class="text-muted botones-interaccion px-0 fw-lighter text-decoration-none align-middle like z-2"> <i class="bi bi-heart-fill text-primary me-2"></i> `+data_[0].likes +`</a>`
       },
 
       error: function (xhr, errmsg, err) {
@@ -156,7 +156,7 @@ function likepublicacion(url){
       success: function (json) {
         data_ = JSON.parse(json.result)
         document.getElementById('dislike'+data_[0].pk).disabled=true;
-        document.getElementById("divlike"+data_[0].pk).innerHTML  = `<a href="#" id="like`+data_[0].pk+`" onclick="likepublicacion('`+data_[0].url+`')" class="botones-interaccion px-0 text-muted text-decoration-none align-middle fw-lighter fs-5 fw-bold col-12 like z-2"> <i class="bi bi-heart"></i> `+data_[0].likes+`</a>`
+        document.getElementById("divlike"+data_[0].pk).innerHTML  = `<a href="#" id="like`+data_[0].pk+`" onclick="likepublicacion('`+data_[0].url+`')" class="text-muted botones-interaccion px-0 fw-lighter text-decoration-none align-middle like z-2"> <i class="bi bi-heart me-2"></i> Like` +`</a>`//+data_[0].likes
         
       },
 
