@@ -85,7 +85,9 @@ Needer | {{object.username}}
                 </h3>
                 {% else %}
                 <h3 class="py-2 text-primary">
-                    <a class="btn btn-primary rounded-pill" href="{% url 'account_profile' %}">Seguir</a>
+                    <div id="seguir_usuario">
+                    {%  sigueUsuario object request.user %}
+                    </div>
                 </h3>
                 {% endif %}
             </div>
@@ -131,22 +133,17 @@ Needer | {{object.username}}
             <div class="container-fluid my-3">
                 <h3 class="text-primary">Interacciones</h3>
                 <div class="row d-flex justify-content-center align-items-center mt-4">
-                    {% if object.user.verificado %}
-                    <div class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-dinero">
-                        <h4>
-                            <i class="bi bi-coin fw-bold"></i>
-                        </h4>
-                        <h5 class="fw-bold">213456</h5>
-                        <h6 class="text-muted">Ventas</h6>
-                    </div>
-                    {% endif %}
-                    <div class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-seguidores">
-                        <h4>
-                            <i class="bi bi-person-hearts"></i>
-                        </h4>
-                        <h5 class="fw-bold">7534</h5>
-                        <h6 class="text-muted">Seguidores</h6>
-                    </div>
+
+                    <a class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-dinero text-decoration-none" href="{% url 'followed-usuario' object.slug %}">
+
+                        <h4 class="fw-bold">{{seguidos|length}}</h4>
+                        <h5 class="text-muted">Seguidos</h5>
+                    </a>
+
+                    <a class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-seguidores" href="{% url 'followers-usuario' object.slug %}">
+                        <h4 class="fw-bold" id="cantidad_seguidores">{{seguidores|length}}</h4>
+                        <h5 class="text-muted">Seguidores</h5>
+                    </a>
                 </div>
             </div>
         </div>

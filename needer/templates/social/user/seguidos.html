@@ -1,0 +1,22 @@
+{% extends innercontent %}
+{% load static %}
+{% load pub_extras %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/perfil-creador.css'%} ">
+<link rel="stylesheet" href="{% static 'css/publicacion.css'%} ">
+{% endblock css %}
+
+{% block headtitle %}
+Seguidos por {{user.username}}
+{% endblock headtitle %}
+
+{% block inner-content %}
+{{object_list}}
+{% endblock inner-content %}
+
+{% block script %}
+<script src="https://unpkg.com/infinite-scroll@4.0.1/dist/infinite-scroll.pkgd.min.js"></script>
+<script src="{% static 'js/load-more-ajax.js' %}"></script>
+<script src="{% static 'js/like-comen.js' %}"></script>
+{% endblock script %}

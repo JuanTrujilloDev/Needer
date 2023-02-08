@@ -67,13 +67,23 @@
     text-decoration: none;
 }
 
+.icono-seguidores{
+    text-decoration: none; 
+    color: #212529;
+}
+
 .icono-seguidores:hover{
-    color: red;
+    color: #A3A3FF;
     cursor: pointer;
 }
 
+.icono-dinero{
+    text-decoration: none; 
+    color: #212529;
+}
+
 .icono-dinero:hover{
-    color:green;
+    color:#A3A3FF;
     cursor: pointer;
 }
 

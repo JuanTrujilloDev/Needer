@@ -39,7 +39,7 @@ $(document).on('submit', '#form-comentario', function (e) {
             document.getElementById('id_comentario').value  = ''
             data_ = JSON.parse(json.listadocomentarios);
 
-            console.log(data_[0].comentario)
+  
 
             document.getElementById('coment'+data_[0].pk).innerHTML =  `<a href="#" class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2"> <i class="text-primary bi bi-chat-left-fill"></i> `+data_[0].cantidad+`</a>`
             coment.insertAdjacentHTML('afterbegin', 
@@ -105,7 +105,7 @@ $(document).on('submit', '#form-comentario', function (e) {
 
         }catch{
           //TODO AGREGAR MENSAJE DE ERROR
-          console.log("Agregar Mensaje de error")
+        
         }
       },
 
@@ -201,3 +201,55 @@ $("#id_comentario").keypress(function (e) {
       $(this).closest("form").submit();
   }
 });
+
+function seguirUsuario(url){
+
+
+  $.ajax({
+    type: 'POST',
+    url: url,
+    data: {
+      csrfmiddlewaretoken: getCookie('csrftoken'),
+      action: 'post'
+    },
+    success: function (json) {
+      data_ = JSON.parse(json.result)
+      document.getElementById('follow').disabled=true;
+      document.getElementById('follow').remove();
+      document.getElementById('cantidad_seguidores').innerText = data_[0].followers;
+
+      document.getElementById("seguir_usuario").innerHTML  = ` <a class="btn btn-primary rounded-pill" id="follow" href="#" onclick="dejarSeguirUsuario('`+data_[0].url+`')">Seguido</a>`
+    },
+
+    error: function (xhr, errmsg, err) {
+
+    }
+  });
+
+}
+
+
+function dejarSeguirUsuario(url){
+
+
+  $.ajax({
+    type: 'POST',
+    url: url,
+    data: {
+      csrfmiddlewaretoken: getCookie('csrftoken'),
+      action: 'post'
+    },
+    success: function (json) {
+      data_ = JSON.parse(json.result)
+      document.getElementById('follow').disabled=true;
+      document.getElementById('follow').remove();
+      document.getElementById('cantidad_seguidores').innerText = data_[0].followers;
+      document.getElementById("seguir_usuario").innerHTML  = ` <a class="btn btn-primary rounded-pill" id="follow" href="#" onclick="seguirUsuario('`+data_[0].url+`')">Seguir</a>`
+    },
+
+    error: function (xhr, errmsg, err) {
+
+    }
+  });
+
+}
