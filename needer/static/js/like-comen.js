@@ -39,7 +39,7 @@ $(document).on('submit', '#form-comentario', function (e) {
             document.getElementById('id_comentario').value  = ''
             data_ = JSON.parse(json.listadocomentarios);
 
-            console.log(data_[0].comentario)
+  
 
             document.getElementById('coment'+data_[0].pk).innerHTML =  `<a href="#" class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2"> <i class="text-primary bi bi-chat-left-fill"></i> `+data_[0].cantidad+`</a>`
             coment.insertAdjacentHTML('afterbegin', 
@@ -105,7 +105,7 @@ $(document).on('submit', '#form-comentario', function (e) {
 
         }catch{
           //TODO AGREGAR MENSAJE DE ERROR
-          console.log("Agregar Mensaje de error")
+        
         }
       },
 
@@ -132,7 +132,7 @@ function likepublicacion(url){
         data_ = JSON.parse(json.result)
         document.getElementById('like'+data_[0].pk).disabled=true;
         document.getElementById('like'+data_[0].pk).remove();
-        document.getElementById("divlike"+data_[0].pk).innerHTML  = `<a href="#" id="dislike`+data_[0].pk+`" onclick = "dislikepublicacion('`+data_[0].url+`')" class=" text-muted botones-interaccion px-0 fw-lighter text-decoration-none border-secondary align-middle fs-5 fw-bold col-12 like z-2"> <i class="bi bi-heart-fill text-primary"></i> `+data_[0].likes +`</a>`
+        document.getElementById("divlike"+data_[0].pk).innerHTML  = `<a href="#" id="dislike`+data_[0].pk+`" onclick = "dislikepublicacion('`+data_[0].url+`')" class="text-muted botones-interaccion px-0 fw-lighter text-decoration-none align-middle like z-2"> <i class="bi bi-heart-fill text-primary me-2"></i> `+data_[0].likes +`</a>`
       },
 
       error: function (xhr, errmsg, err) {
@@ -156,7 +156,7 @@ function likepublicacion(url){
       success: function (json) {
         data_ = JSON.parse(json.result)
         document.getElementById('dislike'+data_[0].pk).disabled=true;
-        document.getElementById("divlike"+data_[0].pk).innerHTML  = `<a href="#" id="like`+data_[0].pk+`" onclick="likepublicacion('`+data_[0].url+`')" class="botones-interaccion px-0 text-muted text-decoration-none align-middle fw-lighter fs-5 fw-bold col-12 like z-2"> <i class="bi bi-heart"></i> `+data_[0].likes+`</a>`
+        document.getElementById("divlike"+data_[0].pk).innerHTML  = `<a href="#" id="like`+data_[0].pk+`" onclick="likepublicacion('`+data_[0].url+`')" class="text-muted botones-interaccion px-0 fw-lighter text-decoration-none align-middle like z-2"> <i class="bi bi-heart me-2"></i> Like` +`</a>`//+data_[0].likes
         
       },
 
@@ -201,3 +201,64 @@ $("#id_comentario").keypress(function (e) {
       $(this).closest("form").submit();
   }
 });
+
+function seguirUsuario(url){
+
+
+  $.ajax({
+    type: 'POST',
+    url: url,
+    data: {
+      csrfmiddlewaretoken: getCookie('csrftoken'),
+      action: 'post'
+    },
+    success: function (json) {
+      data_ = JSON.parse(json.result)
+    
+      document.getElementById('follow'+data_[0].pk+'').disabled=true;
+      document.getElementById('follow'+data_[0].pk+'').remove();
+
+      if (document.getElementById('cantidad_seguidores')){
+        document.getElementById('cantidad_seguidores').innerText = data_[0].followers;
+      }
+      
+
+      document.getElementById("seguir_usuario-"+data_[0].pk+"").innerHTML  = ` <a class="btn btn-md btn-followed rounded-pill" id="follow`+data_[0].pk+`" href="#" onclick="dejarSeguirUsuario('`+data_[0].url+`')">Seguido</a>`
+    },
+
+    error: function (xhr, errmsg, err) {
+
+    }
+  });
+
+}
+
+
+function dejarSeguirUsuario(url){
+
+
+  $.ajax({
+    type: 'POST',
+    url: url,
+    data: {
+      csrfmiddlewaretoken: getCookie('csrftoken'),
+      action: 'post'
+    },
+    success: function (json) {
+      data_ = JSON.parse(json.result)
+      document.getElementById('follow'+data_[0].pk+'').disabled=true;
+      document.getElementById('follow'+data_[0].pk+'').remove();
+
+      if (document.getElementById('cantidad_seguidores')){
+        document.getElementById('cantidad_seguidores').innerText = data_[0].followers;
+      }
+      
+      document.getElementById("seguir_usuario-"+data_[0].pk+"").innerHTML  = ` <a class="btn btn-md btn-primary fw-bold rounded-pill" id="follow`+data_[0].pk+`" href="#" onclick="seguirUsuario('`+data_[0].url+`')">Seguir</a>`
+    },
+
+    error: function (xhr, errmsg, err) {
+
+    }
+  });
+
+}

@@ -11,7 +11,10 @@ urlpatterns = [
     # CREADOR DE CONTENIDO DETAIL
     
     path('<str:slug>/', DetailCreador.as_view(), name='detalle-creador'),
-
+    path('<str:slug>/follow', SeguirUsuario.as_view(), name='follow-usuario'),
+    path('<str:slug>/unfollow', DejarSeguirUsuario.as_view(), name='unfollow-usuario'),
+    path('<str:slug>/followers', SeguidoresUsuario.as_view(), name='followers-usuario'),
+    path('<str:slug>/followed', SeguidosUsuario.as_view(), name='followed-usuario'),
 
 
 

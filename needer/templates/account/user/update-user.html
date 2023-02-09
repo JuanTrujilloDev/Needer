@@ -12,14 +12,14 @@
     <div class="container py-4">
 
         <!--Titulo y links-->
-        <h1 class="text-primary mb-3 fw-bold">Ajustes</h1>
+        <h1 class="text-primary mb-3 fw-bold h11">Ajustes</h1>
         <div class="d-flex justify-content-start border-bottom mb-3 pre-ajustes">
             {% with url_name=request.resolver_match.url_name %}
             <a class="me-4 mb-0 fw-bolder text-muted 
-            {% if url_name == 'account_profile' %}active {% endif %}" href="{% url 'account_profile' %}"><h2 class="mb-0">Perfil</h2></a>
-            <a class="me-4 mb-0 fw-bolder text-muted" href="#"><h2 class="mb-0">Método de pago</h2></a>
+            {% if url_name == 'account_profile' %}active {% endif %}" href="{% url 'account_profile' %}"><h2 class="mb-0 h22">Perfil</h2></a>
+            <a class="me-4 mb-0 fw-bolder text-muted" href="#"><h2 class="mb-0 h22">Método de pago</h2></a>
             <a class="me-5 mb-0 fw-bolder text-muted
-            {% if url_name == 'account_change_password' %}active {% endif %}" href="{% url 'account_change_password' %}"><h2 class="mb-0">Actualizar Contrasena</h2></a>
+            {% if url_name == 'account_change_password' %}active {% endif %}" href="{% url 'account_change_password' %}"><h2 class="mb-0 h22">Actualizar Contrasena</h2></a>
             {% endwith %}
         </div>
 

@@ -1,8 +1,10 @@
 from django.utils import timezone
 from django import template
+from users.models import SeguidorUsuario
 import mimetypes
 from needer.settings import STATIC_URL
 import os
+from django.utils.safestring import mark_safe
 
 
 register = template.Library()
@@ -85,6 +87,13 @@ def busquedaVacia(users, object_list):
     else:
         return False
 
+@register.simple_tag()
+def sigueUsuario(follower, request_user):
+
+    if SeguidorUsuario.objects.filter(followed_user_id=follower, follower_user_id=request_user):
+        return mark_safe(f'''<a class="btn btn-followed rounded-pill btn-md" id="follow{follower.pk}" href="#" onclick="dejarSeguirUsuario('{follower.dejarseguirUsuario()}')">Seguido</a>''')
+    return mark_safe(f'''<a class="btn btn-primary rounded-pill fw-bold btn-md" id="follow{follower.pk}" href="#" onclick="seguirUsuario('{follower.seguirUsuario()}')">Seguir</a>''')
+
 
     
 
@@ -93,3 +102,4 @@ register.filter('tipo_archivo', tipo_archivo)
 register.filter('editado', editado)
 register.filter('fecha_exacta', fecha_exacta)
 register.filter("busqueda_vacia", busquedaVacia)
+register.filter("sigueUsuario", sigueUsuario, is_safe=True)
