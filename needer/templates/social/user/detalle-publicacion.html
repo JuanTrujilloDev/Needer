@@ -26,7 +26,7 @@ Needer | {{publicacion.user.username}}
 
            
         <!--Publicación-->
-        <div class="row container-fluid px-0 bg-white d-flex justify-content-around align-items-center mt-2 publicacion">
+        <div class="row container-fluid px-0 bg-white d-flex justify-content-around align-items-center mt-2 publicacion ">
             <div class="container-fluid w-100 col-12 d-flex justify-content-start align-items-center align-middle pt-3">
                 <!--Foto del usuario-->
 
@@ -123,17 +123,27 @@ Needer | {{publicacion.user.username}}
 
                 <!--Botones de la Publicación--> 
 
-                <div class="row text-decoration-none pt-1 w-100 container col-12 p-0">
-                    <div id = 'divlike{{publicacion.id}}' class="p-0 me-2 col-md-2 col-xl-1 col-lg-2 col-2 text-center">
-                    {% if EstadoLike %}
-                        <a id="dislike{{publicacion.id}}" href="#" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="text-muted botones-interaccion px-0 fw-lighter text-decoration-none border-secondary align-middle fs-5 fw-bold col-12 like z-2"><i class="bi bi-heart-fill text-primary"></i> {{publicacion.cantidadLikes}} </a>
+                <div class="row text-decoration-none col-12 mt-2">
+                    <div id = 'divlike{{publicacion.id}}' class="p-0 col-md-6 col-xl-6 col-lg-6 col-6 text-center">
+                    {% if publicacion.bool_like %}
+                        <a href="#" id="dislike{{publicacion.id}}" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="text-muted px-0 fw-lighter text-decoration-none align-middle like z-2">
+                            <i class="bi bi-heart-fill text-primary me-2"></i>
+                            {{publicacion.cantidadLikes}} 
+                        </a>
                     {% else %}
-
-                        <a id="like{{publicacion.id}}" href="#" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class=" botones-interaccion px-0 text-muted text-decoration-none align-middle fw-lighter fs-5 fw-bold col-12 like z-2"><i class="bi bi-heart"></i> {{publicacion.cantidadLikes}} </a>
+        
+                        <a href="#" id="like{{publicacion.id}}" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class="text-muted px-0 fw-lighter text-decoration-none align-middle like z-2">
+                            <i class="bi bi-heart me-2"></i> 
+                            Like
+                        </a>
                     {% endif %} 
                     </div>
-                    <div id = 'coment{{publicacion.id}}'  class="p-0 col-md-2 col-xl-1 col-lg-2 col-2">
-                        <a href="#" class="text-muted  botones-interaccion text-decoration-none align-middle fs-5 fw-bold col-12 like z-2" onclick="$('.form-comentario').focus();"><i class="bi  {% if publicacion.bool_comment %} text-primary bi-chat-left-fill {% else %} bi-chat-left {% endif %}"></i> {{paginator.count}} </a>
+                    <div id = 'coment{{publicacion.id}}' class="p-0 col-md-6 col-xl-6 col-lg-6 col-6 text-center">
+                        <a href="#" class="text-muted text-decoration-none align-middle like z-2" onclick="$('.form-comentario').focus();">
+                            <i class="bi me-1 {% if publicacion.bool_comment %} text-primary bi-chat-left-fill {% else %} bi-chat-left {% endif %}"></i> 
+                            {% comment %} {{publicacion.cantidadComentarios}}  {% endcomment %}
+                            Comentario
+                        </a>
                     </div>
                 </div>
             </div>
@@ -188,12 +198,7 @@ Needer | {{publicacion.user.username}}
                         </h5>
                         <p class="my-0 text-muted texti text-start text-break text-truncate">@{{com.user.username}}</p>
                        
-                
-                        
-                   
                     </div>  
-
-                   
 
                     {% comment %} Dropdown {% endcomment %}
                     <div class="col-1 d-flex align-items-center justify-content-end">
@@ -225,15 +230,15 @@ Needer | {{publicacion.user.username}}
                 <div class="col-12 d-flex align-items-center gap-0 d-inline-flex text-decoration-none">
                     <div id = 'divlike{{com.id}}' class="text-decoration-none">
                         {% if com.bool_like %}
-                        <a id="dislike{{com.id}}" href="#" onclick = "dislikepublicacion('{{com.dislikeComentario}}')" class="text-muted float-start pe-auto text-decoration-none text-start fs-5 fw-bold col like z-2"><i class="bi bi-heart-fill text-primary"></i> {{com.cantidadLikes}} </a>
+                        <a id="dislike{{com.id}}" href="#" onclick = "dislikepublicacion('{{com.dislikeComentario}}')" class="text-muted px-0 fw-lighter text-decoration-none align-middle like z-2"><i class="bi bi-heart-fill text-primary me-2"></i> {{com.cantidadLikes}} </a>
                         {% else %}
-                        <a id='like{{com.id}}' href="#"  onclick="likepublicacion('{{com.likeComentario}}')" class="text-start float-start pe-auto text-decoration-none text-muted align-middle fs-5 fw-bold col like z-2"><i class="bi bi-heart"></i>  {{com.cantidadLikes}} </a>
+                        <a id='like{{com.id}}' href="#"  onclick="likepublicacion('{{com.likeComentario}}')" class="text-muted px-0 fw-lighter text-decoration-none align-middle like z-2"><i class="bi bi-heart me-2"></i> Like {% comment %} {{com.cantidadLikes}} {% endcomment %} </a>
 
                         {% endif %}
 
                          <!--Fecha de la creación de la publicación-->
                     </div>
-                    <small class="fw-lighter text-muted ms-2"> {{com.fecha_creacion|fecha_exacta}}</small>
+                    {% comment %} <small class="fw-lighter text-muted ms-2"> {{com.fecha_creacion|fecha_exacta}}</small> {% endcomment %}
 
                         {% comment %}                     {% if com.user == request.user %}
                         <a onclick="deletecomentario('{{com.urlComentario}}', comentarios{{com.id}})" >ELIMINAR</a>

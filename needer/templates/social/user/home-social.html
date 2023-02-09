@@ -17,17 +17,17 @@ Needer
 <div class="container-fluid pb-4 mx-auto w-100" id="contenido">
     <div class="my-4 row w-100 mx-0 d-flex justify-content-lg-center justify-content-md-center justify-content-sm-center justify-content-center">
         <!--Contenido de la izquierda-->
-        <div class="d-flex justify-content-center row col-sm-12 col-lg-8 px-0 mx-auto">
+        <div class="d-flex justify-content-center row col-sm-12 col-lg-7 px-0 mx-auto">
             <!--Esto crea publicación-->
-            <div class="mb-3 row container-fluid px-0 bg-white rounded shadow py-4 d-flex justify-content-center align-items-center" style="height:auto;">
+            <div class="mb-3 row container-fluid px-0 bg-white rounded-4 ajustesombra py-4 d-flex justify-content-center align-items-center" style="height:auto;">
                 <!--BOTON FOTO-->
                 <div class="col-lg-2 col-md-2 col-xl-2 col-sm-12 col-12 justify-content-center d-flex pe-lg-0 pe-xl-0 pe-md-0 pe-sm-auto pe-auto">
-                    <a href="{{object.get_absolute_url}}" class="mb-lg-0 mb-md-0 mb-sm-3 mb-3 mb-xl-0 text-center text-sm-center text-md-start text-lg-start text-xl-start">
-                        {% if object.foto %}
+                    <a href="{{user.get_absolute_url}}" class="mb-lg-0 mb-md-0 mb-sm-3 mb-3 mb-xl-0 text-center text-sm-center text-md-start text-lg-start text-xl-start">
+                        {% if user.foto %}
                         <img
-                            class="rounded-circle profile-img-public"
+                            class="rounded-circle profile-img"
                             alt="profile"
-                            src="{{object.foto.url}}"
+                            src="{{user.foto.url}}"
                             data-holder-rendered="true"
                         >
                         {% else %}
@@ -55,14 +55,27 @@ Needer
         </div>
 
         <!--Contenido de la Derecha-->
-        <div class="row col-lg-3 justify-content-end divbib">
+        <div class="row col-lg-4 justify-content-end divbib">
+
+            <!--Menús-->
+            <div class="row py-4 col-sm-12 col-12 mb-2 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 fs-md-6">
+                <a class="text-primary fw-bold" href="{%url 'social-home' %}">
+                        <i class="bi bi-house-door me-2"></i>
+                        Página Principal
+                </a>
+                <a class="text-muted fw-bold" href="#">
+                        <i class="bi bi-house-door me-2"></i>
+                        Marketplace
+                </a>
+            </div>
+
             <!--Personas Relevantes-->
-            <div class="row py-4 col-sm-12 col-12 rounded shadow mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5">
+            <div class="row py-4 col-sm-12 col-12 mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 rounded-4 ajustesombra">
                 <h4 class="text-primary text-center fw-bold mb-0">Personas relevantes</h4>
                 <!--Información del usuario-->
                 <div class="row col-12 mt-3 mx-0 px-0 py-0">
                     <!--Foto Usuario-->
-                    <div class="col-3 d-flex pe-0 py-0 mb-2">
+                    <div class="col-2 col-md-3 d-flex pe-0 py-0 mb-2">
                         <a href="#" class="text-start">
                             <img
                                 class="rounded-circle img-fluid img-static"
@@ -73,21 +86,26 @@ Needer
                         </a>
                     </div>
                     <!--Datos-->
-                    <div class="row col-9 align-items-center py-0 mb-2">
-                        <h6 class="text-secondary mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                    <div class="row col-9 col-md-8 align-items-center py-0 mb-2">
+                        <h6 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h6>
+                        <h6 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
                             <a href="#" class="text-decoration-none text-muted">
-                                @Apodo
+                                @NombreUsuario
                             </a>
                         </h6>
                     </div>
                     <div class="col-12">
-                        <p class="text-muted mb-0 texti">Lorem ipsum dolor molesiae unde?</p>
+                        <p class="text-muted mb-0 texti">Lorem ipsum dolor molesiae unde?orem ipsum dolor molesiae unde? orem ipsum dolor molesiae unde?</p>
                     </div>
                 </div>
                 <!--Información del usuario-->
                 <div class="row col-12 mt-3 mx-0 px-0 py-0">
                     <!--Foto Usuario-->
-                    <div class="col-3 d-flex pe-0 py-0 mb-2">
+                    <div class="col-2 col-md-3 d-flex pe-0 py-0 mb-2">
                         <a href="#" class="text-start">
                             <img
                                 class="rounded-circle img-fluid img-static"
@@ -97,80 +115,88 @@ Needer
                             >
                         </a>
                     </div>
-                    <div class="row col-9 align-items-center py-0 mb-2">
-                        <h6 class="text-secondary mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                    <!--Datos-->
+                    <div class="row col-9 col-md-8 align-items-center py-0 mb-2">
+                        <h6 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h6>
+                        <h6 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
                             <a href="#" class="text-decoration-none text-muted">
-                                @Apodo
+                                @NombreUsuario
                             </a>
                         </h6>
                     </div>
                     <div class="col-12">
-                        <p class="text-muted mb-0 texti">Lorem ipsum dolor mestiae unde?</p>
+                        <p class="text-muted mb-0 texti">Lorem ipsum dolor molesiae unde?orem ipsum dolor molesiae unde? orem ipsum dolor molesiae unde?</p>
                     </div>
                 </div>
             </div>
             <!--Personas que sigues-->
-            <div class="row pts py-4 col-sm-12 col-12 rounded shadow mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 mt-5">
-                <h4 class="text-primary text-center fw-bold mb-0">Personas a las que Sigues</h4>
-                <!--Informacion del usuario-->
+            <div class="row py-4 col-sm-12 col-12 mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 mt-4 rounded-4 ajustesombra">
+                <h4 class="text-primary text-center fw-bold mb-0">Personas relevantes</h4>
+                <!--Información del usuario-->
                 <div class="row col-12 mt-3 mx-0 px-0 py-0">
                     <!--Foto Usuario-->
-                    <div class="col-3 d-flex pe-0 py-0 mb-2">
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 mb-2">
                         <a href="#" class="text-start">
                             <img
-                                class="rounded-circle img-fluid img-static"
+                                class="rounded-circle img-fluid img-static-2"
                                 alt="profile"
                                 src="{% static 'img/default-profile.png' %}"
                                 data-holder-rendered="true"
                             >
                         </a>
                     </div>
-                    <div class="row col-5 align-items-center py-0 mb-2 me-0">
-                        <h6 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
+                    <!--Datos-->
+                    <div class="row col-7 col-md-8 align-items-center py-0 mb-2">
+                        <h6 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0">
                             <a href="#" class="text-decoration-none text-primary">
-                                Nombre
+                                Nombre y Apellido
                             </a>
                         </h6>
                         <h6 class="text-secondary mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
                             <a href="#" class="text-decoration-none text-muted">
-                                @Apodo
+                                @NombreUsuario
                             </a>
                         </h6>
                     </div>
-                    <div class="col-2 align-items-center">
+                    <div class="col-2 col-md-1 align-items-center">
                         <h2 class="text-primary text-center mb-0">
                             <i class="bi bi-heart-fill align-middle corazon"></i>
                         </h2>
                     </div>
                 </div>
-                <!--Informacion del usuario-->
+                <!--Información del usuario-->
                 <div class="row col-12 mt-3 mx-0 px-0 py-0">
                     <!--Foto Usuario-->
-                    <div class="col-3 d-flex pe-0 py-0 mb-2">
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 mb-2">
                         <a href="#" class="text-start">
                             <img
-                                class="rounded-circle img-fluid img-static"
+                                class="rounded-circle img-fluid img-static-2"
                                 alt="profile"
                                 src="{% static 'img/default-profile.png' %}"
                                 data-holder-rendered="true"
                             >
                         </a>
                     </div>
-                    <div class="row col-5 align-items-center py-0 mb-2 me-0">
+                    <!--Datos-->
+                    <div class="row col-7 col-md-8 align-items-center py-0 mb-2">
                         <h6 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
                             <a href="#" class="text-decoration-none text-primary">
-                                Nombre
+                                Nombre y Apellido
                             </a>
                         </h6>
                         <h6 class="text-secondary mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
                             <a href="#" class="text-decoration-none text-muted">
-                                @Apodo
+                                @NombreUsuario
                             </a>
                         </h6>
                     </div>
-                    <div class="col-2 ">
+                    <div class="col-2 col-md-1 align-items-center">
                         <h2 class="text-primary text-center mb-0">
-                            <i class="bi bi-heart-fill"></i>
+                            <i class="bi bi-heart-fill align-middle corazon"></i>
                         </h2>
                     </div>
                 </div>

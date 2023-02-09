@@ -4,11 +4,10 @@
 {% load pub_extras %}
 
 
-
-
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/home-social.css'%} ">
 <link rel="stylesheet" href="{% static 'css/busqueda_contenido.css'%} ">
+<link rel="stylesheet" href="{% static 'css/publicacion.css'%} ">
 {% endblock css %}
 
 {% block headtitle %}
@@ -67,80 +66,19 @@ Needer
     
     
         <!--Contenido de la busqueda usuario-->
-        <div class="row container-fluid d-flex justify-content-center align-middle col-lg-8 px-0 mx-auto shadow rounded">
+        <div class="row d-flex container-fluid justify-content-center contenido align-middle col-lg-12 px-0 mx-auto">
 
-            <div class="col-12 d-flex justify-content-start px-0">
-                <h2 class="col-xl-3 col-lg-3 col-md-2 col-sm-2 col-2 text-center fw-bold">Usuarios</h2>
+            <div class="col-5 d-flex justify-content-start mx-1 align-items-end px-0">
+                <h1 class="text-primary fw-bold mb-0">Usuarios</h1>
             </div>
             
-            {% for user in users %}
-            
-            <!--CONTENEDOR DE USUARIOS-->
-            <div class="col-12 row d-flex justify-content-around px-0">
-            <!--Foto Busqueda-->
-                <div class="col-xl-3 col-lg-3 col-md-2 col-sm-2 col-2 text-center g-0 mt-3 mb-0 mb-sm-3 mx-0">
-                    {% if user.foto %}
-                    <button
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                        class="col-12 btn border rounded-circle overflow-hidden busqueda-imagen img-fluid"
-                        style="background-image: url({{user.foto.url}}); object-fit: cover;"
-                    ></button>
-                    {% else %}
-                    <button
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                        class="col-12 btn border rounded-circle overflow-hidden busqueda-imagen img-fluid"
-                        style="background-image: url('{% static 'img/default-profile.png' %}');"
-                    ></button>
-                    {% endif %}
-                </div>
-
-                <!--Nombres y apodo-->
-                <div class="row  col-xl-6 col-lg-6 col-md-6 col-sm-5 col-4 d-flex align-items-center container g-2 justify-content-center">
-                    <div class="w-100 col-12 d-table-cell align-bottom row g-0 text-break text-lg-start text-md-start text-sm-start text-start">
-                        {% if user.first_name and user.last_name %}
-                        <h4 onclick="window.open('{{user.get_absolute_url}}')" class="text-primary text-truncate fw-bold mb-0 mb-sm-2 mw-100 nombre-usuario">
-                            {{user.first_name}} {{user.last_name}}
-                        </h4>
-                        {% else %}
-                        <h4 onclick="window.open('{{user.get_absolute_url}}')" class="text-primary text-truncate fw-bold mb-0 mb-sm-2 mw-100 nombre-usuario">
-                            {{user.username}}
-                        </h4>
-                        {% endif %}
-    
-                        {% if user.apodo %}
-                        <h5 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted text-truncate fw-bold mb-0 mb-sm-2 mw-100">
-                            @{{user.apodo}}
-                        </h5>
-                        {% else %}
-                        <h5 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted text-truncate fw-bold mb-0 mb-sm-2 mw-100">
-                            @{{user.username}}
-                        </h5>
-                        {% endif %}
-                    </div>
-                </div>
-
-                    <!--Botón de seguir-->
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5 col-4 text-center align-self-center">
-
-                        <a class="btn btn-lg rounded-pill btn-primary fw-bold">Seguir</a>
-
-                    </div>
-                
-                    
-
+            <div class="col-5 d-flex justify-content-end align-items-end px-0">
+                <a class="col-10 link btn-mostrar" href="{% url 'busqueda-user' %}?q={{request.GET.q}}"><h6 class="fw-bold my-auto text-secondary text-end">Ver más</h6></a>
             </div>
-
-            {% endfor %}
-            <div class="col-12 d-flex justify-content-center px-0 py-3">
-                <a class="col-10 text-center btn btn-mostrar" href="{% url 'busqueda-user' %}?q={{request.GET.q}}"><h3 class="fw-bold my-auto">Mostrar todos</h3></a>
-            </div>  
-
-    
-
+            
+            {% comment %} Componente de buscar usuario {% endcomment %}
+            {% include 'social/user/componente-buscar-usuario.html' with object_list=users%}
+        
             {% endif %}
 
             
@@ -148,33 +86,63 @@ Needer
         </div>
 
         <!--TODO QUITAR EL IF CUANDO ESTE HECHO LA BUSQUEDA DE MARKETPLACE-->
-        <div class="row d-none  container-fluid d-flex justify-content-around align-middle col-lg-8 mx-auto shadow mt-4">
+        <div class="row d-flex container-fluid justify-content-center align-middle col-lg-12 mt-2 px-0 mx-auto">
 
-            <div class="col-12 d-flex justify-content-start px-0">
-                <h2 class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-12 text-center fw-bold">Marketplace</h2>
+            <div class="col-5 d-flex justify-content-start mx-1 align-items-end px-0">
+                <h1 class="text-primary fw-bold mb-0">Marketplace</h1>
             </div>
-
-            <div class="col-8 col-sm-3 col-md-3 col-lg-3 col-xl-3 px-0 py-0 border mb-3">
-                <img src="{% static 'img/default-profile.png' %}" class="img-fluid" alt="...">
-                <h4 class="text-truncate text-white text-center px-2 fw-bold mb-0 nombre-contenido-marketplace" style="background-color: #5C28FF;">Nombre y Apellido</h4>
-              </div>
-
-              <div class="col-8 col-sm-3 col-md-3 col-lg-3 col-xl-3 px-0 py-0 border mb-3">
-                <img src="{% static 'img/default-profile.png' %}" class="img-fluid" alt="...">
-                <h4 class="text-truncate text-white text-center px-2 fw-bold mb-0 nombre-contenido-marketplace" style="background-color: #5C28FF;">Nombre y Apellido</h4>
-              </div>
-
-              <div class="col-8 col-sm-3 col-md-3 col-lg-3 col-xl-3 px-0 py-0 border mb-3">
-                <img src="{% static 'img/default-profile.png' %}" class="img-fluid" alt="...">
-                <h4 class="text-truncate text-white text-center px-2 fw-bold mb-0 nombre-contenido-marketplace" style="background-color: #5C28FF;">Nombre y Apellido</h4>
-              </div>
-
-            <div class="col-12 d-flex justify-content-center px-0 py-3">
-                <a class="col-10 text-center btn btn-mostrar" href="#"><h3 class="fw-bold my-auto">Mostrar todos</h3></a>
-            </div>
-
-
             
+            <div class="col-5 d-flex justify-content-end align-items-end px-0">
+                <a class="col-10 link btn-mostrar" href="{% url 'busqueda-user' %}?q={{request.GET.q}}"><h6 class="fw-bold my-auto text-secondary text-end">Ver más</h6></a>
+            </div>
+            <!--CONTENEDOR DE USUARIOS-->
+            <div class="col-md-3 col-10 col-sm-5 px-0 shadow m-4 contuser">
+                <img src="{% static 'img/pixel.png' %}" class="img-marketplace" alt="...">
+                <div class="col-12 d-flex">
+                    <h4 class="col-6 text-truncate text-muted text-start px-2 fw-bold mb-0 mt-4 ms-2 nombre-contenido-marketplace">Título</h4>
+                    <div class="col-2 align-items-end rounded-pill text-center fw-bold mb-0 mw-100 audio">Audio</div>
+                </div>
+                <h4 class="col-6 text-truncate text-muted text-start px-2 fw-light mb-0 mt-2 ms-2 nombre-contenido-marketplace">Por NombreUsuario</h4>
+                <div class="col-12 d-flex justify-content-end">
+                    <div class="col-3 align-items-end rounded-pill text-center fw-light mb-0 mw-100 precio"> $40.00 </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                    <div class="col-3 align-items-end rounded-pill text-center fw-bold mb-0 mw-100 descuento"> -50% off </div>
+                    <div class="col-3 align-items-end rounded-2 text-center fw-light mw-100 precio-2"> $20.00 </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-10 col-sm-5 px-0 shadow m-4 contuser">
+                <img src="{% static 'img/pixel.png' %}" class="img-marketplace" alt="...">
+                <div class="col-12 d-flex">
+                    <h4 class="col-6 text-truncate text-muted text-start px-2 fw-bold mb-0 mt-4 ms-2 nombre-contenido-marketplace">Título</h4>
+                    <div class="col-2 align-items-end rounded-pill text-center fw-bold mb-0 mw-100 audio">Audio</div>
+                </div>
+                <h4 class="col-6 text-truncate text-muted text-start px-2 fw-light mb-0 mt-2 ms-2 nombre-contenido-marketplace">Por NombreUsuario</h4>
+                <div class="col-12 d-flex justify-content-end">
+                    <div class="col-3 align-items-end rounded-pill text-center fw-light mb-0 mw-100 precio"> $40.00 </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                    <div class="col-3 align-items-end rounded-pill text-center fw-bold mb-0 mw-100 descuento"> -50% off </div>
+                    <div class="col-3 align-items-end rounded-2 text-center fw-light mw-100 precio-2"> $20.00 </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-10 col-sm-5 px-0 shadow m-4 contuser">
+                <img src="{% static 'img/pixel.png' %}" class="img-marketplace" alt="...">
+                <div class="col-12 d-flex">
+                    <h4 class="col-6 text-truncate text-muted text-start px-2 fw-bold mb-0 mt-4 ms-2 nombre-contenido-marketplace">Título</h4>
+                    <div class="col-2 align-items-end rounded-pill text-center fw-bold mb-0 mw-100 audio">Audio</div>
+                </div>
+                <h4 class="col-6 text-truncate text-muted text-start px-2 fw-light mb-0 mt-2 ms-2 nombre-contenido-marketplace">Por NombreUsuario</h4>
+                <div class="col-12 d-flex justify-content-end">
+                    <div class="col-3 align-items-end rounded-pill text-center fw-light mb-0 mw-100 precio"> $40.00 </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                    <div class="col-3 align-items-end rounded-pill text-center fw-bold mb-0 mw-100 descuento"> -50% off </div>
+                    <div class="col-3 align-items-end rounded-2 text-center fw-light mw-100 precio-2"> $20.00 </div>
+                </div>
+            </div>
         </div>
 
         <div class="row container-fluid d-flex justify-content-center align-middle col-lg-8 px-0 mx-auto rounded">

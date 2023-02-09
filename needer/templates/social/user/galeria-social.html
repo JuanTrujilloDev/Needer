@@ -3,7 +3,6 @@
 {% load pub_extras %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/perfil-creador.css'%} ">
 <link rel="stylesheet" href="{% static 'css/contenido-multimedia.css'%} ">
 {% endblock css %}
 
@@ -14,7 +13,8 @@ Needer | {{object.username}}
 {% block inner-content %}
 <div class="container pb-4 mx-auto" id="contenido">
     <!--Datos personales-->
-    <div class="seccion-arriba w-100 row mx-0">
+    {% include 'social/user/datos-personales.html' %}
+
 
         <!--Banner-->
         {% if object.banner %}
@@ -93,6 +93,7 @@ Needer | {{object.username}}
             </div>
         </div>
     </div>
+
     <!--Navegacion secundaria-->
     <div class="mb-4 px-0 container-fluid my-4 d-flex justify-content-lg-start justify-content-md-start justify-content-sm-center justify-content-center border-bottom mb-3 pre-ajustes">
         {% with url_name=request.resolver_match.url_name %}
@@ -100,7 +101,7 @@ Needer | {{object.username}}
         {% if url_name == 'detalle-creador' %}active {% endif %}" href="{{object.get_absolute_url}}">
             <h2 class="mb-0">Perfil</h2>
         </a>
-        <a href="{% url 'galeria-social'  slug=object.slug %}" class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted text-decoration-none text-center" href="#">
+        <a href="{% url 'galeria-social'  slug=object.slug %}" class="mx-auto {% if url_name == 'galeria-social' %} active {% endif %} mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted text-decoration-none text-center" href="#">
             <h2 class="mb-0">Galeria</h2>
         </a>
         <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none text-center
@@ -127,22 +128,24 @@ Needer | {{object.username}}
     
     
         {% endif %}
+        <!-- Gallery -->
+        <div class="row">
+            {% for publicacion in object_list %}
+            <div class="col-lg-4 col-md-12 mb-4 mb-lg-0 p-2">
+                <a class="infinite-item justify-content-center align-items-center shadow px-0 div-galeria pub-audio align-items-end text-center" href="{{publicacion.get_absolute_url}}" target="_blank">
+                    {% if publicacion.archivo %}
+                    
+                    {{publicacion.archivo|tipo_archivo|safe}}      
+                    
+                    {% else %}
+                    Error no se encontro la imagen
+                    {% endif %} 
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+  <!-- Gallery -->
 
-        {% for publicacion in object_list %}
-        <a class="col-3 infinite-item justify-content-center align-items-center shadow px-0 div-galeria pub-audio align-items-end text-center" href="{{publicacion.get_absolute_url}}" target="_blank">
-
-
-            
-            {% if publicacion.archivo %}
-
-            {{publicacion.archivo|tipo_archivo|safe}}      
-            
-            {% else %}
-            
-            {% endif %}
-            
-        </a>
-        {% endfor %}
 
 
     </div>
@@ -160,11 +163,7 @@ Needer | {{object.username}}
                 Cargando...
             </h3>
             {% endif %}
- 
-    
         </div>
-
-
 
 </div>
 {% include 'social/user/foto-perfil-modal.html' %}

@@ -5,40 +5,41 @@
 {% endblock css %}
 
 <section class="navegacion w-100">
-<nav class="navbar navbar-expand-lg bg-primary navbar-dark overflow-auto text-light sticky-top  w-100">
+<nav class="navbar navbar-expand-lg overflow-auto text-light sticky-top  w-100">
     <div class="container-fluid d-flex justify-content-between w-100">
-      <div class="col-4">
-        <a class="navbar-brand ms-5 nav-titulo" href="{% url 'home-view' %}">
-            <img src="{% static 'img/Needer_Logo_Blanco.svg' %}" alt=""  width="40" height="40"  class="d-inline-block align-content-center">
+      <div class="col-5 d-flex align-items-center">
+        <a class="navbar-brand ms-5" href="{% url 'home-view' %}">
+            <img src="{% static 'img/Needer_logo_1.png' %}" alt=""  width="20" height="40"  class="d-inline-block align-content-center">
           </a>
+        <a href="{% url 'home-view' %}">
+            <h2 class="mb-0">Needer</h2>
+        </a>
+          
 
       </div>
-           
-      <div class="col-4 row d-flex justify-content-center">
-        <div class="input-box align-items-center">
-          <form method="GET" class="d-flex align-items-center" action="{% url 'busqueda-contenido' %}">
-          <i class="bi bi-search me-2"></i>
-          <input maxlength="50" required minlength="1" type="text" class="form-control" id="search_form" name="q" placeholder="Fotos, vídeos, artistas...">
-          </form>
-        </div>
-      </div>
 
-          <div class="d-md-none right-elements  d-lg-flex float-end justify-content-end col-4">
-            <a class="nav-link fw-bolder notificacion me-4" ><i class="bi bi-bell"></i></a>
+          <div class="d-md-none right-elements  d-lg-flex justify-content-end col-7">
+            <div class="input-box align-self-center me-4">
+              <form method="GET" class="d-flex align-items-center" action="{% url 'busqueda-contenido' %}">
+              <input maxlength="50" required minlength="1" type="text" class="form-control" id="search_form" name="q" placeholder="Buscar...">
+              </form>
+            </div>
+            <a class="nav-link fw-bolder notificacion me-4 " ><i class="bi bi-chat-dots" style="color: #737373;"></i></a>
+            <a class="nav-link fw-bolder notificacion me-4 " ><i class="bi bi-bell " style="color: #737373;"></i></a>
             <a class="nav-link  me-5" href="{{request.user.get_absolute_url}}">
               {% if request.user.foto %}
-              <img class="rounded-circle img-fluid profile-img" alt="profile" src="{{request.user.foto.url}}"
+              <img class="rounded-circle  profile-img " alt="profile" src="{{request.user.foto.url}}"
               data-holder-rendered="true">
 
               {% else %}
-              <img class="rounded-circle img-fluid profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"
+              <img class="rounded-circle profile-img" alt="profile" src="{% static 'img/default-profile.png' %}"
               data-holder-rendered="true">
 
               {% endif %}
             </a>
           </div>
 
-      <button class="navbar-toggler me-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -48,25 +49,14 @@
       <div class="collapse navbar-collapse overflow-auto" id="navbarText">
          <ul class="navbar-nav ms-lg-auto me-lg-5 mb-lg-0 align-items-center collapse-elements py-5">
           {% with url_name=request.resolver_match.url_name %}
-          <li class="nav-item">
-            <a class="nav-link {% if url_name == 'detalle-creador'%} active  {% endif %}" href="{{request.user.get_absolute_url}}"><h3 class="fw-bold"><i class="bi bi-person-circle me-2"></i>Mi Perfil</h3></a>
-            </li>
-          <li class="nav-item">
-            <a class="nav-link fw-bold" href="#"><h3 class="fw-bold"><i class="bi bi-archive me-2"></i>Inventario</h3></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link fw-bold" href="#"><h3 class="fw-bold"><i class="bi bi-chat-left-text me-2"></i>Mensajes</h3></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link fw-bold" href="#"><h3 class="fw-bold"><i class="bi bi-wallet2 me-2"></i>Pagos</h3></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link fw-bold" href="#"><h3 class="fw-bold"><i class="bi bi-bar-chart-line me-2"></i>Estadisticas</h3></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if url_name == 'account_profile' or url_name == 'account_change_password' or url_name == 'socialaccount_connections' or url_name == 'account_email'%} active  {% endif %}
-             fw-bold" href="{% url 'account_profile' %}"><h3 class="fw-bold"><i class="bi bi-gear me-2"></i>Ajustes</h3></a>
-          </li>
+          <li class="nav-item"><a class="nav-link {% if url_name == 'social-home' %} active {% endif %} " href="{%url 'social-home' %}"><h5><i class="bi bi-house-door me-2"></i>Home</h5></a></li>
+      <li class="nav-item"><a class="nav-link {% if url_name == 'detalle-creador'%} active  {% endif %}" href="{{request.user.get_absolute_url}}"><h5><i class="bi bi-person-circle me-2"></i>Mi Perfil</h5></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-image me-2"></i></i>Publicaciones</h5></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-shop me-2"></i>Marketplace</h5></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-chat-left me-2"></i>Mensajes</h5></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-stars me-2"></i></i>Panel de Creador</h5></a></li>
+      <li class="nav-item"><a class="nav-link {% if url_name == 'account_profile' or url_name == 'account_change_password' or url_name == 'socialaccount_connections' or url_name == 'account_email'%} active  {% endif %}" 
+        href="{%url 'account_profile' %}"><h5><i class="bi bi-gear me-2"></i>Ajustes</h5></a></li>
           {% endwith %}
 
           <hr class="bg-white">
