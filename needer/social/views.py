@@ -208,7 +208,7 @@ class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, L
 
             return resultado 
 
-        return Publicacion.objects.all().exclude(id=self.request.user).order_by('-fecha_creacion') 
+        return Publicacion.objects.all().exclude(user=self.request.user).order_by('-fecha_creacion') 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
