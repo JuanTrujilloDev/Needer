@@ -8,8 +8,8 @@
 <!--SIDEBAR-->
 
 <div class="col-lg-3 col-xl-3 sidebar-offcanvas bg-light pe-0 py-4 sidebar" id="sidebar" role="navigation">
-  <ul class="nav row d-flex sticky-top pl-0 pt-3 mh-100 h-100 navegacion-sidebar">
-    <ul class="upper-items nav nav flex-column mb-auto">
+  <ul class="nav row d-flex sticky-top pl-0 pt-3 mh-100 h-100 navegacion-sidebar container">
+    <ul class="upper-items nav flex-column mb-auto">
       {% with url_name=request.resolver_match.url_name %}
       <li class="nav-item"><a class="nav-link {% if url_name == 'social-home' %} active {% endif %} " href="{%url 'social-home' %}"><h4><i class="bi bi-house-door me-2"></i>Home</h4></a></li>
       <li class="nav-item"><a class="nav-link {% if url_name == 'detalle-creador'%} active  {% endif %}" href="{{request.user.get_absolute_url}}"><h4><i class="bi bi-person-circle me-2"></i>Mi Perfil</h4></a></li>

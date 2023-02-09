@@ -6,6 +6,7 @@
 {% block css %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/chat.css'%} ">
 {% endblock css %}
 
 
@@ -15,106 +16,461 @@ Needer | Chat
 
 {% block inner-content %}
 {% if user.is_authenticated %}
-<h1 style="text-align: end; padding-right: 10px">Logged in as : {{ user.username }}</h1>
 <input type="hidden" id="logged-in-user" value="{{ user.id }}">
 {% endif %}
-<div class="container-fluid h-100">
-    <div class="row justify-content-center h-100 ">
-        <div class="col-md-4 col-xl-3 chat h-100 mt-4">
-            <div class="card mb-sm-3 mb-md-0 contacts_card">
-                <div class="card-header">
-                    <div class="input-group">
-                        {% comment %} Input para buscar usuarios y mandar mensajes {% endcomment %}
-                        <input
-                            type="text"
-                            placeholder="Search..."
-                            name=""
-                            class="form-control search"
-                        >
-                        <div class="input-group-prepend">
-                            <button class="btn btn-small">Buscar</button>
-                        </div>
+<div class="row h-100 ms-0 me-0">
+              <!-- Users box-->
+            <div class="col-3 px-0 overflow-auto">
+
+                  <div class="px-4 py-2 mb-3 text-center">
+                    <h4 class="mb-0 py-1 fw-bold text-muted">Mensajes Recibidos</h4>
+                  </div>
+          
+                  <!-- Chats -->
+                  <div class="row col-12 mx-0 px-0 py-0 align-items-center mw-100 chatuser">
+                    <!--Foto Usuario-->
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 align-items-center">
+                        <a href="#" class="text-start">
+                            <img
+                                class="rounded-circle img-fluid my-auto img-static"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                    <!--Datos-->
+                    <div class="col-9 col-md-8 py-0 align-items-center">
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h5>
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
+                            <a href="#" class="text-decoration-none text-muted">
+                                @NombreUsuario
+                            </a>
+                        </h5>
                     </div>
                 </div>
-                <div class="card-body contacts_body">
-                    <ui class="contacts">
-                        {% comment %} Lista todos los usuarios que le puede enviar mensajes {% endcomment %}
-                        {% for thread in Threads %}
-                        <li class="list-unstyled {% if forloop.first %}active{% endif %} contact-li" chat-id="chat_{{ thread.id }}" style="cursor: pointer">
-                            {{thread.second_person}} 
-                        </li>
-                        {% endfor %}
-                    </ui>
+
+                <div class="row col-12 mx-0 px-0 py-0 align-items-center mw-100">
+                    <!--Foto Usuario-->
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 align-items-center">
+                        <a href="#" class="text-start">
+                            <img
+                                class="rounded-circle img-fluid my-auto img-static"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                    <!--Datos-->
+                    <div class="col-9 col-md-8 py-0 align-items-center">
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h5>
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
+                            <a href="#" class="text-decoration-none text-muted">
+                                @NombreUsuario
+                            </a>
+                        </h5>
+                    </div>
                 </div>
-                <div class="card-footer"></div>
-            </div>
-        </div>
-        <div class="col-md-8 col-xl-6 chat h-100 mt-4">
-            <div class="card">
-                {% for thread in Threads %}
-                <div class="messages-wrapper  {% if forloop.first %}hide is_active{% else %}hide{% endif %}" chat-id="chat_{{ thread.id }}" other-user-id="
-                                        {% if thread.first_person == user %}
-                                            {{ thread.second_person.id }}
-                                        {% else %}
-                                            {{ thread.first_person.id }}
-                                        {% endif %}">
-                    <div class="card-header msg_head">
-                        <div class="d-flex bd-highlight">
-                            <div class="user_info">
-                                <span>Chat with {{ thread.second_person.username }}</span>  
-                                <p>{{ thread.chatmessage_thread.all.count }} messages</p>
-                            </div>
-                        </div>
+
+                <div class="row col-12 mx-0 px-0 py-0 align-items-center mw-100">
+                    <!--Foto Usuario-->
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 align-items-center">
+                        <a href="#" class="text-start">
+                            <img
+                                class="rounded-circle img-fluid my-auto img-static"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
                     </div>
-                    <div class="card-body msg_card_body">
-                    {% for chat in thread.chatmessage_thread.all %}
-                        {% comment %} los mensajes que el usuario envia {% endcomment %}
-                        {% if chat.user == user %}
-                        {{user}}
-                        <div class="d-flex mb-4 replied">
-                            <div class="msg_cotainer_send">
-                                {{ chat.message }}
-                                <span class="msg_time_send">{{ chat.timestamp|date:"d D" }}, {{ chat.timestamp|time:"H:i" }}</span>
-                            </div>
-                        </div>
-                    
-                    {% else %}
-                    {% comment %} los mensajes que el usuario recive  {% endcomment %}
-                    {{chat.user}}
-                    <div class="d-flex mb-4 received">
-                        <div class="msg_cotainer">
-                            {{ chat.message }}
-                            <span class="msg_time">{{ chat.timestamp|date:"d D" }}, {{ chat.timestamp|time:"H:i" }}</span>
-                        </div>
+                    <!--Datos-->
+                    <div class="col-9 col-md-8 py-0 align-items-center">
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h5>
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
+                            <a href="#" class="text-decoration-none text-muted">
+                                @NombreUsuario
+                            </a>
+                        </h5>
                     </div>
-                    {% endif %}
-                                    {% endfor %}
                 </div>
-            </div>
-            {% endfor %}
-            <div class="card-footer">
-                <form id="send-message-form">
-                    <div class="input-group">
-                        <input
-                            type="text"
-                            name=""
-                            id="input-message"
-                            class="form-control type_msg"
-                            placeholder="Type your message..."
-                        >
-                        <div class="input-group-append">
-                            <button class="btn btn-secondary" type="submit">
-                                <span class="input-group-text send_btn">
-                                    <i class="fas fa-location-arrow"></i>
-                                </span>
-                            </button>
-                        </div>
+
+                <div class="row col-12 mx-0 px-0 py-0 align-items-center mw-100">
+                    <!--Foto Usuario-->
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 align-items-center">
+                        <a href="#" class="text-start">
+                            <img
+                                class="rounded-circle img-fluid my-auto img-static"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
                     </div>
-                </form>
+                    <!--Datos-->
+                    <div class="col-9 col-md-8 py-0 align-items-center">
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h5>
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
+                            <a href="#" class="text-decoration-none text-muted">
+                                @NombreUsuario
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="row col-12 mx-0 px-0 py-0 align-items-center mw-100">
+                    <!--Foto Usuario-->
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 align-items-center">
+                        <a href="#" class="text-start">
+                            <img
+                                class="rounded-circle img-fluid my-auto img-static"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                    <!--Datos-->
+                    <div class="col-9 col-md-8 py-0 align-items-center">
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h5>
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
+                            <a href="#" class="text-decoration-none text-muted">
+                                @NombreUsuario
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="row col-12 mx-0 px-0 py-0 align-items-center mw-100">
+                    <!--Foto Usuario-->
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 align-items-center">
+                        <a href="#" class="text-start">
+                            <img
+                                class="rounded-circle img-fluid my-auto img-static"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                    <!--Datos-->
+                    <div class="col-9 col-md-8 py-0 align-items-center">
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h5>
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
+                            <a href="#" class="text-decoration-none text-muted">
+                                @NombreUsuario
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="row col-12 mx-0 px-0 py-0 align-items-center mw-100">
+                    <!--Foto Usuario-->
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 align-items-center">
+                        <a href="#" class="text-start">
+                            <img
+                                class="rounded-circle img-fluid my-auto img-static"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                    <!--Datos-->
+                    <div class="col-9 col-md-8 py-0 align-items-center">
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h5>
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
+                            <a href="#" class="text-decoration-none text-muted">
+                                @NombreUsuario
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="row col-12 mx-0 px-0 py-0 align-items-center mw-100">
+                    <!--Foto Usuario-->
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 align-items-center">
+                        <a href="#" class="text-start">
+                            <img
+                                class="rounded-circle img-fluid my-auto img-static"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                    <!--Datos-->
+                    <div class="col-9 col-md-8 py-0 align-items-center">
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h5>
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
+                            <a href="#" class="text-decoration-none text-muted">
+                                @NombreUsuario
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="row col-12 mx-0 px-0 py-0 align-items-center mw-100">
+                    <!--Foto Usuario-->
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 align-items-center">
+                        <a href="#" class="text-start">
+                            <img
+                                class="rounded-circle img-fluid my-auto img-static"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                    <!--Datos-->
+                    <div class="col-9 col-md-8 py-0 align-items-center">
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h5>
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
+                            <a href="#" class="text-decoration-none text-muted">
+                                @NombreUsuario
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="row col-12 mx-0 px-0 py-0 align-items-center mw-100">
+                    <!--Foto Usuario-->
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 align-items-center">
+                        <a href="#" class="text-start">
+                            <img
+                                class="rounded-circle img-fluid my-auto img-static"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                    <!--Datos-->
+                    <div class="col-9 col-md-8 py-0 align-items-center">
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h5>
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
+                            <a href="#" class="text-decoration-none text-muted">
+                                @NombreUsuario
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="row col-12 mx-0 px-0 py-0 align-items-center mw-100">
+                    <!--Foto Usuario-->
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 align-items-center">
+                        <a href="#" class="text-start">
+                            <img
+                                class="rounded-circle img-fluid my-auto img-static"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                    <!--Datos-->
+                    <div class="col-9 col-md-8 py-0 align-items-center">
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h5>
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
+                            <a href="#" class="text-decoration-none text-muted">
+                                @NombreUsuario
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="row col-12 mx-0 px-0 py-0 align-items-center mw-100">
+                    <!--Foto Usuario-->
+                    <div class="col-3 col-md-3 d-flex pe-0 py-0 align-items-center">
+                        <a href="#" class="text-start">
+                            <img
+                                class="rounded-circle img-fluid my-auto img-static"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                    <!--Datos-->
+                    <div class="col-9 col-md-8 py-0 align-items-center">
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h5>
+                        <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
+                            <a href="#" class="text-decoration-none text-muted">
+                                @NombreUsuario
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+
+
             </div>
-        </div>
-    </div>
-</div>
+              <!-- Chat Box-->
+            <div class="col-9 px-0 border container">
+
+                <div class="px-3 d-flex border-bottom align-items-center">
+
+                    <div class="col-3 col-md-1 d-flex pe-0 justify-content-end">
+                        <a href="#" class="">
+                            <img
+                                class="rounded-circle img-fluid my-auto img-static"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+
+                    <!--Datos-->
+                    <div class="col-6 col-md-8 py-0 px-3 justify-content-start">
+                        <h4 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombrearriba">
+                            <a href="#" class="text-decoration-none text-primary">
+                                Nombre y Apellido
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+
+
+                <div class="px-2 py-5 bg-white align-items-bottom mt-auto">
+                  <!-- Sender Message-->
+                  <div class="col-12 row d-flex align-items-center mb-2">
+                    <div class="col-1 col-md-1 pe-0 py-0">
+                        <a href="#" class="text-center">
+                            <img
+                                class="rounded-circle img-fluid my-auto imgchat"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                      <div class="col-5 bg-terciary rounded-5 py-2 px-3 text-start">
+                        <p class="text-small mb-0 text-white">Prueba de chat entre 2 usuarios que usan Needer</p>
+                      </div>
+                  </div>
+          
+                  <!-- Reciever Message-->
+                  <div class="col-6 col-md-12 mb-2 mt-2 d-flex align-items-center justify-content-end">
+                      <div class="bg-primary rounded-5 py-2 px-3 ">
+                        <p class="text-small mb-0 text-white">Prueba de chat entre 2 usuarios que usan Needer</p>
+                      </div>
+                  </div>
+          
+                  <!-- Sender Message-->
+                  <div class="col-12 row d-flex align-items-center mb-2">
+                    <div class="col-1 col-md-1 pe-0 py-0">
+                        <a href="#" class="">
+                            <img
+                                class="rounded-circle img-fluid my-auto imgchat"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                      <div class="col-5 bg-terciary rounded-5 py-2 px-3 text-start">
+                        <p class="text-small mb-0 text-white">Prueba de chat entre 2 usuarios que usan Needer</p>
+                      </div>
+                  </div>
+          
+                  <!-- Reciever Message-->
+                  <div class="col-6 col-md-12 mb-2 mt-2 d-flex align-items-center justify-content-end">
+                      <div class="bg-primary rounded-5 py-2 px-3 ">
+                        <p class="text-small mb-0 text-white">Prueba de chat entre 2 usuarios que usan Needer</p>
+                      </div>
+                  </div>
+          
+                  <!-- Sender Message-->
+                  <div class="col-12 row d-flex align-items-center mb-2">
+                    <div class="col-1 col-md-1 pe-0 py-0">
+                        <a href="#" class="">
+                            <img
+                                class="rounded-circle img-fluid my-auto imgchat"
+                                alt="profile"
+                                src="{% static 'img/default-profile.png' %}"
+                                data-holder-rendered="true"
+                            >
+                        </a>
+                    </div>
+                      <div class="col-5 bg-terciary rounded-5 py-2 px-3 text-start">
+                        <p class="text-small mb-0 text-white">Prueba de chat entre 2 usuarios que usan Needer</p>
+                      </div>
+                  </div>
+          
+                  <!-- Reciever Message-->
+                  <div class="col-6 col-md-12 mb-2 mt-2 d-flex align-items-center justify-content-end">
+                      <div class="bg-primary rounded-5 py-2 px-3 ">
+                        <p class="text-small mb-0 text-white">Prueba de chat entre 2 usuarios que usan Needer</p>
+                      </div>
+                  </div>
+          
+                  <!-- Typing area -->
+                 <form action="#">
+                    <div class="col-12 d-flex container justify-content-beetween mt-auto">
+                        <button id="button-addon2" type="submit" class="btn btn-link col-1 smile">
+                            <i class="bi bi-emoji-smile"></i>
+                        </button>
+                      <input type="text" placeholder="Mensaje..." aria-describedby="button-addon2" class="col-10 rounded-5 mensaje">
+                        <button id="button-addon2" type="submit" class="btn btn-link col-1 smile">
+                            <i class="bi bi-send"></i>
+                        </button>
+                    </div>
+                  </form>
+
+                </div>
+          
+                
+          
+            </div>
 </div>
 {% endblock inner-content %}
 
