@@ -1,15 +1,16 @@
 import json
 from multiprocessing import context, set_forkserver_preload
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import (DetailView, CreateView, DeleteView,
                                   ListView, TemplateView, UpdateView)
 from requests import delete
-from users.models import User
+from users.models import User, SeguidorUsuario
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 
-from .models import Comentarios, LikeComentarios, LikedPublicacion, Publicacion
+from .models import (Comentarios, LikeComentarios, LikedPublicacion, 
+                     Publicacion)
 from django.http import HttpResponse, JsonResponse
 from .forms import CrearComentarios, CrearPublicacionForm
 from django.contrib.messages.views import SuccessMessageMixin
@@ -33,10 +34,11 @@ class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView
         
         context = super().get_context_data(**kwargs)
         # Traemos el autor del perfil
-        context['object'] = User.objects.get(slug = self.kwargs['slug'])
+        context['object'] = get_object_or_404(User, slug = self.kwargs['slug'])
         context['innercontent'] = 'main/user/content.html'
-        user = User.objects.get(slug = self.kwargs['slug'])
-
+        user = get_object_or_404(User, slug = self.kwargs['slug'])
+        context['seguidores'] = user.get_user_followers()
+        context['seguidos'] = user.get_user_followed()
         return context
 
 
@@ -44,7 +46,7 @@ class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView
     def get_queryset(self, **kwargs):
         try:
             # Si el usuario no existe
-            user = User.objects.get(slug = self.kwargs['slug'])
+            user = get_object_or_404(User, slug = self.kwargs['slug'])
         except:
             # retorna error 404
             raise Http404
@@ -105,7 +107,7 @@ class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUser
         context = super().get_context_data(**kwargs)
 
         # Se trae la Publicacion a la vista
-        autor = User.objects.get(slug=self.kwargs['user_slug'])
+        autor = get_object_or_404(User, slug=self.kwargs['user_slug'])
         context["publicacion"] = Publicacion.objects.get(Q(user=autor) & Q(id=self.kwargs["pk"]))
         
 
@@ -134,8 +136,8 @@ class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUser
         return context
 
     def get_queryset(self):
-        autor = User.objects.get(slug=self.kwargs['user_slug'])
-        publicacion = Publicacion.objects.get(Q(user=autor) & Q(id=self.kwargs["pk"]))
+        autor = get_object_or_404(User, slug=self.kwargs['user_slug'])
+        publicacion = get_object_or_404(Publicacion,Q(user=autor) & Q(id=self.kwargs["pk"]))
         return Comentarios.objects.filter(Q(id_publicacion=publicacion)).order_by("-fecha_creacion")
 
     def get_template_names(self):
@@ -194,8 +196,19 @@ class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, L
         # En caso de no tener ningun tipo de celebridad entonces de las personas relevantes primero.
         # En orden de mas nuevo a mas antiguo.
         # Y de ultimo irian las publicaciones en general de personas de mas nuevo a mas antiguo.
-       
-        return Publicacion.objects.all().order_by('-fecha_creacion')
+        seguidos = self.request.user.get_user_followed()
+        seguidores = self.request.user.get_user_followers()
+        
+        if len(seguidores) != 0 or len(seguidos) != 0:
+            publicaciones_followers = Publicacion.objects.order_by('-fecha_creacion').filter(Q(user__in=seguidos) | Q(user__in=seguidores))
+            publicaciones = Publicacion.objects.all().exclude(user=self.request.user).order_by('-fecha_creacion')
+            publicaciones = publicaciones.exclude(id__in= [publicacion.id for publicacion in publicaciones_followers])
+
+            resultado = [ publicacion for publicacion in publicaciones_followers] + [ publicacion for publicacion in publicaciones]
+
+            return resultado 
+
+        return Publicacion.objects.all().exclude(user=self.request.user).order_by('-fecha_creacion') 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -226,7 +239,7 @@ class AddLikesPublicacion(PreventGetMethodMixin, LoginRequiredMixin, View):
 
     def post(self, request, pk, *args, **kwargs):
         self.publicacion = Publicacion.objects.get(id = pk)
-        usuario = User.objects.get(id = request.user.id)
+        usuario = get_object_or_404(User, id = request.user.id)
 
         query = self.get_queryset()
         cantidadlike = self.publicacion.cantidadLikes()
@@ -305,8 +318,8 @@ class CrearComentarioView(DispatchAuthenticatedUserMixin,LoginRequiredMixin, Cre
         return self.queryset
 
     def post(self, request, pk, *args, **kwargs):
-        self.publicacion = Publicacion.objects.get(id = pk)
-        self.usuario = User.objects.get(id = request.user.id)
+        self.publicacion = get_object_or_404(Publicacion, id = pk)
+        self.usuario = get_object_or_404(User, id = request.user.id)
         """ pk es el identificador de la publicacion"""
         query = self.get_queryset()
         form_ = self.form_class(request.POST)
@@ -393,7 +406,7 @@ class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
 
     def post(self, request, pk, *args, **kwargs):
         self.comentario = Comentarios.objects.get(id = pk)
-        usuario = User.objects.get(id = request.user.id)
+        usuario = get_object_or_404(User, id = request.user.id)
         query = self.get_queryset(pk)
         cantidadlike = self.comentario.cantidadLikes()
 
@@ -609,15 +622,175 @@ class GaleriaSocial(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['object'] = User.objects.get(slug = self.kwargs['slug'])
+        context['object'] = get_object_or_404(User,slug = self.kwargs['slug'])
         return context
 
     def get_queryset(self):
-        user = User.objects.get(slug = self.kwargs['slug'])
+        user = get_object_or_404(User,slug = self.kwargs['slug'])
         return Publicacion.objects.filter(Q(user=user) & ~Q(archivo="")).order_by("-fecha_creacion")
 
+"""Vista de Seguir"""
+#TODO PROBAR FUNCIONAMIENTO
+class SeguirUsuario(PreventGetMethodMixin, LoginRequiredMixin, View):
+    model = SeguidorUsuario
+
+    def get_queryset(self):
+        self.queryset = self.model.objects.filter(followed_user_id = self.usuario)
+        return self.queryset
+
+    def post(self, request, slug,  *args, **kwargs):
+        self.usuario = get_object_or_404(User, slug=slug)
+
+        if self.request.user == self.usuario:
+            raise Http404()
+
+        query = self.get_queryset()
+        usuario_follower = get_object_or_404(User, id = request.user.id)
+
+        cantidadFollows = len(self.usuario.get_user_followers())
+        result = {}
+        listado = []
+        result['pk'] = self.usuario.id
+        result['url'] = self.usuario.dejarseguirUsuario()
+
+        """ Si el usuario ya dio like devuelva la cantidad de follows que tiene la publicacion """
+
+        if query.filter(follower_user_id = self.request.user).exists(): 
+            result['followers'] =  str(cantidadFollows)
+            listado.append(result)
+            listado = json.dumps(listado)
+            return JsonResponse({'result': listado} )
+        """ Si no ha dado like se crea el objeto y se suma + 1  """
+        query.create(followed_user_id = self.usuario, follower_user_id =usuario_follower)
+        cantidadFollows += 1
+        result['followers'] =  str(cantidadFollows)
+        listado.append(result)
+        listado = json.dumps(listado)
+
+        return JsonResponse({'result': listado} )
 
 
+    def get_success_url(self) -> str:
+        return reverse('detalle-creador', kwargs={'slug':self.usuario.slug})
+
+"""Vista de Dejar Seguir"""
+#TODO PROBAR FUNCIONAMIENTO
+class DejarSeguirUsuario(PreventGetMethodMixin, LoginRequiredMixin, View):
+    model = SeguidorUsuario
+
+    def get_queryset(self):
+        self.queryset = self.model.objects.filter(followed_user_id = self.usuario, follower_user_id = self.request.user)
+        return self.queryset
+
+    def get_object(self):
+        return self.get_queryset()
+
+    def post(self, request, slug,  *args, **kwargs):
+    
+        self.usuario = get_object_or_404(User, slug=slug)
+        
+        if self.request.user == self.usuario:
+            raise Http404()
+
+        query = self.get_queryset()
+     
+        query.delete()
+
+        cantidadFollows = len(self.usuario.get_user_followers())
+        result = {}
+        listado = []
+        result['pk'] = self.usuario.id
+        result['url'] = self.usuario.seguirUsuario()
+        result['followers'] =  str(cantidadFollows)
+
+        listado.append(result)
+        listado = json.dumps(listado)
+
+        return JsonResponse({'result': listado} )
+
+
+    def get_success_url(self) -> str:
+        return reverse('detalle-creador', kwargs={'slug':self.usuario.slug})
+
+
+"""Vista Lista Seguidores"""
+    
+class SeguidoresUsuario(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
+    model = SeguidorUsuario
+    paginate_by = 7
+    template_name = 'social/user/seguidores.html'
+
+    def get_queryset(self):
+        # TODO ORDENAR LOS SEGUIDORES
+        user = get_object_or_404(User, slug=self.kwargs['slug'])
+        followers = user.get_user_followers()
+       
+        follower_list = []
+
+        if self.request.user != user and self.request.user in followers:
+            follower_list.append(self.request.user)
+            followed = [followed.followed_user_id for followed in SeguidorUsuario.objects.filter(follower_user_id = self.request.user, followed_user_id__in=followers).order_by('followed_user_id__username')]
+            for user in followed:
+                follower_list.append(user)
+            
+            for user in followers:
+                follower_list.append(user)
+
+
+            follower_list = list(dict.fromkeys(follower_list))
+            return follower_list
+
+        return followers
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = get_object_or_404(User, slug=self.kwargs['slug'])
+        return context
+
+
+"""Vista Lista Seguidos"""
+    
+class SeguidosUsuario(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
+    model = SeguidorUsuario
+    paginate_by = 7
+    template_name = 'social/user/seguidos.html'
+
+    def get_queryset(self):
+        user = get_object_or_404(User, slug=self.kwargs['slug'])
+        followed = user.get_user_followed()
+
+        # Ordenar los resultados:
+        # Primero el request.user, luego los followed por el request.user
+        # Finalmente los que no sigue
+
+        if self.request.user != user:
+            request_user_followed = self.request.user.get_user_followed()
+
+            if request_user_followed:
+                new_followed = []
+                for user in request_user_followed:
+                    if user in followed:
+                        new_followed.append(user)
+        
+                followed = new_followed + followed
+              
+
+            if self.request.user in followed and followed[0] != self.request.user:
+                followed = [self.request.user] + followed
+
+            followed = list(dict.fromkeys(followed))
+                
+
+            
+        # Si el usuario es el mismo al request.user se retorna directamente, puesto que ya
+        # Vienen ordenados
+
+        return followed
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = get_object_or_404(User, slug=self.kwargs['slug'])
+        return context
 
 
 

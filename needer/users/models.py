@@ -128,6 +128,40 @@ class User(AbstractUser):
         if self.username.lower() in ['home', 'marketplace'] or self.slug.lower() in ['home', 'marketplace']:
             raise ValidationError('Usuario incorrecto intenta con otro username')
 
+    def get_user_followers(self):
+        seguidores = [object_list.follower_user_id for object_list in SeguidorUsuario.objects.filter(followed_user_id=self).order_by('follower_user_id__username')]
+        return seguidores
+
+    def get_user_followed(self): 
+        seguidos = [object_list.followed_user_id for object_list in SeguidorUsuario.objects.filter(follower_user_id=self).order_by('followed_user_id__username')]   
+        return seguidos
+
+    def seguirUsuario(self):
+        return reverse('follow-usuario', kwargs={'slug':self.slug})
+
+    def dejarseguirUsuario(self):
+        return reverse('unfollow-usuario', kwargs={'slug':self.slug})
+
+   
+
+class SeguidorUsuario(models.Model):
+    fecha_follow = models.DateTimeField(auto_now_add=True)
+    follower_user_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Seguidor', related_name='user_follower_id')
+    followed_user_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Seguido', related_name='user_followed_id')
+
+    def clean(self):
+        objeto = SeguidorUsuario.objects.filter(follower_user_id=self.follower_user_id, followed_user_id=self.followed_user_id).order_by('id')
+        
+        if  objeto:
+            raise ValidationError('El usuario ya sigue a este otro usuario')
+
+
+    
+
+
+
+
+
 
     
         
