@@ -196,8 +196,19 @@ class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, L
         # En caso de no tener ningun tipo de celebridad entonces de las personas relevantes primero.
         # En orden de mas nuevo a mas antiguo.
         # Y de ultimo irian las publicaciones en general de personas de mas nuevo a mas antiguo.
-       
-        return Publicacion.objects.all().order_by('-fecha_creacion')
+        seguidos = self.request.user.get_user_followed()
+        seguidores = self.request.user.get_user_followers()
+        
+        if len(seguidores) != 0 or len(seguidos) != 0:
+            publicaciones_followers = Publicacion.objects.order_by('-fecha_creacion').filter(Q(user__in=seguidos) | Q(user__in=seguidores))
+            publicaciones = Publicacion.objects.all().exclude(user=self.request.user).order_by('-fecha_creacion')
+            publicaciones = publicaciones.exclude(id__in= [publicacion.id for publicacion in publicaciones_followers])
+
+            resultado = [ publicacion for publicacion in publicaciones_followers] + [ publicacion for publicacion in publicaciones]
+
+            return resultado 
+
+        return Publicacion.objects.all().exclude(id=self.request.user).order_by('-fecha_creacion') 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -713,20 +724,23 @@ class SeguidoresUsuario(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
         # TODO ORDENAR LOS SEGUIDORES
         user = get_object_or_404(User, slug=self.kwargs['slug'])
         followers = user.get_user_followers()
-        followed = self.request.user.get_user_followed()
+       
         follower_list = []
+
         if self.request.user != user and self.request.user in followers:
             follower_list.append(self.request.user)
+            followed = [followed.followed_user_id for followed in SeguidorUsuario.objects.filter(follower_user_id = self.request.user, followed_user_id__in=followers).order_by('followed_user_id__username')]
+            for user in followed:
+                follower_list.append(user)
+            
+            for user in followers:
+                follower_list.append(user)
 
-        for follower in followed:
-            if follower in followers:
-                follower_list.append(follower)
-        
-        for person in followers:
-            follower_list.append(person)
 
-        follower_list = list(dict.fromkeys(follower_list))
-        return follower_list
+            follower_list = list(dict.fromkeys(follower_list))
+            return follower_list
+
+        return followers
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
