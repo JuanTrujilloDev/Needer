@@ -14,98 +14,20 @@ Seguidores de {{user.username}}
 {% block inner-content %}
 <div class="container pb-4 mx-auto" id="contenido">
     <!--Datos personales-->
-    <div class="seccion-arriba w-100 row mx-0">
-
-        <!--Banner-->
-        {% if object.banner %}
-        <button
-            type="button"
-            data-bs-toggle="#"
-            data-bs-target="#exampleModal"
-            class="col-12 btn img-fluid imgbanner"
-            style="background-image: url('{{object.banner.url}}');"
-        ></button>
-        {% else %}
-        <button
-            type="button"
-            data-bs-toggle="#"
-            data-bs-target="#exampleModal"
-            class="col-12 btn img-fluid imgbanner"
-            style="background-image: url('{% static 'img/placeholder-banner.png' %}');"
-        ></button>
-        {% endif %}
-        <!--FOTO-->
-        <div class="col-xl-3 col-lg-4 col-md-4 text-center mb-0 mb-sm-3 px-0 mx-0 align-items-center">
-            {% if object.foto %}
-            <button
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                class="col-12 btn rounded-circle overflow-hidden update-imagen img-fluid"
-                style="background-image: url({{object.foto.url}}); object-fit: cover;"
-            ></button>
-            {% else %}
-            <button
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                class="col-12 btn rounded-circle overflow-hidden update-imagen img-fluid"
-                style="background-image: url('{% static 'img/default-profile.png' %}');"
-            ></button>
-            {% endif %}
-        </div>
-        <!--Texto Informacion-->
-        <div class="col-xl-7 col-lg-6 col-md-6 d-flex align-items-center container g-2 justify-content-center">
-            <div class="w-100 col-12 d-table-cell align-bottom row g-2  text-break text-lg-start text-md-start text-sm-center text-center">
-                {% if object.apodo %}
-                <h2 class="text-primary fw-bold mb-0 mb-sm-2 mw-100">
-                    {{object.apodo}}
-                </h2    >
-                <h3 class="text-muted">@ {{object.username}}</h3>
-                {% else %}
-                <h2 class="text-primary fw-bold mb-0 mb-sm-2 mw-100">
-                    {{object.username}}
-                </h2>
-                {% endif %}
-                <h4 class="text-muted">
-                    <i class="bi bi-geo-alt"></i>
-                    {{object.pais}}
-                </h4>
-                <h4 class="text-muted mb-0">needer.com.co/{{object.slug}}</h4>
-            </div>
-        </div>
-        <!--Ajustes-->
-        <div class="col-md-2 d-flex align-items-end container g-2 justify-content-center">
-            <div class="w-100 col-12 d-table-cell align-bottom row g-2 text-lg-start text-sm-center text-center">
-                {% if request.user == object %}
-                <h3 class="py-2 text-primary">
-                    <a href="{% url 'account_profile' %}">
-                        <i class="bi bi-gear"></i>
-                    </a>
-                </h3>
-                {% else %}
-                <h3 class="py-2 text-primary">
-                    <div id="seguir_usuario-{{object.id}}">
-                    {%  sigueUsuario object request.user %}
-                    </div>
-                </h3>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+    {% include 'social/user/datos-personales.html' %}
     <!--Navegacion secundaria-->
     <div class="mb-4 px-0 container-fluid my-4 d-flex justify-content-lg-start justify-content-md-start justify-content-sm-center justify-content-center border-bottom mb-3 pre-ajustes">
         {% with url_name=request.resolver_match.url_name %}
         <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none  text-center
-        {% if url_name == 'detalle-creador' %}active {% endif %}" href="{{object.get_absolute_url}}">
-            <h2 class="mb-0">Perfil</h2>
+       " href="{{object.get_absolute_url}}">
+            <h2 class="mb-0 {% if url_name == 'detalle-creador' %}active {% endif %}">Perfil</h2>
         </a>
-        <a href="{% url 'galeria-social'  slug=object.slug %}" class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted text-decoration-none text-center" href="#">
-            <h2 class="mb-0">Galeria</h2>
+        <a href="{% url 'galeria-social'  slug=object.slug %}" class="mx-auto  mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted text-decoration-none text-center" href="#">
+            <h2 class="mb-0  {% if url_name == 'galeria-social' %} active {% endif %}">Galeria</h2>
         </a>
         <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none text-center
-        {% if url_name == 'account_change_password' %}active {% endif %}" href="{% url 'account_change_password' %}">
-            <h2 class="mb-0">Marketplace</h2>
+        " href="{% url 'account_change_password' %}">
+            <h2 class="mb-0 {% if url_name == 'account_change_password' %}active {% endif %}">Marketplace</h2>
         </a>
         {% endwith %}
     </div>
@@ -169,7 +91,7 @@ Seguidores de {{user.username}}
         
         <div class="row d-flex justify-content-center col-12 align-middle infinite-item mb-3">
             <a class="col-6 row justify-content-start align-middle text-decoration-none" href="{{seguidor.get_absolute_url}}">
-                <button type="button" class="btn py-2 d-sm-none d-none d-lg-flex d-md-flex d-xl-flex d-xs-flex col-3 me-2 rounded-circle overflow-hidden img-fluid" style="background-image: url('{% if seguidor.foto %} {{seguidor.foto.url}} {% else %} {% static 'img/default-profile.png' %}  {% endif %}'); height: 4rem; width: 4rem;"></button>
+                <button type="button" class="btn py-2 d-sm-none d-none d-lg-flex d-md-flex d-xl-flex d-xs-flex col-3 me-2 rounded-circle overflow-hidden img-fluid" style="background-image: url('{% if seguidor.foto %} {{seguidor.foto.url}} {% else %} {% static 'img/default-profile.png' %}  {% endif %}'); height: 4rem; width: 4rem; background-size:cover;"></button>
                 <div class="row col-12 col-sm-12 col-xs-12 col-lg-9 col-md-9 col-xl-9 justify-content-start"> <h4 class="text-start mb-0 align-bottom align-text-bottom fw-bold text-primary text-truncate">{% if seguidor.apodo %} {{seguidor.apodo}} {%else %} {{seguidor.username}} {% endif %}</h4> <h6 class="my-0 text-muted text-truncate">@{{seguidor.username}}</h6></div>
             </a>
             <div class="col-6 justify-content-end d-flex align-middle">

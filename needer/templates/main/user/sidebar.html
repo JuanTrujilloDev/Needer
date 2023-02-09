@@ -11,14 +11,14 @@
   <ul class="nav row d-flex sticky-top pl-0 pt-3 mh-100 h-100 navegacion-sidebar">
     <ul class="upper-items nav nav flex-column mb-auto">
       {% with url_name=request.resolver_match.url_name %}
-      <li class="nav-item"><a class="nav-link {% if url_name == 'social-home' %} active {% endif %} " href="{%url 'social-home' %}"><h4><i class="bi bi-house-door me-2"></i>Home</h4></a></li>
-      <li class="nav-item"><a class="nav-link {% if url_name == 'detalle-creador'%} active  {% endif %}" href="{{request.user.get_absolute_url}}"><h4><i class="bi bi-person-circle me-2"></i>Mi Perfil</h4></a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><h4><i class="bi bi-image me-2"></i></i>Publicaciones</h4></a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><h4><i class="bi bi-shop me-2"></i>Marketplace</h4></a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><h4><i class="bi bi-chat-left me-2"></i>Mensajes</h4></a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><h4><i class="bi bi-stars me-2"></i></i>Panel de Creador</h4></a></li>
+      <li class="nav-item"><a class="nav-link" href="{%url 'social-home' %}"><h4 class="fw-semibold {% if url_name == 'social-home' %} active {% endif %}"><i class="bi bi-house-door me-2"></i>Home</h4></a></li>
+      <li class="nav-item"><a class="nav-link" href="{{request.user.get_absolute_url}}"><h4 class="fw-semibold {% if url_name == 'detalle-creador' and object.slug == request.user.slug %} active  {% endif %}"><i class="bi bi-person-circle me-2"></i>Mi Perfil</h4></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><h4 class="fw-semibold"><i class="bi bi-image me-2"></i></i>Publicaciones</h4></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><h4 class="fw-semibold"><i class="bi bi-shop me-2"></i>Marketplace</h4></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><h4 class="fw-semibold"><i class="bi bi-chat-left me-2"></i>Mensajes</h4></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><h4 class="fw-semibold"><i class="bi bi-stars me-2"></i></i>Panel de Creador</h4></a></li>
       <li class="nav-item"><a class="nav-link {% if url_name == 'account_profile' or url_name == 'account_change_password' or url_name == 'socialaccount_connections' or url_name == 'account_email'%} active  {% endif %}" 
-        href="{%url 'account_profile' %}"><h4><i class="bi bi-gear me-2"></i>Ajustes</h4></a></li>
+        href="{%url 'account_profile' %}"><h4 class="fw-semibold"><i class="bi bi-gear me-2"></i>Ajustes</h4></a></li>
     </ul>
     {% endwith %}
 
