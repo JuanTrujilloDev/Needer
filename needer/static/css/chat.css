@@ -10,8 +10,8 @@
     padding-right: 0px !important;
 }
 
-.chatuser{
-    background-color: #d9d9d9 !important;
+.userbox{
+    height: 90% !important;
 }
 
   .text-small {
@@ -27,8 +27,8 @@
   }
 
   .img-static{
-    height: 58px;
-    width: 58px;
+    height: 60px;
+    width: 60px;
     object-fit: cover;
     height: 100%;
     padding-top: 5px !important;
@@ -66,3 +66,23 @@
     font-size: 2rem !important;
     
   }
+
+@media screen and (max-width:670px) {
+    .mensajereb{
+        display: none !important;
+    }
+    .mensaje{
+        display: none !important;
+    }
+
+    .img-static{
+        height: 40px;
+        width: 40px;
+        object-fit: cover;
+        height: 100%;
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+
+    }
+    
+}
