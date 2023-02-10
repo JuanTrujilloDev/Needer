@@ -23,3 +23,5 @@ class ThreadDetailView (ExtendsInnerContentMixin, LoginRequiredMixin, DetailView
 
     model = Thread
     template_name = 'chat/thread.html'
+
+
