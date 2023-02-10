@@ -15,6 +15,7 @@ Needer | Chat
 
 {% block inner-content %}
 {% if user.is_authenticated %}
+{% for object in object_list %} {{object.pk}} {% endfor %}
 <h1 style="text-align: end; padding-right: 10px">Logged in as : {{ user.username }}</h1>
 <input type="hidden" id="logged-in-user" value="{{ user.id }}">
 {% endif %}
