@@ -1,6 +1,16 @@
-.imgchat{
-    height: 40px;
-    width: 40px;
+.chat{
+    position: sticky !important;    
+      height: 20%;
+      display: flex;
+      margin-top: -50px !important;
+}
+
+.form-control{
+    border-radius: 2rem !important;
+}
+
+.info{
+    height: 15% !important;
 }
 
 .main{
@@ -11,34 +21,30 @@
 }
 
 .userbox{
-    height: 90% !important;
+    height: 75% !important;
 }
-
-  .text-small {
-    font-size: 0.9rem;
-  }
   
-  .rounded-lg {
-    border-radius: 0.5rem;
-  }
-  
-  input::placeholder {
-    font-size: 0.9rem;
-  }
-
   .img-static{
-    height: 65px;
-    width: 65px;
+    height: 85px;
+    width: 85px;
+    object-fit: cover;
+  }
+
+  .img-perfil{
+    height: 60px;
+    width: 60px;
     object-fit: cover;
   }
 
   .nombreape{
-    font-size: medium !important;
+    font-size: 2rem !important;
     font-weight: bold !important;
   }
 
   .nombreuser{
-    font-size: small !important;
+    padding: 10px !important;
+    font-size: smaller !important;
+    color: #ffff !important;
   }
 
   .nombrearriba{
@@ -50,12 +56,13 @@
     z-index: auto !important;
   }
 
-  .mensaje{
-    padding: 0.375rem 0.75rem;
-    line-height: 1.5;
-    color: #737373 !important;
-    border: 1px solid #ced4da;
-}
+  .mensajes{
+    background-color: #5C28FF;
+  }
+
+  .respuesta{
+    background-color: #a3a3ff;
+  } 
 
   .smile{
     background-color: #ffff !important;
