@@ -17,14 +17,15 @@ Needer | Chat
 {% block inner-content %}
 {% if user.is_authenticated %}
 
-<input type="hidden" id="logged-in-user" value="{{ user.id }}">
+
+
 {% endif %}
-<div class="row h-100 ms-0 me-0">
+<div class="row h-100 ms-0 me-0 overflow-hidden">
 
             <div class="col-12 d-flex px-0 justify-content-around border-bottom">
 
             <div class="col-6 pt-2 mb-3 d-flex align-items-center mensajereb">
-                <h3 class="mb-0 fw-bold my-auto text-muted">Mensajes Recibidos</h3>
+                <h3 class="mb-0 fw-bold my-auto text-muted">Tus Chats</h3>
             </div>
 
             <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 justify-content-center justify-content-xs-center
@@ -40,46 +41,54 @@ Needer | Chat
             </div>
 
               <!-- Users box-->
-            <div class="col-12 px-0 overflow-auto pb-2 userbox">
+            <div class="col-12 px-0  pb-2 userbox">
                 
-                {% for i in '12345678910' %}
+                {% for i in '1234567891011' %}
                   <!-- Chats -->
-                <div class="row d-flex col-12 mx-0 px-0 py-0 justify-content-around align-items-center mw-100 border-bottom">
+                <div class="row d-flex col-12 mx-0 px-0 py-2 justify-content-around align-items-center mw-100 border-bottom">
                         <!--Foto Usuario-->
                         <div class="col-2 col-md-1 d-flex pe-0 py-0 justify-content-end">
                             <a href="#" class="text-center">
                                 <img
                                     class="rounded-circle img-fluid my-auto img-static"
                                     alt="profile"
-                                    src="{% static 'img/default-profile.png' %}"
+                                    src="{{request.user.foto.url}}"
                                     data-holder-rendered="true"
                                 >
                             </a>
                         </div>
                         <!--Datos-->
-                        <div class="col-2 col-md-2 py-0 justify-content-start">
-                            <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                        <div class="col-2 col-md-2 py-0 d-none d-lg-block flex-row d-md-block d-xl-block justify-content-start">
+                            <h6 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
+                                <a href="#" class="text-decoration-none text-primary">
+                                    Nombre y Apellido
+                                </a>
+                            </h6>
+                            <h6 class="mb-0   mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
+                                <a href="#" class="text-decoration-none text-muted">
+                                    @NombreUsuario
+                                </a>
+                            </h6>
+                    
+                        </div>
+                        <!-- Mensajes -->
+                        <div class="col-7 row col-sm-7 col-xs-7 col-lg-7 col-xl-7 col-md-7 row  py-0 justify-content-start align-middle">
+                            <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape d-block d-lg-none d-xl-none d-md-none">
                                 <a href="#" class="text-decoration-none text-primary">
                                     Nombre y Apellido
                                 </a>
                             </h5>
-                            <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
-                                <a href="#" class="text-decoration-none text-muted">
-                                    @NombreUsuario
-                                </a>
-                            </h5>
-                        </div>
-                        <!-- Mensajes -->
-                        <div class="col-3 col-md-7 py-0 justify-content-center">
-                            <h4 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 text-truncate nombreuser">
-                                <a href="#" class="text-decoration-none text-muted fw-bold mensaje">
+                            <h4 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 text-start mensajeh text-truncate ">
+                                <a href="#" class="text-decoration-none  fw-normal  mensaje text-truncate overflow-hidden">
                                     Hola, ¿Como vas?, Te estuve llamando todo el día, necesito hablar contigo, es algo muy urgente ar contigo, es algo muy urgente
                                 </a>
                             </h4>
                         </div>
 
                         <!-- Hora -->
-                        <div class="col-3 col-md-1 py-0 justify-content-end">
+                        <div class="col-3 col-sm-3 col-xs-3 col-lg-2 col-xl-2 col-md-2 py-0 justify-content-start 
+                                    justify-content-xs-start justify-content-sm-start justify-content-md-end
+                                    justify-content-lg-end justify-content-xl-end">
                             <h4 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser">
                                 <a href="#" class="text-decoration-none text-muted fw-bold text-truncate">
                                     6:00 PM
@@ -93,6 +102,4 @@ Needer | Chat
 </div>
 {% endblock inner-content %}
 
-{% block script %}
-<script src="{% static 'js/messages.js' %}"></script>
-{% endblock script %}
+
