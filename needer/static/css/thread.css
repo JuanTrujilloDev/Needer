@@ -99,7 +99,7 @@
   
 }
 
-@media screen and (min-width:844px) and (max-width:914px) {
+@media screen and (min-width:844px) and (max-width:915px) {
     .img-perfil{
       display: none;
     }
@@ -115,6 +115,25 @@
   
     .userbox{
       height: 60% !important;
+    }
+  
+  }
+  @media screen and (min-width:912px) and (max-width:913px) {
+    .img-perfil{
+      display: none;
+    }
+    .chat{
+      position: sticky !important;    
+        height: 10%;
+        display: flex;
+    }
+  
+    .info{
+      height:10% !important;
+  }
+  
+    .userbox{
+      height: 80% !important;
     }
   
   }
