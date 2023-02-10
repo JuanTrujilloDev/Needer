@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+#Credenciales cd CDN
+credentials.json
+
 # Distribution / packaging
 .Python
 build/
@@ -141,6 +144,7 @@ lib/
 .DS_Store/
 ../db.json
 .db.json
+fixtures/
 
 # VSCODE
 

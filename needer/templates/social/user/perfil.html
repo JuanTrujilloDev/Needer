@@ -14,23 +14,26 @@ Needer | {{object.username}}
 {% block inner-content %}
 <div class="container pb-4 mx-auto mt-5" id="contenido">
     <!--Datos personales-->
+ 
     {% include 'social/user/datos-personales.html' %}
+
     <!--Navegacion secundaria-->
-    <div class="mb-4 px-0 container-fluid my-4 d-flex justify-content-lg-start justify-content-md-start justify-content-sm-start justify-content-start border-bottom mb-3">
+    <div class="mb-4 px-0 container-fluid my-4 d-flex justify-content-lg-start justify-content-md-start justify-content-sm-center justify-content-center border-bottom mb-3 pre-ajustes">
         {% with url_name=request.resolver_match.url_name %}
-        <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none
-        {% if url_name == 'detalle-creador' %}active {% endif %}" href="{{object.get_absolute_url}}">
-            <h2 class="mb-0 h22">Perfil</h2>
+        <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none  text-center
+       " href="{{object.get_absolute_url}}">
+            <h2 class="mb-0 {% if url_name == 'detalle-creador' %}active {% endif %}">Perfil</h2>
         </a>
-        <a href="{% url 'galeria-social'  slug=object.slug %}" class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted text-decoration-none" href="#">
-            <h2 class="mb-0 h22">Galeria</h2>
+        <a href="{% url 'galeria-social'  slug=object.slug %}" class="mx-auto  mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted text-decoration-none text-center" href="#">
+            <h2 class="mb-0  {% if url_name == 'galeria-social' %} active {% endif %}">Galeria</h2>
         </a>
-        <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none
-        {% if url_name == 'account_change_password' %}active {% endif %}" href="{% url 'account_change_password' %}">
-            <h2 class="mb-0 h22">Marketplace</h2>
+        <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none text-center
+        " href="{% url 'account_change_password' %}">
+            <h2 class="mb-0 {% if url_name == 'account_change_password' %}active {% endif %}">Marketplace</h2>
         </a>
         {% endwith %}
     </div>
+    
     <!--Contenido interno-->
     <div class="my-4 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
         <!--Bibliografria-->
@@ -56,22 +59,17 @@ Needer | {{object.username}}
             <div class="container-fluid my-3">
                 <h3 class="text-primary">Interacciones</h3>
                 <div class="row d-flex justify-content-center align-items-center mt-4">
-                    {% if object.user.verificado %}
-                    <div class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-dinero">
-                        <h4>
-                            <i class="bi bi-coin fw-bold"></i>
-                        </h4>
-                        <h5 class="fw-bold">213456</h5>
-                        <h6 class="text-muted">Ventas</h6>
-                    </div>
-                    {% endif %}
-                    <div class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-seguidores">
-                        <h4>
-                            <i class="bi bi-person-hearts"></i>
-                        </h4>
-                        <h5 class="fw-bold">7534</h5>
-                        <h6 class="text-muted">Seguidores</h6>
-                    </div>
+
+                    <a class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-dinero text-decoration-none" href="{% url 'followed-usuario' object.slug %}">
+
+                        <h4 class="fw-bold">{{seguidos|length}}</h4>
+                        <h5 class="text-muted">Seguidos</h5>
+                    </a>
+
+                    <a class="row col-md-6 col-sm-12 text-center justify-content-center align-items-center d-flex icono-seguidores" href="{% url 'followers-usuario' object.slug %}">
+                        <h4 class="fw-bold" id="cantidad_seguidores">{{seguidores|length}}</h4>
+                        <h5 class="text-muted">Seguidores</h5>
+                    </a>
                 </div>
             </div>
         </div>

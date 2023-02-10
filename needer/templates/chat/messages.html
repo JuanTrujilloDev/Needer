@@ -16,6 +16,7 @@ Needer | Chat
 
 {% block inner-content %}
 {% if user.is_authenticated %}
+
 <input type="hidden" id="logged-in-user" value="{{ user.id }}">
 {% endif %}
 <div class="row h-100 ms-0 me-0">

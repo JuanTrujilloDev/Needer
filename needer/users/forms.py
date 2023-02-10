@@ -120,7 +120,7 @@ class  SocialCustomForm(SocialSignupForm):
         match = re.match('^[A-Za-z][A-Za-z0-9]{3,18}$', username)
 
         if match:
-            if username.lower() in ['home', 'marketplace']:
+            if username.lower() in ['home', 'marketplace', 'signup', 'logout', 'email', 'inactive', 'follow', 'unfollow', 'profile', 'chat']:
                 raise forms.ValidationError('No puedes usar este nombre de usuario')
 
             try:

@@ -1,0 +1,151 @@
+{% extends innercontent %}
+{% load static %}
+{% load pub_extras %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/perfil-creador.css'%} ">
+<link rel="stylesheet" href="{% static 'css/publicacion.css'%} ">
+{% endblock css %}
+
+{% block headtitle %}
+Seguidos por {{user.username}}
+{% endblock headtitle %}
+
+{% block inner-content %}
+<div class="container pb-4 mx-auto" id="contenido">
+    <!--Datos personales-->
+    {% include 'social/user/datos-personales.html' %}
+    <!--Navegacion secundaria-->
+    <div class="mb-4 px-0 container-fluid my-4 d-flex justify-content-lg-start justify-content-md-start justify-content-sm-center justify-content-center border-bottom mb-3 pre-ajustes">
+        {% with url_name=request.resolver_match.url_name %}
+        <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none  text-center
+       " href="{{object.get_absolute_url}}">
+            <h2 class="mb-0 {% if url_name == 'detalle-creador' %}active {% endif %}">Perfil</h2>
+        </a>
+        <a href="{% url 'galeria-social'  slug=object.slug %}" class="mx-auto  mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted text-decoration-none text-center" href="#">
+            <h2 class="mb-0  {% if url_name == 'galeria-social' %} active {% endif %}">Galeria</h2>
+        </a>
+        <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none text-center
+        " href="{% url 'account_change_password' %}">
+            <h2 class="mb-0 {% if url_name == 'account_change_password' %}active {% endif %}">Marketplace</h2>
+        </a>
+        {% endwith %}
+    </div>
+
+    <!--Contenido interno-->
+    <div class="my-4  container row w-100 mx-auto d-flex justify-content-lg-center justify-content-md-center justify-content-sm-between justify-content-center">
+       
+        {% if object_list|length == 0 %}
+    
+        <div class="row infinite-container col-12 col-lg-8 col-xl-8 col-sm-12 col-md-10 col-xs-12 align-middle d-flex justify-content-center p-0 py-3 bg-white border-5 mx-auto rounded-3 box-shadow">
+            <div class="row d-flex align-middle mb-2">
+                
+                <h1 class="text-center text-primary d-flex flex-row w-100 align-middle fw-bold mx-auto col-12">
+                    <strong class="float-start text-start align-middle my-auto me-auto">
+                    <a class="float-left text-start align-middle d-flex my-auto col" href="{% url 'detalle-creador' object.slug %}">
+                        <svg class="float-left text-start w-auto align-middle d-flex my-auto" width="52" height="30" viewBox="0 0 58 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="7" y1="16.484" x2="17.5515" y2="5.93249" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                            <line x1="7.07107" y1="17.9325" x2="17.6226" y2="28.484" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                            <line x1="7.01097" y1="16.9435" x2="52.7975" y2="17.0441" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                            </svg>
+                    </a></strong> 
+                    <strong class="me-auto
+                    ">
+                        Seguidos
+                    </strong> 
+                  </h1>
+            </div>
+
+            <hr class="text-primary bg-primary" style="height: 1.5px; opacity: 1;">
+
+            <img
+            class="mt-4 mb-3 img-fluid"
+            src="{% static 'img/followed.svg'%}"
+            style="height: 50vh;"
+            >
+            <h3 class="text-center ">El usuario no sigue a nadie</h3>
+        </div>
+        
+        {% else %}
+
+        <div class="row infinite-container col-12 col-lg-8 col-xl-8 col-sm-12 col-md-10 col-xs-12 align-middle d-flex justify-content-center p-0 py-3 bg-white border-5 mx-auto rounded-3 box-shadow">
+            <div class="row d-flex align-middle mb-2">
+                
+                <h1 class="text-center text-primary d-flex flex-row w-100 align-middle fw-bold mx-auto col-12">
+                    <strong class="float-start text-start align-middle my-auto me-auto">
+                    <a class="float-left text-start align-middle d-flex my-auto col" href="{% url 'detalle-creador' object.slug %}">
+                        <svg class="float-left text-start w-auto align-middle d-flex my-auto" width="52" height="30" viewBox="0 0 58 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="7" y1="16.484" x2="17.5515" y2="5.93249" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                            <line x1="7.07107" y1="17.9325" x2="17.6226" y2="28.484" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                            <line x1="7.01097" y1="16.9435" x2="52.7975" y2="17.0441" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                            </svg>
+                    </a></strong> 
+                    <strong class="me-auto
+                    ">
+                        Seguidos
+                    </strong> 
+                  </h1>
+            </div>
+        <hr class="text-primary bg-primary" style="height: 1.5px; opacity: 1;">
+        {% for seguidor in object_list %}
+        
+        <div class="row d-flex justify-content-center col-12 align-middle infinite-item mb-3">
+            <a class="col-6 row justify-content-start align-middle text-decoration-none" href="{{seguidor.get_absolute_url}}">
+                <button type="button" class="btn py-2 d-sm-none d-none d-lg-flex d-md-flex d-xl-flex d-xs-flex col-3 me-2 rounded-circle overflow-hidden img-fluid" style="background-image: url('{% if seguidor.foto %} {{seguidor.foto.url}} {% else %} {% static 'img/default-profile.png' %}  {% endif %}'); height: 4rem; width: 4rem; background-size:cover;"></button>
+                <div class="row col-12 col-sm-12 col-xs-12 col-lg-9 col-md-9 col-xl-9 justify-content-start"> <h4 class="text-start mb-0 align-bottom align-text-bottom fw-bold text-primary text-truncate">{% if seguidor.apodo %} {{seguidor.apodo}} {%else %} {{seguidor.username}} {% endif %}</h4> <h6 class="my-0 text-muted text-truncate">@{{seguidor.username}}</h6></div>
+            </a>
+            <div class="col-6 justify-content-end d-flex align-middle">
+                {% if request.user != seguidor %}
+                <h3 class="py-2 text-primary align-middle float-end text-end">
+                    <div id="seguir_usuario-{{seguidor.id}}" class=" float-end text-end justify-content-end">
+                    {%  sigueUsuario seguidor request.user %}
+                    </div>
+                </h3>
+                {% endif %}
+            </div>
+            
+        </div>
+        
+            
+            
+
+            
+        
+        {% endfor %}
+        </div>
+    
+        {% endif %}
+        
+
+
+    </div>
+
+    {% if page_obj.has_next %}
+        <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}" style="display:none;">More</a>
+    
+        {% else %}
+        <a class="infinite-more-link" href="?page=0" style="display:none;">More</a>
+        {% endif %}
+
+        <div class="page-load-status mt-3">
+            {% if page_obj.has_next %}
+            <h3 class="infinite-scroll-request col-12 text-center">
+                Cargando...
+            </h3>
+            {% endif %}
+ 
+    
+        </div>
+
+
+
+</div>
+{% include 'social/user/foto-perfil-modal.html' %}
+
+{% endblock inner-content %}
+
+{% block script %}
+<script src="https://unpkg.com/infinite-scroll@4.0.1/dist/infinite-scroll.pkgd.min.js"></script>
+<script src="{% static 'js/load-more-ajax.js' %}"></script>
+<script src="{% static 'js/like-comen.js' %}"></script>
+{% endblock script %}

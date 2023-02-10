@@ -72,11 +72,13 @@
                 </div>
                 {% endif %}
 
-                    {% if publicacion.archivo %}
+                {% if publicacion.archivo %}
 
-                    {{publicacion.archivo|tipo_archivo|safe}}
-                    
-                    {% endif %}
+                <div class="row justify-content-center w-100 container px-3 py-2">
+                   <img src="{{publicacion.archivo.url|safe}}" alt="">{% comment %}  {{publicacion.archivo|tipo_archivo|safe}} {% endcomment %}
+                </div>
+                            
+                {% endif %}
             </div>
             <!--TODO Validar funcionamiento-->
             {% if publicacion.nsfw %}

@@ -67,22 +67,13 @@
             {% endif %}
         </div>
         {% if user.biografia %}
-        <h4 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted  text-brake fw-light mb-0 mw-100 biografiauser">
+        <h4 onclick="window.open('{{user.get_absolute_url}}')" class="text-muted mt-0 text-brake fw-light mb-4 mw-100 biografiauser">
             {{user.biografia|truncatechars:80}}
         </h4>
         {% else %}
         <div class="m-4"></div>
         {% endif %}
-        <div class="flex container-fluid row col-12 mx-0 px-0 justify-content-beetween">
-            {% if user.tipo_celebridad %}
-                        
-                            {% for tipo in user.tipo_celebridad.all %}
-            <div onclick="window.open('{{user.get_absolute_url}}')" class="col-5 align-items-center rounded-pill text-center fw-light mw-100 celebridad">
-                {{tipo}}
-            </div>
-            {% endfor %}    
-                    {% endif %}
-        </div>
+
     </div>
 </div>
 {% endfor %}
