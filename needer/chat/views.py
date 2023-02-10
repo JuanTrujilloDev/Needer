@@ -13,7 +13,7 @@ from chat.models import Thread, ChatMessage
 
 class ThreadListView (ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
     model = Thread
-    paginate_by = 10
+    paginate_by = 20
     template_name = 'chat/messages.html'
 
 
@@ -21,9 +21,20 @@ class ThreadListView (ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
         return Thread.objects.by_user(user= self.request.user).order_by('-timestamp')
 
 
+# TODO VISTA PARA AGREGAR NUEVO THREAD
+
+
+
+# TODO VISTA PARA FILTRAR LOS THREADS
+
+
+
+
 # TODO meterle seguridad a los chats
+# LIST VIEW
 class ThreadDetailView (ExtendsInnerContentMixin, LoginRequiredMixin, DetailView):
 
+    # Paginate by 20
     model = Thread
     template_name = 'chat/thread.html'
 
@@ -56,3 +67,5 @@ class ThreadDetailView (ExtendsInnerContentMixin, LoginRequiredMixin, DetailView
 
 
     #POST AJAX 
+
+
