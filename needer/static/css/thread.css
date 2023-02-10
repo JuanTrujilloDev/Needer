@@ -1,8 +1,7 @@
 .chat{
     position: sticky !important;    
-      height: 20%;
-      display: flex;
-      margin-top: -50px !important;
+    height: 5%;
+    display: flex;
 }
 
 .form-control{
@@ -10,7 +9,7 @@
 }
 
 .info{
-    height: 15% !important;
+    height: 25% !important;
 }
 
 .main{
@@ -21,13 +20,14 @@
 }
 
 .userbox{
-    height: 75% !important;
+    height: 60% !important;
 }
   
   .img-static{
-    height: 85px;
-    width: 85px;
+    height: 4rem;
+    width: 4rem;
     object-fit: cover;
+    
   }
 
   .img-perfil{
@@ -35,6 +35,19 @@
     width: 60px;
     object-fit: cover;
   }
+
+@media screen and (max-width:375px) {
+  .img-perfil{
+    display: none;
+  }
+  .chat{
+    position: sticky !important;    
+      height: 25%;
+      display: flex;
+      margin-top: -55px !important;
+  }
+
+}
 
   .nombreape{
     font-size: 2rem !important;
@@ -57,11 +70,11 @@
   }
 
   .mensajes{
-    background-color: #5C28FF;
+    background-color: #a3a3ff;
   }
 
   .respuesta{
-    background-color: #a3a3ff;
+    background-color: #5C28FF;
   } 
 
   .smile{
@@ -70,23 +83,3 @@
     font-size: 2rem !important;
     
   }
-
-@media screen and (max-width:670px) {
-    .mensajereb{
-        display: none !important;
-    }
-    .mensaje{
-        display: none !important;
-    }
-
-    .img-static{
-        height: 40px;
-        width: 40px;
-        object-fit: cover;
-        height: 100%;
-        padding-top: 5px !important;
-        padding-bottom: 5px !important;
-
-    }
-    
-}
