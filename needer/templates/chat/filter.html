@@ -26,14 +26,14 @@ Needer | Chat
             <div class="col-12 d-flex px-0 justify-content-around border-bottom">
 
             <div class="col-6 pt-2 mb-3 d-flex align-items-center mensajereb">
-                <h3 class="mb-0 fw-bold my-auto text-muted">Tus Chats</h3>
+                <h3 class="mb-0 fw-bold my-auto text-muted">Resultado de busqueda</h3>
             </div>
 
             <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 justify-content-center justify-content-xs-center
             justify-content-sm-center justify-content-md-end justify-content-lg-end justify-content-xl-end
                 input-box d-flex align-items-center">
                 <form method="GET" class="d-flex border-end pe-2 align-items-center" action="{% url 'thread-filter' %}">
-                <input maxlength="50" required minlength="1" type="text" class="form-control" id="search_form" name="q" placeholder="Buscar Chat ...">
+                <input maxlength="50" required minlength="1" type="text" class="form-control" id="search_form" name="q" placeholder="Buscar Chat ..." value="{% if q %} {{q}} {% endif %}">
                 </form>
                 <h4 class="py-0 my-0 mx-2 text-muted"><i class="bi bi-plus-circle"></i></h4>
             </div>
@@ -45,9 +45,18 @@ Needer | Chat
             <div class="col-12 px-0  pb-2 userbox infinite-container">
 
                 {% if object_list|length == 0 %}
-
-                <div class="container-fluid">
-                    No tienes chats creados, crea uno
+                
+                <div class="row my-auto col-12 col-lg-8 col-xl-8 col-sm-12 col-md-10 col-xs-12 align-middle d-flex justify-content-center p-0 py-3 mx-auto">
+              
+        
+                    
+        
+                    <img
+                    class="mt-4 mb-3 img-fluid"
+                    src="{% static 'img/busqueda.svg'%}"
+                    style="height: 50vh;"
+                    >
+                    <h3 class="text-center ">No se encontraron chats con tu busqueda <strong class="text-primary">"{{q}}"</strong></h3>
                 </div>
 
                 {% else %}
