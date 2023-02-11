@@ -1,6 +1,7 @@
 from django import template
 from chat.models import ChatMessage
 from django.utils import timezone
+from datetime import timedelta
 
 
 register = template.Library()
@@ -26,14 +27,13 @@ def get_date(date):
     now = timezone.now()
     time = date
     time_left = now - time
-    print()
     if time.strftime('%A') == now.strftime('%A'):
          return time.strftime('%I:%M %p')
 
-    elif time_left > timezone.delta(hours=24) and time_left < timezone.delta(hours=48) :
+    elif time_left > timedelta(hours=24) and time_left < timedelta(hours=48) :
         return 'Yesterday'
 
-    elif time_left > timezone.delta(hours=48) and time_left > timezone.delta(hours=168):
+    elif time_left > timedelta(hours=48) and time_left > timedelta(hours=168):
         return time.strftime('%A')
 
     else:
