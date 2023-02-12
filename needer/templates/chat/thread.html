@@ -1,3 +1,4 @@
+
 {% extends 'main/user/content.html' %}
 {% load static %}
 {% load pub_extras %}
@@ -121,6 +122,7 @@ Needer | Chat
                     {{thread.message}}
                 </p>
             </div>
+            
         </div>
         {% endif %}
 
@@ -155,4 +157,5 @@ Needer | Chat
 <script type="text/javascript">
     document.getElementById('scroll').scrollTop = 9999999;
 </script>
+
 {% endblock script %}

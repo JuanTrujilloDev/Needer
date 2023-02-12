@@ -28,7 +28,7 @@ from main.utils import *
 class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Publicacion
     template_name = 'social/user/perfil.html'
-    paginate_by = 2
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         
@@ -99,7 +99,7 @@ class CrearPublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
 # Detalle Publicacion
 class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Comentarios
-    paginate_by = 8
+    paginate_by = 10
     ordering = ["-fecha_creacion"]
 
 
@@ -495,7 +495,7 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
         # Traducir el query url a formato entendible
         query = urllib.parse.unquote(query)
         query = query.lower()
-        special_characters = '<>/"'
+        special_characters = '"!@#$%^&*()-+?_=,<>/"'
         
         # No permitir caracteres especiales
         if any(c in special_characters for c in query) or len(query.replace(" ", "")) < 1:
@@ -519,7 +519,7 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
 
 
     def get_queryset(self):
-
+        
         # Si esta paginando que siga retornando los objetos
         if "page" in self.request.get_full_path():
             query = " "

@@ -563,7 +563,7 @@ class UpdateUserForm(forms.ModelForm):
         match = re.match('^[A-Za-z][A-Za-z0-9]{3,18}$', username)
 
         if match:
-            if username.lower() in ['home', 'marketplace']:
+            if username.lower() in ['home', 'marketplace', 'tinymce', 'chat', 'tz_detect', 'followers', 'following']:
                 raise forms.ValidationError('No puedes usar este nombre de usuario')
             
             
