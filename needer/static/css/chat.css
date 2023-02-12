@@ -29,9 +29,11 @@
   }
 
   .img-static{
+
     height: 50px;
     width: 50px;
     object-fit: cover;
+
 
   }
 
@@ -60,8 +62,8 @@
   .mensaje{
 
     line-height: 1.5;
-    color: black !important;
 
+    color: black !important;
 }
 
   .smile{

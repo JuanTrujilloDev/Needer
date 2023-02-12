@@ -3,6 +3,8 @@ let message_body = $('.msg_card_body')
 let send_message_form = $('#send-message-form')
 const USER_ID = $('#logged-in-user').val()
 
+
+
 let loc = window.location
 let wsStart = 'ws://'
 
@@ -14,7 +16,7 @@ let endpoint = wsStart + loc.host + loc.pathname
 var socket = new WebSocket(endpoint)
 
 socket.onopen = async function(e){
-    console.log('open', e)
+    /* console.log('open', e) */
     send_message_form.on('submit', function (e){
         e.preventDefault()
         let message = input_message.val()
@@ -34,7 +36,7 @@ socket.onopen = async function(e){
 }
 
 socket.onmessage = async function(e){
-    console.log('message', e)
+    /* console.log('message', e) */
     let data = JSON.parse(e.data)
     let message = data['message']
     let sent_by_id = data['sent_by']
@@ -57,25 +59,43 @@ function newMessage(message, sent_by_id, thread_id) {
 	}
 	let message_element;
 	let chat_id = 'chat_' + thread_id
+    let imag = document.getElementById('image_profile').src;
+
 	if(sent_by_id == USER_ID){
 	    message_element = `
-			<div class="d-flex mb-4 replied">
-				<div class="msg_cotainer_send">
+        <div class="row d-flex col-9 m-2 mx-0 px-0 py-0 float-end justify-content-end align-items-center">
+            <div class="col-12 col-md-12 mx-2 rounded-4 py-0 justify-content-start respuesta">
+                <p class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 my-0 py-0 text-start nombreuser ">
 					${message}
-					<span class="msg_time_send">8:55 AM, Today</span>
-				</div>
+                </p>
 			</div>
+		</div>
 	    `
+
     }
 	else{
 	    message_element = `
-           <div class="d-flex mb-4 received">
-              <div class="msg_cotainer">
-                 ${message}
-              <span class="msg_time">8:40 AM, Today</span>
+        <div class="row d-flex col-12 m-2 mx-0 px-0 py-0 justify-content-start align-items-center">
+            <div class="col-3 col-md-1 d-flex pe-0 py-2 justify-content-start">
+                <a href="#" class="text-center">
+                <img
+                    class="rounded-circle d-lg-block d-none img-fluid my-auto img-perfil"
+                    alt="profile"
+                    src="${imag}"
+                    data-holder-rendered="true"
+            >   
+                </a>
+                
               </div>
-           </div>
+              <div class="col-9 mx-2 rounded-4 py-0 justify-content-start mensajes">
+                <p class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 my-0 py-0 text-break text-start nombreuser">
+                    ${message}
+                </p>
+              </div>
+              
+        </div>
         `
+
 
     }
 
@@ -88,25 +108,17 @@ function newMessage(message, sent_by_id, thread_id) {
 }
 
 
-$('.contact-li').on('click', function (){
-    $('.contacts .actiive').removeClass('active')
-    $(this).addClass('active')
-
-    // message wrappers
-    let chat_id = $(this).attr('chat-id')
-    $('.messages-wrapper.is_active').removeClass('is_active')
-    $('.messages-wrapper[chat-id="' + chat_id +'"]').addClass('is_active')
-
-})
 
 function get_active_other_user_id(){
-    let other_user_id = $('.messages-wrapper.is_active').attr('other-user-id')
+    let other_user_id = $('.messages-wrapper').attr('other-user-id')
     other_user_id = $.trim(other_user_id)
     return other_user_id
 }
 
 function get_active_thread_id(){
-    let chat_id = $('.messages-wrapper.is_active').attr('chat-id')
+    let chat_id = $('.messages-wrapper').attr('chat-id')
     let thread_id = chat_id.replace('chat_', '')
     return thread_id
 }
+
+

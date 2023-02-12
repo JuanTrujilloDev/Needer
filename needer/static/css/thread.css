@@ -1,0 +1,246 @@
+.chat{
+    position: sticky !important;    
+    height: 5%;
+    display: flex;
+    margin-top: -20px !important;
+}
+
+.form-control{
+    border-radius: 2rem !important;
+}
+
+.info{
+    height: 10% !important;
+}
+
+.main{
+    overflow: hidden !important;
+    padding-left: 0px !important;
+    padding-top: 0px !important;
+    padding-right: 0px !important;
+}
+
+.userbox{
+    height: 75% !important;
+}
+  
+  .img-static{
+    height: 4rem;
+    width: 4rem;
+    object-fit: cover;
+    
+  }
+
+  .img-perfil{
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+  }
+
+  @media screen and (min-width:359px) and (max-width:374px) {
+    .img-perfil{
+      display: none;
+    }
+    .chat{
+      position: sticky !important;    
+        height: 10%;
+        display: flex;
+    }
+  
+    .info{
+      height: 10% !important;
+  }
+  
+    .userbox{
+      height: 80% !important;
+    }
+  
+  }
+
+@media screen and (min-width:375px) and (max-width:376px) {
+  .img-perfil{
+    display: none;
+  }
+  .chat{
+    position: sticky !important;    
+      height: 25%;
+      display: flex;
+      margin-top: -55px !important;
+  }
+
+  .info{
+    height: 15% !important;
+}
+
+  .userbox{
+    height: 75% !important;
+  }
+
+}
+
+@media screen and (min-width:667px) and (max-width:719px) {
+    .img-perfil{
+      display: none;
+    }
+    .chat{
+      position: sticky !important;    
+        height: 25%;
+        display: flex;
+    }
+  
+    .info{
+      height: 20% !important;
+  }
+  
+    .userbox{
+      height: 60% !important;
+    }
+  
+  
+}
+
+@media screen and (min-width:844px) and (max-width:915px) {
+    .img-perfil{
+      display: none;
+    }
+    .chat{
+      position: sticky !important;    
+        height: 25%;
+        display: flex;
+    }
+  
+    .info{
+      height: 20% !important;
+  }
+  
+    .userbox{
+      height: 60% !important;
+    }
+  
+  }
+  @media screen and (min-width:912px) and (max-width:913px) {
+    .img-perfil{
+      display: none;
+    }
+    .chat{
+      position: sticky !important;    
+        height: 10%;
+        display: flex;
+    }
+  
+    .info{
+      height:10% !important;
+  }
+  
+    .userbox{
+      height: 80% !important;
+    }
+  
+  }
+
+  @media screen and (min-width:820px) and (max-width:840px) {
+    .img-perfil{
+      display: none;
+    }
+    .chat{
+      position: sticky !important;    
+        height: 5%;
+        display: flex;
+    }
+  
+    .info{
+      height: 10% !important;
+  }
+  
+    .userbox{
+      height: 80% !important;
+    }
+  
+  }
+
+  @media screen and (min-width:720px) and (max-width:740px) {
+    .img-perfil{
+        display: none;
+      }
+      .chat{
+        position: sticky !important;    
+          height: 15%;
+          display: flex;
+      }
+      .info{
+        height: 25% !important;
+    }
+      .userbox{
+        height: 50% !important;
+      }
+    }
+
+  @media screen and (min-width:770px) and (max-width:780px) {
+    .img-perfil{
+      display: none;
+    }
+    .chat{
+      position: sticky !important;    
+        display: flex;
+    }
+  
+    .info{
+      height: 10% !important;
+  }
+  
+    .userbox{
+      height: 80% !important;
+    }
+  
+  }
+
+  @media screen and (min-width:1024px) and (max-width:1080px) {
+    .img-perfil{
+        display: none;
+      }
+      .chat{
+        position: sticky !important;    
+          display: flex;
+      }
+      .info{
+        height: 15% !important;
+    }
+      .userbox{
+        height: 65% !important;
+      }
+    }
+
+  .nombreape{
+    font-size: 2rem !important;
+    font-weight: bold !important;
+  }
+
+  .nombreuser{
+    padding: 10px !important;
+    font-size: smaller !important;
+    color: #ffff !important;
+  }
+
+  .nombrearriba{
+    font-size: large !important;
+    font-weight: bold !important;
+  }
+  
+  .btn{
+    z-index: auto !important;
+  }
+
+  .mensajes{
+    background-color: #a3a3ff;
+  }
+
+  .respuesta{
+    background-color: #5C28FF;
+  } 
+
+  .smile{
+    background-color: #ffff !important;
+    color:#737373 !important;
+    font-size: 2rem !important;
+    
+  }
