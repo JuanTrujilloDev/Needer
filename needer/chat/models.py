@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.urls import reverse
 
 User = get_user_model()
 
@@ -24,6 +25,9 @@ class Thread(models.Model):
     objects = ThreadManager()
     class Meta:
         unique_together = ['first_person', 'second_person']
+
+    def get_absolute_url(self):
+        return reverse('thread', kwargs={'pk': self.pk})
 
 
 class ChatMessage(models.Model):

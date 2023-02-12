@@ -28,7 +28,7 @@ from main.utils import *
 class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Publicacion
     template_name = 'social/user/perfil.html'
-    paginate_by = 2
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         
@@ -99,7 +99,7 @@ class CrearPublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
 # Detalle Publicacion
 class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Comentarios
-    paginate_by = 8
+    paginate_by = 10
     ordering = ["-fecha_creacion"]
 
 
