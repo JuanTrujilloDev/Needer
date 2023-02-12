@@ -116,7 +116,7 @@ DATABASES_AVAILABLE = {
 if 'test' in sys.argv:
     database = os.environ.get('DJANGO_DATABASE_TEST', 'sqlite')
 else:
-    database = 'main'
+    database = 'sqlite'
 
 DATABASES = {
     'default': DATABASES_AVAILABLE[database]

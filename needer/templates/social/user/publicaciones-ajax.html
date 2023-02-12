@@ -75,7 +75,7 @@
                 {% if publicacion.archivo %}
 
                 <div class="row justify-content-center w-100 container px-3 py-2">
-                   <img src="{{publicacion.archivo.url|safe}}" alt="">{% comment %}  {{publicacion.archivo|tipo_archivo|safe}} {% endcomment %}
+                    {{publicacion.archivo|tipo_archivo|safe}}
                 </div>
                             
                 {% endif %}

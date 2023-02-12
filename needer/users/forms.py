@@ -251,7 +251,7 @@ class  SignupCustomForm(SignupForm):
     numero1 = forms.CharField(max_length=10, label="#")
     numero2 = forms.CharField(max_length=10, label="-", validators=[numeros]) 
     zip = forms.CharField(max_length=9, label="Zip Code", validators=[numeros]) """
-    captcha = ReCaptchaField(widget=ReCaptchaV3, label="", required=True)
+
    
     
     # TODO NUMERO DE CELULAR
@@ -291,6 +291,7 @@ class  SignupCustomForm(SignupForm):
         if last_name == "":
             self.add_error('last_name', ("Este campo es obligatorio")) 
         else:
+            match = re.match('^[A-Z][a-zA-Z ]+$', last_name)
             if match:
                 pass
             else:
