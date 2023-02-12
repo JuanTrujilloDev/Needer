@@ -49,30 +49,30 @@ class ThreadFilterView (ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
                                                                             | Q(second_person__first_name__icontains = q))) 
                                    | (Q(second_person = self.request.user) & (Q(first_person__username__icontains = q) | Q(first_person__first_name__icontains= q) 
                                                                             | Q(first_person__first_name__icontains = q))) 
-                                    | ( (Q(first_person = self.request.user) | Q(second_person = self.request.user)) & Q(chatmessage_thread__message__icontains=q) )).order_by('-timestamp') 
+                                    | ( (Q(first_person = self.request.user) | Q(second_person = self.request.user)))).order_by('-timestamp') 
         
         #.split() se usa para cuando se pasa un parametro de solo espacio pueda ser evaluado
         # ' ', segundo parametro de get es para evitar errores en la consulta en caso de que no se pasen parametros 
-        q = self.request.GET.get('q',' ').strip()
+        q = self.request.GET.get('q',' ').strip().split('\n')
 
         if len(q) == 0:
             return None
 
             
-         
+        q = "".join(q)
         return Thread.objects.filter((Q(first_person= self.request.user) & (Q(second_person__username__icontains = q) | Q(second_person__first_name__icontains= q) 
                                                                             | Q(second_person__first_name__icontains = q))) 
                                    | (Q(second_person = self.request.user) & (Q(first_person__username__icontains = q) | Q(first_person__first_name__icontains= q) 
                                                                             | Q(first_person__first_name__icontains = q))) 
-                                    | ( (Q(first_person = self.request.user) | Q(second_person = self.request.user)) & Q(chatmessage_thread__message__icontains=q) )).order_by('-timestamp') 
+                                    | ( (Q(first_person = self.request.user) | Q(second_person = self.request.user)))).order_by('-timestamp') 
                                     #Si busca en todos los mensajes va a devolver todos los mensjes
                                     #hace que la consulta se mas lenta
                                     #& Q(chatmessage_thread__message__icontains=q)
                                     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        q = self.request.GET.get('q',' ').strip()
-        context['q'] = q
+        q = self.request.GET.get('q',' ').strip().split('\n')
+        context['q'] = "".join(q)
         return context
 
     
