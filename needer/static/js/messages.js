@@ -22,16 +22,19 @@ socket.onopen = async function(e){
         let message = input_message.val()
         let send_to = get_active_other_user_id()
         let thread_id = get_active_thread_id()
-
-        //Agregar que si el usuario no pertenece a la vista que no deje enviarlo
+        let request_user = $('.messages-wrapper').attr('request_user')
+      
 
         let data = {
             'message': message,
             'sent_by': USER_ID,
             'send_to': send_to,
-            'thread_id': thread_id
+            'thread_id': thread_id,
+            'request_user':request_user
         }
+       
         data = JSON.stringify(data)
+        
         socket.send(data)
         $(this)[0].reset()
     })

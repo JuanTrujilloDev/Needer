@@ -2,6 +2,7 @@ from django import template
 from chat.models import ChatMessage
 from django.utils import timezone
 from datetime import timedelta
+import base64
 
 
 register = template.Library()
@@ -38,6 +39,13 @@ def get_date(date):
 
     else:
         return time.strftime('%d/%B/%Y')
+
+def decode_messsage(msg):
+    msg = msg.encode('ascii')
+    msg = base64.b64decode(msg)
+    msg = msg.decode('ascii')
+
+    return msg
     
 
 
@@ -49,3 +57,4 @@ def get_date(date):
 register.filter('get_user', get_user)
 register.filter('get_last_message', get_last_message)
 register.filter('get_date', get_date)
+register.filter('decode_message', decode_messsage)
