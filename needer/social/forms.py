@@ -27,7 +27,7 @@ class CrearPublicacionForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data =  super().clean()
-        print(cleaned_data)
+      
         if not 'descripcion' in cleaned_data:
             cleaned_data['descripcion'] = ''
         else:
