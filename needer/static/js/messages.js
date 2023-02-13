@@ -44,13 +44,7 @@ socket.onmessage = async function(e){
     newMessage(message, sent_by_id, thread_id)
 }
 
-socket.onerror = async function(e){
-    console.log('error', e)
-}
 
-socket.onclose = async function(e){
-    console.log('close', e)
-}
 
 
 function newMessage(message, sent_by_id, thread_id) {
@@ -101,10 +95,9 @@ function newMessage(message, sent_by_id, thread_id) {
 
     let message_body = $('.messages-wrapper[chat-id="' + chat_id + '"] .msg_card_body')
 	message_body.append($(message_element))
-    message_body.animate({
-        scrollTop: $(document).height()
-    }, 100);
+    document.getElementById('scroll').scrollTop = 9999999;
 	input_message.val(null);
+    
 }
 
 

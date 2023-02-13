@@ -10,7 +10,6 @@ User = get_user_model()
 
 class ChatConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
-        """ print('connected', event) """
         user = self.scope['user']
         chat_room = f'user_chatroom_{user.id}'
         self.chat_room = chat_room
@@ -23,26 +22,18 @@ class ChatConsumer(AsyncConsumer):
         })
 
     async def websocket_receive(self, event):
-        """ print('receive', event) """
+
         received_data = json.loads(event['text'])
         msg = received_data.get('message')
         sent_by_id = received_data.get('sent_by')
         send_to_id = received_data.get('send_to')
         thread_id = received_data.get('thread_id')
 
-        if not msg:
-            print('Error:: empty message')
-            return False
+        if not msg:return False
 
         sent_by_user = await self.get_user_object(sent_by_id)
         send_to_user = await self.get_user_object(send_to_id)
         thread_obj = await self.get_thread(thread_id)
-        if not sent_by_user:
-            print('Error:: sent by user is incorrect')
-        if not send_to_user:
-            print('Error:: send to user is incorrect')
-        if not thread_obj:
-            print('Error:: Thread id is incorrect')
 
         await self.create_chat_message(thread_obj, sent_by_user, msg)
 
@@ -76,7 +67,6 @@ class ChatConsumer(AsyncConsumer):
         print('disconnect', event)
 
     async def chat_message(self, event):
-        print('chat_message', event)
         await self.send({
             'type': 'websocket.send',
             'text': event['text']
