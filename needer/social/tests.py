@@ -8,11 +8,9 @@ class TestPublicacionForm(TestCase):
     def test_crear_publicacion(self):
         """ Crear una publicacion de manera correcta """
         archivo = open('media/default-user.png', 'rb')
-        file = SimpleUploadedFile('default-user.png', content=archivo.read(),content_type='image/jpeg')
-        form = CrearPublicacionForm(data={'fields':
-                                          {'archivo':archivo}})
+        file = SimpleUploadedFile('default-user.png', content=archivo.read(), content_type='image/jpeg')
+        form = CrearPublicacionForm({'descripcion':'', 'nsfw':True}, {'archivo':file})
 
-        print(form.errors)
         self.assertTrue(form.is_valid())
 
 
