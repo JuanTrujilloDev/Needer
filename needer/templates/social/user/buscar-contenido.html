@@ -61,10 +61,10 @@ Needer
     
  
 
-    {% if users %}
+   
     <div class="container-fluid pb-4 mx-auto w-100">
     
-    
+        {% if users %}
         <!--Contenido de la busqueda usuario-->
         <div class="row d-flex container-fluid justify-content-center contenido align-middle col-lg-12 px-0 mx-auto">
 
@@ -79,11 +79,12 @@ Needer
             {% comment %} Componente de buscar usuario {% endcomment %}
             {% include 'social/user/componente-buscar-usuario.html' with object_list=users%}
         
-            {% endif %}
+            
 
             
 
         </div>
+        {% endif %}
 
         <!--TODO QUITAR EL IF CUANDO ESTE HECHO LA BUSQUEDA DE MARKETPLACE-->
         <div class="row d-flex container-fluid justify-content-center align-middle col-lg-12 mt-2 px-0 mx-auto">
@@ -146,9 +147,9 @@ Needer
         </div>
 
         <div class="row d-flex container-fluid justify-content-center align-middle col-lg-10 mt-2 px-0 mx-auto">
-            {% if object_list %}
+            {% if page_obj %}
 
-            {% include 'social/user/publicaciones-ajax.html' %}
+            {% include 'social/user/publicaciones-ajax-busqueda.html' %}
 
             {% endif %}
         </div>

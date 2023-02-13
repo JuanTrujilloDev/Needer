@@ -512,6 +512,7 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
         
             #TODO FILTRAR PRODUCTOS
             # context_data['productos'] 
+        context_data['query'] = query
         return context_data
 
 
@@ -520,12 +521,7 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
 
     def get_queryset(self):
         
-        # Si esta paginando que siga retornando los objetos
-        if "page" in self.request.get_full_path():
-            query = " "
-            return Publicacion.objects.filter(Q(descripcion__icontains=query) | Q(user__apodo__icontains=query) | Q(user__username__icontains=query) 
-                                                     | Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query) | 
-                                                     Q(user__apodo__icontains=query)).order_by("-fecha_creacion")
+
         
         
         # En caso contrario revisa la query desde  0
@@ -566,16 +562,12 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
 class BuscarUsuarioView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
     model = User
     template_name = "social/user/buscar-user.html"
-    paginate_by = 8
     ordering = "id"
 
     # get_Queryset Busqueda Usuario
     def get_queryset(self):
 
-        # Si esta paginando que siga retornando los objetos
-        if "page" in self.request.get_full_path():
-            query = " "
-            return User.objects.filter((Q(username__icontains=query ) | Q(apodo__icontains=query)) &  Q(is_active=True)).order_by("-date_joined")
+    
         
         
         # En caso contrario revisa la query desde  0
