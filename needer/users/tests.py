@@ -1,16 +1,18 @@
 from django.test import TestCase, Client
 from .forms import SignupCustomForm
 from .models import Pais, User
-from http import HTTPStatus
 from django.urls import reverse
 from django.conf import settings
 from allauth.account.models import EmailAddress
+from unittest.mock import patch
+from captcha.client import RecaptchaResponse
 
 class TestUserForm(TestCase):
-
-    def test_registro_plataforma(self): 
+    @patch("captcha.fields.client.submit")
+    def test_registro_plataforma(self, mocked_submit): 
         """ R-1 Registro en la plataforma de forma correcta """
         Pais.objects.create(nombre='Colombia')
+        mocked_submit.return_value = RecaptchaResponse(is_valid=True)
         form = SignupCustomForm(data={
             'username':'Juan',
             'email':'puentesjs903@gmail.com',
@@ -19,13 +21,17 @@ class TestUserForm(TestCase):
             'password1': 'sebas_111@',
             'password2': 'sebas_111@',
             'pais':      'Colombia',
-            'num_documento':'1075316291'
+            'num_documento':'1075316291',
+            'captcha': 'PASSED'
         })    
         self.assertTrue(form.is_valid())
 
-    def test_registro_plataforma_error_documento(self):
+
+    @patch("captcha.fields.client.submit")
+    def test_registro_plataforma_error_documento(self, mocked_submit):
         """ R-2 Registro en la plataforma con error en el documento vacio"""
         Pais.objects.create(nombre='Colombia')
+        mocked_submit.return_value = RecaptchaResponse(is_valid=True)
         form = SignupCustomForm(data={
             'username':'Juan',
             'email':'puentesjs903@gmail.com',
@@ -34,16 +40,19 @@ class TestUserForm(TestCase):
             'password1': 'sebas_111@',
             'password2': 'sebas_111@',
             'pais':      'Colombia',
-            'num_documento': 'aaaaa9810'
+            'num_documento': 'aaaaa9810',
+            'captcha': 'PASSED'
         })    
 
         self.assertEqual(
             form.errors['num_documento'],['Error en el numero de documento debe contener solo numeros (De 6 - 10 numeros).']
             )
-        
-    def test_registro_plataforma_error_email(self):
+
+    @patch("captcha.fields.client.submit")    
+    def test_registro_plataforma_error_email(self, mocked_submit):
         """ R-3 Error con el email sintaxis no valida """
         Pais.objects.create(nombre='Colombia')
+        mocked_submit.return_value = RecaptchaResponse(is_valid=True)
         form = SignupCustomForm(data={
             'username':'Juan',
             'email':'puentesjs903@gmail',
@@ -52,15 +61,18 @@ class TestUserForm(TestCase):
             'password1': 'sebas_111@',
             'password2': 'sebas_111@',
             'pais':      'Colombia',
-            'num_documento': '1075316291'
+            'num_documento': '1075316291',
+            'captcha': 'PASSED'
         })  
         self.assertEqual(
             form.errors['email'],['Introduzca una dirección de correo electrónico válida.']
             )
-        
-    def test_registro_plataforma_error_password(self):
+
+    @patch("captcha.fields.client.submit")    
+    def test_registro_plataforma_error_password(self, mocked_submit):
         """ R-4 Error con la contraseña """
         Pais.objects.create(nombre='Colombia')
+        mocked_submit.return_value = RecaptchaResponse(is_valid=True)
         form = SignupCustomForm(data={
             'username':'Juan',
             'email':'puentesjs903@gmail.com',
@@ -69,15 +81,18 @@ class TestUserForm(TestCase):
             'password1': '123',
             'password2': '123',
             'pais':      'Colombia',
-            'num_documento': '1075316291'
+            'num_documento': '1075316291',
+            'captcha': 'PASSED'
         })  
         self.assertFalse(
             form.is_valid()
         )
 
-    def test_registro_plataforma_error_username(self):
+    @patch("captcha.fields.client.submit")   
+    def test_registro_plataforma_error_username(self, mocked_submit):
         """ R-5 Error con el usuario """
         Pais.objects.create(nombre='Colombia')
+        mocked_submit.return_value = RecaptchaResponse(is_valid=True)
         form = SignupCustomForm(data={
             'username':'',
             'email':'puentesjs903@gmail.com',
@@ -86,15 +101,18 @@ class TestUserForm(TestCase):
             'password1': 'sebas_@1998',
             'password2': 'sebas_@1998',
             'pais':      'Colombia',
-            'num_documento': '1075316291'
+            'num_documento': '1075316291',
+            'captcha': 'PASSED'
         }) 
         self.assertEqual(
             form.errors['username'], ['Este campo es obligatorio.']
         )
 
-    def test_registro_plataforma_error_first_name(self):
+    @patch("captcha.fields.client.submit")   
+    def test_registro_plataforma_error_first_name(self, mocked_submit):
         """ R-6 Error con el first_name """
         Pais.objects.create(nombre='Colombia')
+        mocked_submit.return_value = RecaptchaResponse(is_valid=True)
         form = SignupCustomForm(data={
             'username':'juan',
             'email':'puentesjs903@gmail.com',
@@ -103,15 +121,18 @@ class TestUserForm(TestCase):
             'password1': 'sebas_@1998',
             'password2': 'sebas_@1998',
             'pais':      'Colombia',
-            'num_documento': '1075316291'
+            'num_documento': '1075316291',
+            'captcha': 'PASSED'
         }) 
         self.assertEqual(
             form.errors['first_name'], ['Este campo es obligatorio']
         )
 
-    def test_registro_plataforma_error_last_name(self):
+    @patch("captcha.fields.client.submit")   
+    def test_registro_plataforma_error_last_name(self, mocked_submit):
         """ R-7 Error con el last_name """
         Pais.objects.create(nombre='Colombia')
+        mocked_submit.return_value = RecaptchaResponse(is_valid=True)
         form = SignupCustomForm(data={
             'username':'juan',
             'email':'puentesjs903@gmail.com',
@@ -120,15 +141,18 @@ class TestUserForm(TestCase):
             'password1': 'sebas_@1998',
             'password2': 'sebas_@1998',
             'pais':      'Colombia',
-            'num_documento': '1075316291'
+            'num_documento': '1075316291',
+            'captcha': 'PASSED'
         }) 
         self.assertEqual(
             form.errors['last_name'], ['Este campo es obligatorio']
         )
 
-    def test_registro_plataforma_error_pais(self):
+    @patch("captcha.fields.client.submit")   
+    def test_registro_plataforma_error_pais(self, mocked_submit):
         """ R-8 Error con el pais """
         Pais.objects.create(nombre='Colombia')
+        mocked_submit.return_value = RecaptchaResponse(is_valid=True)
         form = SignupCustomForm(data={
             'username':'juan',
             'email':'puentesjs903@gmail.com',
@@ -137,15 +161,18 @@ class TestUserForm(TestCase):
             'password1': 'sebas_@1998',
             'password2': 'sebas_@1998',
             'pais':      'Brazil',
-            'num_documento': '1075316291'
+            'num_documento': '1075316291',
+            'captcha': 'PASSED'
         }) 
         self.assertEqual(
             form.errors['pais'], ['El pais no se encuentra en la lista']
         )
 
-    def test_registro_plataforma_datos_duplicados(self):
+    @patch("captcha.fields.client.submit")   
+    def test_registro_plataforma_datos_duplicados(self, mocked_submit):
         """ R-9 Datos duplicados """
         pais = Pais.objects.create(nombre='Colombia')
+        mocked_submit.return_value = RecaptchaResponse(is_valid=True)
         User.objects.create(
             username='juan',
             email='puentesjs903@gmail.com',
@@ -163,10 +190,11 @@ class TestUserForm(TestCase):
             'password1': 'sebas_@1998',
             'password2': 'sebas_@1998',
             'pais':      'Colombia',
-            'num_documento': '1075316291'
+            'num_documento': '1075316291',
+            'captcha': 'PASSED'
         }) 
         self.assertFalse(form.is_valid())
-
+    
     def test_registro_plataforma_sin_datos(self):
         """ R-10 Se envia un formulario vacio """
 
