@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from main.utils import ExtendsInnerContentMixin
 from django.shortcuts import redirect
@@ -19,16 +19,29 @@ class ThreadListView (ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
     paginate_by = 20
     template_name = 'chat/messages.html'
 
+    # TODO Listar solo los elementos que el timestamp es mayor a closed by
+    # TODO Traer threads que solo tengan mensajes
+
 
     def get_queryset(self):
         return Thread.objects.by_user(user= self.request.user).order_by('-timestamp')
 
 
 # TODO VISTA PARA BORRAR LOS THREADS
+# PREVENT GET METHOD
+class ThreadDeleteView(LoginRequiredMixin, UpdateView):
+    # Si closed_by tal user es menor a timestamp al usuario le aparecerian los mensajes despues del timestamp.
+    # Si ambos son mayores al timestamp se eliminan todos los mensajes y el thread.
+    # TODO en los mensajes solo traer dependiento del closed_by y timestamp
+    # TODO en el filterview si el objeto existe, si que lo traiga
+    pass
 
 
 # TODO VISTA PARA AGREGAR NUEVO THREAD
+# TODO si el thread ya existe, que redirija a la persona
+class ThreadCreateView(ExtendsInnerContentMixin, LoginRequiredMixin, CreateView):
 
+    pass
 
 
 class ThreadFilterView (ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
@@ -124,8 +137,7 @@ class ThreadFilterView (ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
 # TODO meterle seguridad a los chats
 # LIST VIEW
 class ThreadDetailView (ExtendsInnerContentMixin, LoginRequiredMixin, DetailView):
-
-    # Paginate by 20
+    # TODO Filtro segun el closed_by
     model = Thread
     template_name = 'chat/thread.html'
 
@@ -138,7 +150,7 @@ class ThreadDetailView (ExtendsInnerContentMixin, LoginRequiredMixin, DetailView
 
 
 
-    #POST AJAX 
+    
 
 
 

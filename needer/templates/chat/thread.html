@@ -83,7 +83,7 @@ Needer | Chat
     <!-- Users box-->
     <div class="col-12 px-0 overflow-auto pb-2 userbox msg_card_body" id="scroll">
         {% comment %} los mensajes se ponene en orden de la fecha {% endcomment %}
-
+        <!--TODO TEMPLATETAG-->
         {% for thread in object.chatmessage_thread.all %}
         <!-- Chats -->
         {% if thread.user == user %}

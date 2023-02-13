@@ -13,3 +13,6 @@ def message_create(sender, created, instance, **kwargs):
 
 
 # TODO AGREGAR QUE CUANDO SE ACTUALIZA LO DE BORRAR SE BORREN LOS MENSAJES
+# TODO Revisar que usuario es el first o second
+# TODO si el usuario crea un mensaje nuevo y la fecha de creacion es mayor a closed_by que el closed_by quede nulo
+# TODO si el closed_by de ambos es mayor al timestamp se elimina el thread y todos los mensajes

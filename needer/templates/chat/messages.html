@@ -43,7 +43,15 @@ Needer | Chat
 
               <!-- Users box-->
         <div class="col-12 px-0  pb-2 userbox infinite-container">
-
+           {% if messages %}
+            <ul class="messages list-unstyled text-center my-auto col-lg-8 mx-auto">
+                {% for message in messages %}
+            <div {% if message.tags %} class="mb-3 alert my-auto alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+                {% endfor %}
+            </ul>
+            
+            {% endif %}
+        
                 {% if page_obj|length == 0 %}
 
                 <div class="container-fluid">
