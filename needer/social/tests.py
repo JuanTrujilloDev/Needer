@@ -1,7 +1,7 @@
 from django.test import TestCase
-from .forms import CrearPublicacionForm
+from .forms import CrearPublicacionForm, CrearComentarios
 from django.core.files.uploadedfile import SimpleUploadedFile
-from .models import Publicacion
+from .models import Publicacion, Comentarios
 from django.core.files import File
 
 class TestPublicacionForm(TestCase):
@@ -32,9 +32,15 @@ class TestPublicacionForm(TestCase):
 
 
 
-
-        #self.assertEqual(
-        #    form.errors['__all__'], ["Debes agregar una descripcion o un archivo a la publicacion."]
-        #)
+class TestComentarioForm(TestCase):
+    def test_comentar_publicacion(self):
+        """ C-1 crear comentario"""
+        form = CrearComentarios(data={'comentario':'Pruebas de testeo'})
+        self.assertTrue(form.is_valid())
+        
+    def test_comentar_publicacion_vacia(self):
+        """ C-2 comentario vacio """
+        form = CrearComentarios(data={'comentario':''})
+        self.assertFalse(form.is_valid())
         
     
