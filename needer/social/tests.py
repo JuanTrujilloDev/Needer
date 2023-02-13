@@ -9,7 +9,7 @@ class TestPublicacionForm(TestCase):
         """ Crear una publicacion de manera correcta """
         archivo = open('media/default-user.png', 'rb')
         file = SimpleUploadedFile('default-user.png', content=archivo.read(), content_type='image/jpeg')
-        form = CrearPublicacionForm({'descripcion':'', 'nsfw':True}, {'archivo':file})
+        form = CrearPublicacionForm({'descripcion':'Descripcion', 'nsfw':True}, {'archivo':file})
 
         self.assertTrue(form.is_valid())
 
@@ -21,7 +21,11 @@ class TestPublicacionForm(TestCase):
                                           'NSFW':False})
         self.assertTrue(form.is_valid())
 
-    """ Falta la 4 """
+    def test_crear_publicacion_sin_descripcion(self):
+        archivo = open('media/default-user.png', 'rb')
+        file = SimpleUploadedFile('default-user.png', content=archivo.read(), content_type='image/jpeg')
+        form = CrearPublicacionForm({'descripcion':'', 'nsfw':True},{'archivo':file,})
+        self.assertTrue(form.is_valid())
 
     def test_crear_publicacion_sin_datos(self):
         """ Crear una publicacion de manera correcta """

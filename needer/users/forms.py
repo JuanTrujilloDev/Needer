@@ -543,6 +543,7 @@ class UpdateUserForm(forms.ModelForm):
         permite especificar un pais""" 
 
         pais = self.cleaned_data['pais']
+        
         try:
             paises = Pais.objects.get(nombre = pais)
         except:
@@ -597,7 +598,7 @@ class UpdateUserForm(forms.ModelForm):
             
 
             # Regex para Username
-            match = re.match('^[A-Za-z][A-Za-z0-9 ]{4,25}$', apodo)
+            match = re.match('^[A-Za-z][A-Za-z0-9 ]{3,25}$', apodo)
 
             if match:
                     return apodo
