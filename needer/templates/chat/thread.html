@@ -120,7 +120,7 @@ Needer | Chat
             <!-- Mensajes -->
             <div class="col-9 mx-2 rounded-4 py-0 justify-content-start mensajes">
                 <p class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 my-0 py-0 text-break text-start nombreuser">
-                    {{thread.message}}
+                    {{thread.message|decode_message}}
                 </p>
             </div>
             
