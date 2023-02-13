@@ -1,7 +1,7 @@
 {% load static %}
 {% load pub_extras %}
 <div class="infinite-container px-0">
-    {% for publicacion in object_list %}
+    {% for publicacion in page_obj %}
     <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded-4 publicacion-shadow d-flex justify-content-around align-items-center mt-5 publicacion infinite-item" >
 
         <div class="col-12 container d-flex align-items-center justify-content-start mb-2">
@@ -75,7 +75,7 @@
                 {% if publicacion.archivo %}
 
                 <div class="row justify-content-center w-100 container px-3 py-2">
-                    {{publicacion.archivo|tipo_archivo|safe}}
+                   <img src="{{publicacion.archivo.url|safe}}" alt="">{% comment %}  {{publicacion.archivo|tipo_archivo|safe}} {% endcomment %}
                 </div>
                             
                 {% endif %}
@@ -123,7 +123,7 @@
     {% endfor %}
 </div>
     {% if page_obj.has_next %}
-    <a class="infinite-more-link" href="{% if query %}?q={{query}}&{% endif %}?page={{ page_obj.next_page_number }}" style="display:none;">More</a>
+    <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}&{{request.GET.urlencode}}" style="display:none;">More</a>
 
     {% else %}
     <a class="infinite-more-link" href="?page=0" style="display:none;">More</a>

@@ -18,7 +18,7 @@ Needer
 {% block inner-content %}
 <!--Contenido de adentro-->
 
-<div class="container-fluid mx-md-5" id="contenido">
+<div class="container-fluid mx-md-5 row" id="contenido">
 
     {% comment %} Titulo {% endcomment %}
     <div class="col-5 d-flex justify-content-start mx-1 align-items-end px-0">
@@ -39,32 +39,20 @@ Needer
         {% include 'social/user/componente-buscar-usuario.html' with object_list=object_list  %}
     </div>
 
-    {% if page_obj.has_next %}
-    <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}" style="display:none;">More</a>
-    {% else %}
-        <a class="infinite-more-link" href="?page=0" style="display:none;">More</a>
-    {% endif %}
 
-    <div class="page-load-status mt-3">
-    {% if page_obj.has_next %}
-        <h4 class="infinite-scroll-request col-12 text-center">
-            Cargando...
-        </h4>
-    {% endif %}
-    <h3 class="my-3 infinite-scroll-error col-12 text-center text-muted">No hay mas usuarios por cargar.</h3>
-    </div>
     {% else %}
     <!--TODO NO SE ENCONTRARON USUARIOS-->
     <h1>No se encontraron usuarios</h1>
     {% endif %}
+
+</div>
 
 
 {% endblock inner-content %}
 
 {% block script %}
 
-<script src="https://unpkg.com/infinite-scroll@4.0.1/dist/infinite-scroll.pkgd.min.js"></script>
-<script src="{% static 'js/infinite-search.js' %}"></script>
+
 {% endblock script %}
 
 

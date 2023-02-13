@@ -23,7 +23,7 @@ Needer | Chat
 {% endif %}
 <div class="row h-100 ms-0 me-0 overflow-hidden">
 
-            <div class="col-12 d-flex px-0 justify-content-around border-bottom">
+        <div class="col-12 d-flex px-0 justify-content-around border-bottom">
 
             <div class="col-6 pt-2 mb-3 d-flex align-items-center mensajereb">
                 <h3 class="mb-0 fw-bold my-auto text-muted">Tus Chats</h3>
@@ -39,12 +39,12 @@ Needer | Chat
             </div>
 
 
-            </div>
+        </div>
 
               <!-- Users box-->
-            <div class="col-12 px-0  pb-2 userbox infinite-container">
+        <div class="col-12 px-0  pb-2 userbox infinite-container">
 
-                {% if object_list|length == 0 %}
+                {% if page_obj|length == 0 %}
 
                 <div class="container-fluid">
                     No tienes chats creados, crea uno
@@ -52,7 +52,7 @@ Needer | Chat
 
                 {% else %}
 
-                {% for thread in  object_list %}
+                {% for thread in  page_obj %}
 
                 {% with person=request.user|get_user:thread%}
                   <!-- Chats -->
@@ -163,7 +163,9 @@ Needer | Chat
                         Cargando...
                     </h3>
                     {% endif %}
-            </div>
+                </div>
+
+        </div>
 </div>
 {% endblock inner-content %}
 

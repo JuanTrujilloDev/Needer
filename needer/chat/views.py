@@ -6,6 +6,8 @@ from main.utils import ExtendsInnerContentMixin
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.db.models import Q
+import urllib
+from django.contrib import messages
 
 # Create your views here.
 from chat.models import Thread, ChatMessage
@@ -31,8 +33,42 @@ class ThreadListView (ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
 
 class ThreadFilterView (ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
     model = Thread
-    paginate_by = 12
+    paginate_by = 20
     template_name = 'chat/filter.html'
+
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        # Trae el query a realizar
+        query = self.request.GET.get('q')
+        
+        # Si no trae el query retornar directamente el context_data
+        if not query:
+            
+            return context_data
+        
+        # Traducir el query url a formato entendible
+        query = urllib.parse.unquote(query)
+        query = query.lower()
+        special_characters = '"!@#$%^&*()-+?_=,<>/"'
+        
+        # No permitir caracteres especiales
+        if any(c in special_characters for c in query) or len(query.replace(" ", "")) < 1:
+          messages.add_message(self.request, 40, 'Error en la busqueda.')
+          return context_data
+          # En caso de haber caracteres especiales en el get_queryset arroja error.
+          # messages.error(self.request, 'No se permiten caracteres especiales en la busqueda.')
+
+        else: 
+            # En caso contrario trae los objetos
+            #TODO ORDERNAR POR NUMERO DE SEGUIDORES
+            query = query.strip()
+        
+            #TODO FILTRAR PRODUCTOS
+            # context_data['productos'] 
+        context_data['q'] = query
+        return context_data
+
 
     def get_queryset(self):
         """Devuelve todos los objetos de la consulta de filtrado
@@ -41,39 +77,45 @@ class ThreadFilterView (ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
 
         Returns:
             object: objetos que contene el parametro q
-        """
-        if "page" in self.request.get_full_path():
-            print("True")
-            q = " "
-            return Thread.objects.filter((Q(first_person= self.request.user) & (Q(second_person__username__icontains = q) | Q(second_person__first_name__icontains= q) 
-                                                                            | Q(second_person__first_name__icontains = q))) 
-                                   | (Q(second_person = self.request.user) & (Q(first_person__username__icontains = q) | Q(first_person__first_name__icontains= q) 
-                                                                            | Q(first_person__first_name__icontains = q))) 
-                                    | ( (Q(first_person = self.request.user) | Q(second_person = self.request.user)))).order_by('-timestamp') 
+        """ 
         
         #.split() se usa para cuando se pasa un parametro de solo espacio pueda ser evaluado
         # ' ', segundo parametro de get es para evitar errores en la consulta en caso de que no se pasen parametros 
-        q = self.request.GET.get('q',' ').strip().split('\n')
 
-        if len(q) == 0:
-            return None
+        q = self.request.GET.get('q')
 
-            
-        q = "".join(q)
-        return Thread.objects.filter((Q(first_person= self.request.user) & (Q(second_person__username__icontains = q) | Q(second_person__first_name__icontains= q) 
+        if q:
+
+           
+            q = urllib.parse.unquote(q.lower())
+            q = q.lower()
+            special_characters = '"!@#$%^&*()-+?_=,<>/"'
+
+            # Si la busqueda son solo espacios arrojaria error
+            if len(q.replace(" ", "")) < 1:
+                messages.add_message(self.request, 40, 'Busqueda vacia.')
+                return []
+
+            # Si tiene contenido
+            else:
+                # No permitir caracteres especiales
+                if any(c in special_characters for c in q):
+                    messages.add_message(self.request, 40, 'No se permiten caracteres especiales en la busqueda.')
+                    return []
+                else: 
+                    return Thread.objects.filter((Q(first_person= self.request.user) & (Q(second_person__username__icontains = q) | Q(second_person__first_name__icontains= q) 
                                                                             | Q(second_person__first_name__icontains = q))) 
                                    | (Q(second_person = self.request.user) & (Q(first_person__username__icontains = q) | Q(first_person__first_name__icontains= q) 
                                                                             | Q(first_person__first_name__icontains = q))) 
-                                    | ( (Q(first_person = self.request.user) | Q(second_person = self.request.user)))).order_by('-timestamp') 
-                                    #Si busca en todos los mensajes va a devolver todos los mensjes
-                                    #hace que la consulta se mas lenta
-                                    #& Q(chatmessage_thread__message__icontains=q)
+                                    ).order_by('-timestamp') 
+                    
+
+        else:
+            
+            return []
+
                                     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        q = self.request.GET.get('q',' ').strip().split('\n')
-        context['q'] = "".join(q)
-        return context
+    
 
     
 
