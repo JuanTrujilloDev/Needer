@@ -6,8 +6,11 @@ from main.utils import ExtendsInnerContentMixin
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.db.models import Q
+from users.models import User
 import urllib
 from django.contrib import messages
+from .forms import ThreadForm
+from django.utils.safestring import mark_safe
 
 # Create your views here.
 from chat.models import Thread, ChatMessage
@@ -37,11 +40,48 @@ class ThreadDeleteView(LoginRequiredMixin, UpdateView):
     pass
 
 
-# TODO VISTA PARA AGREGAR NUEVO THREAD
-# TODO si el thread ya existe, que redirija a la persona
+# VISTA PARA AGREGAR NUEVO THREAD
 class ThreadCreateView(ExtendsInnerContentMixin, LoginRequiredMixin, CreateView):
+    model = Thread
+    form_class = ThreadForm
+    template_name  = 'chat/thread-crear.html'
 
-    pass
+    def form_valid(self, form):
+
+        cleaned_data = form.cleaned_data
+        user = cleaned_data['second_person']
+        thread = Thread.objects.filter((Q(first_person = user) & (Q(second_person = self.request.user))) | (Q(first_person = self.request.user) & (Q(second_person = user))))
+        if thread:
+            # AGREGAR LINK PARA IR AL DETALLE
+            link_filtrar = reverse('chat')
+            messages.add_message(self.request, 40, mark_safe(f'Error, ya hay un chat con esta persona <a href="{thread[0].get_absolute_url()}">AQUI</a>. Si no lo encuentras, <a href="{link_filtrar}"> filtralo entre tus chats </a>'))
+            return super().form_invalid(form)
+
+        self.object = form.save(commit = False)
+        self.object.first_person = self.request.user
+        self.object.save()
+        return super().form_valid(form)
+
+    def get_success_url(self, **kwargs) -> str:
+        return reverse('thread', kwargs={'pk':self.object.pk})
+        
+
+
+
+        
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        seguidores = self.request.user.get_user_followers()
+        seguidos = self.request.user.get_user_followed()
+        users = list(dict.fromkeys(seguidores + seguidos))
+       
+        all_users = User.objects.all().exclude(id=self.request.user.id)
+        all_users = [ user for user in all_users.exclude(pk__in=[user.pk  for user in users])]
+       
+        context['users'] = users + all_users
+
+        return context
 
 
 class ThreadFilterView (ExtendsInnerContentMixin, LoginRequiredMixin, ListView):

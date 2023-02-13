@@ -23,6 +23,8 @@ socket.onopen = async function(e){
         let send_to = get_active_other_user_id()
         let thread_id = get_active_thread_id()
 
+        //Agregar que si el usuario no pertenece a la vista que no deje enviarlo
+
         let data = {
             'message': message,
             'sent_by': USER_ID,

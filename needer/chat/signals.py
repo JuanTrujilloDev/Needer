@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from django.conf import settings
 from .models import ChatMessage, Thread
 
+# TODO seguridad de mensajes si el usuario pertenece al thread
 
 @receiver(post_save, sender= ChatMessage)
 def message_create(sender, created, instance, **kwargs):

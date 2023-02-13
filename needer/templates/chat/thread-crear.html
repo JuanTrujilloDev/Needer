@@ -1,0 +1,42 @@
+
+{% extends 'main/user/content.html' %}
+{% load static %}
+{% load pub_extras %}
+
+
+{% block css %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/thread.css'%} ">
+{% endblock css %}
+
+
+{% block headtitle %}
+Needer | Chat
+{% endblock headtitle %}
+
+{% block inner-content %}
+<div class="container col-10 my-auto mx-auto h-100 d-flex align-items-center align-middle">
+    
+   
+    
+    <form class="container box-shadow rounded-3 py-4 my-auto mx-auto" method="post" action="{% url 'chat-create' %}">
+        <h1>Crear un nuevo chat</h1>
+        {% csrf_token %}
+        
+        <datalist name="second_person"  id="id_second_person">
+        {% for data in users %}
+        <option value="{{data.username}}"></option>
+        {% endfor %}
+    </datalist>
+
+    <div class="col-lg-6 col-sm-12" >
+        
+    <label class="" for="id_second_person">Persona:</label> 
+    <input type="text" name="second_person" maxlength="50" list="id_second_person" class="form-control" id="id_second_person" placeholder="Nombre de usuario de la persona">
+    {{form.second_person.errors}}
+    </div>
+    <button class="btn btn-primary rounded-pill form-control" type="submit">Enviar</button>
+    </form>
+</div>
+{% endblock inner-content %}
