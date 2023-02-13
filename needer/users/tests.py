@@ -1,7 +1,10 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from .forms import SignupCustomForm
 from .models import Pais, User
 from http import HTTPStatus
+from django.urls import reverse
+from django.conf import settings
+from allauth.account.models import EmailAddress
 
 class TestUserForm(TestCase):
 
@@ -181,3 +184,44 @@ class TestUserForm(TestCase):
             form.is_valid()
         )
 
+
+
+class TestUserLogin(TestCase):
+    def setUp(self):
+        self.credenciales = {
+            'login':'puentesjs903@gmail.com',
+            'password':'sebas_1998',
+        }
+        self.client = Client()
+        self.user = User.objects.create_user(email='puentesjs903@gmail.com', password='sebas_1998', username='juan')
+        self.email = EmailAddress.objects.create(user=self.user, email='puentesjs903@gmail.com', verified=True, primary=True)
+        return super().setUp()
+
+    def test_autenticacion_usuario(self):
+        """  A- 1 Ingreso a la plataforma """
+        response = self.client.post(reverse('account_login'),self.credenciales)
+        self.assertRedirects(response, settings.LOGIN_REDIRECT_URL, fetch_redirect_response=False) 
+
+    def test_autenticacion_usuario_sin_cuenta_activa(self):
+        """ A- 2  Autenticacion del usuario sin tener una cuenta activa """
+        response = self.client.post(reverse('account_login'),{"login":"no_estoy_registrado@gmail.com","password":"wrong"})
+        validador_error = 'El correo electrónico y/o la contraseña que se especificaron no son correctos.'
+        assert validador_error in response.content.decode('utf-8')
+
+    def test_autenticacion_usuario_error_password(self):
+        """ A-3 Error en la contraseña del usuario """
+        response = self.client.post(reverse('account_login'),{'login':'puentesjs903@gmail.com', 'password':'a'})
+        validador_error = 'El correo electrónico y/o la contraseña que se especificaron no son correctos.'
+        assert validador_error in response.content.decode('utf-8')
+    
+    def test_autenticacion_usuario_error_email(self):
+        """ A-4  Error en el email del usuario"""
+        response = self.client.post(reverse('account_login'),{'login':'puentesjs@gmail', 'password':'sebas_1998'})
+        validador_error = 'Introduzca una dirección de correo electrónico válida.'
+        assert validador_error in response.content.decode('utf-8')
+
+    def test_autenticacion_usuario_datos_vacios(self):
+        """ A-5 Intento de autenticacion con datos vacios"""
+        response = self.client.post(reverse('account_login'),{'login':'', 'password':''})
+        validador_error = 'Este campo es obligatorio.'  
+        assert validador_error in response.content.decode('utf-8')
