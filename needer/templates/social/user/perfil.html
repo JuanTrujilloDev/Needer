@@ -117,6 +117,7 @@ Needer | {{object.username}}
 
                 
                 {% if not object_list %}
+                {% if object == request.user %}
             <div class="col-12 text-center rounded shadow">
                 <h1 class="mb-2">Aun no tienes publicaciones!</h1>
                 <h2 class="mb-2 text-muted">
@@ -129,6 +130,20 @@ Needer | {{object.username}}
                     width="50%"
                 >
             </div>
+            {% else %}
+            <div class="col-12 text-center rounded shadow">
+                <h1 class="mb-2">El usuario aun no tiene publicaciones!</h1>
+                <h2 class="mb-2 text-muted">
+                    <small>Siguelo para estar al tanto</small>
+                </h2>
+                <img
+                    class="mt-4 mb-3"
+                    src="{% static 'img/publicacion.svg'%}"
+                    class="img-fluid"
+                    width="80%"
+                >
+            </div>
+            {% endif %}
             {% else %}
          
             {% comment %} Visualizacion de publicaciones {% endcomment %}

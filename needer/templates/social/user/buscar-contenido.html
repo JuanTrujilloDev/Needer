@@ -61,7 +61,7 @@ Needer
     
  
 
-   
+    {% if users or page_obj %}
     <div class="container-fluid pb-4 mx-auto w-100">
     
         {% if users %}
@@ -86,6 +86,7 @@ Needer
         </div>
         {% endif %}
 
+        
         <!--TODO QUITAR EL IF CUANDO ESTE HECHO LA BUSQUEDA DE MARKETPLACE-->
         <div class="row d-flex container-fluid justify-content-center align-middle col-lg-12 mt-2 px-0 mx-auto">
 
@@ -145,6 +146,7 @@ Needer
                 </div>
             </div>
         </div>
+        
 
         <div class="row d-flex container-fluid justify-content-center align-middle col-lg-10 mt-2 px-0 mx-auto">
             {% if page_obj %}
@@ -155,6 +157,7 @@ Needer
         </div>
 
     </div>
+    {% endif %}
 </div>
     {% endblock inner-content %}
 
