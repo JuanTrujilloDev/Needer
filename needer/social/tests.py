@@ -21,11 +21,19 @@ class TestPublicacionForm(TestCase):
                                           'NSFW':False})
         self.assertTrue(form.is_valid())
 
+    def test_crear_publicacion_error_archivo(self):
+        archivo = open('media/scraper.py', 'rb')
+        file = SimpleUploadedFile('scraper.py', content=archivo.read())
+        form = CrearPublicacionForm({'descripcion':'', 'nsfw':True},{'archivo':file})
+        self.assertEqual(form.errors['archivo'],['Solo se permiten Imagenes, Videos o Audios.'])
+
+
     def test_crear_publicacion_sin_descripcion(self):
         archivo = open('media/default-user.png', 'rb')
-        file = SimpleUploadedFile('default-user.png', content=archivo.read(), content_type='image/jpeg')
-        form = CrearPublicacionForm({'descripcion':'', 'nsfw':True},{'archivo':file,})
+        file = SimpleUploadedFile('default-user.png', content=archivo.read(),content_type='image/jpeg')
+        form = CrearPublicacionForm({'descripcion':'', 'nsfw':True},{'archivo':file})
         self.assertTrue(form.is_valid())
+
 
     def test_crear_publicacion_sin_datos(self):
         """ Crear una publicacion de manera correcta """
