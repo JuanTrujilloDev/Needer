@@ -35,7 +35,7 @@ Needer | Chat
                 <form method="GET" class="d-flex border-end pe-2 align-items-center" action="{% url 'thread-filter' %}">
                 <input maxlength="50" required minlength="1" type="text" class="form-control" id="search_form" name="q" placeholder="Buscar Chat ...">
                 </form>
-                <h4 class="py-0 my-0 mx-2 text-muted"><i class="bi bi-plus-circle"></i></h4>
+                <h4 class="py-0 my-0 mx-2 text-muted"><a class="text-black fw-bold" href="{% url 'chat-create' %}"><i class="bi bi-plus-circle"></i></a></h4>
             </div>
 
 
@@ -90,8 +90,9 @@ Needer | Chat
                         <!--Datos-->
                         <div class="col-2 col-md-2 py-0 d-none d-lg-block flex-row d-md-block d-xl-block justify-content-start">
                             <h6 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape text-truncate">
-                                <a  href="{{person.get_absolute_url}}" target="_blank" class="text-decoration-none text-primary">
-                                    {{person.first_name}} {{person.last_name}}
+                                <a  href="{{person.get_absolute_url}}" target="_blank" class="text-decoration-none text-primary"> 
+                                  {% if person.first_name or person.last_name %}  {{person.first_name}} {{person.last_name}}
+                                  {% else %} {{person.username}} {% endif %}
                                 </a>
                             </h6>
                             <h6 class="mb-0   mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser text-truncate">

@@ -27,23 +27,29 @@ Needer | Chat
     {{ thread.first_person.id }}
 {% endif %}
 " request_user="{{request.user.id}}" >
-    <div class="col-12 d-flex px-0 justify-content-start border-bottom info">
-        <div class="mx-2 d-flex justify-content-center align-items-center">
-            <a href="{% url 'chat' %}"><i class="bi bi-arrow-left fs-1"></i></a>
-        </div>
-        <div class="col-4 pt-2 py-2 d-flex justify-content-end align-items-center">
-            <a href="#">
+    <div class="row d-flex align-middle mb-2 contenido-arriba">
+        <h1 class="text-center text-primary d-flex flex-row w-100 align-middle fw-bold mx-auto col-12 border-bottom">
+            <strong class="float-start text-start align-middle my-auto me-auto">
+                <a class="float-left text-start align-middle d-flex my-auto col" href="{% url 'chat' %}">
+                    <svg class="float-left text-start w-auto align-middle d-flex my-auto" width="52" height="30" viewBox="0 0 58 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="7" y1="16.484" x2="17.5515" y2="5.93249" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                        <line x1="7.07107" y1="17.9325" x2="17.6226" y2="28.484" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                        <line x1="7.01097" y1="16.9435" x2="52.7975" y2="17.0441" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                        </svg>
+                </a></strong> 
+            <strong class="me-auto row">
+            <a href="#" class="d-flex align-middle justify-content-center" style="color:#424242;">
                 {% if thread.first_person == user %}
                     {% if thread.second_person.foto %}
                 <img id="image_profile"
-                    class="rounded-circle img-fluid my-auto img-static"
+                    class="rounded-circle img-fluid my-auto img-static me-2"
                     alt="profile"
                     src="{{thread.second_person.foto.url}}"
                     data-holder-rendered="true"
                 >
                 {% else %}
                 <img id="image_profile"
-                    class="rounded-circle img-fluid my-auto img-static"
+                    class="rounded-circle img-fluid my-auto img-static me-2"
                     alt="profile"
                     src="{% static 'img/default-profile.png' %}"
                     data-holder-rendered="true"
@@ -52,14 +58,14 @@ Needer | Chat
                 {% else %}
                     {% if thread.first_person.foto %}
                 <img id="image_profile"
-                    class="rounded-circle img-fluid my-auto img-static"
+                    class="rounded-circle img-fluid my-auto img-static me-2"
                     alt="profile"
                     src="{{thread.first_person.foto.url}}"
                     data-holder-rendered="true"
                 >
                 {% else %}
                 <img id="image_profile"
-                    class="rounded-circle img-fluid my-auto img-static"
+                    class="rounded-circle img-fluid my-auto img-static me-2"
                     alt="profile"
                     src="{% static 'img/default-profile.png' %}"
                     data-holder-rendered="true"
@@ -67,19 +73,21 @@ Needer | Chat
                 {% endif %}
 
                 {% endif %}
-            </a>
-        </div>
-        <div class="col-6 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 justify-content-start d-flex align-items-center">
-            <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
-                <a href="#" class=" text-decoration-none text-primary text-capitalize" >
-                    {% if thread.first_person == user %}
+                <strong class="my-auto">
+                {% if thread.first_person == user %}
                     {{thread.second_person.username}}
                     {% else %}
                     {{thread.first_person.username}}
-                    {% endif %}
-                </a>
-            </h5>
-        </div>
+                {% endif %}
+            </strong>
+            </a>
+        
+      
+            
+               
+        
+         </strong>
+        </h1>
     </div>
     <!-- Users box-->
     <div class="col-12 px-0 overflow-auto pb-2 userbox msg_card_body" id="scroll">
@@ -88,21 +96,28 @@ Needer | Chat
         {% for thread in object.chatmessage_thread.all %}
         <!-- Chats -->
         {% if thread.user == user %}
-        <div class="row d-flex col-9 m-2 mx-0 px-0 py-0 float-end justify-content-end align-items-center">
-            <div class="col-12 col-md-12 mx-2 rounded-4 py-0 justify-content-start respuesta">
-                <p class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 my-0 py-0 text-start nombreuser ">
-                    {{thread.message|decode_message}}
-                </p>
+        <div class="col-12 row mx-0 d-flex justify-content-end mb-3">
+            <div class=" text-wrap text-break mx-0 px-3 py-2 float-end respuesta
+                        rounded-4 mensaje py-2 text-start d-inline-flex justify-content-end  align-items-center">
+        
+                    <div class="text-white">
+                        {{thread.message|decode_message}}
+                    </div>
+        
+                
+                
+                        
             </div>
-            <div class="col-12 my-0 hora">
-               <small>{{thread.timestamp}}</small> 
-            </div>
+            <small class="my-0 hora text-end mx-0 px-0 fw-light d-flex justify-content-end text-wrap text-break">{{thread.timestamp|get_chat_date}}</small> 
         </div>
+    
+        
         {% else %}
-        <div class="row d-flex col-12 m-2 mx-0 px-0 py-0 justify-content-start align-items-center">
-            <!--Foto Usuario-->
-            <div class="col-3 col-md-1 d-flex pe-0 py-2 justify-content-start">
-                <a href="#" class="text-center">
+
+        <div class="col-12 row mx-0 container mensaje-container d-flex justify-content-start mb-3">
+            <div class=" text-wrap text-break mx-0 px-0 py-2 float-end 
+            rounded-4 mensaje py-2 text-start d-inline-flex justify-content-start  align-items-center">
+                <a href="#" class="text-center me-2">
                     {% if thread.user.foto %}
                     <img
                         class="rounded-circle d-lg-block d-none img-fluid my-auto img-perfil"
@@ -119,17 +134,19 @@ Needer | Chat
                     >
                     {% endif %}
                 </a>
-            </div>
-            <!-- Mensajes -->
-            <div class="col-9 mx-2 rounded-4 py-0 justify-content-start mensajes">
-                <p class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 my-0 py-0 text-break text-start nombreuser">
-                    {{thread.message|decode_message}}
-                </p>
-            </div>
-            <div class="col-12 my-0">
-                {{thread.timestamp}}
-            </div>
+                <div class=" text-wrap text-break mx-0 px-3 py-2 float-end mensajes
+                            rounded-4 py-2 text-start d-inline-flex justify-content-start  align-items-center">
             
+                        <div class="text-white">
+                            {{thread.message|decode_message}}
+                        </div>
+            
+                    
+                    
+                            
+                </div>
+            </div>
+            <small class="my-0 hora text-end mx-0 px-0 fw-light d-flex justify-content-start text-wrap text-break">{{thread.timestamp|get_chat_date}}</small> 
         </div>
         {% endif %}
 

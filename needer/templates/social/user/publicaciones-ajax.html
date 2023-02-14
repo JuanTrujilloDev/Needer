@@ -2,8 +2,9 @@
 {% load pub_extras %}
 <div class="infinite-container px-0">
     {% for publicacion in object_list %}
-    <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded-4 publicacion-shadow d-flex justify-content-around align-items-center mt-5 publicacion infinite-item" >
-
+    <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded-4 publicacion-shadow d-flex justify-content-around align-items-center 
+                    {% if object_list.0 == publicacion and page_obj.number == 1 %} mt-0 {% else %} mt-5 {% endif %} publicacion infinite-item" >
+        
         <div class="col-12 container d-flex align-items-center justify-content-start mb-2">
             <div class=" justify-content-start d-flex pe-0">
                 <a href="{{publicacion.user.get_absolute_url}}" class="text-center z-1">
@@ -102,15 +103,16 @@
 
                 <a href="#" id="like{{publicacion.id}}" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class="text-muted botones-interaccion px-0 fw-lighter text-decoration-none align-middle like z-2">
                     <i class="bi bi-heart me-2"></i> 
-                    Like
+                    
+                     {% if publicacion.cantidadLikes != 0 %} {{publicacion.cantidadLikes}} {% else %} Like {% endif %}
                 </a>
             {% endif %} 
             </div>
             <div id = 'coment{{publicacion.id}}' class="p-0 col-md-6 col-xl-6 col-lg-6 col-6 text-center">
                 <a href="#" class="text-muted botones-interaccion text-decoration-none align-middle like z-2" onclick="$('.form-comentario').focus();">
                     <i class="bi me-2 {% if publicacion.bool_comment %} text-primary bi-chat-left-fill {% else %} bi-chat-left {% endif %}"></i> 
-                    {% comment %} {{publicacion.cantidadComentarios}}  {% endcomment %}
-                    Comentario
+                    {% if publicacion.cantidadComentarios != 0 %}  {{publicacion.cantidadComentarios}} {% else %} Comentar {% endif %}
+                    {% comment %}   {% endcomment %}
                 </a>
             </div>
         </div>

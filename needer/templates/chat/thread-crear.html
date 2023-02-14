@@ -17,11 +17,35 @@ Needer | Chat
 
 {% block inner-content %}
 <div class="container col-10 my-auto mx-auto h-100 d-flex align-items-center align-middle">
-    
+
    
     
     <form class="container box-shadow rounded-3 py-4 my-auto mx-auto" method="post" action="{% url 'chat-create' %}">
-        <h1>Crear un nuevo chat</h1>
+        {% if messages %}
+            <ul class="messages list-unstyled text-center my-auto col-lg-8 mx-auto">
+                {% for message in messages %}
+            <div {% if message.tags %} class="mb-3 alert my-auto alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+                {% endfor %}
+            </ul>
+            
+            {% endif %}
+            <div class="row d-flex align-middle mb-2">
+                
+                <h1 class="text-center d-flex flex-row w-100 align-middle fw-bold mx-auto col-12">
+                    <strong class="float-start text-start align-middle my-auto me-auto">
+                    <a class="float-left text-start align-middle d-flex my-auto col" href="{% url 'chat' %}">
+                        <svg class="float-left text-start w-auto align-middle d-flex my-auto" width="52" height="30" viewBox="0 0 58 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="7" y1="16.484" x2="17.5515" y2="5.93249" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                            <line x1="7.07107" y1="17.9325" x2="17.6226" y2="28.484" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                            <line x1="7.01097" y1="16.9435" x2="52.7975" y2="17.0441" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                            </svg>
+                    </a></strong> 
+                    <strong class="me-auto
+                    ">
+                        Crear nuevo chat
+                    </strong> 
+                  </h1>
+            </div>
         {% csrf_token %}
         
         <datalist name="second_person"  id="id_second_person">
@@ -30,13 +54,13 @@ Needer | Chat
         {% endfor %}
     </datalist>
 
-    <div class="col-lg-6 col-sm-12" >
+    <div class="col-lg-12 col-sm-12" >
         
-    <label class="" for="id_second_person">Persona:</label> 
-    <input type="text" name="second_person" maxlength="50" list="id_second_person" class="form-control" id="id_second_person" placeholder="Nombre de usuario de la persona">
-    {{form.second_person.errors}}
+    <label class="fw-semibold" for="id_second_person">Persona:</label> 
+    <input type="text" name="second_person" maxlength="50" list="id_second_person" class="form-control mb-3" id="id_second_person" placeholder="Nombre de usuario de la persona">
+   <div class="text-danger"> {{form.second_person.errors}}</div>
     </div>
-    <button class="btn btn-primary rounded-pill form-control" type="submit">Enviar</button>
+    <button class="btn btn-primary rounded-pill form-control" type="submit">Crear</button>
     </form>
 </div>
 {% endblock inner-content %}

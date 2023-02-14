@@ -39,6 +39,11 @@ class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView
         user = get_object_or_404(User, slug = self.kwargs['slug'])
         context['seguidores'] = user.get_user_followers()
         context['seguidos'] = user.get_user_followed()
+        """ Asignacion de la cantidad de likes, comentarios y si el usuario le ha dado like
+            a la publicacion o no le ha dado like """
+        for i in list(context['object_list']):
+            i.bool_like = LikedPublicacion.objects.filter(Q(id_publicacion =i.id) & Q(user = self.request.user)).exists()
+            i.bool_comment = Comentarios.objects.filter(Q(id_publicacion =i.id) & Q(user = self.request.user)).exists()
         return context
 
 
@@ -214,6 +219,24 @@ class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, L
 
         """ Asignacion de la cantidad de likes, comentarios y si el usuario le ha dado like
             a la publicacion o no le ha dado like """
+        personas_siguiendo = self.request.user.get_user_followed()
+        if len(personas_siguiendo) >= 2:
+            personas_siguiendo = personas_siguiendo[0:2]
+        else:
+            personas_siguiendo = None
+            
+        personas_relevantes = Publicacion.objects.all().exclude(user__id = self.request.user.id).order_by('user__id').distinct('user')
+        personas_relevantes = list(Publicacion.objects.filter(id__in = personas_relevantes).order_by('id'))
+        if len(personas_relevantes) >= 2:
+           
+            personas_relevantes = [publicacion.user for publicacion in personas_relevantes][0:2]
+           
+        else:
+            personas_relevantes = None
+
+        context['personas_relevantes'] = personas_relevantes
+        context['siguiendo'] = personas_siguiendo
+
         for i in list(context['object_list']):
             i.bool_like = LikedPublicacion.objects.filter(Q(id_publicacion =i.id) & Q(user = self.request.user)).exists()
             i.bool_comment = Comentarios.objects.filter(Q(id_publicacion =i.id) & Q(user = self.request.user)).exists()

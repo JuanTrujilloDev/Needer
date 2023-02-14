@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -37,3 +38,10 @@ class ChatMessage(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     class Meta:
         ordering = ["timestamp"]
+
+    def clean(self) -> None:
+        thread = Thread.objects.by_user(user=self.user).filter(id=self.thread.id)
+        if thread:
+            return super().clean()
+        else:
+            raise ValidationError('El usuario no pertenece al thread')

@@ -4,6 +4,8 @@ from channels.db import database_sync_to_async
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 import base64
+from datetime import datetime
+
 
 from chat.models import Thread, ChatMessage
 
@@ -57,7 +59,8 @@ class ChatConsumer(AsyncConsumer):
             response = {
                 'message': msg,
                 'sent_by': self_user.id,
-                'thread_id': thread_id
+                'thread_id': thread_id,
+                'time': datetime.now().strftime('%I:%M %p')
             }
 
             await self.channel_layer.group_send(
