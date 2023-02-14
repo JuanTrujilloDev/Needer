@@ -130,7 +130,6 @@ class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUser
         context['form'] = CrearComentarios
 
         for i in list(context['object_list']):
-            
             i.bool_like =LikeComentarios.objects.filter(id_comentario =i.id, user = self.request.user).exists()
 
         return context
@@ -416,7 +415,6 @@ class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
         result['url'] =  self.comentario.dislikeComentario()
 
         """ Si el usuario ya dio like devuelva la cantidad de likes que tiene la publicacion """
-
         if query.filter(user = self.request.user).exists(): 
             result['likes'] =  str(cantidadlike)
             listado.append(result)
