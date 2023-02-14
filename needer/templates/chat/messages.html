@@ -122,7 +122,7 @@ Needer | Chat
                                     </a>
                                     {% else %}
                                     <a href="#" class="text-decoration-none  fw-semibold  mensaje text-truncate overflow-hidden">
-                                        {{last_message}}  
+                                        {{last_message.message|decode_message}}   
                                     </a>
                                     {% endif %}
 
