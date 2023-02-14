@@ -121,7 +121,7 @@ Needer | Chat
                                         {{last_message.message|decode_message}}  
                                     </a>
                                     {% else %}
-                                    <a href="#" class="text-decoration-none  fw-semibold  mensaje text-truncate overflow-hidden">
+                                    <a href="{{thread.get_absolute_url}}" class="text-decoration-none  fw-semibold  mensaje text-truncate overflow-hidden">
                                         {{last_message.message|decode_message}}   
                                     </a>
                                     {% endif %}

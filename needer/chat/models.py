@@ -34,7 +34,7 @@ class Thread(models.Model):
 class ChatMessage(models.Model):
     thread = models.ForeignKey(Thread, null=True, blank=True, on_delete=models.CASCADE, related_name='chatmessage_thread')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    message = models.TextField()
+    message = models.TextField(max_length=650)
     timestamp = models.DateTimeField(auto_now_add=True)
     class Meta:
         ordering = ["timestamp"]
