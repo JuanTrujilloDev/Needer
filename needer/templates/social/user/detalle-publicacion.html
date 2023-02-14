@@ -122,10 +122,9 @@ Needer | {{publicacion.user.username}}
             <div class="row border-top container-fluid w-100 col-12 d-flex justify-content-center">
 
                 <!--Botones de la Publicación--> 
-
                 <div class="row text-decoration-none col-12 mt-2">
                     <div id = 'divlike{{publicacion.id}}' class="p-0 col-md-6 col-xl-6 col-lg-6 col-6 text-center">
-                    {% if publicacion.bool_like %}
+                    {% if EstadoLike %}
                         <a href="#" id="dislike{{publicacion.id}}" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="text-muted px-0 fw-lighter text-decoration-none align-middle like z-2">
                             <i class="bi bi-heart-fill text-primary me-2"></i>
                             {{publicacion.cantidadLikes}} 
@@ -171,8 +170,8 @@ Needer | {{publicacion.user.username}}
 
     
         <div id = "comentarios" class="infinite-container container d-flex row justify-content-center">
-
         {% for com in object_list %}
+        
         <div id = "comentarios{{com.id}}" class="infinite-item row container mw-100 border-top ">
 
         <!--Comentario Usuario-->
