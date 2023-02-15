@@ -54,8 +54,17 @@ Needer | Chat
         
                 {% if page_obj|length == 0 %}
 
-                <div class="container-fluid">
-                    No tienes chats creados, crea uno
+                <div class=" h-100 my-auto d-flex row align-middle text-center justify-content-center mx-0">
+                    <img
+                    class="mt-4 mb-3"
+                    src="{% static 'img/chat.svg'%}"
+                    class="img-fluid"
+                    width="50%"
+                    height="80%"
+                />
+                  <h4 class="mt-0"> 
+                No tienes chats listados, filtralos por nombre de usuario o crea uno </h4>  
+                   
                 </div>
 
                 {% else %}
@@ -118,11 +127,11 @@ Needer | Chat
 
                                     {% if last_message.user == request.user %}
                                     <a href="{{thread.get_absolute_url}}" class="text-decoration-none  fw-normal  mensaje text-truncate overflow-hidden">
-                                        {{last_message.message|decode_message}}  
+                                        {{last_message.message}}  
                                     </a>
                                     {% else %}
                                     <a href="{{thread.get_absolute_url}}" class="text-decoration-none  fw-semibold  mensaje text-truncate overflow-hidden">
-                                        {{last_message.message|decode_message}}   
+                                        {{last_message.message}}   
                                     </a>
                                     {% endif %}
 

@@ -57,12 +57,7 @@ def get_chat_date(date):
     else:
         return time.strftime('%d/%B/%Y') + ' a las ' + time.strftime('%I:%M %p')
 
-def decode_messsage(msg):
-    msg = msg.encode('ascii')
-    msg = base64.b64decode(msg)
-    msg = msg.decode('ascii')
 
-    return msg
     
 
 # TODO Timestamp del chat
@@ -75,4 +70,3 @@ register.filter('get_user', get_user)
 register.filter('get_last_message', get_last_message)
 register.filter('get_date', get_date)
 register.filter('get_chat_date', get_chat_date)
-register.filter('decode_message', decode_messsage)

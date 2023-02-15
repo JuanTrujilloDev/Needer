@@ -128,10 +128,6 @@ class ChatConsumer(AsyncConsumer):
     def create_chat_message(self, thread, user, msg):
         # TODO Seguridad de mensajes
         if thread.first_person == user or thread.second_person == user:
-            msg = msg.encode('ascii')
-            msg = base64.b64encode(msg)
-            msg = msg.decode('ascii')
-            print(msg)
             ChatMessage.objects.create(thread=thread, user=user, message=msg)
         return False
 

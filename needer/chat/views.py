@@ -11,6 +11,9 @@ import urllib
 from django.contrib import messages
 from .forms import ThreadForm
 from django.utils.safestring import mark_safe
+from social.utils import PreventGetMethodMixin
+from django.core.exceptions import PermissionDenied
+from django.utils import timezone
 
 # Create your views here.
 from chat.models import Thread, ChatMessage
@@ -27,17 +30,53 @@ class ThreadListView (ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
 
 
     def get_queryset(self):
-        return Thread.objects.by_user(user= self.request.user).order_by('-timestamp')
+        threads = Thread.objects.by_user(user= self.request.user).order_by('-updated')
+        thread_list = []
+        user = self.request.user
+
+        for thread in threads:
+            print(thread.closed_by_first_user , thread.closed_by_second_user, thread.updated)
+            if thread.first_person == user:
+                if thread.closed_by_first_user <= thread.updated: thread_list.append(thread)
+            elif thread.second_person == user:
+                if thread.closed_by_second_user <= thread.updated: thread_list.append(thread)
+            else: pass
+       
+        return thread_list
 
 
 # TODO VISTA PARA BORRAR LOS THREADS
 # PREVENT GET METHOD
-class ThreadDeleteView(LoginRequiredMixin, UpdateView):
+class ThreadDeleteView(PreventGetMethodMixin, LoginRequiredMixin, UpdateView):
     # Si closed_by tal user es menor a timestamp al usuario le aparecerian los mensajes despues del timestamp.
     # Si ambos son mayores al timestamp se eliminan todos los mensajes y el thread.
     # TODO en los mensajes solo traer dependiento del closed_by y timestamp
     # TODO en el filterview si el objeto existe, si que lo traiga
-    pass
+
+    model = Thread
+    fields = ['closed_by_first_user', 'closed_by_second_user']
+    template_name = 'chat/messages.html'
+    
+    def post(self,request, **kwargs):
+        self.object = self.get_object()
+        
+        if self.request.user == self.object.first_person or self.request.user == self.object.second_person:
+
+            if self.request.user == self.object.first_person: 
+                self.object.closed_by_first_user = timezone.now()
+            else:
+                self.object.closed_by_second_user = timezone.now()
+
+            self.object.save()
+
+            if self.object.closed_by_first_user > self.object.updated and self.object.closed_by_second_user > self.object.updated:
+                ChatMessage.objects.filter(thread__id = self.object.id).delete()
+            
+                
+            messages.success(request, 'Se ha eliminado el chat correctamente')
+            return redirect(reverse('chat'))
+
+        raise PermissionDenied
 
 
 # VISTA PARA AGREGAR NUEVO THREAD
@@ -160,7 +199,7 @@ class ThreadFilterView (ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
                                                                             | Q(second_person__first_name__icontains = q))) 
                                    | (Q(second_person = self.request.user) & (Q(first_person__username__icontains = q) | Q(first_person__first_name__icontains= q) 
                                                                             | Q(first_person__first_name__icontains = q))) 
-                                    ).order_by('-timestamp') 
+                                    ).order_by('-updated') 
                     
 
         else:

@@ -20,7 +20,9 @@ class Thread(models.Model):
     first_person = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False, related_name='thread_first_person')
     second_person = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False,
                                      related_name='thread_second_person')
-    updated = models.DateTimeField(auto_now=True)
+    updated = models.DateTimeField(auto_now=False)
+    closed_by_first_user = models.DateTimeField(auto_now=False, auto_now_add=False)
+    closed_by_second_user = models.DateTimeField(auto_now=False, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     objects = ThreadManager()
