@@ -2,12 +2,34 @@
 {% extends 'main/user/content.html' %}
 {% load static %}
 {% load pub_extras %}
+{% load chat_extras %}
 
 
 {% block css %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
 <link rel="stylesheet" href="{% static 'css/thread.css'%} ">
+<style>
+    .modal {
+        text-align: center;
+      }
+      
+      @media screen and (min-width: 768px) { 
+        .modal:before {
+          display: inline-block;
+          vertical-align: middle;
+          content: " ";
+          height: 100%;
+        }
+      }
+      
+      .modal-dialog {
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+      }
+    
+    </style>
 {% endblock css %}
 
 
@@ -25,24 +47,30 @@ Needer | Chat
 {% else %}
     {{ thread.first_person.id }}
 {% endif %}
-">
-    <div class="col-12 d-flex px-0 justify-content-start border-bottom info">
-        <div class="mx-2 d-flex justify-content-center align-items-center">
-            <i class="bi bi-arrow-left fs-1"></i>
-        </div>
-        <div class="col-4 pt-2 py-2 d-flex justify-content-end align-items-center">
-            <a href="#">
+" request_user="{{request.user.id}}" >
+    <div class="row d-flex align-middle mb-2 contenido-arriba mx-0 px-0">
+        <h1 class="text-center text-primary d-flex flex-row w-100 align-middle fw-bold mx-auto col-12 border-bottom px-5">
+            <strong class="float-start text-start align-middle my-auto me-auto">
+                <a class="float-left text-start align-middle d-flex my-auto col" href="{% url 'chat' %}">
+                    <svg class="float-left text-start w-auto align-middle d-flex my-auto" width="52" height="30" viewBox="0 0 58 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="7" y1="16.484" x2="17.5515" y2="5.93249" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                        <line x1="7.07107" y1="17.9325" x2="17.6226" y2="28.484" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                        <line x1="7.01097" y1="16.9435" x2="52.7975" y2="17.0441" stroke="#5C28FF" stroke-width="10" stroke-linecap="round"/>
+                        </svg>
+                </a></strong> 
+            <strong class="mx-auto row">
+            <a href="#" class="d-flex align-middle justify-content-center" style="color:#424242;">
                 {% if thread.first_person == user %}
                     {% if thread.second_person.foto %}
                 <img id="image_profile"
-                    class="rounded-circle img-fluid my-auto img-static"
+                    class="rounded-circle img-fluid my-auto img-static me-2"
                     alt="profile"
                     src="{{thread.second_person.foto.url}}"
                     data-holder-rendered="true"
                 >
                 {% else %}
                 <img id="image_profile"
-                    class="rounded-circle img-fluid my-auto img-static"
+                    class="rounded-circle img-fluid my-auto img-static me-2"
                     alt="profile"
                     src="{% static 'img/default-profile.png' %}"
                     data-holder-rendered="true"
@@ -51,14 +79,14 @@ Needer | Chat
                 {% else %}
                     {% if thread.first_person.foto %}
                 <img id="image_profile"
-                    class="rounded-circle img-fluid my-auto img-static"
+                    class="rounded-circle img-fluid my-auto img-static me-2"
                     alt="profile"
                     src="{{thread.first_person.foto.url}}"
                     data-holder-rendered="true"
                 >
                 {% else %}
                 <img id="image_profile"
-                    class="rounded-circle img-fluid my-auto img-static"
+                    class="rounded-circle img-fluid my-auto img-static me-2"
                     alt="profile"
                     src="{% static 'img/default-profile.png' %}"
                     data-holder-rendered="true"
@@ -66,78 +94,137 @@ Needer | Chat
                 {% endif %}
 
                 {% endif %}
-            </a>
-        </div>
-        <div class="col-6 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 justify-content-start d-flex align-items-center">
-            <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape">
-                <a href="#" class=" text-decoration-none text-primary text-capitalize" >
-                    {% if thread.first_person == user %}
+                <strong class="my-auto">
+                {% if thread.first_person == user %}
                     {{thread.second_person.username}}
                     {% else %}
                     {{thread.first_person.username}}
-                    {% endif %}
+                {% endif %}
+            </strong>
+            </a>
+        
+      
+            
+               
+        
+         </strong>
+         <strong class="ms-auto d-flex align-middle">
+            <!-- Botones opciones -->
+            <div class="dropdown dropstart my-auto text-dark d-flex align-middle">
+                <a class="fs-2 align-text-top align-middle my-auto text-dark text-muted" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="true">
+                    <i class="bi bi-three-dots"></i>
                 </a>
-            </h5>
-        </div>
+
+                <ul class="dropdown-menu " aria-labelledby="dropdownMenuLink">
+                  <li><a class="dropdown-item" href="#">Reportar</a></li>
+                  <li><button type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal" class="dropdown-item" href="#">Eliminar</button></li>
+                </ul>
+            </div>
+         </strong>
+
+         <!--MODAL-->
+         <!-- Modal -->
+            <div class="modal fade align-middle " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog my-auto box-shadow " role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Borrar chat</h5>
+                    <button type="button" class="close border-1 rounded-2" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                    <h3 class="text-dark text-muted">Estas seguro que quieres borrar el chat?</h3>
+                    </div>
+                    <div class="modal-footer">
+                      
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              
+                    <form method="POST" class="p-0 m-0 d-flex align-middle" action="{% url 'thread-update' object.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Aceptar</button>
+                    </form> 
+                    </div>
+                </div>
+                </div>
+            </div>
+        </h1>
     </div>
     <!-- Users box-->
-    <div class="col-12 px-0 overflow-auto pb-2 userbox msg_card_body" id="scroll">
+    <div class="col-12 px-0 overflow-auto px-2 pb-2 userbox msg_card_body" id="scroll">
         {% comment %} los mensajes se ponene en orden de la fecha {% endcomment %}
-
+        <!--TODO TEMPLATETAG-->
         {% for thread in object.chatmessage_thread.all %}
         <!-- Chats -->
         {% if thread.user == user %}
-        <div class="row d-flex col-9 m-2 mx-0 px-0 py-0 float-end justify-content-end align-items-center">
-            <div class="col-12 col-md-12 mx-2 rounded-4 py-0 justify-content-start respuesta">
-                <p class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 my-0 py-0 text-start nombreuser ">
-                    {{thread.message}}
-                </p>
+        <div class="col-12 row mx-0 d-flex justify-content-end mb-3">
+            <div class=" text-wrap text-break mx-0 px-3 py-2 float-end respuesta
+                        rounded-4 mensaje py-2 text-start d-inline-flex justify-content-end  align-items-center">
+        
+                    <div class="text-white">
+                        {{thread.message}}
+                    </div>
+        
+                
+                
+                        
             </div>
+            <small class="my-0 hora text-end mx-0 px-0 fw-light d-flex justify-content-end text-wrap text-break">{{thread.timestamp|get_chat_date}}</small> 
         </div>
+    
+        
         {% else %}
-        <div class="row d-flex col-12 m-2 mx-0 px-0 py-0 justify-content-start align-items-center">
-            <!--Foto Usuario-->
-            <div class="col-3 col-md-1 d-flex pe-0 py-2 justify-content-start">
-                <a href="#" class="text-center">
+
+        <div class="col-12 row mx-0 container mensaje-container d-flex justify-content-start mb-3">
+            <div class=" text-wrap text-break mx-0 px-0 py-2 float-end 
+            rounded-4 mensaje py-2 text-start d-inline-flex  row justify-content-start  align-items-center">
+                <a href="#" class="text-center me-0 col-3 px-0">
                     {% if thread.user.foto %}
                     <img
-                        class="rounded-circle d-lg-block d-none img-fluid my-auto img-perfil"
+                        class="rounded-circle d-lg-block d-none img-fluid my-auto img-perfil mx-0"
                         alt="profile"
                         src="{{thread.user.foto.url}}"
                         data-holder-rendered="true"
                     >
                     {% else %}
                     <img
-                        class="rounded-circle d-lg-block d-none img-fluid my-auto img-perfil"
+                        class="rounded-circle d-lg-block d-none img-fluid my-auto img-perfil mx-0"
                         alt="profile"
                         src="{% static 'img/default-profile.png' %}"
                         data-holder-rendered="true"
                     >
                     {% endif %}
                 </a>
-            </div>
-            <!-- Mensajes -->
-            <div class="col-9 mx-2 rounded-4 py-0 justify-content-start mensajes">
-                <p class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 my-0 py-0 text-break text-start nombreuser">
-                    {{thread.message}}
-                </p>
-            </div>
+                <div class=" text-wrap text-break mx-0 px-3 py-2 float-end mensajes
+                            rounded-4 py-2 text-start d-inline-flex justify-content-start col-9 align-items-center">
             
+                        <div class="text-white">
+                            {{thread.message}}
+                        </div>
+            
+                    
+                    
+                            
+                </div>
+            </div>
+            <small class="my-0 hora text-end mx-0 px-0 fw-light d-flex justify-content-start text-wrap text-break">{{thread.timestamp|get_chat_date}}</small> 
         </div>
         {% endif %}
 
         {% endfor %}
     </div>
     <div class="col-12 justify-content-center align-items-center chat">
-        <div class="col-1 d-flex justify-content-center align-items-center">
+        <button id="emoji-button" class="col-1 d-flex justify-content-center align-items-center border-0 bg-white">
             <i class="bi bi-emoji-smile fs-2"></i>
-        </div>
+        </button>
         <!-- input -->
         <div class="col-11 col-md-11 py-0 justify-content-start">
             <form id="send-message-form" class="d-flex align-items-center" action="#">
                 <input
-                    maxlength
-                    "50"
+                    maxlength="650"
+                    
                     required
                     minlength="1"
                     type="text"
@@ -154,8 +241,24 @@ Needer | Chat
 
 {% block script %}
 <script src="{% static 'js/messages.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+<script>
+    const button = document.querySelector('#emoji-button');
+
+const picker = new EmojiButton();
+
+button.addEventListener('click', () => {
+  picker.togglePicker(button);
+  
+});
+
+  picker.on('emoji', emoji => {
+    document.getElementById('input-message').value += emoji;
+  });
+</script>
 <script type="text/javascript">
     document.getElementById('scroll').scrollTop = 9999999;
 </script>
 
 {% endblock script %}
+

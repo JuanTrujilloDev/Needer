@@ -25,151 +25,35 @@ Needer | Chat
 
             <div class="col-12 d-flex px-0 justify-content-around border-bottom">
 
-            <div class="col-6 pt-2 mb-3 d-flex align-items-center mensajereb">
-                <h3 class="mb-0 fw-bold my-auto text-muted">Resultado de busqueda</h3>
+                <div class="col-6 pt-2 mb-3 d-flex align-items-center mensajereb">
+                    <h3 class="mb-0 fw-bold my-auto text-muted">Tus Chats</h3>
+                </div>
+
+                <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 justify-content-center justify-content-xs-center
+                justify-content-sm-center justify-content-md-end justify-content-lg-end justify-content-xl-end
+                    input-box d-flex align-items-center">
+                    <form method="GET" class="d-flex border-end pe-2 align-items-center" action="{% url 'thread-filter' %}">
+                    <input maxlength="50" required minlength="1" type="text" class="form-control" id="search_form" name="q" placeholder="Buscar Chat ...">
+                    </form>
+                   <a href="{% url 'chat-create' %}"> <h4 class="py-0 my-0 mx-2 text-muted"><i class="bi bi-plus-circle"></i></h4> </a>
+                </div>
+
+
             </div>
 
-            <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 justify-content-center justify-content-xs-center
-            justify-content-sm-center justify-content-md-end justify-content-lg-end justify-content-xl-end
-                input-box d-flex align-items-center">
-                <form method="GET" class="d-flex border-end pe-2 align-items-center" action="{% url 'thread-filter' %}">
-                <input maxlength="50" required minlength="1" type="text" class="form-control" id="search_form" name="q" placeholder="Buscar Chat ..." value="{% if q %} {{q}} {% endif %}">
-                </form>
-                <h4 class="py-0 my-0 mx-2 text-muted"><i class="bi bi-plus-circle"></i></h4>
-            </div>
-
-
-            </div>
-
-              <!-- Users box-->
             <div class="col-12 px-0  pb-2 userbox infinite-container">
-
-                {% if object_list|length == 0 %}
+               
+                {% include 'chat/mensajes-ajax.html' %}
+    
                 
-                <div class="row my-auto col-12 col-lg-8 col-xl-8 col-sm-12 col-md-10 col-xs-12 align-middle d-flex justify-content-center p-0 py-3 mx-auto">
-              
-        
-                    
-        
-                    <img
-                    class="mt-4 mb-3 img-fluid"
-                    src="{% static 'img/busqueda.svg'%}"
-                    style="height: 50vh;"
-                    >
-                    <h3 class="text-center ">No se encontraron chats con tu busqueda <strong class="text-primary">"{{q}}"</strong></h3>
-                </div>
-
-                {% else %}
-
-                {% for thread in  object_list %}
-
-                {% with person=request.user|get_user:thread%}
-                  <!-- Chats -->
-                <div class="infinite-item row d-flex col-12 mx-0 px-0 py-2 justify-content-around align-items-center mw-100 border-bottom">
-                        <!--Foto Usuario-->
-                        <div class="col-2 col-md-1 d-flex pe-0 py-0 justify-content-end">
-                            <a href="{{person.get_absolute_url}}" target="_blank" class="text-center text-truncate">
-                                {% if person.foto %}
-                                <img
-                                    class="rounded-circle img-fluid my-auto img-static"
-                                    alt="profile"
-                                    src="{{person.foto.url}}"
-                                    data-holder-rendered="true"
-                                >
-                                {% else %}
-                                <img
-                                class="rounded-circle img-fluid my-auto img-static"
-                                alt="profile"
-                                src="{% static 'img/default-profile.png' %}"
-                                data-holder-rendered="true"
-                            >
-                                {% endif %}
-                            </a>
-                        </div>
-                        <!--Datos-->
-                        <div class="col-2 col-md-2 py-0 d-none d-lg-block flex-row d-md-block d-xl-block justify-content-start">
-                            <h6 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape text-truncate">
-                                <a  href="{{person.get_absolute_url}}" target="_blank" class="text-decoration-none text-primary">
-                                    {{person.first_name}} {{person.last_name}}
-                                </a>
-                            </h6>
-                            <h6 class="mb-0   mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser text-truncate">
-                                <a href="{{person.get_absolute_url}}" target="_blank" class="text-decoration-none text-muted">
-                                    @{{person.username}}
-                                </a>
-                            </h6>
-                    
-                        </div>
-                        <!-- Mensajes -->
-                        <div class="col-7 row col-sm-7 col-xs-7 col-lg-7 col-xl-7 col-md-7 row  py-0 justify-content-start align-middle">
-                            <h5 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape d-block d-lg-none d-xl-none d-md-none text-truncate">
-                                <a  href="{{person.get_absolute_url}}" target="_blank" class="text-decoration-none text-primary">
-                                    {{person.first_name}} {{person.last_name}}
-                                </a>
-                            </h5>
-                            <h4 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 text-start mensajeh text-truncate ">
-                              
-                        {% with last_message=thread|get_last_message %}
-                                {% if last_message %}
-
-                                    {% if last_message.user == request.user %}
-                                    <a href="{{thread.get_absolute_url}}" class="text-decoration-none  fw-normal  mensaje text-truncate overflow-hidden">
-                                        {{last_message.message}}  
-                                    </a>
-                                    {% else %}
-                                    <a href="#" class="text-decoration-none  fw-semibold  mensaje text-truncate overflow-hidden">
-                                        {{last_message}}  
-                                    </a>
-                                    {% endif %}
-
-                                {% else %}
-
-                                <a href="{{thread.get_absolute_url}}" class="text-decoration-none  fw-normal  mensaje text-truncate overflow-hidden">
-                                    No hay mensajes en el chat, entra para enviar uno! 
-                                </a>
-
-                                {% endif %}
-
-                                
-                                
-                            </h4>
-                        </div>
-
-                        <!-- Hora -->
-                        <div class="col-3 col-sm-3 col-xs-3 col-lg-2 col-xl-2 col-md-2 py-0 justify-content-start 
-                                    justify-content-xs-start justify-content-sm-start justify-content-md-end
-                                    justify-content-lg-end justify-content-xl-end">
-                            <h4 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser text-truncate">
-                                <a href="{{thread.get_absolute_url}}" class="text-decoration-none text-muted fw-bold text-truncate">
-                                    {% if last_message %}
-                                    {{last_message.timestamp|get_date}}
-                              
-                                    {% else %}
-
-                                    {% endif %}
-                                </a>
-                            </h4>
-                        </div>
-                        {% endwith %}
-                </div>
-                {% endwith %}
-                {% endfor %}
-                {% endif %}
-                {% if page_obj.has_next %}
-                <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}" style="display:none;">More</a>
-            
-                {% else %}
-                <a class="infinite-more-link" href="?page=0" style="display:none;">More</a>
-                {% endif %}
-        
-                <div class="page-load-status mt-3">
-                    {% if page_obj.has_next %}
-                    <h3 class="infinite-scroll-request col-12 text-center">
-                        Cargando...
-                    </h3>
-                    {% endif %}
             </div>
+    
+            
+            
 </div>
+
+
+
 {% endblock inner-content %}
 
 {% block script %}

@@ -19,7 +19,7 @@ Needer
         <!--Contenido de la izquierda-->
         <div class="d-flex justify-content-center row col-sm-12 col-lg-7 px-0 mx-auto">
             <!--Esto crea publicación-->
-            <div class="mb-3 row container-fluid px-0 bg-white rounded-4 ajustesombra py-4 d-flex justify-content-center align-items-center" style="height:auto;">
+            <div class="mb-5 row container-fluid px-0 bg-white rounded-4 ajustesombra py-4 d-flex justify-content-center align-items-center" style="height:auto;">
                 <!--BOTON FOTO-->
                 <div class="col-lg-2 col-md-2 col-xl-2 col-sm-12 col-12 justify-content-center d-flex pe-lg-0 pe-xl-0 pe-md-0 pe-sm-auto pe-auto">
                     <a href="{{user.get_absolute_url}}" class="mb-lg-0 mb-md-0 mb-sm-3 mb-3 mb-xl-0 text-center text-sm-center text-md-start text-lg-start text-xl-start">
@@ -57,7 +57,7 @@ Needer
         <!--Contenido de la Derecha-->
         <div class="row col-lg-4 justify-content-end divbib">
 
-
+            {% if siguiendo == None or personas_relevantes == None %}
               <!--Menús-->
               <div class="row py-4 col-sm-12 rounded-4 ajustesombra col-12 mb-2 mb-sm-5 mb-lg-4 mb-md-5 mb-xs-5 fs-md-6">
                 <a class="text-primary fw-bold" href="{%url 'social-home' %}">
@@ -69,83 +69,59 @@ Needer
                         Marketplace
                 </a>
             </div>
+            {% endif %}
 
             <!--Personas Relevantes-->
             <div class="row py-4 col-sm-12 col-12 mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 rounded-4 ajustesombra">
                 <h4 class="text-primary text-center fw-bold mb-0">Personas relevantes</h4>
+                {% for persona in personas_relevantes %}
                 <!--Información del usuario-->
                 <div class="row col-12 mt-3 mx-0 px-0 py-0">
                     <!--Foto Usuario-->
-                    <div class="col-2 col-md-3 d-flex pe-0 py-0 mb-2">
-                        <a href="#" class="text-start">
+                    <div class="col-4 col-xl-3  d-flex pe-0 py-0 mb-2">
+                        <a href="{{persona.get_absolute_url}}" class="text-start">
                             <img
-                                class="rounded-circle img-fluid img-static"
+                                class="rounded-circle img-fluid im-upper"
                                 alt="profile"
-                                src="{% static 'img/default-profile.png' %}"
+                                src="{% if persona.foto %} {{persona.foto.url}} {% else %} {% static 'img/default-profile.png' %} {% endif %}"
                                 data-holder-rendered="true"
                             >
                         </a>
                     </div>
                     <!--Datos-->
-                    <div class="row col-9 col-md-8 align-items-center py-0 mb-2">
-                        <h6 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0">
-                            <a href="#" class="text-decoration-none text-primary">
-                                Nombre y Apellido
+                    <div class="row col-8 col-xl-9 align-items-center py-0 mb-2">
+                        <h6 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 text-truncate">
+                            <a href="#" class="text-decoration-none text-primary text-truncate">
+                                {% if persona.first_name or persona.last_name %} {{persona.first_name}} {{persona.last_name}} {% else %} {{persona.username}} {% endif %}
                             </a>
                         </h6>
-                        <h6 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
-                            <a href="#" class="text-decoration-none text-muted">
-                                @NombreUsuario
-                            </a>
-                        </h6>
-                    </div>
-                    <div class="col-12">
-                        <p class="text-muted mb-0 texti">Lorem ipsum dolor molesiae unde?orem ipsum dolor molesiae unde? orem ipsum dolor molesiae unde?</p>
-                    </div>
-                </div>
-                <!--Información del usuario-->
-                <div class="row col-12 mt-3 mx-0 px-0 py-0">
-                    <!--Foto Usuario-->
-                    <div class="col-2 col-md-3 d-flex pe-0 py-0 mb-2">
-                        <a href="#" class="text-start">
-                            <img
-                                class="rounded-circle img-fluid img-static"
-                                alt="profile"
-                                src="{% static 'img/default-profile.png' %}"
-                                data-holder-rendered="true"
-                            >
-                        </a>
-                    </div>
-                    <!--Datos-->
-                    <div class="row col-9 col-md-8 align-items-center py-0 mb-2">
-                        <h6 class="fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0">
-                            <a href="#" class="text-decoration-none text-primary">
-                                Nombre y Apellido
-                            </a>
-                        </h6>
-                        <h6 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
-                            <a href="#" class="text-decoration-none text-muted">
-                                @NombreUsuario
+                        <h6 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 text-truncate">
+                            <a href="#" class="text-decoration-none text-muted text-truncate">
+                                @{{persona.username}}
                             </a>
                         </h6>
                     </div>
                     <div class="col-12">
-                        <p class="text-muted mb-0 texti">Lorem ipsum dolor molesiae unde?orem ipsum dolor molesiae unde? orem ipsum dolor molesiae unde?</p>
+                        <p class="text-muted mb-0 texti {% if persona.biografia|length > 150 %} text-truncate {% endif %}">{{persona.biografia}}</p>
                     </div>
                 </div>
+                {% endfor %}
+            
             </div>
+            {% if siguiendo %}
             <!--Personas que sigues-->
             <div class="row py-4 col-sm-12 col-12 mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 mt-4 rounded-4 ajustesombra">
-                <h4 class="text-primary text-center fw-bold mb-0">Personas relevantes</h4>
+                <h4 class="text-primary text-center fw-bold mb-0">Personas que Sigues</h4>
+                {% for user in siguiendo %}
                 <!--Información del usuario-->
                 <div class="row col-12 mt-3 mx-0 px-0 py-0">
                     <!--Foto Usuario-->
                     <div class="col-3 col-md-3 d-flex pe-0 py-0 mb-2">
-                        <a href="#" class="text-start">
+                        <a href="{{user.get_absolute_url}}" class="text-start">
                             <img
-                                class="rounded-circle img-fluid img-static-2"
+                                class="rounded-circle img-fluid im-derecha"
                                 alt="profile"
-                                src="{% static 'img/default-profile.png' %}"
+                                src="{% if user.foto %} {{user.foto.url}} {% else %} {% static 'img/default-profile.png' %} {% endif %}"
                                 data-holder-rendered="true"
                             >
                         </a>
@@ -169,39 +145,10 @@ Needer
                         </h2>
                     </div>
                 </div>
-                <!--Información del usuario-->
-                <div class="row col-12 mt-3 mx-0 px-0 py-0">
-                    <!--Foto Usuario-->
-                    <div class="col-3 col-md-3 d-flex pe-0 py-0 mb-2">
-                        <a href="#" class="text-start">
-                            <img
-                                class="rounded-circle img-fluid img-static-2"
-                                alt="profile"
-                                src="{% static 'img/default-profile.png' %}"
-                                data-holder-rendered="true"
-                            >
-                        </a>
-                    </div>
-                    <!--Datos-->
-                    <div class="row col-7 col-md-8 align-items-center py-0 mb-2">
-                        <h6 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
-                            <a href="#" class="text-decoration-none text-primary">
-                                Nombre y Apellido
-                            </a>
-                        </h6>
-                        <h6 class="text-secondary mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0">
-                            <a href="#" class="text-decoration-none text-muted">
-                                @NombreUsuario
-                            </a>
-                        </h6>
-                    </div>
-                    <div class="col-2 col-md-1 align-items-center">
-                        <h2 class="text-primary text-center mb-0">
-                            <i class="bi bi-heart-fill align-middle corazon"></i>
-                        </h2>
-                    </div>
-                </div>
+                {% endfor %}
+               
             </div>
+            {% endif %}
                   
             
         </div>

@@ -19,6 +19,15 @@
     margin-bottom: 0px !important;
 }
 
+.usuario:hover{
+    cursor: pointer;
+}
+
+.im-derecha{
+    height: 2rem!important;
+    width: 2rem!important;
+}
+
 .biografiauser{
     font-size: medium;
 }

@@ -24,7 +24,7 @@
               <input maxlength="50" required minlength="1" type="text" class="form-control" id="search_form" name="q" placeholder="Buscar...">
               </form>
             </div>
-            <a class="nav-link fw-bolder notificacion me-4 " ><i class="bi bi-chat-dots" style="color: #737373;"></i></a>
+            <a class="nav-link fw-bolder notificacion me-4 " href="{% url 'chat' %}"><i class="bi bi-chat-dots" style="color: #737373;"></i></a>
             <a class="nav-link fw-bolder notificacion me-4 " ><i class="bi bi-bell " style="color: #737373;"></i></a>
             <a class="nav-link  me-5" href="{{request.user.get_absolute_url}}">
               {% if request.user.foto %}
@@ -51,9 +51,8 @@
           {% with url_name=request.resolver_match.url_name %}
           <li class="nav-item"><a class="nav-link {% if url_name == 'social-home' %} active {% endif %} " href="{%url 'social-home' %}"><h5><i class="bi bi-house-door me-2"></i>Home</h5></a></li>
       <li class="nav-item"><a class="nav-link {% if url_name == 'detalle-creador'%} active  {% endif %}" href="{{request.user.get_absolute_url}}"><h5><i class="bi bi-person-circle me-2"></i>Mi Perfil</h5></a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-image me-2"></i></i>Publicaciones</h5></a></li>
       <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-shop me-2"></i>Marketplace</h5></a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-chat-left me-2"></i>Mensajes</h5></a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'chat' %}"><h5><i class="bi bi-chat-left me-2"></i>Mensajes</h5></a></li>
       <li class="nav-item"><a class="nav-link" href="#"><h5><i class="bi bi-stars me-2"></i></i>Panel de Creador</h5></a></li>
       <li class="nav-item"><a class="nav-link {% if url_name == 'account_profile' or url_name == 'account_change_password' or url_name == 'socialaccount_connections' or url_name == 'account_email'%} active  {% endif %}" 
         href="{%url 'account_profile' %}"><h5><i class="bi bi-gear me-2"></i>Ajustes</h5></a></li>

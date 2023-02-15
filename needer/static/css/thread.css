@@ -25,15 +25,15 @@
 }
   
   .img-static{
-    height: 4rem;
-    width: 4rem;
+    height: 3rem;
+    width: 3rem;
     object-fit: cover;
     
   }
 
   .img-perfil{
-    height: 60px;
-    width: 60px;
+    height: 2.5rem;
+    width: 2.5rem;
     object-fit: cover;
   }
 
@@ -234,6 +234,14 @@
     background-color: #a3a3ff;
   }
 
+  .mensaje{
+    max-width: 75%!important;
+    width: auto!important;
+
+  }
+
+
+
   .respuesta{
     background-color: #5C28FF;
   } 
@@ -244,3 +252,12 @@
     font-size: 2rem !important;
     
   }
+
+  .hora{
+    color:#434343!important
+  }
+
+
+.contenido-arriba{
+  min-width: 100%!important;
+}

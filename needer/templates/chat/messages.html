@@ -23,7 +23,7 @@ Needer | Chat
 {% endif %}
 <div class="row h-100 ms-0 me-0 overflow-hidden">
 
-            <div class="col-12 d-flex px-0 justify-content-around border-bottom">
+        <div class="col-12 d-flex px-0 justify-content-around border-bottom">
 
             <div class="col-6 pt-2 mb-3 d-flex align-items-center mensajereb">
                 <h3 class="mb-0 fw-bold my-auto text-muted">Tus Chats</h3>
@@ -35,24 +35,41 @@ Needer | Chat
                 <form method="GET" class="d-flex border-end pe-2 align-items-center" action="{% url 'thread-filter' %}">
                 <input maxlength="50" required minlength="1" type="text" class="form-control" id="search_form" name="q" placeholder="Buscar Chat ...">
                 </form>
-                <h4 class="py-0 my-0 mx-2 text-muted"><i class="bi bi-plus-circle"></i></h4>
+                <h4 class="py-0 my-0 mx-2 text-muted"><a class="text-black fw-bold" href="{% url 'chat-create' %}"><i class="bi bi-plus-circle"></i></a></h4>
             </div>
 
 
-            </div>
+        </div>
 
               <!-- Users box-->
-            <div class="col-12 px-0  pb-2 userbox infinite-container">
+        <div class="col-12 px-0  pb-2 userbox infinite-container">
+           {% if messages %}
+            <ul class="messages list-unstyled text-center my-auto col-lg-8 mx-auto">
+                {% for message in messages %}
+            <div {% if message.tags %} class="mb-3 alert my-auto alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+                {% endfor %}
+            </ul>
+            
+            {% endif %}
+        
+                {% if page_obj|length == 0 %}
 
-                {% if object_list|length == 0 %}
-
-                <div class="container-fluid">
-                    No tienes chats creados, crea uno
+                <div class=" h-100 my-auto d-flex row align-middle text-center justify-content-center mx-0">
+                    <img
+                    class="mt-4 mb-3"
+                    src="{% static 'img/chat.svg'%}"
+                    class="img-fluid"
+                    width="50%"
+                    height="80%"
+                />
+                  <h4 class="mt-0"> 
+                No tienes chats listados, filtralos por nombre de usuario o crea uno </h4>  
+                   
                 </div>
 
                 {% else %}
 
-                {% for thread in  object_list %}
+                {% for thread in  page_obj %}
 
                 {% with person=request.user|get_user:thread%}
                   <!-- Chats -->
@@ -82,8 +99,9 @@ Needer | Chat
                         <!--Datos-->
                         <div class="col-2 col-md-2 py-0 d-none d-lg-block flex-row d-md-block d-xl-block justify-content-start">
                             <h6 class="mb-0 mb-lg-0 mb-xl-0 mb-md-0 mw-100 my-0 py-0 nombreape text-truncate">
-                                <a  href="{{person.get_absolute_url}}" target="_blank" class="text-decoration-none text-primary">
-                                    {{person.first_name}} {{person.last_name}}
+                                <a  href="{{person.get_absolute_url}}" target="_blank" class="text-decoration-none text-primary"> 
+                                  {% if person.first_name or person.last_name %}  {{person.first_name}} {{person.last_name}}
+                                  {% else %} {{person.username}} {% endif %}
                                 </a>
                             </h6>
                             <h6 class="mb-0   mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 nombreuser text-truncate">
@@ -112,8 +130,8 @@ Needer | Chat
                                         {{last_message.message}}  
                                     </a>
                                     {% else %}
-                                    <a href="#" class="text-decoration-none  fw-semibold  mensaje text-truncate overflow-hidden">
-                                        {{last_message}}  
+                                    <a href="{{thread.get_absolute_url}}" class="text-decoration-none  fw-semibold  mensaje text-truncate overflow-hidden">
+                                        {{last_message.message}}   
                                     </a>
                                     {% endif %}
 
@@ -163,7 +181,9 @@ Needer | Chat
                         Cargando...
                     </h3>
                     {% endif %}
-            </div>
+                </div>
+
+        </div>
 </div>
 {% endblock inner-content %}
 

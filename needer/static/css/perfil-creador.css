@@ -20,7 +20,8 @@
     top: 5%;
     margin-top: -100px;
     margin-left: 20px;
-    object-fit: cover;
+    object-fit:cover;
+    background-size: cover!important;
 }
 
 .box-shadow{

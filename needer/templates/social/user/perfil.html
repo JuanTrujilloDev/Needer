@@ -18,28 +18,14 @@ Needer | {{object.username}}
     {% include 'social/user/datos-personales.html' %}
 
     <!--Navegacion secundaria-->
-    <div class="mb-4 px-0 container-fluid my-4 d-flex justify-content-lg-start justify-content-md-start justify-content-sm-center justify-content-center border-bottom mb-3 pre-ajustes">
-        {% with url_name=request.resolver_match.url_name %}
-        <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none  text-center
-       " href="{{object.get_absolute_url}}">
-            <h2 class="mb-0 {% if url_name == 'detalle-creador' %}active {% endif %}">Perfil</h2>
-        </a>
-        <a href="{% url 'galeria-social'  slug=object.slug %}" class="mx-auto  mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted text-decoration-none text-center" href="#">
-            <h2 class="mb-0  {% if url_name == 'galeria-social' %} active {% endif %}">Galeria</h2>
-        </a>
-        <a class="mx-auto mx-lg-3 mx-xl-3 mx-md-3 mx-sm-auto ms-md-0 ms-lg-0 ms-xl-0 mb-0 fw-bolder text-muted border-0 text-decoration-none text-center
-        " href="{% url 'account_change_password' %}">
-            <h2 class="mb-0 {% if url_name == 'account_change_password' %}active {% endif %}">Marketplace</h2>
-        </a>
-        {% endwith %}
-    </div>
+    {% include 'social/user/componente-navegacion-perfil.html' %}
     
     <!--Contenido interno-->
     <div class="my-4 container-fluid row w-100 mx-0 d-flex justify-content-lg-between justify-content-md-center justify-content-sm-center justify-content-center">
         <!--Bibliografria-->
         <div class="row py-4 col-sm-12 col-lg-5 rounded-4 box-shadow bg-white mb-4 mb-sm-5 mb-lg-0 mb-md-5 mb-xs-5 divbib">
             <!--Bibliografia-->
-            <h3 class="text-primary">Bibliografía</h3>
+            <h3 class="text-primary">Biografía</h3>
             <p class="text-muted text-break">{{object.biografia}}</p>
             <!--link-->
             {% if object.link %}
@@ -117,6 +103,7 @@ Needer | {{object.username}}
 
                 
                 {% if not object_list %}
+                {% if object == request.user %}
             <div class="col-12 text-center rounded shadow">
                 <h1 class="mb-2">Aun no tienes publicaciones!</h1>
                 <h2 class="mb-2 text-muted">
@@ -130,49 +117,21 @@ Needer | {{object.username}}
                 >
             </div>
             {% else %}
-            <!--Publicaciones con mas LIKES!-->
-            <div class="col-12 text-center rounded-4 box-shadow mt-4">
-                <h2 class="fw-bold text-secondary fw-bold mt-3 h22">Publicaciones con más likes!</h2>
-                <div class="py-3 border-bottom align-items-center justify-content-around d-flex">
-                    <img
-                        class="rounded-circle profile-img col-md-4 col-sm-4"
-                        alt="profile"
-                        src="{% static 'img/default-profile.png' %}"
-                        data-holder-rendered="true"
-                    >
-                    <h4 class="col-md-6 col-sm-5 text-break text-center fw-bold h44">Texto de la publicación</h4>
-                    <h3 class="col-md-2 col-sm-3 my-sm-3 fw-bold">
-                        3487
-                        <i class="bi bi-hearts text-terciary"></i>
-                    </h3>
-                </div>
-                <div class="py-3 border-bottom align-items-center justify-content-around d-flex">
-                    <img
-                        class="rounded-circle profile-img col-md-4 col-sm-4"
-                        alt="profile"
-                        src="{% static 'img/default-profile.png' %}"
-                        data-holder-rendered="true"
-                    >
-                    <h4 class="col-md-6 col-sm-5 text-break text-center fw-bold h44">Texto de la publicación</h4>
-                    <h3 class="col-md-2 col-sm-3 my-sm-3 fw-bold">
-                        3487
-                        <i class="bi bi-hearts text-terciary"></i>
-                    </h3>
-                </div>
-                <div class="py-3 align-items-center justify-content-around d-flex">
-                    <img
-                        class="rounded-circle profile-img col-md-4 col-sm-4"
-                        alt="profile"
-                        src="{% static 'img/default-profile.png' %}"
-                        data-holder-rendered="true"
-                    >
-                    <h4 class="col-md-6 col-sm-5 text-break text-center fw-bold h44">Texto de la publicación</h4>
-                    <h3 class="col-md-2 col-sm-3 my-sm-3 fw-bold">
-                        3487
-                        <i class="bi bi-hearts text-terciary"></i>
-                    </h3>
-                </div>
+            <div class="col-12 text-center rounded shadow">
+                <h1 class="mb-2">El usuario aun no tiene publicaciones!</h1>
+                <h2 class="mb-2 text-muted">
+                    <small>Siguelo para estar al tanto</small>
+                </h2>
+                <img
+                    class="mt-4 mb-3"
+                    src="{% static 'img/publicacion.svg'%}"
+                    class="img-fluid"
+                    width="80%"
+                >
             </div>
+            {% endif %}
+            {% else %}
+         
             {% comment %} Visualizacion de publicaciones {% endcomment %}
             {% include 'social/user/publicaciones-ajax.html' %}
             {% endif %}
