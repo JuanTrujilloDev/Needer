@@ -32,12 +32,12 @@ class Thread(models.Model):
     def get_absolute_url(self):
         return reverse('thread', kwargs={'pk': self.pk})
 
-    def clean(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
         thread = Thread.objects.filter((Q(first_person=self.first_person) & Q(second_person=self.second_person)) | (Q(first_person=self.second_person) & Q(second_person=self.first_person)))
         if thread:
             raise ValidationError('Ya existe un chat entre estos dos usuarios')
         else:
-            return super(Thread, self).clean(*args, **kwargs)
+            return super(Thread, self).save(*args, **kwargs)
 
 
 class ChatMessage(models.Model):
