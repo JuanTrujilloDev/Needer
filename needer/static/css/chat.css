@@ -1,0 +1,103 @@
+.imgchat{
+    height: 40px;
+    width: 40px;
+}
+
+.main{
+    overflow: hidden !important;
+    padding-left: 0px !important;
+    padding-top: 0px !important;
+    padding-right: 0px !important;
+}
+
+.userbox{
+    height: 85% !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+  .text-small {
+    font-size: 0.9rem;
+  }
+  
+  .rounded-lg {
+    border-radius: 0.5rem;
+  }
+  
+  input::placeholder {
+    font-size: 0.9rem;
+  }
+
+  .img-static{
+
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+
+
+  }
+
+  .nombreape{
+    font-size: 0.9rem !important;
+    font-weight: bold !important;
+  }
+
+  .nombreuser{
+    font-size: 0.7rem !important;
+  }
+
+  .mensajeh{
+    font-size: 0.9rem !important;
+  }
+
+  .nombrearriba{
+    font-size: large !important;
+    font-weight: bold !important;
+  }
+  
+  .btn{
+    z-index: auto !important;
+  }
+
+  .mensaje{
+
+    line-height: 1.5;
+
+    color: black !important;
+}
+
+  .smile{
+    background-color: #ffff !important;
+    color:#737373 !important;
+    font-size: 2rem !important;
+    
+  }
+
+@media screen and (max-width:766px) {
+    .mensajereb{
+        display: none !important;
+    }
+ 
+
+    .img-static{
+        height: 40px;
+        width: 40px;
+        object-fit: cover;
+
+
+    }
+    
+    
+}
+
+
+
+@media screen and (max-height:667px) {
+  .userbox{
+    height: 80%!important;
+  }
+  
+  
+}
+
+

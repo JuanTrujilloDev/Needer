@@ -1,0 +1,148 @@
+{% load static %}
+{% load pub_extras %}
+<div class="infinite-container px-0">
+    {% for publicacion in page_obj %}
+    <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded-4 publicacion-shadow d-flex justify-content-around align-items-center mt-5 publicacion infinite-item" >
+
+        <div class="col-12 container d-flex align-items-center justify-content-start mb-2">
+            <div class=" justify-content-start d-flex pe-0">
+                <a href="{{publicacion.user.get_absolute_url}}" class="text-center z-1">
+                    {% if publicacion.user.foto %}
+                    <img
+                        class="rounded-circle img-fluid profile-img"
+                        alt="profile"
+                        src="{{publicacion.user.foto.url}}"
+                        data-holder-rendered="true"
+                    >
+                    {% else %}
+                    <img
+                        class="rounded-circle img-fluid profile-img"
+                        alt="profile"
+                        src="{% static 'img/default-profile.png' %}"
+                        data-holder-rendered="true"
+                    >
+                    {% endif %}
+                </a>
+            </div>
+            <!--Autor y Hora-->
+            <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1">
+                <h5 class="text-secondary fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 text-break text-truncate">
+                    <a href="{{publicacion.user.get_absolute_url}}" class="text-decoration-none text-secondary">
+                        {% if publicacion.user.apodo %} {{publicacion.user.apodo}} {% else %} {{publicacion.user.username}} {% endif %}
+                    </a>
+                </h5>
+                <p class="my-0 text-muted text-break">@{{publicacion.user.username}} · {{publicacion.fecha_creacion|fecha_exacta}}</p>
+                {% if publicacion|editado %}{{publicacion|editado|safe}}{% endif %}
+            </div>
+
+
+            <!-- Opciones de la publicación -->
+            <div class="col d-flex align-items-center justify-content-end">
+                <div class="dropdown dropstart">
+                    <a class="me-3 fs-4" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots"></i>
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        {% if request.user == publicacion.user %}
+                      <li><a class="dropdown-item" href="{{publicacion.get_absolute_url}}update">Editar</a></li>
+                      <li>
+                        <form method="POST" action="{% url 'delete-publicacion' user_slug=request.user.slug pk=publicacion.pk %}">
+                            {% csrf_token %}
+                            <button class="dropdown-item" type="submit">Eliminar</button>
+                        </form>
+                       </li>
+                      
+                      {% else %}
+                      <li><a class="dropdown-item" href="#">Reportar</a></li>
+                      {% endif %}
+                    </ul>
+                  </div>
+            </div>
+
+        </div>
+
+        <!--Contenido de la Publicación-->
+        <div class="d-flex justify-content-center row {% if publicacion.nsfw %} pub-container align-items-center{% endif %}" onclick="window.open('{{publicacion.get_absolute_url}}')" style="cursor: pointer;">
+            <div class="text-decoration-none row container-fluid px-0 bg-white pt-4 mw-100 {{publicacion.nsfw|nsfw}}"  style="height:auto; cursor: pointer;">
+                {% if publicacion.descripcion %}
+               
+                <div class="w-100 text-break text-decoration-none text-dark row justify-content-center align align-items-start d-flex container px-2">
+                    {{publicacion.descripcion|safe}}
+                </div>
+                {% endif %}
+
+                {% if publicacion.archivo %}
+
+                <div class="row justify-content-center w-100 container px-3 py-2">
+                   <img src="{{publicacion.archivo.url|safe}}" alt="">{% comment %}  {{publicacion.archivo|tipo_archivo|safe}} {% endcomment %}
+                </div>
+                            
+                {% endif %}
+            </div>
+            <!--TODO Validar funcionamiento-->
+            {% if publicacion.nsfw %}
+            <h4 class="align-middle text-danger nsfw-title text-center fw-bold">
+                <i class="bi bi-radioactive"></i> NSFW
+                <i class="bi bi-radioactive"></i>
+            </h4>
+            {% endif %}
+        </div>
+        <!--Cantidad de me gusta y comentario-->
+         <!--Botones de la Publicación--> 
+
+         <div class="row text-decoration-none col-12 mt-2">
+            <div id = 'divlike{{publicacion.id}}' class="p-0 col-md-6 col-xl-6 col-lg-6 col-6 text-center">
+            {% if publicacion.bool_like %}
+                <a href="#" id="dislike{{publicacion.id}}" onclick = "dislikepublicacion('{{publicacion.disPublicacion}}')" class="text-muted botones-interaccion px-0 fw-lighter text-decoration-none align-middle like z-2">
+                    <i class="bi bi-heart-fill text-primary me-2"></i>
+                    {{publicacion.cantidadLikes}} 
+                </a>
+            {% else %}
+
+                <a href="#" id="like{{publicacion.id}}" onclick="likepublicacion('{{publicacion.likePublicacion}}')" class="text-muted botones-interaccion px-0 fw-lighter text-decoration-none align-middle like z-2">
+                    <i class="bi bi-heart me-2"></i> 
+                    Like
+                </a>
+            {% endif %} 
+            </div>
+            <div id = 'coment{{publicacion.id}}' class="p-0 col-md-6 col-xl-6 col-lg-6 col-6 text-center">
+                <a href="#" class="text-muted botones-interaccion text-decoration-none align-middle like z-2" onclick="$('.form-comentario').focus();">
+                    <i class="bi me-2 {% if publicacion.bool_comment %} text-primary bi-chat-left-fill {% else %} bi-chat-left {% endif %}"></i> 
+                    {% comment %} {{publicacion.cantidadComentarios}}  {% endcomment %}
+                    Comentario
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+        
+
+
+    {% endfor %}
+</div>
+    {% if page_obj.has_next %}
+    <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}&{{request.GET.urlencode}}" style="display:none;">More</a>
+
+    {% else %}
+    <a class="infinite-more-link" href="?page=0" style="display:none;">More</a>
+    {% endif %}
+
+    <div class="page-load-status mt-3">
+        {% if page_obj.has_next %}
+        <h5 class="infinite-scroll-request col-12 text-center">
+            Cargando...
+        </h5>
+        {% endif %}
+        <h5 class="infinite-scroll-last col-12 text-center text-muted">No hay mas publicaciones</h5>
+        <h5 class="infinite-scroll-error col-12 text-center text-muted">No mas contenido que cargar</h5>
+
+    </div>
+    
+
+
+                    
+                
+                
+                

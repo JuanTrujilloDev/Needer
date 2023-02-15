@@ -18,6 +18,20 @@
   height: 100%;
 }
 
+.im-derecha{
+  height: 2.5rem!important;
+  width: 2.5rem!important;
+  object-fit: cover;
+  border: 1px solid #d1d1d1;
+}
+
+.im-upper{
+  height: 3rem!important;
+  width: 3rem!important;
+  object-fit: cover;
+  border: 1px solid #d1d1d1;
+}
+
 .img-static-2{
   height: 75px;
   width: 75px;

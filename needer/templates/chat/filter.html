@@ -1,0 +1,65 @@
+{% extends 'main/user/content.html' %}
+{% load static %}
+{% load pub_extras %}
+{% load chat_extras %}
+
+
+{% block css %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/chat.css'%} ">
+{% endblock css %}
+
+
+{% block headtitle %}
+Needer | Chat
+{% endblock headtitle %}
+
+{% block inner-content %}
+{% if user.is_authenticated %}
+
+
+
+{% endif %}
+<div class="row h-100 ms-0 me-0 overflow-hidden">
+
+            <div class="col-12 d-flex px-0 justify-content-around border-bottom">
+
+                <div class="col-6 pt-2 mb-3 d-flex align-items-center mensajereb">
+                    <h3 class="mb-0 fw-bold my-auto text-muted">Tus Chats</h3>
+                </div>
+
+                <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 justify-content-center justify-content-xs-center
+                justify-content-sm-center justify-content-md-end justify-content-lg-end justify-content-xl-end
+                    input-box d-flex align-items-center">
+                    <form method="GET" class="d-flex border-end pe-2 align-items-center" action="{% url 'thread-filter' %}">
+                    <input maxlength="50" required minlength="1" type="text" class="form-control" id="search_form" name="q" placeholder="Buscar Chat ...">
+                    </form>
+                   <a href="{% url 'chat-create' %}"> <h4 class="py-0 my-0 mx-2 text-muted"><i class="bi bi-plus-circle"></i></h4> </a>
+                </div>
+
+
+            </div>
+
+            <div class="col-12 px-0  pb-2 userbox infinite-container">
+               
+                {% include 'chat/mensajes-ajax.html' %}
+    
+                
+            </div>
+    
+            
+            
+</div>
+
+
+
+{% endblock inner-content %}
+
+{% block script %}
+<script src="https://unpkg.com/infinite-scroll@4.0.1/dist/infinite-scroll.pkgd.min.js"></script>
+<script src="{% static 'js/load-more-thread-ajax.js' %}"></script>
+<script src="{% static 'js/like-comen.js' %}"></script>
+{% endblock script %}
+
+

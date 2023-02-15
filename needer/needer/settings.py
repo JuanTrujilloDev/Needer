@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     
 ]
 
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+
 SITE_ID = 1
 
 MIDDLEWARE = [
@@ -148,11 +150,11 @@ AUTH_USER_MODEL = 'users.User'
 
 LANGUAGE_CODE = 'es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Bogota'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

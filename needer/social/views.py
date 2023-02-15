@@ -28,7 +28,7 @@ from main.utils import *
 class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Publicacion
     template_name = 'social/user/perfil.html'
-    paginate_by = 2
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         
@@ -39,6 +39,11 @@ class DetailCreador(DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView
         user = get_object_or_404(User, slug = self.kwargs['slug'])
         context['seguidores'] = user.get_user_followers()
         context['seguidos'] = user.get_user_followed()
+        """ Asignacion de la cantidad de likes, comentarios y si el usuario le ha dado like
+            a la publicacion o no le ha dado like """
+        for i in list(context['object_list']):
+            i.bool_like = LikedPublicacion.objects.filter(Q(id_publicacion =i.id) & Q(user = self.request.user)).exists()
+            i.bool_comment = Comentarios.objects.filter(Q(id_publicacion =i.id) & Q(user = self.request.user)).exists()
         return context
 
 
@@ -99,7 +104,7 @@ class CrearPublicacionView(DispatchAuthenticatedUserMixin, LoginRequiredMixin,
 # Detalle Publicacion
 class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, LoginRequiredMixin, ListView):
     model = Comentarios
-    paginate_by = 8
+    paginate_by = 10
     ordering = ["-fecha_creacion"]
 
 
@@ -130,7 +135,6 @@ class DetallePublicacionView(ExtendsInnerContentMixin, DispatchAuthenticatedUser
         context['form'] = CrearComentarios
 
         for i in list(context['object_list']):
-            
             i.bool_like =LikeComentarios.objects.filter(id_comentario =i.id, user = self.request.user).exists()
 
         return context
@@ -215,6 +219,24 @@ class HomeSocialView(ExtendsInnerContentMixin, DispatchAuthenticatedUserMixin, L
 
         """ Asignacion de la cantidad de likes, comentarios y si el usuario le ha dado like
             a la publicacion o no le ha dado like """
+        personas_siguiendo = self.request.user.get_user_followed()
+        if len(personas_siguiendo) >= 2:
+            personas_siguiendo = personas_siguiendo[0:2]
+        else:
+            personas_siguiendo = None
+            
+        personas_relevantes = Publicacion.objects.all().exclude(user__id = self.request.user.id).order_by('user__id').distinct('user')
+        personas_relevantes = list(Publicacion.objects.filter(id__in = personas_relevantes).order_by('id'))
+        if len(personas_relevantes) >= 2:
+           
+            personas_relevantes = [publicacion.user for publicacion in personas_relevantes][0:2]
+           
+        else:
+            personas_relevantes = None
+
+        context['personas_relevantes'] = personas_relevantes
+        context['siguiendo'] = personas_siguiendo
+
         for i in list(context['object_list']):
             i.bool_like = LikedPublicacion.objects.filter(Q(id_publicacion =i.id) & Q(user = self.request.user)).exists()
             i.bool_comment = Comentarios.objects.filter(Q(id_publicacion =i.id) & Q(user = self.request.user)).exists()
@@ -416,7 +438,6 @@ class AddLikesComentarios(PreventGetMethodMixin, LoginRequiredMixin, View):
         result['url'] =  self.comentario.dislikeComentario()
 
         """ Si el usuario ya dio like devuelva la cantidad de likes que tiene la publicacion """
-
         if query.filter(user = self.request.user).exists(): 
             result['likes'] =  str(cantidadlike)
             listado.append(result)
@@ -495,7 +516,7 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
         # Traducir el query url a formato entendible
         query = urllib.parse.unquote(query)
         query = query.lower()
-        special_characters = '<>/"'
+        special_characters = '"!@#$%^&*()-+?_=,<>/"'
         
         # No permitir caracteres especiales
         if any(c in special_characters for c in query) or len(query.replace(" ", "")) < 1:
@@ -512,6 +533,7 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
         
             #TODO FILTRAR PRODUCTOS
             # context_data['productos'] 
+        context_data['query'] = query
         return context_data
 
 
@@ -519,13 +541,8 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
 
 
     def get_queryset(self):
+        
 
-        # Si esta paginando que siga retornando los objetos
-        if "page" in self.request.get_full_path():
-            query = " "
-            return Publicacion.objects.filter(Q(descripcion__icontains=query) | Q(user__apodo__icontains=query) | Q(user__username__icontains=query) 
-                                                     | Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query) | 
-                                                     Q(user__apodo__icontains=query)).order_by("-fecha_creacion")
         
         
         # En caso contrario revisa la query desde  0
@@ -566,16 +583,12 @@ class BuscarContenidoView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView
 class BuscarUsuarioView(ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
     model = User
     template_name = "social/user/buscar-user.html"
-    paginate_by = 8
     ordering = "id"
 
     # get_Queryset Busqueda Usuario
     def get_queryset(self):
 
-        # Si esta paginando que siga retornando los objetos
-        if "page" in self.request.get_full_path():
-            query = " "
-            return User.objects.filter((Q(username__icontains=query ) | Q(apodo__icontains=query)) &  Q(is_active=True)).order_by("-date_joined")
+    
         
         
         # En caso contrario revisa la query desde  0

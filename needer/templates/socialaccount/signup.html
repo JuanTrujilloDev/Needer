@@ -7,134 +7,155 @@
 {% endblock css %}
 
 {% block content %}
-
 <section class="registro row">
 
-    <div class="col-lg-6 col-sm-12 imagen-izquierda">
-      
+
+  <!--Imagen de la izquierda-->
+    <div class="col-md-6 col-sm-12 imagen-izquierda container-fluid">
     </div>
-    
-    
-    
-    
-    <div class="col-md-6 col-sm-12 formulario-derecha py-3 d-flex align-items-center bg-primary">
-        
-        
-    
-    <form class="signup container" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
-        <h1 class="fw-bolder">Accede a Needer:</h1>
 
-        <p>{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}You are about to use your {{provider_name}} account to login to
-        {{site_name}}. As a final step, please complete the following form:{% endblocktrans %}</p>
-        {% csrf_token %}
-        <datalist name="pais"  id="id_pais">
-            {% for data in pais %}
-                <option value="{{data}}"></option>
-            {% endfor %}
-        </datalist>
 
-        {% if messages %}
-        <ul class="messages list-unstyled">
-            {% for message in messages %}
-          <div {% if message.tags %} class="alert alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        
 
-            {% if form.errors %}
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endif %}
 
-        <div class="form-group mb-3">  
-            {{form.email.errors}}
+<div class="col-md-6 col-sm-12 formulario-derecha py-3 d-flex align-items-center bg-light justify-content-center p-5 mx-auto">
 
-            <label class="" for="id_email">Email:</label>
-            {{form.email}}
-            <small id="emailHelp" class="form-text text-muted">Nunca compartiremos tu email con otras empresas.</small>
-          </div>
-        
-          <div class="form-group mb-3">  
-            <div class="row">
-              {{form.password1.errors}}
-              <div class="col-lg-6 col-sm-12">
-            <label class="" for="id_password_1">Contrasena:</label>
-           {{form.password1}}
+  <div class="col-md-10">
+
+  <form class="container signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+  <h1 class="fw-semibold text-center">Bienvenido a Needer</h1>
+
+  <p>{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}Estas a punto de iniciar sesion con tu cuenta de {{provider_name}} para acceder a
+    {{site_name}}. Como ultimo paso, por favor completa el siguiente formulario:{% endblocktrans %}</p>
+
+  <p>{% blocktrans %}¿Ya tienes una cuenta? Por favor <a href="{{ login_url }}" class="text-decoration-none">Iniciar Sesión</a>.{% endblocktrans %}</p>
+  
+  <datalist name="pais"  id="id_pais">
+    {% for data in pais %}
+        <option value="{{data}}"></option>
+    {% endfor %}
+</datalist>
+
+{% if messages %}
+<ul class="messages list-unstyled">
+    {% for message in messages %}
+  <div {% if message.tags %} class="alert alert-{{ message.tags }} fw-bold"{% endif %}> <li>{{ message }}</li> </div>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+    {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
             </div>
-        
-          <div class="col-lg-6 col-sm-12">
-            {{form.password2.errors}}
-            <label class="" for="id_password_2">Repite tu Contrasena:</label>
-            {{form.password2}}
-          </div>  
-        
-          </div>
-          </div>
-        
-        
-        
-          <div class="form-group mb-3">  
-            {{form.username.errors}}
-            <label class="" for="id_username">Usuario:</label>
-           {{form.username}}
-          </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
 
-        
-        
-          <div class="form-group mb-3 nombres"> 
-              {{form.first_name.errors}} 
-            <label class="" for="id_first_name">Nombres:</label>
-            {{form.first_name}}
-          </div>
-        
-          <div class="form-group mb-3 apellidos">  
-            {{form.last_name.errors}} 
-            <label class="" for="id_last_name">Apellidos:</label>
-            {{form.last_name}}
-          </div>
-        
-          
-          <div class="form-group mb-3 documento">  
-            <div class="row">
-        
-              <div class="col-lg-6 col-sm-12">
-                {{form.pais.errors}}
-            <label class="" for="id_pais">Pais:</label>
-            {{form.pais}}
-            </div>
-        
-          <div class="col-lg-6 col-sm-12">
-            {{form.num_documento.errors}}
-            <label class="" for="id_num_documento">Numero de documento:</label>
-            {{form.num_documento}}
-            <small id="emailHelp" class="form-text text-muted">Tu numero de identificacion solo sera consultado por nosotros para validar tu informacion.</small>
-          </div>  
-        
-          </div>
-          </div>
-        
-          <!--TODO TELEFONO-->
+<div class="form-group mb-3">  
+    
+
+    <label class="" for="id_email">Email:</label>
+    {{form.email}}
+    <small id="emailHelp" class="form-text text-muted">Nunca compartiremos tu email con otras empresas.</small>
+    {{form.email.errors}}
+  </div>
+
+  <div class="form-group mb-3">  
+    <div class="row">
       
-        {{form.captcha}}
-        {% if redirect_field_value %}
-        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-        {% endif %}
-        <button class="btn btn-primary form-control" type="submit">{% trans "Sign Up" %}</button>
-      </form>
-    </section>
-
+      <div class="col-lg-6 col-sm-12">
+    <label class="" for="id_password_1">Contrasena:</label>
+   {{form.password1}}
+   {{form.password1.errors}}
     </div>
+
+  <div class="col-lg-6 col-sm-12">
+   
+    <label class="" for="id_password_2">Repite tu Contrasena:</label>
+    {{form.password2}}
+    {{form.password2.errors}}
+  </div>  
+
+  </div>
+  </div>
+
+
+
+  <div class="form-group mb-3">  
+    
+    <label class="" for="id_username">Usuario:</label>
+   {{form.username}}
+   {{form.username.errors}}
+  </div>
+
+
+  <div class="form-group mb-3">  
+    <div class="row">
+
+     
+    <div class="col-lg-6 col-sm-12 nombres">
+      
+    <label class="" for="id_first_name">Nombres:</label>
+    {{form.first_name}}
+    {{form.first_name.errors}}
+    </div>
+
+
+  <div class="col-lg-6 col-sm-12 apellidos">
+    
+    <label class="" for="id_last_name">Apellidos:</label>
+    {{form.last_name}}
+    {{form.last_name.errors}}
+  </div>  
+
+  </div>
+  </div>
+
+  
+  <div class="form-group mb-3 documento">  
+    <div class="row">
+
+      <div class="col-lg-6 col-sm-12">
+        
+    <label class="" for="id_pais">Pais:</label> 
+    <input type="text" name="pais" maxlength="50" list="id_pais" class="form-control" id="id_pais" placeholder="Pais">
+    {{form.pais.errors}}
+    </div>
+
+  <div class="col-lg-6 col-sm-12">
+    
+    <label class="" for="id_num_documento">Numero de documento:</label>
+    <input type="text" name="num_documento" maxlength="10" class="form-control" id="id_num_documento" placeholder="Número de documento">
+    <small id="emailHelp" class="form-text text-muted">Tu numero de identificacion solo sera consultado por nosotros para validar tu informacion.</small>
+    {{form.num_documento.errors}}
+  </div>  
+
+  </div>
+  </div>
+
+  <!--TODO TELEFONO-->
+
+{{form.captcha}}
+{% if redirect_field_value %}
+<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+{% endif %}
+<button class="btn btn-primary rounded-pill form-control" type="submit">{% trans "Sign Up" %}</button>
+</form>
+
+</div>
+
+</div>
+
+</section>
 
 {% endblock %}
 
