@@ -34,7 +34,7 @@ def valid_file_extention(value):
     
     '''
 
-
+     
     # Se valida que las extensiones sean correctas.
     ext = os.path.splitext(value.name)[1]
     valid_extentions = ['.jpg', '.png', '.gif', '.jpeg', '.mp3', '.mp4', '.wav', '.m4a', '.mov', '.avi', '.mkv', '.webm']
