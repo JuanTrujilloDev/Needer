@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.urls import reverse
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -48,7 +49,9 @@ class ChatMessage(models.Model):
     class Meta:
         ordering = ["timestamp"]
 
+
     def save(self, *args, **kwargs):
+
         if not self.message:
             raise ValidationError('Mensaje vacio')
         elif self.message.strip() == '':

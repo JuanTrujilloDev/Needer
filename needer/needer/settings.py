@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     
 ]
 
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+
 SITE_ID = 1
 
 MIDDLEWARE = [

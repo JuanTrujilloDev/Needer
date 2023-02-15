@@ -14,7 +14,6 @@ User = get_user_model()
 class ChatConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
-        """ print('connected', event) """
         user = self.scope['user']
         thread_id = self.scope['url_route']['kwargs']['pk']
         chat_room = f'user_chatroom_{user.id}'
@@ -34,13 +33,14 @@ class ChatConsumer(AsyncConsumer):
             await self.websocket_disconnect(event)
 
     async def websocket_receive(self, event):
-        """ print('receive', event) """
+
         received_data = json.loads(event['text'])
         
         msg = received_data.get('message')
         sent_by_id = received_data.get('sent_by')
         send_to_id = received_data.get('send_to')
         thread_id = received_data.get('thread_id')
+
         request_user = received_data.get('request_user')
         
         
@@ -102,7 +102,7 @@ class ChatConsumer(AsyncConsumer):
         pass
 
     async def chat_message(self, event):
-        
+
         await self.send({
             'type': 'websocket.send',
             'text': event['text']
