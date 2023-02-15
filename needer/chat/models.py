@@ -32,6 +32,13 @@ class Thread(models.Model):
     def get_absolute_url(self):
         return reverse('thread', kwargs={'pk': self.pk})
 
+    def clean(self, *args, **kwargs):
+        thread = Thread.objects.filter((Q(first_person=self.first_person) & Q(second_person=self.second_person)) | (Q(first_person=self.second_person) & Q(second_person=self.first_person)))
+        if thread:
+            raise ValidationError('Ya existe un chat entre estos dos usuarios')
+        else:
+            return super(Thread, self).clean(*args, **kwargs)
+
 
 class ChatMessage(models.Model):
     thread = models.ForeignKey(Thread, null=True, blank=True, on_delete=models.CASCADE, related_name='chatmessage_thread')
@@ -41,18 +48,14 @@ class ChatMessage(models.Model):
     class Meta:
         ordering = ["timestamp"]
 
-    def clean(self) -> None:
-        thread = Thread.objects.by_user(user=self.user).filter(id=self.thread.id)
-        if thread:
-            return super().clean()
-        else:
-            raise ValidationError('El usuario no pertenece al thread')
-
-    def save(self,  *args, **kwargs):
-        if self.message.strip() == '':
+    def clean(self):
+        if not self.message:
             raise ValidationError('Mensaje vacio')
-            
-        if self.user == self.thread.first_user or self.user == self.thread.second_user:
-            super(ChatMessage, self).save(*args, **kwargs)
+        elif self.message.strip() == '':
+            raise ValidationError('Mensaje vacio')
         else:
-            raise ValidationError('El usuario no pertenece al thread')
+            if self.user == self.thread.first_person or self.user == self.thread.second_person:
+                return super(ChatMessage, self).clean()
+            else:
+                raise ValidationError('El usuario no pertenece al thread')
+        

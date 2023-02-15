@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from django.conf import settings
 from .models import ChatMessage, Thread
 from django.utils import timezone
+from django.db.models import Q
 
 
 @receiver(post_save, sender= ChatMessage)
