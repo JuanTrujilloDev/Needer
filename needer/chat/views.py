@@ -35,7 +35,7 @@ class ThreadListView (ExtendsInnerContentMixin, LoginRequiredMixin, ListView):
         user = self.request.user
 
         for thread in threads:
-            print(thread.closed_by_first_user , thread.closed_by_second_user, thread.updated)
+
             if thread.first_person == user:
                 if thread.closed_by_first_user <= thread.updated: thread_list.append(thread)
             elif thread.second_person == user:

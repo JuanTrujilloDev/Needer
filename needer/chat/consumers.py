@@ -3,46 +3,59 @@ from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
 from django.contrib.auth import get_user_model
 from django.db.models import Q
-import base64
 from datetime import datetime
-
 
 from chat.models import Thread, ChatMessage
 
 User = get_user_model()
 
 
+
 class ChatConsumer(AsyncConsumer):
+
     async def websocket_connect(self, event):
         """ print('connected', event) """
         user = self.scope['user']
+        thread_id = self.scope['url_route']['kwargs']['pk']
         chat_room = f'user_chatroom_{user.id}'
         self.chat_room = chat_room
-        await self.channel_layer.group_add(
-            chat_room,
-            self.channel_name
-        )
-        await self.send({
-            'type': 'websocket.accept'
-        })
+
+      
+        thread = await self.user_in_thread(user.id, thread_id)
+        if thread:
+            await self.channel_layer.group_add(
+                chat_room,
+                self.channel_name
+            )
+            await self.send({
+                'type': 'websocket.accept'
+            })
+        else:
+            await self.websocket_disconnect(event)
 
     async def websocket_receive(self, event):
         """ print('receive', event) """
         received_data = json.loads(event['text'])
+        
         msg = received_data.get('message')
         sent_by_id = received_data.get('sent_by')
         send_to_id = received_data.get('send_to')
         thread_id = received_data.get('thread_id')
         request_user = received_data.get('request_user')
         
-
+        
+        
         if not msg:
             
             return False
+
+
         request_user = await self.user_in_thread(request_user, thread_id)
         sent_by_user = await self.get_user_object(sent_by_id)
         send_to_user = await self.get_user_object(send_to_id)
         thread_obj = await self.get_thread(thread_id)
+
+
         
         if request_user:
             if not sent_by_user:
@@ -109,6 +122,7 @@ class ChatConsumer(AsyncConsumer):
     @database_sync_to_async
     def get_user_object(self, user_id):
         qs = User.objects.filter(id=user_id)
+
         if qs.exists():
             obj = qs.first()
         else:

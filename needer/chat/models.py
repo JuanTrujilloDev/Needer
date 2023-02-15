@@ -47,3 +47,12 @@ class ChatMessage(models.Model):
             return super().clean()
         else:
             raise ValidationError('El usuario no pertenece al thread')
+
+    def save(self,  *args, **kwargs):
+        if self.message.strip() == '':
+            raise ValidationError('Mensaje vacio')
+            
+        if self.user == self.thread.first_user or self.user == self.thread.second_user:
+            super(ChatMessage, self).save(*args, **kwargs)
+        else:
+            raise ValidationError('El usuario no pertenece al thread')
