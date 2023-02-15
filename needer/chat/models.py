@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.urls import reverse
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -33,11 +34,11 @@ class Thread(models.Model):
         return reverse('thread', kwargs={'pk': self.pk})
 
     def save(self, *args, **kwargs):
-        thread = Thread.objects.filter((Q(first_person=self.first_person) & Q(second_person=self.second_person)) | (Q(first_person=self.second_person) & Q(second_person=self.first_person)))
-        if thread:
-            raise ValidationError('Ya existe un chat entre estos dos usuarios')
-        else:
-            return super(Thread, self).save(*args, **kwargs)
+        if not self.pk:
+            thread = Thread.objects.filter((Q(first_person=self.first_person) & Q(second_person=self.second_person)) | (Q(first_person=self.second_person) & Q(second_person=self.first_person)))
+            if thread:
+                raise ValidationError('Ya existe un chat entre estos dos usuarios')
+        return super(Thread, self).save(*args, **kwargs)
 
 
 class ChatMessage(models.Model):
@@ -48,14 +49,14 @@ class ChatMessage(models.Model):
     class Meta:
         ordering = ["timestamp"]
 
-    def clean(self):
+    def save(self,*args, **kwargs):
         if not self.message:
             raise ValidationError('Mensaje vacio')
         elif self.message.strip() == '':
             raise ValidationError('Mensaje vacio')
         else:
             if self.user == self.thread.first_person or self.user == self.thread.second_person:
-                return super(ChatMessage, self).clean()
+                return super(ChatMessage, self).save(*args, **kwargs)
             else:
                 raise ValidationError('El usuario no pertenece al thread')
         
