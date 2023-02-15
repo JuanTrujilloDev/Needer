@@ -13,7 +13,7 @@ cryptography==39.0.1
 daphne==3.0.2
 decorator==4.4.2
 defusedxml==0.7.1
-Django==4.0.9
+Django==4.1.7
 django-allauth==0.50.0
 django-ckeditor==6.4.2
 django-embed-video==1.4.2
