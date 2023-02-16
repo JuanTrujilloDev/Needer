@@ -85,8 +85,8 @@
                             {{last_message.message}}  
                         </a>
                         {% else %}
-                        <a href="#" class="text-decoration-none  fw-semibold  mensaje text-truncate overflow-hidden">
-                            {{last_message}}  
+                        <a href="{{thread.get_absolute_url}}" class="text-decoration-none  fw-normal  mensaje text-truncate overflow-hidden">
+                            {{last_message.message}}  
                         </a>
                         {% endif %}
 
