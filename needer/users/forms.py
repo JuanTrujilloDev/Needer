@@ -641,8 +641,8 @@ class UpdateUserForm(forms.ModelForm):
 
         return categorias
 
-
-
+class UserDeleteForm(forms.Form):
+    delete = forms.BooleanField(required=True)
     
 
 

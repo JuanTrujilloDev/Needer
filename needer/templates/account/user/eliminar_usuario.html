@@ -1,0 +1,13 @@
+{% extends 'main/user/content.html' %}
+{% load static %}
+
+{% block inner-content %}
+<form method="POST">
+    {% csrf_token %}
+{{form}}
+<button id="enviar-update" class="fw-bold btn btn-primary rounded-pill col-6" type="submit">Eliminr</button>
+</form>
+{% endblock %}
+
+{% block script %}
+{% endblock script %}
