@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block headtitle %} Needer - Home{% endblock headtitle %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/nav.css' %}">
+{% endblock css %}
+
+{% block content %}
+<!--Boton para devolverse al inicio-->
+
+{% if request.user.is_authenticated %}
+
+{% include 'main/user/nav.html' %}
+
+{% else %}
+
+{% include 'main/nav.html' %}
+
+{% endif %}
+
+<!--Hero-->
+<section class="py-5 py-lg-0 mb-5">
+<div class="col-lg-12 container-fluid {% if request.user.is_authenticated == False %} pt-5 {% endif %}">
+    
+    <div class="row align-items-center justify-content-center g-5 ms-lg-3 {% if request.user.is_authenticated == False %} py-5 {% endif %}">
+        <!--Imagen derecha-->
+
+    <!--Texto izquierda-->
+      <div class="col-lg-7">
+        <h1 class="display-5 fw-bold lh-1 mt-sm-0 mb-sm-0 pt-5 pb-5">Términos y Condiciones</h1>
+      </div>
+
+      <div class="col-lg-7 mt-2">
+        <h2 class="fw-bolder">¡Bienvenido a Needer SAS ("Compañía", "nosotros", "nuestra")!</h2>
+
+        <div class="col-12">
+
+        <p class="fs-6 fw-bold text-muted">
+            Estos Términos de servicio ("Términos", "Términos de servicio") rigen el uso de nuestro sitio web ubicado en needer.com.co (en conjunto, el "Servicio") operado por Needer SAS.
+        </p>
+
+        <p class="lead fs-6">
+            Nuestra Política de privacidad también rige el uso de nuestro Servicio y explica cómo recopilamos, protegemos y divulgamos información que resulta de tu interacción en nuestra página web. 
+        </p>
+
+        <p class="lead fs-6">
+            Al aceptar estos Términos, aceptas cumplir con nuestros Términos de servicio y Política de privacidad ("Acuerdos"). Reconoces que has leído y entendido los Acuerdos y aceptas estar sujeto a ellos.
+        </p>
+
+        <p class="lead fs-6">
+            Si no estás de acuerdo con los Acuerdos, no podrás usar el Servicio. Si tienes preguntas o inquietudes, contáctanos a través del correo electrónico juan.trujillo@needer.com.co.
+        </p>
+        
+        
+        </div>
+
+        <h2 class="fw-bolder mt-5"> Comunicaciones </h2>
+
+        <p class="lead fs-6"> 
+            Al utilizar nuestro Servicio, aceptas suscribirte a boletines, materiales promocionales o de marketing y otra información que podamos enviar. Sin embargo, puedes optar por no recibir ninguna o todas estas comunicaciones de nuestra parte enviando un correo electrónico a juan.trujillo@needer.com.co. 
+        </p>
+
+        <h2 class="fw-bolder mt-5"> Registro </h2>
+
+        <p class="lead fs-6"> 
+            Al utilizar nuestra plataforma, aceptas proporcionar información precisa y completa al registrarte. Nos reservamos el derecho de suspender o cancelar tu cuenta si se determina que la información proporcionada es falsa o engañosa.
+        </p>
+
+        <h2 class="fw-bolder mt-5"> Propiedad intelectual </h2>
+
+        <p class="lead fs-6"> 
+            Todos los contenidos generados por la plataforma y los usuarios, incluyendo imágenes, textos, videos y otros elementos, son propiedad exclusiva de nuestra plataforma siempre y cuando estos contenidos no se utilicen con fines comerciales, de lo contrario, los derechos de propiedad intelectual serán del o de los usuarios que los hayan creado. 
+        </p>
+
+        <p class="lead fs-6">
+            Retienes todos los derechos de propiedad intelectual en los contenidos que publiques en la plataforma y nos concedes una licencia no exclusiva, transferible, sublicenciable, libre de regalías y mundial para utilizar, reproducir, distribuir, preparar trabajos derivados, mostrar y realizar públicamente los contenidos en relación con los servicios ofrecidos por la plataforma y a través de diferentes medios de comunicación. Sin embargo, no nos hacemos responsables de la distribución o infracciones por parte de otros usuarios en contra de tu propiedad intelectual.
+        </p>
+        
+        <h2 class="fw-bolder mt-5"> Responsabilidades del usuario  </h2>
+         
+        <p class="lead fs-6"> 
+            Al registrarte, aceptas utilizar nuestra plataforma de manera responsable y ética. Se prohíbe utilizarla para fines ilegales o fraudulentos, o para cualquier actividad que viole los derechos de terceros, incluyendo la propiedad intelectual y la privacidad. Al publicar contenidos en la plataforma, te comprometes a cumplir con todas las leyes y regulaciones aplicables. En particular, aceptas no publicar contenidos que sean obscenos, difamatorios, violentos o que inciten al odio o la discriminación. También se prohíbe la publicación de contenidos que infrinjan los derechos de propiedad intelectual de terceros.
+        </p>
+        
+        <h2 class="fw-bolder mt-5">  Compras y ventas   </h2>
+       
+        <p class="lead fs-6"> 
+            Nuestra plataforma funciona como un Marketplace donde los usuarios pueden comprar y vender productos y servicios relacionados con el contenido multimedia. Nosotros no somos responsables de las transacciones entre los usuarios, pero nos reservamos el derecho de tomar medidas si se determina que se está llevando a cabo alguna actividad ilegal o fraudulenta. 
+        </p>
+
+        <p class="lead fs-6"> 
+            Los usuarios que venden productos o servicios en la plataforma se comprometen a cumplir con todas las leyes y regulaciones aplicables, y a proporcionar productos y servicios de calidad y que cumplan con las descripciones y especificaciones proporcionadas en la plataforma. El vendedor es responsable de proporcionar una descripción precisa del producto o servicio y cumplir con los términos de venta.
+        </p>
+
+        <h2 class="fw-bolder mt-5"> Pagos  </h2>
+        
+        <p class="lead fs-6"> 
+            Los pagos en el Marketplace pueden ser procesados ​​por terceros, es decir, proveedores de servicios de pago. El Marketplace no es responsable de ningún problema relacionado con el procesamiento de pagos.
+        </p>
+
+        <h2 class="fw-bolder mt-5"> Cancelación de cuentas  </h2>
+
+        <p class="lead fs-6"> 
+            Nos reservamos el derecho de suspender o cancelar tu cuenta en cualquier momento si determinamos que estás violando los términos y condiciones de la plataforma. También nos reservamos el derecho de modificar o eliminar cualquier contenido generado por el usuario si consideramos que viola estas políticas.
+        </p>
+
+        <h2 class="fw-bolder mt-5"> Política de privacidad </h2>
+
+        <p class="lead fs-6"> 
+            Nuestra plataforma se compromete a proteger la privacidad de sus usuarios. Al utilizar la plataforma, aceptas nuestras políticas de privacidad, que describen cómo recopilamos, utilizamos y protegemos la información personal de los usuarios.
+        </p>
+
+        <h2 class="fw-bolder mt-5"> Responsabilidad de la plataforma </h2>
+
+        <p class="lead fs-6"> 
+            Nuestra plataforma no será responsable por cualquier daño, directo o indirecto, que surja del uso de ella o de cualquier contenido publicado en ella. En particular, no seremos responsables por cualquier daño o pérdida que surja de transacciones entre los usuarios de la plataforma.
+        </p>
+
+        <p class="lead text-muted fw-bold fs-6 mt-5"> 
+            Al utilizar nuestra plataforma, aceptas todos los términos y condiciones descritos anteriormente. Si tiene alguna pregunta o inquietud, no dudes en contactarnos.
+        </p>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+{% include 'main/footer.html' %}
+{% endblock content%}
+
+{% block script %}
+
+<script src="{% static 'js/home.js' %}" async defer></script>
+{% endblock script %}

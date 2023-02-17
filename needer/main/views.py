@@ -21,3 +21,36 @@ class HomeView (TemplateView):
             return redirect(reverse('social-home'))
 
         return super().get(request, *args, **kwargs)
+
+
+class AboutView (TemplateView):
+    template_name = 'main/about.html'
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Needer | About'
+
+        return context
+
+
+class PoliticasView (TemplateView):
+    template_name = 'main/politicas.html'
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Needer | Politicas de Privacidad'
+
+        return context
+
+
+class TerminosView (TemplateView):
+    template_name = 'main/terminos.html'
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Needer | Terminos y Condiciones'
+
+        return context

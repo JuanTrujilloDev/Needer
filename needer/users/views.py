@@ -1,21 +1,18 @@
 from allauth.socialaccount.views import SignupView as SocialSignupView, ConnectionsView
 from allauth.account.views import (SignupView, PasswordChangeView, EmailView,
                                    AccountInactiveView)
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, View
 from .models import User
 from django.urls import reverse
 from django.shortcuts import redirect
-from django.contrib.auth.models import Group
-from django.http import HttpResponseNotFound
 from allauth.socialaccount.models import SocialAccount
-from django.http import Http404
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-
+from django.contrib import messages
+from django.contrib.auth import logout
 from .models import Pais
-from .forms import (SocialCustomForm, SignupCustomForm, UpdateUserForm)
+from .forms import (SocialCustomForm, SignupCustomForm, UpdateUserForm, UserDeleteForm)
 
 
 
@@ -218,4 +215,21 @@ class CustomInactiveView(AccountInactiveView):
 
 
     
-    
+class UserDeleteView(LoginRequiredMixin, View):
+    """
+    Deletes the currently signed-in user and all associated data.
+    """
+    def get(self, request, *args, **kwargs):
+        form = UserDeleteForm()
+        return render(request, 'account/user/eliminar_usuario.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = UserDeleteForm(request.POST)
+        # Form will be valid if checkbox is checked.
+        if form.is_valid():
+            user = request.user
+            logout(request)
+            user.delete()
+            messages.success(request, 'Account successfully deleted')
+            return redirect(reverse('home-view'))
+        return render(request, 'users/eliminar_usuario.html', {'form': form})
