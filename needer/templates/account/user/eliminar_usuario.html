@@ -1,12 +1,34 @@
 {% extends 'main/user/content.html' %}
 {% load static %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/publicacion.css'%} ">
+{% endblock css %}
+
 {% block inner-content %}
-<form method="POST">
-    {% csrf_token %}
-{{form}}
-<button id="enviar-update" class="fw-bold btn btn-primary rounded-pill col-6" type="submit">Eliminr</button>
-</form>
+
+<div class="container py-4">
+    {% include 'account/componente-navegacion-perfil.html' %}
+    
+    <div class="py-3 row mx-0 container-fluid px-0 bg-white rounded-4 publicacion-shadow d-flex justify-content-around align-items-center publicacion infinite-item" >
+        <form method="POST">
+            {% csrf_token %}
+            <div class="col-12 container d-flex align-items-center justify-content-start mb-2">
+                <div class="row col-7 col-md-8 col-lg-8 gap-0 ms-1">
+                        <a class="text-primary fs-3 fw-bold mb-0 mb-lg-0 mb-xl-0 mb-md-0 mb-sm-2 mw-100 my-0 py-0 text-break text-truncate">
+                            {{form.delete}} 
+                            Eliminar cuenta
+                        </a>
+
+                </div>
+            </div>
+            <button id="enviar-update" class="fw-bold btn btn-primary rounded-pill col-6" type="submit">Aceptar</button>
+        </form>
+    </div>
+</div>
+
+
+
 {% endblock %}
 
 {% block script %}
