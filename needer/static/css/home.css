@@ -61,6 +61,10 @@
     font-size: 1.5rem;
 }
 
+.accordion-button{
+    position: unset!important;
+}
+
 .form-hero-input{
     border-radius: 0px 0px 0px 0px;
     border-left: 0px solid;

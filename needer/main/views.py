@@ -34,13 +34,6 @@ class AboutView (TemplateView):
         return context
 
 
-
-    def get(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            return redirect(reverse('social-home'))
-
-        return super().get(request, *args, **kwargs)
-
 class PoliticasView (TemplateView):
     template_name = 'main/politicas.html'
 
@@ -52,14 +45,6 @@ class PoliticasView (TemplateView):
         return context
 
 
-
-    def get(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            return redirect(reverse('social-home'))
-
-        return super().get(request, *args, **kwargs)
-
-
 class TerminosView (TemplateView):
     template_name = 'main/terminos.html'
 
@@ -69,11 +54,3 @@ class TerminosView (TemplateView):
         context['title'] = 'Needer | Terminos y Condiciones'
 
         return context
-
-
-
-    def get(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            return redirect(reverse('social-home'))
-
-        return super().get(request, *args, **kwargs)

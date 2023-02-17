@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block headtitle %} Needer - Home{% endblock headtitle %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock css %}
+
+{% block content %}
+<!--Boton para devolverse al inicio-->
+
+{% if request.user.is_authenticated %}
+
+{% include 'main/user/nav.html' %}
+
+{% else %}
+
+{% include 'main/nav.html' %}
+
+{% endif %}
+
+<!--Hero-->
+<section class="py-5 py-lg-0 mb-5">
+<div class="col-lg-12 container-fluid {% if request.user.is_authenticated == False %} pt-5 {% endif %}">
+    
+    <div class="row align-items-center justify-content-center g-5 ms-lg-3 {% if request.user.is_authenticated == False %} py-5 {% endif %}">
+        <!--Imagen derecha-->
+
+    <!--Texto izquierda-->
+      <div class="col-lg-7">
+        <h1 class="display-5 fw-bold lh-1 mt-sm-0 mb-sm-0 pt-5 pb-5">Políticas de privacidad</h1>
+      </div>
+
+      <div class="col-lg-7 mt-2">
+        <h2 class="fw-bolder">Bienvenido a Needer SAS</h2>
+
+        <div class="col-12">
+
+        <p class="fs-6 fw-bold text-muted">
+            Needer SAS ("nosotros" o "nuestro") opera needer.com.co (en lo sucesivo, "Servicio").
+        </p>
+
+        <p class="lead fs-6">
+            Nuestra Política de privacidad rige su visita a needer.com.co y explica cómo recopilamos, protegemos y divulgamos la información que resulta de su uso de nuestro Servicio. 
+        </p>
+
+        <p class="lead fs-6">
+            Usamos sus datos para proporcionar y mejorar el Servicio. Al usar el Servicio, acepta la recopilación y el uso de información de acuerdo con esta política. A menos que se defina lo contrario en esta Política de privacidad, los términos utilizados en esta Política de privacidad tienen los mismos significados que en nuestros Términos y condiciones.
+        </p>
+
+        <p class="lead fs-6">
+            Nuestros Términos y condiciones ("Términos") rigen todo uso de nuestro Servicio y, junto con la Política de privacidad, constituyen su acuerdo con nosotros ("acuerdo").
+        </p>
+        
+        
+        </div>
+
+        <h2 class="fw-bolder mt-5"> Recopilación de información </h2>
+
+        <p class="lead fs-6"> 
+           La plataforma de contenido multimedia recopila información del usuario, como su nombre, identificación, dirección de correo electrónico, fecha de nacimiento, ubicación, datos de navegación y preferencias de visualización de contenido, con el objetivo de mejorar la calidad de su experiencia en la plataforma. 
+        </p>
+
+        <h2 class="fw-bolder mt-5"> Uso de la información </h2>
+
+        <p class="lead fs-6"> 
+            La plataforma utiliza la información recopilada para personalizar el contenido y los servicios que se ofrecen, además de permitir una interacción más fluida entre los usuarios. También puede utilizar la información para mejorar la calidad de su plataforma y prevenir fraudes.
+        </p>
+
+        <h2 class="fw-bolder mt-5"> Compartir información  </h2>
+
+        <p class="lead fs-6"> 
+            La plataforma no comparte información personal del usuario con terceros sin su consentimiento explícito, excepto en los casos requeridos por la ley. Sin embargo, es posible que cierta información personal, como su nombre de usuario. su foto de perfil o ubicación sean visibles para otros usuarios de la plataforma.
+        </p>
+        
+        <h2 class="fw-bolder mt-5"> Protección de información  </h2>
+         
+        <p class="lead fs-6"> 
+            La plataforma implementa medidas de seguridad para proteger la información personal del usuario y prevenir su uso no autorizado. La plataforma también cuenta con sistemas de encriptación para proteger la información financiera de los usuarios en caso de transacciones.
+        
+        <h2 class="fw-bolder mt-5">  Propiedad de contenidos  </h2>
+       
+        <p class="lead fs-6"> 
+            La plataforma asegura la propiedad y control de los contenidos compartidos por los usuarios en la plataforma, respetando las leyes de propiedad intelectual y los derechos de autor. Sin embargo, los usuarios son responsables de los contenidos que suben a la plataforma, y la plataforma se reserva el derecho de retirar contenidos que infrinjan los términos y condiciones de la plataforma.
+        </p>
+
+        <h2 class="fw-bolder mt-5"> Publicidad personalizada  </h2>
+        
+        <p class="lead fs-6"> 
+            La plataforma puede utilizar la información recopilada para ofrecer publicidad personalizada basada en los intereses y preferencias de los usuarios. Los usuarios pueden optar por no recibir publicidad personalizada en la plataforma en cualquier momento.
+        </p>
+
+        <h2 class="fw-bolder mt-5"> Leyes de protección de datos personales  </h2>
+
+        <p class="lead fs-6"> 
+            La plataforma cumple con las leyes de protección de datos personales en Colombia, específicamente con la Ley 1581 de 2012, y protege los derechos de los usuarios en cuanto al acceso, consulta, rectificación y eliminación de sus datos personales.
+        </p>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+{% include 'main/footer.html' %}
+
+{% endblock content%}
+
+{% block script %}
+
+<script src="{% static 'js/home.js' %}" async defer></script>
+{% endblock script %}
