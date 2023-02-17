@@ -19,6 +19,7 @@ urlpatterns = [
     path('password/change/', CustomPasswordChangeView.as_view(), name="account_change_password"),
     path('inactive/', CustomInactiveView.as_view(), name="account_inactive"),
     path('profile/', updateAccountViewResolver, name='account_profile'),
+    path('delete-user/', UserDeleteView.as_view(), name='delete_user'),
     path('', include('allauth.urls')),
 
 
