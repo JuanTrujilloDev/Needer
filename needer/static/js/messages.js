@@ -86,17 +86,17 @@ function newMessage(message, sent_by_id, thread_id, time) {
         <div class="col-12 row mx-0 container mensaje-container d-flex justify-content-start mb-3">
             <div class=" text-wrap text-break mx-0 px-0 py-2 float-end 
             rounded-4 mensaje py-2 text-start d-inline-flex justify-content-start  align-items-center">
-                <a href="#" class="text-center me-2">
+                <a href="#" class="text-center me-0 col-3 px-0"">
                     
                     <img
-                        class="rounded-circle d-lg-block d-none img-fluid my-auto img-perfil"
+                        class="rounded-circle d-lg-block d-none img-fluid my-auto img-perfil mx-0"
                         alt="profile"
                         src="${imag}"
                         data-holder-rendered="true"
                     >
                 </a>
                 <div class=" text-wrap text-break mx-0 px-3 py-2 float-end mensajes
-                            rounded-4 py-2 text-start d-inline-flex justify-content-start  align-items-center">
+                rounded-4 py-2 text-start d-inline-flex justify-content-start col-9 align-items-center">
             
                         <div class="text-white">
                             ${message}

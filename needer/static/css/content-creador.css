@@ -12,10 +12,6 @@ body, html {
   .sidebar-offcanvas {
     display: none;
   }
-
-  .navbar .right-elements{
-    display: none;
-  }
   
 }
 
@@ -28,38 +24,9 @@ body, html {
         display: none;
       }
 
-      .navbar .right-elements{
-        display: none;
-      }
-}
-
-@media screen and (min-width: 992px){
-  .navbar-collapse .collapse-elements{
-    display: none;
-  }
 }
 
 
-.navbar{
-    box-shadow: 0 1.5px 0px 0 rgba(0,0,0,.2)!important;
-}
-
-.navbar h2{
-  color: #5C28FF;
-}
-
-
-
-.navbar .notificacion{
-  font-size: 2rem!important;
-}
-
-.navbar .profile-img{
-  height: 50px;
-  width: 50px;
-  object-fit: cover;
-  border:1px solid#737373;
-}
 
 .collapse-elements{
   height: 100vh!important;

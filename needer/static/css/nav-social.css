@@ -1,0 +1,59 @@
+.navbar{
+    box-shadow: 0 1.5px 0px 0 rgba(0,0,0,.2)!important;
+}
+
+.navbar h2{
+  color: #5C28FF;
+}
+
+
+
+.navbar .notificacion{
+  font-size: 2rem!important;
+}
+
+.navbar .profile-img{
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+  border:1px solid#737373;
+}
+
+@media screen and (min-width: 992px){
+    .navbar-collapse .collapse-elements{
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 34em) {
+
+      .navbar .right-elements{
+        display: none;
+      }
+}
+
+@media screen and (max-width: 992px) {
+  
+    .navbar .right-elements{
+      display: none;
+    }
+    
+  }
+
+  .collapse-elements{
+    height: 100vh!important;
+  }
+  
+  .collapse .show{
+    display: flex;
+    align-items: center;
+  }
+  
+   .show .nav-link:focus{
+    color: #5C28FF;
+  }
+  
+  .active{
+    color: #5C28FF;
+  }
+  
