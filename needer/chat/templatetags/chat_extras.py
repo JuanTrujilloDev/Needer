@@ -26,9 +26,9 @@ def get_last_message(thread, user):
             
     elif thread.second_person == user:
         if thread.closed_by_second_user:
-            return ChatMessage.objects.filter(Q(timestamp__gte=thread.closed_by_second_user))
+            return ChatMessage.objects.filter(Q(timestamp__gte=thread.closed_by_second_user)).last()
         else:
-                return ChatMessage.objects.filter(thread=thread).order_by('-timestamp')
+                return ChatMessage.objects.filter(thread=thread).order_by('-timestamp').last()
                 
     return False
 
