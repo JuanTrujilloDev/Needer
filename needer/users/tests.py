@@ -176,23 +176,23 @@ class TestUserForm(TestCase):
         pais = Pais.objects.create(nombre='Colombia')
         mocked_submit.return_value = RecaptchaResponse(is_valid=True)
         User.objects.create(
-            username='juan',
-            email='puentesjs903@gmail.com',
-            first_name='Juan',
-            last_name= 'Puentes',
-            password= 'sebas_@1998',
+            username='thomas',
+            email='thomas123@gmail.com',
+            first_name='Thomas',
+            last_name= 'Perez',
+            password= 'thomas_@1998',
             pais =      pais,
-            num_documento= '1075316291'
+            num_documento= '1075319499'
         ) 
         form = SignupCustomForm(data={
-            'username':'juan',
-            'email':'puentesjs903@gmail.com',
-            'first_name':'Juan',
-            'last_name': 'Puentes',
-            'password1': 'sebas_@1998',
-            'password2': 'sebas_@1998',
+            'username':'thomas',
+            'email':'thomas123@gmail.com',
+            'first_name':'Thomas',
+            'last_name': 'Perez',
+            'password1': 'thomas_@1998',
+            'password2': 'thomas_@1998',
             'pais':      'Colombia',
-            'num_documento': '1075316291',
+            'num_documento': '1075319499',
             'captcha': 'PASSED'
         }) 
         self.assertFalse(form.is_valid())
