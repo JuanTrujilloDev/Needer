@@ -9,13 +9,13 @@ from google.oauth2 import service_account
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
+SECRET_KEY = os.getenv("DJANGO_SECRETKEY")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = ["159.203.181.125","needer.com.co"]
 
 
 INSTALLED_APPS = [
@@ -126,8 +126,6 @@ TIME_ZONE = 'America/Bogota'
 USE_I18N = True
 
 USE_TZ = False
-
-
 
 STATIC_URL = 'static/'
 
