@@ -49,7 +49,9 @@ class ChatMessage(models.Model):
     class Meta:
         ordering = ["timestamp"]
 
-    def save(self,*args, **kwargs):
+
+    def save(self, *args, **kwargs):
+
         if not self.message:
             raise ValidationError('Mensaje vacio')
         elif self.message.strip() == '':

@@ -4,7 +4,13 @@ from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'needer.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "needer.settings")
+
+import django
+django.setup()
+
+
+
 
 application = ProtocolTypeRouter({
     'http': get_asgi_application(),

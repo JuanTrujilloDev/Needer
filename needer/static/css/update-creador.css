@@ -9,9 +9,11 @@
 .update-imagen{
     width: 200px;
     height: 200px;
-    background-size: cover;
     border: 4px solid #dbdbdb;
     margin-top: -50px;
+    background-size: cover;
+    background-repeat:no-repeat;
+    background-position: center center;
 }
 
 .update-imagen:hover{

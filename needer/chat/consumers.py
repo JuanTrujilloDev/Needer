@@ -1,3 +1,11 @@
+import os
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "needer.settings")
+
+import django
+django.setup()
+
+
 import json
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
@@ -20,17 +28,14 @@ class ChatConsumer(AsyncConsumer):
         self.chat_room = chat_room
 
       
-        thread = await self.user_in_thread(user.id, thread_id)
-        if thread:
-            await self.channel_layer.group_add(
+        await self.channel_layer.group_add(
                 chat_room,
                 self.channel_name
             )
-            await self.send({
+        await self.send({
                 'type': 'websocket.accept'
             })
-        else:
-            await self.websocket_disconnect(event)
+
 
     async def websocket_receive(self, event):
 
@@ -50,33 +55,31 @@ class ChatConsumer(AsyncConsumer):
             return False
 
 
-        request_user = await self.user_in_thread(request_user, thread_id)
         sent_by_user = await self.get_user_object(sent_by_id)
         send_to_user = await self.get_user_object(send_to_id)
         thread_obj = await self.get_thread(thread_id)
 
 
         
-        if request_user:
-            if not sent_by_user:
-                return False
-            if not send_to_user:
-                return False
-            if not thread_obj:
-                return False
+        if not sent_by_user:
+            return False
+        if not send_to_user:
+            return False
+        if not thread_obj:
+            return False
 
-            await self.create_chat_message(thread_obj, sent_by_user, msg)
+        await self.create_chat_message(thread_obj, sent_by_user, msg)
 
-            other_user_chat_room = f'user_chatroom_{send_to_id}'
-            self_user = self.scope['user']
-            response = {
+        other_user_chat_room = f'user_chatroom_{send_to_id}'
+        self_user = self.scope['user']
+        response = {
                 'message': msg,
                 'sent_by': self_user.id,
                 'thread_id': thread_id,
                 'time': datetime.now().strftime('%I:%M %p')
             }
 
-            await self.channel_layer.group_send(
+        await self.channel_layer.group_send(
                 other_user_chat_room,
                 {
                     'type': 'chat_message',
@@ -84,15 +87,13 @@ class ChatConsumer(AsyncConsumer):
                 }
             )
 
-            await self.channel_layer.group_send(
+        await self.channel_layer.group_send(
                 self.chat_room,
                 {
                     'type': 'chat_message',
                     'text': json.dumps(response)
-                }
-            )
-        else:
-            return False
+        }
+        )
         
         
     
@@ -107,16 +108,6 @@ class ChatConsumer(AsyncConsumer):
             'type': 'websocket.send',
             'text': event['text']
         })
-
-    @database_sync_to_async
-    def user_in_thread(self, user_id, thread_id):
-        request_user = User.objects.get(id = user_id)
-        thread = Thread.objects.filter((Q(id = thread_id) & (Q(first_person = request_user) | Q(second_person = request_user)) ))
-        if thread.exists():
-            obj = thread.first()
-        else:
-            obj = None
-        return obj
 
 
     @database_sync_to_async
@@ -140,9 +131,6 @@ class ChatConsumer(AsyncConsumer):
 
     @database_sync_to_async
     def create_chat_message(self, thread, user, msg):
-        # TODO Seguridad de mensajes
-        if thread.first_person == user or thread.second_person == user:
-            ChatMessage.objects.create(thread=thread, user=user, message=msg)
-        return False
+        ChatMessage.objects.create(thread=thread, user=user, message=msg)
 
     

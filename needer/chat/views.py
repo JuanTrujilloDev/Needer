@@ -227,6 +227,24 @@ class ThreadDetailView (ExtendsInnerContentMixin, LoginRequiredMixin, DetailView
         else:
             return redirect(reverse('chat'))
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user 
+
+        thread = self.get_object()
+        if thread.first_person == user:
+            if thread.closed_by_first_user:
+                context['messages'] = ChatMessage.objects.filter(Q(timestamp__gte=thread.closed_by_first_user) & Q(thread=thread))
+            else:
+                context['messages'] == ChatMessage.objects.filter(thread=thread).order_by('-timestamp')
+        elif thread.second_person == user:
+            if thread.closed_by_second_user:
+                context['messages'] = ChatMessage.objects.filter(Q(timestamp__gte=thread.closed_by_second_user) & Q(thread=thread))
+            else:
+                context['messages'] == ChatMessage.objects.filter(thread=thread).order_by('-timestamp')
+                
+        return context
+
 
 
     

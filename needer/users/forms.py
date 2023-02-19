@@ -120,7 +120,7 @@ class  SocialCustomForm(SocialSignupForm):
         match = re.match('^[A-Za-z][A-Za-z0-9]{3,18}$', username)
 
         if match:
-            if username.lower() in ['home', 'marketplace', 'signup', 'logout', 'email', 'inactive', 'follow', 'unfollow', 'profile', 'chat']:
+            if username.lower() in ['home', 'marketplace', 'signup', 'logout', 'email', 'inactive', 'follow', 'unfollow', 'profile', 'chat', 'about', 'terminos', 'politicas']:
                 raise forms.ValidationError('No puedes usar este nombre de usuario')
 
             try:
@@ -326,7 +326,7 @@ class  SignupCustomForm(SignupForm):
         match = re.match('^[A-Za-z][A-Za-z0-9]{3,18}$', username)
 
         if match:
-            if username.lower() in ['home', 'marketplace']:
+            if username.lower() in ['home', 'marketplace', 'signup', 'logout', 'email', 'inactive', 'follow', 'unfollow', 'profile', 'chat', 'about', 'terminos', 'politicas']:
                 raise forms.ValidationError('No puedes usar este nombre de usuario')
 
             try:
@@ -565,7 +565,7 @@ class UpdateUserForm(forms.ModelForm):
         match = re.match('^[A-Za-z][A-Za-z0-9]{3,18}$', username)
 
         if match:
-            if username.lower() in ['home', 'marketplace', 'tinymce', 'chat', 'tz_detect', 'followers', 'following']:
+            if username.lower() in ['home', 'marketplace', 'signup', 'logout', 'email', 'inactive', 'follow', 'unfollow', 'profile', 'chat', 'about', 'terminos', 'politicas']:
                 raise forms.ValidationError('No puedes usar este nombre de usuario')
             
             
