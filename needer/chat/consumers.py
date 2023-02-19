@@ -28,17 +28,14 @@ class ChatConsumer(AsyncConsumer):
         self.chat_room = chat_room
 
       
-        thread = await self.user_in_thread(user.id, thread_id)
-        if thread:
-            await self.channel_layer.group_add(
+        await self.channel_layer.group_add(
                 chat_room,
                 self.channel_name
             )
-            await self.send({
+        await self.send({
                 'type': 'websocket.accept'
             })
-        else:
-            await self.websocket_disconnect(event)
+
 
     async def websocket_receive(self, event):
 
@@ -111,17 +108,6 @@ class ChatConsumer(AsyncConsumer):
             'type': 'websocket.send',
             'text': event['text']
         })
-
-    @database_sync_to_async
-    def user_in_thread(self, user_id, thread_id):
-        request_user = User.objects.filter(id = user_id).last()
-        print(request_user)
-        thread = Thread.objects.filter((Q(id = thread_id) & (Q(first_person = request_user) | Q(second_person = request_user)) ))
-        if thread.exists():
-            obj = thread.first()
-        else:
-            obj = None
-        return obj
 
 
     @database_sync_to_async
