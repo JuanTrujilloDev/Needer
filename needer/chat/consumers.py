@@ -131,9 +131,6 @@ class ChatConsumer(AsyncConsumer):
 
     @database_sync_to_async
     def create_chat_message(self, thread, user, msg):
-        # TODO Seguridad de mensajes
-        if thread.first_person == user or thread.second_person == user:
-            ChatMessage.objects.create(thread=thread, user=user, message=msg)
-        return False
+        ChatMessage.objects.create(thread=thread, user=user, message=msg)
 
     
