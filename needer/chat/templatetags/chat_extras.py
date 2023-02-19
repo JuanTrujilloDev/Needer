@@ -20,13 +20,13 @@ def get_last_message(thread, user):
 
     if thread.first_person == user:
         if thread.closed_by_first_user:
-            return ChatMessage.objects.filter(Q(timestamp__gte=thread.closed_by_first_user)).last()
+            return ChatMessage.objects.filter(Q(timestamp__gte=thread.closed_by_first_user) & Q(thread=thread)).last()
         else:
             return ChatMessage.objects.filter(thread=thread).order_by('-timestamp').last()
             
     elif thread.second_person == user:
         if thread.closed_by_second_user:
-            return ChatMessage.objects.filter(Q(timestamp__gte=thread.closed_by_second_user)).last()
+            return ChatMessage.objects.filter(Q(timestamp__gte=thread.closed_by_second_user) & Q(thread=thread)).last()
         else:
                 return ChatMessage.objects.filter(thread=thread).order_by('-timestamp').last()
                 

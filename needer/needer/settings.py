@@ -15,7 +15,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
-ALLOWED_HOSTS = ["159.203.181.125","needer.com.co"]
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 INSTALLED_APPS = [
