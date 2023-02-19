@@ -238,7 +238,11 @@ else:
     GOOGLE_APPLICATION_CREDENTIALS = '/path/service-account.json'
     ## STATIC FILES ##  
 
-    STATICFILES_FINDERS = ('django.contrib.staticfiles.finders.FileSystemFinder', 'django.contrib.staticfiles.finders.AppDirectoriesFinder', )   
+    STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder', 
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder', 
+    )   
+    
 
     DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
     GS_BUCKET_NAME = 'needer'
