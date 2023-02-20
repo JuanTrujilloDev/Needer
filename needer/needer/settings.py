@@ -11,6 +11,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("DJANGO_SECRETKEY")
 
+CSRF_TRUSTED_ORIGINS = ["https://needer.com.co", "https://www.needer.com.co"]
+
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
