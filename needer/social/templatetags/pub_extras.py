@@ -40,15 +40,15 @@ def editado(publicacion):
 def tipo_archivo(archivo):
     
     # retorna el tipo de archivo
-    content = mimetypes.guess_type(archivo.url, strict=True)[0]
 
-    if content.split('/')[0] == 'image':
+    content = mimetypes.guess_type(str(archivo),strict=True)
+    if content[0].split('/')[0] == 'image':
         return f'<img class="img-fluid pub-img rounded" src="{archivo.url}" alt="profile" data-holder-rendered="true"/>'
 
-    elif content.split('/')[0] == 'audio':
+    elif content[0].split('/')[0] == 'audio':
         return f'<audio controls controlsList="nodownload"> <source src="{archivo.url}" type="audio/mpeg">Your browser does not support the audio tag.</audio>'
 
-    elif content.split('/')[0] == 'video':
+    elif content[0].split('/')[0] == 'video':
         return f'<video class="pub-video img-fluid rounded" controls controlsList="nodownload"> <source src="{archivo.url}">Your browser does not support the video tag.</video>'
 
 
