@@ -14,7 +14,7 @@ daphne==3.0.2
 decorator==4.4.2
 defusedxml==0.7.1
 dj-database-url==1.2.0
-Django==4.1.7
+Django==4.1.10
 django-allauth==0.50.0
 django-ckeditor==6.4.2
 django-embed-video==1.4.2
