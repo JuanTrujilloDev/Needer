@@ -9,7 +9,7 @@ channels==3.0.5
 charset-normalizer==2.0.12
 colorama==0.4.4
 constantly==15.1.0
-cryptography==39.0.1
+cryptography==41.0.3
 daphne==3.0.2
 decorator==4.4.2
 defusedxml==0.7.1
